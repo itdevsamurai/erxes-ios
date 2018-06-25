@@ -238,6 +238,7 @@ class ChatController: UIViewController {
     var chatView: UIWebView = {
         let webview = UIWebView()
         webview.backgroundColor = .clear
+        webview.scrollView.bounces = false
         return webview
     }()
     
@@ -289,6 +290,7 @@ class ChatController: UIViewController {
         chatInputView.delegate = self
         self.view.addSubview(container)
         container.addSubview(chatView)
+              
         self.view.addSubview(inputContainer)
         inputContainer.addSubview(chatInputView)
         self.view.addSubview(loader)
@@ -389,6 +391,7 @@ class ChatController: UIViewController {
                 str = "document.body.innerHTML += '\(str)';window.location.href = \"inapp://scroll\""
                 self?.chatView.stringByEvaluatingJavaScript(from: str)
                 let scrollPoint = CGPoint(x: 0, y: (self?.chatView.scrollView.contentSize.height)! - (self?.chatView.frame.size.height)!)
+                
                 self?.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
                 self?.loader.stopAnimating()
             }
@@ -485,6 +488,7 @@ class ChatController: UIViewController {
         self.chatView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(self.inputContainer.snp.top)
+
         }
         
         self.loader.snp.makeConstraints { (make) in
@@ -528,8 +532,16 @@ extension ChatController: UIWebViewDelegate{
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if request.url?.scheme == "inapp"{
             if request.url?.host == "scroll"{
-                let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)
-                self.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
+//                let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)
+////                let scrollPoint = CGPoint(x: 0, y: CGFloat(INT_MAX))
+//                print("scroll pont = ", self.chatView.scrollView.contentSize.height, self.chatView.frame.size.height)
+//                self.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                    let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)
+                    self.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
+                })
+                
                 loader.stopAnimating()
                 return false
             }

@@ -16,6 +16,8 @@ protocol ChannelDelegate: class  {
 
 class ChannelFilterController: UIViewController {
 
+    var channelWatcher: GraphQLQueryWatcher<ChannelsQuery>?
+    
     var channels = [ChannelDetail](){
         didSet {
             tableView.reloadData()
@@ -59,13 +61,21 @@ class ChannelFilterController: UIViewController {
         self.view.addSubview(tableView)
         self.view.addSubview(loader)
         self.view.backgroundColor = .clear
+        client.cacheKeyForObject = {$0["_id"]}
         getChannels()
+    }
+    
+    deinit {
+        channelWatcher?.cancel()
     }
     
     func getChannels(){
         loader.startAnimating()
             let query = ChannelsQuery()
-            client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        
+//
+        
+            channelWatcher =  client.watch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
                 if let error = error {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)

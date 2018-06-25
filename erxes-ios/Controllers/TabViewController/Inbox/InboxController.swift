@@ -863,7 +863,7 @@ extension InboxController: LiveGQLDelegate {
 //                self.getInbox(limit: self.conversationLimit)
                 let result = item.payload?.data?.conversationsChanged
 
-
+                
                 switch result?.type {
 
                 case "newMessage":
