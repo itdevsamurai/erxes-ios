@@ -17,7 +17,6 @@
 		9B1E93A320C94D2800AC4FED /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E93A220C94D2800AC4FED /* Message.swift */; };
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
 		9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */; };
-		9B441AB220DBCBCF008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AB120DBCBCE008B29AF /* screenshot.png */; };
 		9B576F4F20D39B7C00E70269 /* CircleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B576F4E20D39B7C00E70269 /* CircleLayer.swift */; };
 		9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B576F5020D3A62000E70269 /* ErxesLoader.swift */; };
 		9B5CE65420D8DC6E003EDBF9 /* MyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5CE65320D8DC6E003EDBF9 /* MyData.swift */; };
@@ -96,7 +95,6 @@
 		9B1E93A220C94D2800AC4FED /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
 		9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
-		9B441AB120DBCBCE008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		9B576F4E20D39B7C00E70269 /* CircleLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleLayer.swift; sourceTree = "<group>"; };
 		9B576F5020D3A62000E70269 /* ErxesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesLoader.swift; sourceTree = "<group>"; };
 		9B5CE65320D8DC6E003EDBF9 /* MyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyData.swift; sourceTree = "<group>"; };
@@ -360,7 +358,6 @@
 			isa = PBXGroup;
 			children = (
 				9B089B4020CA7EA5003EC255 /* facebook_messagetone.mp3 */,
-				9B441AB120DBCBCE008B29AF /* screenshot.png */,
 				F5BEE32A20776BC30042DFC2 /* Fonts */,
 				9B089B3E20CA7A67003EC255 /* avatar.png */,
 			);
@@ -526,7 +523,6 @@
 				F5BEE33A20776BD40042DFC2 /* Montserrat-SemiBold.otf in Resources */,
 				F5BEE33B20776BD40042DFC2 /* Montserrat-Bold.otf in Resources */,
 				9B5CE65A20D90993003EDBF9 /* UsersController.graphql in Resources */,
-				9B441AB220DBCBCF008B29AF /* screenshot.png in Resources */,
 				9B089B4120CA7EA6003EC255 /* facebook_messagetone.mp3 in Resources */,
 				F58F2054207B4F2C00D8564D /* InboxController.graphql in Resources */,
 				F5BEE33C20776BD40042DFC2 /* Montserrat-Regular.otf in Resources */,
