@@ -44,7 +44,7 @@ class TagFilterController: UIViewController {
         tableView.register(TagCell.self, forCellReuseIdentifier: "TagCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR
+        tableView.separatorColor = Constants.ERXES_COLOR!
         tableView.backgroundColor = .clear
         return tableView
     }()

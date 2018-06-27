@@ -33,8 +33,8 @@ class TabController: UITabBarController {
         self.tabBar.itemWidth = self.view.bounds.size.width/3
         self.tabBar.barTintColor = .clear
         self.tabBar.backgroundImage = UIImage.colorForNavBar(color: Constants.INBOX_BG_COLOR)
-        UITabBar.appearance().tintColor = Constants.ERXES_COLOR
-        UITabBar.appearance().unselectedItemTintColor = Constants.ERXES_COLOR.withAlphaComponent(0.6)
+        UITabBar.appearance().tintColor = Constants.ERXES_COLOR!
+        UITabBar.appearance().unselectedItemTintColor = Constants.ERXES_COLOR!.withAlphaComponent(0.6)
         self.tabBar.backgroundColor = Constants.INBOX_BG_COLOR
         inboxVC.tabBarItem = UITabBarItem.init(title: "INBOX", image: #imageLiteral(resourceName: "ic_inbox"), selectedImage: #imageLiteral(resourceName: "ic_inbox"))
         contactVC.tabBarItem = UITabBarItem.init(title: "CONTACTS", image: #imageLiteral(resourceName: "ic_contact"), selectedImage: #imageLiteral(resourceName: "ic_contact"))

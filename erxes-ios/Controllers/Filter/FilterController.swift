@@ -53,8 +53,8 @@ class FilterController: UIViewController {
         leftButton.setTitle("Clear", for: .normal)
 //        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
         let leftItem = UIBarButtonItem()
-        leftItem.tintColor = Constants.ERXES_COLOR
-        leftButton.setTitleColor(Constants.ERXES_COLOR, for: .normal)
+        leftItem.tintColor = Constants.ERXES_COLOR!
+        leftButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
         leftButton.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         leftItem.customView = leftButton
         self.navigationItem.leftBarButtonItem = leftItem
@@ -62,10 +62,10 @@ class FilterController: UIViewController {
 
         let rightButton = UIButton()
         rightButton.setTitle("Done", for: .normal)
-        rightButton.setTitleColor(Constants.ERXES_COLOR, for: .normal)
+        rightButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
         rightButton.addTarget(self, action: #selector(close(sender:)), for: .touchUpInside)
         let rightItem = UIBarButtonItem()
-        rightItem.tintColor = Constants.ERXES_COLOR
+        rightItem.tintColor = Constants.ERXES_COLOR!
         rightItem.customView = rightButton
         self.navigationItem.rightBarButtonItem = rightItem
 
@@ -236,7 +236,7 @@ extension FilterController:UITableViewDataSource {
         let titleLabel = UILabel()
         titleLabel.frame = headerView.frame
         
-        titleLabel.textColor = Constants.ERXES_COLOR
+        titleLabel.textColor = Constants.ERXES_COLOR!
         titleLabel.font = Constants.LIGHT
 //        titleLabel.text = "asd"
         headerView.addSubview(titleLabel)
@@ -275,7 +275,7 @@ extension FilterController:UITableViewDataSource {
            cell.contentView.backgroundColor = .clear
            cell.value.text = ""
            cell.desc.text = "Channel:"
-           cell.tintColor = Constants.ERXES_COLOR
+           cell.tintColor = Constants.ERXES_COLOR!
           
             return cell
         case 1:
@@ -295,7 +295,7 @@ extension FilterController:UITableViewDataSource {
             cell.contentView.backgroundColor = .clear
             cell.value.text = ""
             cell.desc.text = "Brand:"
-            cell.tintColor = Constants.ERXES_COLOR
+            cell.tintColor = Constants.ERXES_COLOR!
             return cell
         case 4:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "CheckBoxCell", for: indexPath) as? CheckBoxCell)!
@@ -308,7 +308,7 @@ extension FilterController:UITableViewDataSource {
             cell.contentView.backgroundColor = .clear
             cell.value.text = ""
             cell.desc.text = "Tag:"
-            cell.tintColor = Constants.ERXES_COLOR
+            cell.tintColor = Constants.ERXES_COLOR!
             return cell
         default:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell)!

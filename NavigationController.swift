@@ -13,7 +13,7 @@ class NavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: Constants.BOLD!]
-        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: Constants.ERXES_COLOR]
+        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: Constants.ERXES_COLOR!]
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.setBackgroundImage(UIImage(), for: .default)
 //        self.navigationBar.barTintColor = Constants.INBOX_BG_COLOR

@@ -21,7 +21,7 @@ class ErxesButton: UIButton {
         super.init(frame: frame)
         self.titleLabel?.font = Constants.LIGHT
         self.layer.cornerRadius = 6
-        self.addBorder(with: Constants.ERXES_COLOR)
+        self.addBorder(with: Constants.ERXES_COLOR!)
 
     }
     

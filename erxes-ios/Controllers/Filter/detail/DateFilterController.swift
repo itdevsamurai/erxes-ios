@@ -21,9 +21,9 @@ class DateFilterController: UIViewController {
     
     var calendarView: DAYCalendarView = {
        let calendar = DAYCalendarView(frame: CGRect(x: 0, y: 0, width: Constants.SCREEN_WIDTH-20, height: 300))
-        calendar.selectedIndicatorColor = Constants.ERXES_COLOR
-        calendar.weekdayHeaderWeekendTextColor = Constants.ERXES_COLOR
-        calendar.tintColor = Constants.ERXES_COLOR
+        calendar.selectedIndicatorColor = Constants.ERXES_COLOR!
+        calendar.weekdayHeaderWeekendTextColor = Constants.ERXES_COLOR!
+        calendar.tintColor = Constants.ERXES_COLOR!
         calendar.addTarget(self, action: #selector(selectDate(sender:)), for: .valueChanged)
         return calendar
     }()
@@ -33,7 +33,7 @@ class DateFilterController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Select a date", for: .normal)
         button.titleLabel?.font = Constants.LIGHT
-        button.backgroundColor = Constants.ERXES_COLOR
+        button.backgroundColor = Constants.ERXES_COLOR!
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button
     }()
@@ -43,7 +43,7 @@ class DateFilterController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Select a date", for: .normal)
         button.titleLabel?.font = Constants.LIGHT
-        button.backgroundColor = Constants.ERXES_COLOR
+        button.backgroundColor = Constants.ERXES_COLOR!
         button.alpha = 0.7
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button

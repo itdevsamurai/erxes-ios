@@ -23,9 +23,9 @@ class CheckBoxCell: UITableViewCell {
         
         
             checkButton = GDCheckbox()
-            checkButton.checkColor = Constants.ERXES_COLOR
+            checkButton.checkColor = Constants.ERXES_COLOR!
             checkButton.checkWidth = 2.0
-            checkButton.containerColor = Constants.ERXES_COLOR
+            checkButton.containerColor = Constants.ERXES_COLOR!
             checkButton.containerWidth = 2.0
             checkButton.isCircular = false
             checkButton.isOn = false

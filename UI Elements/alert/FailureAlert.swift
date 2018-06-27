@@ -44,12 +44,12 @@ class FailureAlert: UIView, Modal {
     
         let img = #imageLiteral(resourceName: "Logo")
         headerView.image = img.withRenderingMode(.alwaysTemplate)
-        headerView.tintColor = Constants.ERXES_COLOR
+        headerView.tintColor = Constants.ERXES_COLOR!
         dialogView.addSubview(headerView)
 
         let messageLabel = UILabel()
         messageLabel.font = UIFont.ionicon(of: 14)
-        messageLabel.textColor = Constants.ERXES_COLOR
+        messageLabel.textColor = Constants.ERXES_COLOR!
         messageLabel.text = message
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -64,11 +64,11 @@ class FailureAlert: UIView, Modal {
         dialogView.frame.size = CGSize(width: 250, height: dialogViewHeight)
         dialogView.backgroundColor = UIColor.white
         dialogView.layer.cornerRadius = 8
-        dialogView.dropShadow(color: Constants.ERXES_COLOR, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        dialogView.dropShadow(color: Constants.ERXES_COLOR!, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
         addSubview(dialogView)
         dialogView.clipsToBounds = false
         closeButton = UIButton(frame:CGRect(x:230,y:-20,width:40,height:40))
-        closeButton.setImage(UIImage.ionicon(with: .closeCircled, textColor: Constants.ERXES_COLOR, size: CGSize(width:30,height:30)), for: .normal)
+        closeButton.setImage(UIImage.ionicon(with: .closeCircled, textColor: Constants.ERXES_COLOR!, size: CGSize(width:30,height:30)), for: .normal)
         closeButton.isHidden = false
         closeButton.addTarget(self, action: #selector(closeAction(sender:)), for: .touchUpInside)
         dialogView.addSubview(closeButton)

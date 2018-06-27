@@ -27,7 +27,7 @@ class ContactCell: UITableViewCell {
         
         topLabel = UILabel()
         topLabel.textAlignment = .right
-        topLabel.textColor = Constants.ERXES_COLOR
+        topLabel.textColor = Constants.ERXES_COLOR!
         topLabel.font = Constants.LIGHT
         contentView.addSubview(topLabel)
         
@@ -42,7 +42,7 @@ class ContactCell: UITableViewCell {
         icon = UIImageView()
         
 //        icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
-        icon.tintColor = Constants.ERXES_COLOR
+        icon.tintColor = Constants.ERXES_COLOR!
         contentView.addSubview(icon)
         self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }

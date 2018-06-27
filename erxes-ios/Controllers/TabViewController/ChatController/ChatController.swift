@@ -26,7 +26,7 @@ class ChatController: UIViewController {
         loader.lineWidth = 3
         return loader
     }()
-    
+    var currentInputView: UIView?
     var uploadUrl = ""
     var uploaded = JSON()
     var pickerContainer = UIView()
@@ -34,16 +34,17 @@ class ChatController: UIViewController {
     
     var keyboardFrame = CGRect(){
         didSet{
+            
             if Constants.SCREEN_HEIGHT == 812 {
                 pickerContainer = UIView(frame: CGRect(x: 0, y: keyboardFrame.origin.y+34, width: Constants.SCREEN_WIDTH, height: keyboardFrame.size.height-34))
             }else{
                 pickerContainer = UIView(frame: keyboardFrame)
             }
             
-            pickerContainer.backgroundColor = UIColor.init(hexString: "cccfd6")
-            self.view.addSubview(pickerContainer)
+//            pickerContainer.backgroundColor = UIColor.init(hexString: "cccfd6")
+//            self.view.addSubview(pickerContainer)
 
-           
+           print(keyboardFrame)
         }
     }
     
@@ -90,12 +91,14 @@ class ChatController: UIViewController {
     var container: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.init(hexString: "cccfd6")
+//         view.backgroundColor = UIColor.groupTableViewBackground
         return view
     }()
     
     var inputContainer:UIView = {
        let view = UIView()
         view.backgroundColor = UIColor.init(hexString: "cccfd6")
+//        view.backgroundColor = UIColor.groupTableViewBackground
         return view
     }()
     
@@ -103,16 +106,16 @@ class ChatController: UIViewController {
        let textfield = UITextField()
         textfield.backgroundColor = UIColor.init(hexString: "f0ebf8")
         textfield.layer.cornerRadius = 5.0
-        textfield.tintColor = Constants.ERXES_COLOR
+        textfield.tintColor = Constants.ERXES_COLOR!
         textfield.placeholder = "Write a reply..."
         let sendButton = UIButton(type: .custom)
         sendButton.titleLabel?.font = Constants.ULTRALIGHT
         sendButton.setTitle("Send", for: .normal)
-        sendButton.setTitleColor(Constants.ERXES_COLOR, for: .normal)
+        sendButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
         sendButton.frame = CGRect(x: 0, y: CGFloat(0), width: CGFloat(60), height: CGFloat(40))
         sendButton.addTarget(self, action: #selector(sendMessage(_:)), for: .touchUpInside)
         let line = UIView(frame: CGRect(x: 0, y: 10, width: 1, height: 20))
-        line.backgroundColor = Constants.ERXES_COLOR
+        line.backgroundColor = Constants.ERXES_COLOR!
         sendButton.addSubview(line)
         
         textfield.rightView = sendButton
@@ -130,8 +133,8 @@ class ChatController: UIViewController {
         cameraButton.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
         cameraButton.imageView?.contentMode = .scaleAspectFit
         leftView.addSubview(cameraButton)
-//        textfield.leftView = leftView
-//        textfield.leftViewMode = .always
+        textfield.leftView = leftView
+        textfield.leftViewMode = .always
         
         return textfield
     }()
@@ -139,13 +142,7 @@ class ChatController: UIViewController {
     @objc func openImagePicker(sender:UIButton){
         self.chatInputView.becomeFirstResponder()
         self.view.endEditing(true)
-        let imagePicker = KCKeyboardImagePickerController.init(parentViewController: self)
-//        imagePicker.isForceTouchPreviewEnabled = true
-        imagePicker.forceTouchPreviewEnabled = true
-        let style1 = KCKeyboardImagePickerStyle.init(optionButtonTag: 1, titleColor: .white, backgroundColor: Constants.ERXES_COLOR)
-       
-        let style2 = KCKeyboardImagePickerStyle.init(imagePickerControllerButtonBackgroundColor: Constants.ERXES_COLOR, image: #imageLiteral(resourceName: "ImagePickerControllerButtonIcon"))
-        
+
         let action1 = KCKeyboardImagePickerAction.init(optionButtonTag: 1, title: "Send", forceTouchEnabled: true) { (selectedImage) in
             print("image = ", selectedImage?.size)
             self.uploadFile(image: selectedImage!)
@@ -153,43 +150,54 @@ class ChatController: UIViewController {
             self.attachments.append(self.uploaded)
             self.sendMessage(UIButton())
         }
-        let action2 = KCKeyboardImagePickerAction.init { (selectedImage) in
-            
+        
+        inputContainer.snp.makeConstraints { (make) in
+            make.bottom.equalTo(self.view.snp.bottom).inset(self.keyboardFrame.height)
         }
-        style1.titleColor = .white
-        style1.tag = 1
-        style1.backgroundColor = Constants.ERXES_COLOR
-        style2.backgroundColor = Constants.ERXES_COLOR
-        style2.image = #imageLiteral(resourceName: "ImagePickerControllerButtonIcon")
         
-        action1.tag = 1
-        action1.title = "Send"
-        action1.forceTouchEnabled = true
-        action1.handler = { (selectedImage) in
-            print("image = ", selectedImage?.size)
-            self.uploadFile(image: selectedImage!)
-            self.attachments = [JSON]()
-            self.attachments.append(self.uploaded)
-            self.sendMessage(UIButton())
+        container.snp.makeConstraints({ (update) in
+            update.bottom.equalTo(self.inputContainer.snp.top)
+        })
+        
+        chatView.snp.makeConstraints { (make) in
+            make.bottom.equalTo(container.snp.bottom)
         }
-        action2.handler = { (selectedImage) in 
-            
-        }
-      
-        imagePicker.add(style1)
-        imagePicker.add(style2)
-        imagePicker.addAction(action1)
-        imagePicker.addAction(action2)
+        
+        let imagePicker = ImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.dataSource = self
+        imagePicker.layoutConfiguration.showsFirstActionItem = true
+        imagePicker.layoutConfiguration.showsSecondActionItem = true
+        imagePicker.layoutConfiguration.showsCameraItem = false
+        imagePicker.layoutConfiguration.numberOfAssetItemsInRow = 1
+        PHPhotoLibrary.requestAuthorization({ [unowned self] (_) in
+            DispatchQueue.main.async {
+   
+                    imagePicker.layoutConfiguration.scrollDirection = .horizontal
+                    self.presentPickerAsInputView(imagePicker)
+                
+            }
+        })
+        
+    }
+    
+    func presentPickerAsInputView(_ vc: ImagePickerController) {
+        //if you want to present view as input view, you have to set flexible height
+        //to adopt natural keyboard height or just set an layout constraint height
+        //for specific height.
+        vc.view.autoresizingMask = .flexibleHeight
+        vc.view.backgroundColor = UIColor.init(hexString: "cccfd6")
+        
+        currentInputView = vc.view
+        currentInputView?.backgroundColor = UIColor.init(hexString: "cccfd6")
+//        pickerContainer = vc.view
         
         
-        imagePicker.keyboardFrame = CGRect(x: 0, y: 0, width: pickerContainer.frame.size.width, height: pickerContainer.frame.size.height)
-        imagePicker.imagePickerView.backgroundColor  = UIColor.init(hexString: "cccfd6")
-        pickerContainer.addSubview(imagePicker.imagePickerView)
+   
         
-        imagePicker.imagePickerView.reload()
+        self.view.layoutIfNeeded()
         
-        imagePicker.showKeyboardImagePickerView(animated: true)
-        
+        reloadInputViews()
     }
     
     func uploadFile(image:UIImage){
@@ -302,15 +310,8 @@ class ChatController: UIViewController {
     
     func initChat(){
    
+        css = "<style>.row,.row .text{overflow:hidden}body{background:url(bg-1.png);background:#f4f4f4;padding:0;margin:0 20px}.row{position:relative;margin-bottom:10px;margin-top:15px;font-family:Roboto,Arial,sans-serif;font-weight:500}.row .text a{float:left;padding:12px 20px;background:#f6f4fb;border-radius:20px 20px 20px 2px;color:#444;margin-bottom:5px;margin-left:38px;margin-right:40px;font-size:14px;box-shadow:0 1px 1px 0 rgba(0,0,0,.2)}.me .text a{float:right;background:\(bg);color:#fff;border-radius:20px 2px 20px 20px;margin-left:50px;margin-right:38px;}.row .text img{max-width:100%;padding-top:3px}.row .date{color:#cbcbcb;font-size:11px;margin-left:36px}.me .date{text-align:right;margin-right:38px;}.row .img{float:left;position:absolute;bottom:17px;left:0;margin-right:8px}.row .img img{width:30px;height:30px;border-radius:15px;box-sizing:border-box;border:1px solid white;}.me .img{right:0;left:auto;right:0}.me .img img{margin-right:0;margin-left:8px}p{display:inline}</style>"
         
-        var str = ""
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let now = dateFormatter.string(from: Date())
-        
-        str = "<div class=\"row\"><div class=\"img\"><img src=\"\(currentUser.avatar!)\"/></div><div class=\"date\">\(now)</div></div>"
-
-        css = "<style>body{background:#ffffff;}.root{background:#ffffff}.row{overflow:hidden;margin-bottom:10px;font-family:'Helvetica Neue',Arial,sans-serif}.row .text a{float:left;padding:8px 10px;background:#f6f4fb;border-radius:5px;color:#444;margin-bottom:5px;font-size:14px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2)}.row .text{overflow:hidden}.me .text a{float:right;background:\(bg);color:#fff}.row .text img{max-width:100%; height:auto!; padding-top:3px;} .row .date{color:#686868;font-size:11px}.me .date{text-align:right}p{display:inline}.row .img{float:left;margin-right:8px}.row .img img{width:40px;height:40px;border-radius:20px;}.me .img{float:right}.me .img img{margin-right:0;margin-left:8px}</style>"
     }
     
 
@@ -346,10 +347,7 @@ class ChatController: UIViewController {
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
 
                 for item in messagesArray {
-//                    let created:String! = item.createdAt.hou
-//                    let tmp = Int64(created)
-//                    let date = Date(milliseconds:tmp!)
-//                    let now = item.createdAt!.hourMinutes!
+
                     let date = item.createdAt?.dateFromUnixTime()
                     let now = date?.hourMinutes!
                     
@@ -391,7 +389,7 @@ class ChatController: UIViewController {
                 str = "document.body.innerHTML += '\(str)';window.location.href = \"inapp://scroll\""
                 self?.chatView.stringByEvaluatingJavaScript(from: str)
                 let scrollPoint = CGPoint(x: 0, y: (self?.chatView.scrollView.contentSize.height)! - (self?.chatView.frame.size.height)!)
-                
+                print(str)
                 self?.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
                 self?.loader.stopAnimating()
             }
@@ -464,12 +462,16 @@ class ChatController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+ 
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.container.snp.makeConstraints { (make) in
             make.bottom.left.right.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
 //            make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
+//            (0.0, 521.0, 375.0, 291.0)
+//            (0.0, 579.0, 375.0, 233.0)
         }
         
         self.inputContainer.snp.makeConstraints { (make) in
@@ -577,6 +579,107 @@ extension ChatController:LiveGQLDelegate{
             print(error)
         }
     }
+}
+
+extension ChatController : ImagePickerControllerDelegate {
+    
+    public func imagePicker(controller: ImagePickerController, didSelectActionItemAt index: Int) {
+        print("did select action \(index)")
+        
+        //before we present system image picker, we must update present button
+        //because first responder will be dismissed
+//        presentButton.isSelected = false
+        
+        if index == 0 && UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let vc = UIImagePickerController()
+            vc.sourceType = .camera
+            vc.allowsEditing = true
+            if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera) {
+                vc.mediaTypes = mediaTypes
+            }
+            navigationController?.visibleViewController?.present(vc, animated: true, completion: nil)
+        }
+        else if index == 1 && UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let vc = UIImagePickerController()
+            vc.sourceType = .photoLibrary
+            navigationController?.visibleViewController?.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    public func imagePicker(controller: ImagePickerController, didSelect asset: PHAsset) {
+        print("selected assets: \(controller.selectedAssets.count)")
+//        updateNavigationItem(with: controller.selectedAssets.count)
+    }
+    
+    public func imagePicker(controller: ImagePickerController, didDeselect asset: PHAsset) {
+        print("selected assets: \(controller.selectedAssets.count)")
+//        updateNavigationItem(with: controller.selectedAssets.count)
+    }
+    
+    public func imagePicker(controller: ImagePickerController, didTake image: UIImage) {
+        print("did take image \(image.size)")
+    }
+    
+    func imagePicker(controller: ImagePickerController, willDisplayActionItem cell: UICollectionViewCell, at index: Int) {
+        switch cell {
+        case let iconWithTextCell as IconWithTextCell:
+            iconWithTextCell.titleLabel.textColor = UIColor.black
+            switch index {
+            case 0:
+                iconWithTextCell.titleLabel.text = "Camera"
+                iconWithTextCell.imageView.image = #imageLiteral(resourceName: "button-camera")
+            case 1:
+                iconWithTextCell.titleLabel.text = "Photos"
+                iconWithTextCell.imageView.image = #imageLiteral(resourceName: "button-photo-library")
+            default: break
+            }
+        default:
+            break
+        }
+    }
+    
+    func imagePicker(controller: ImagePickerController, willDisplayAssetItem cell: ImagePickerAssetCell, asset: PHAsset) {
+        switch cell {
+            
+        case let videoCell as CustomVideoCell:
+            videoCell.label.text = ChatController.durationFormatter.string(from: asset.duration)
+            
+            
+        case let imageCell as CustomImageCell:
+            if asset.mediaSubtypes.contains(.photoLive) {
+                imageCell.subtypeImageView.image = #imageLiteral(resourceName: "icon-live")
+            }
+            else if asset.mediaSubtypes.contains(.photoPanorama) {
+                imageCell.subtypeImageView.image = #imageLiteral(resourceName: "icon-pano")
+            }
+            else if #available(iOS 10.2, *), asset.mediaSubtypes.contains(.photoDepthEffect) {
+                imageCell.subtypeImageView.image = #imageLiteral(resourceName: "icon-depth")
+            }
+        default:
+            break
+        }
+    }
+    
+}
+
+extension ChatController: ImagePickerControllerDataSource {
+    
+    func imagePicker(controller: ImagePickerController, viewForAuthorizationStatus status: PHAuthorizationStatus) -> UIView {
+        let infoLabel = UILabel(frame: .zero)
+        infoLabel.backgroundColor = UIColor.green
+        infoLabel.textAlignment = .center
+        infoLabel.numberOfLines = 0
+        switch status {
+        case .restricted:
+            infoLabel.text = "Access is restricted\n\nPlease open Settings app and update privacy settings."
+        case .denied:
+            infoLabel.text = "Access is denied by user\n\nPlease open Settings app and update privacy settings."
+        default:
+            break
+        }
+        return infoLabel
+    }
+    
 }
 
 

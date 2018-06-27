@@ -80,7 +80,7 @@ class InboxController: UIViewController {
 
     var filterListView: TagListView = {
         let tagListView = TagListView()
-        tagListView.tagBackgroundColor = Constants.ERXES_COLOR
+        tagListView.tagBackgroundColor = Constants.ERXES_COLOR!
         tagListView.cornerRadius = 6
         tagListView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
         tagListView.textColor = .white
@@ -152,7 +152,7 @@ class InboxController: UIViewController {
         tableView.rowHeight = 120
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
-        tableView.separatorColor = Constants.ERXES_COLOR
+        tableView.separatorColor = Constants.ERXES_COLOR!
         tableView.backgroundColor = .white
         tableView.layer.cornerRadius = 6.0
         return tableView
@@ -169,9 +169,9 @@ class InboxController: UIViewController {
         let leftButton = UIButton()
         leftButton.setImage(leftImage, for: .normal)
         leftButton.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
-        leftButton.tintColor = Constants.ERXES_COLOR
+        leftButton.tintColor = Constants.ERXES_COLOR!
         let leftItem = UIBarButtonItem()
-        leftItem.tintColor = Constants.ERXES_COLOR
+        leftItem.tintColor = Constants.ERXES_COLOR!
         leftItem.customView = leftButton
 //        leftItem.image = leftImage
 
@@ -180,7 +180,7 @@ class InboxController: UIViewController {
         var rightImage = #imageLiteral(resourceName: "ic_search")
         rightImage = rightImage.withRenderingMode(.alwaysTemplate)
         let rightItem = UIBarButtonItem()
-        rightItem.tintColor = Constants.ERXES_COLOR
+        rightItem.tintColor = Constants.ERXES_COLOR!
         rightItem.image = rightImage
 //        self.navigationItem.rightBarButtonItem = rightItem
         self.view.addSubview(robotView)
@@ -273,7 +273,7 @@ class InboxController: UIViewController {
 //            make.center.equalTo(self.view.snp.center)
 //        }
 
-        shadovView.dropShadow(color: Constants.ERXES_COLOR, opacity: 0.2, offSet: CGSize(width: 1.0, height: 1.0), radius: 4, scale: true)
+        shadovView.dropShadow(color: Constants.ERXES_COLOR!, opacity: 0.2, offSet: CGSize(width: 1.0, height: 1.0), radius: 4, scale: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -534,10 +534,10 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                         if (conversation.customer?.isUser)! {
                             cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                         } else {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                            cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                         }
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                     }
                 } else {
                     if conversation.customer?.email != nil {
@@ -581,10 +581,10 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                     if (conversation.customer?.isUser)! {
                         cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                     }
                 } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                    cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                 }
             } else if conversation.customer?.lastName != nil {
                 userName = (conversation.customer?.lastName!)!
@@ -592,10 +592,10 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                     if (conversation.customer?.isUser)! {
                         cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                     }
                 } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                    cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
                 }
             }
 
@@ -679,7 +679,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             controller.conversationId = conversation.id
             self.presentViewControllerAsPopover(viewController: controller, from: currentCell.userAvatar)
         }
-        assignAction.backgroundColor = Constants.ERXES_COLOR
+        assignAction.backgroundColor = Constants.ERXES_COLOR!
         arr.append(assignAction)
 
 
@@ -903,7 +903,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 101
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -917,7 +917,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 102
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -932,7 +932,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 103
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -947,7 +947,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 104
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -961,7 +961,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 105
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -975,7 +975,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 106
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -990,7 +990,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 107
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -1004,7 +1004,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 108
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 //
-            tagView.backgroundColor = Constants.ERXES_COLOR
+            tagView.backgroundColor = Constants.ERXES_COLOR!
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)

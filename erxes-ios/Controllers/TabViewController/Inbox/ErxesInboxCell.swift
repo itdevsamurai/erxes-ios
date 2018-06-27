@@ -36,7 +36,7 @@ class ErxesInboxCell: UITableViewCell {
 
         fullName = ErxesLabel()
         fullName.textAlignment = .left
-        fullName.textColor = Constants.ERXES_COLOR
+        fullName.textColor = Constants.ERXES_COLOR!
 //        fullName.textColor = UIColor.init(hexString: "#ff0000")
         fullName.font = Constants.MEDIUM
         fullName.backgroundColor = Constants.SHIMMER_COLOR
@@ -78,7 +78,7 @@ class ErxesInboxCell: UITableViewCell {
 
 
         tagListView = TagListView()
-        tagListView.tagBackgroundColor = Constants.ERXES_COLOR
+        tagListView.tagBackgroundColor = Constants.ERXES_COLOR!
         tagListView.cornerRadius = 5.0
         tagListView.textFont = UIFont(name: "Montserrat-Light", size: 8)!
         tagListView.textColor = .white
@@ -110,7 +110,7 @@ class ErxesInboxCell: UITableViewCell {
         date.backgroundColor = .clear
         desc.backgroundColor = .clear
         fullName.backgroundColor = .clear
-        avatar.backgroundColor = Constants.ERXES_COLOR
+        avatar.backgroundColor = Constants.ERXES_COLOR!
 
     }
 
@@ -212,14 +212,14 @@ class ErxesInboxCell: UITableViewCell {
             iconView.tintColor = .white
         case .user:
             iconView.image = #imageLiteral(resourceName: "notuser")
-            circleView.backgroundColor = Constants.ERXES_COLOR
+            circleView.backgroundColor = Constants.ERXES_COLOR!
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
             iconView.tintColor = .white
             avatar.backgroundColor = UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0)
             
         case .notuser:
             iconView.image = #imageLiteral(resourceName: "user")
-            circleView.backgroundColor = Constants.ERXES_COLOR
+            circleView.backgroundColor = Constants.ERXES_COLOR!
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
             iconView.tintColor = .white
         }
