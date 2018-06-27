@@ -29,5 +29,8 @@ fragment MessageDetail on ConversationMessage {
         email
         role
         getNotificationByEmail
+        details{
+            avatar
+        }
     }
 }

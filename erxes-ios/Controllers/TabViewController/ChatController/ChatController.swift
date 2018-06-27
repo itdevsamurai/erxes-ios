@@ -357,8 +357,8 @@ class ChatController: UIViewController {
 
                     var avatar = "avatar.png"
 
-                    if let user = item.user{
-                        if let userAvatar = self?.currentUser.avatar{
+                    if item.user != nil{
+                        if let userAvatar = item.user?.details?.avatar{
                             avatar = userAvatar
                         }
                     }
@@ -532,10 +532,7 @@ extension ChatController: UIWebViewDelegate{
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if request.url?.scheme == "inapp"{
             if request.url?.host == "scroll"{
-//                let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)
-////                let scrollPoint = CGPoint(x: 0, y: CGFloat(INT_MAX))
-//                print("scroll pont = ", self.chatView.scrollView.contentSize.height, self.chatView.frame.size.height)
-//                self.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
+
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                     let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)

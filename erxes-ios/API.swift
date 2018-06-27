@@ -1084,6 +1084,7 @@ public final class ConversationDetailQuery: GraphQLQuery {
             GraphQLField("email", type: .scalar(String.self)),
             GraphQLField("role", type: .scalar(String.self)),
             GraphQLField("getNotificationByEmail", type: .scalar(Bool.self)),
+            GraphQLField("details", type: .object(Detail.selections)),
           ]
 
           public var snapshot: Snapshot
@@ -1092,8 +1093,8 @@ public final class ConversationDetailQuery: GraphQLQuery {
             self.snapshot = snapshot
           }
 
-          public init(username: String? = nil, email: String? = nil, role: String? = nil, getNotificationByEmail: Bool? = nil) {
-            self.init(snapshot: ["__typename": "User", "username": username, "email": email, "role": role, "getNotificationByEmail": getNotificationByEmail])
+          public init(username: String? = nil, email: String? = nil, role: String? = nil, getNotificationByEmail: Bool? = nil, details: Detail? = nil) {
+            self.init(snapshot: ["__typename": "User", "username": username, "email": email, "role": role, "getNotificationByEmail": getNotificationByEmail, "details": details.flatMap { (value: Detail) -> Snapshot in value.snapshot }])
           }
 
           public var __typename: String {
@@ -1138,6 +1139,52 @@ public final class ConversationDetailQuery: GraphQLQuery {
             }
             set {
               snapshot.updateValue(newValue, forKey: "getNotificationByEmail")
+            }
+          }
+
+          public var details: Detail? {
+            get {
+              return (snapshot["details"] as? Snapshot).flatMap { Detail(snapshot: $0) }
+            }
+            set {
+              snapshot.updateValue(newValue?.snapshot, forKey: "details")
+            }
+          }
+
+          public struct Detail: GraphQLSelectionSet {
+            public static let possibleTypes = ["UserDetailsType"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("avatar", type: .scalar(String.self)),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(avatar: String? = nil) {
+              self.init(snapshot: ["__typename": "UserDetailsType", "avatar": avatar])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var avatar: String? {
+              get {
+                return snapshot["avatar"] as? String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "avatar")
+              }
             }
           }
         }
@@ -4412,7 +4459,7 @@ public struct TagDetail: GraphQLFragment {
 
 public struct MessageDetail: GraphQLFragment {
   public static let fragmentString =
-    "fragment MessageDetail on ConversationMessage {\n  __typename\n  _id\n  content\n  attachments\n  conversationId\n  customerId\n  userId\n  createdAt\n  user {\n    __typename\n    username\n    email\n    role\n    getNotificationByEmail\n  }\n}"
+    "fragment MessageDetail on ConversationMessage {\n  __typename\n  _id\n  content\n  attachments\n  conversationId\n  customerId\n  userId\n  createdAt\n  user {\n    __typename\n    username\n    email\n    role\n    getNotificationByEmail\n    details {\n      __typename\n      avatar\n    }\n  }\n}"
 
   public static let possibleTypes = ["ConversationMessage"]
 
@@ -4528,6 +4575,7 @@ public struct MessageDetail: GraphQLFragment {
       GraphQLField("email", type: .scalar(String.self)),
       GraphQLField("role", type: .scalar(String.self)),
       GraphQLField("getNotificationByEmail", type: .scalar(Bool.self)),
+      GraphQLField("details", type: .object(Detail.selections)),
     ]
 
     public var snapshot: Snapshot
@@ -4536,8 +4584,8 @@ public struct MessageDetail: GraphQLFragment {
       self.snapshot = snapshot
     }
 
-    public init(username: String? = nil, email: String? = nil, role: String? = nil, getNotificationByEmail: Bool? = nil) {
-      self.init(snapshot: ["__typename": "User", "username": username, "email": email, "role": role, "getNotificationByEmail": getNotificationByEmail])
+    public init(username: String? = nil, email: String? = nil, role: String? = nil, getNotificationByEmail: Bool? = nil, details: Detail? = nil) {
+      self.init(snapshot: ["__typename": "User", "username": username, "email": email, "role": role, "getNotificationByEmail": getNotificationByEmail, "details": details.flatMap { (value: Detail) -> Snapshot in value.snapshot }])
     }
 
     public var __typename: String {
@@ -4582,6 +4630,52 @@ public struct MessageDetail: GraphQLFragment {
       }
       set {
         snapshot.updateValue(newValue, forKey: "getNotificationByEmail")
+      }
+    }
+
+    public var details: Detail? {
+      get {
+        return (snapshot["details"] as? Snapshot).flatMap { Detail(snapshot: $0) }
+      }
+      set {
+        snapshot.updateValue(newValue?.snapshot, forKey: "details")
+      }
+    }
+
+    public struct Detail: GraphQLSelectionSet {
+      public static let possibleTypes = ["UserDetailsType"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("avatar", type: .scalar(String.self)),
+      ]
+
+      public var snapshot: Snapshot
+
+      public init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+      }
+
+      public init(avatar: String? = nil) {
+        self.init(snapshot: ["__typename": "UserDetailsType", "avatar": avatar])
+      }
+
+      public var __typename: String {
+        get {
+          return snapshot["__typename"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var avatar: String? {
+        get {
+          return snapshot["avatar"] as? String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "avatar")
+        }
       }
     }
   }
