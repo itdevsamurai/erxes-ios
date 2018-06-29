@@ -29,6 +29,8 @@
 	</dict>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Calendar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>FaceID/TouchID</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -9,8 +9,7 @@
 import UIKit
 
 
-class ErxesUser
-{
+class ErxesUser{
 
     private static var info: ErxesUser?
     
@@ -36,4 +35,5 @@ class ErxesUser
     var twitterUsername:String?
     var token:String?
     var refreshToken:String?
+    
 }

@@ -26,24 +26,19 @@ class ChatController: UIViewController {
         loader.lineWidth = 3
         return loader
     }()
+    var selectedImageIndex = Int()
+    var pickerIsShown:Bool = false
     var currentInputView: UIView?
     var uploadUrl = ""
     var uploaded = JSON()
     var pickerContainer = UIView()
     var attachments = [JSON]()
-    
+    var imagePicker = ImagePickerController()
     var keyboardFrame = CGRect(){
         didSet{
             
-            if Constants.SCREEN_HEIGHT == 812 {
-                pickerContainer = UIView(frame: CGRect(x: 0, y: keyboardFrame.origin.y+34, width: Constants.SCREEN_WIDTH, height: keyboardFrame.size.height-34))
-            }else{
-                pickerContainer = UIView(frame: keyboardFrame)
-            }
-            
-//            pickerContainer.backgroundColor = UIColor.init(hexString: "cccfd6")
-//            self.view.addSubview(pickerContainer)
 
+            moveTextField()
            print(keyboardFrame)
         }
     }
@@ -140,45 +135,33 @@ class ChatController: UIViewController {
     }()
     
     @objc func openImagePicker(sender:UIButton){
-        self.chatInputView.becomeFirstResponder()
-        self.view.endEditing(true)
-
-        let action1 = KCKeyboardImagePickerAction.init(optionButtonTag: 1, title: "Send", forceTouchEnabled: true) { (selectedImage) in
-            print("image = ", selectedImage?.size)
-            self.uploadFile(image: selectedImage!)
-            self.attachments = [JSON]()
-            self.attachments.append(self.uploaded)
-            self.sendMessage(UIButton())
+       
+        if !pickerIsShown{
+            self.chatInputView.becomeFirstResponder()
+            self.view.endEditing(true)
+            
+        
+            
+            imagePicker = ImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.dataSource = self
+            imagePicker.layoutConfiguration.showsFirstActionItem = false
+            imagePicker.layoutConfiguration.showsSecondActionItem = false
+            imagePicker.layoutConfiguration.showsCameraItem = false
+            imagePicker.layoutConfiguration.numberOfAssetItemsInRow = 1
+            imagePicker.imagePickerView.backgroundColor = .red
+            imagePicker.collectionView.backgroundColor = .clear
+            
+            PHPhotoLibrary.requestAuthorization({ [unowned self] (_) in
+                DispatchQueue.main.async {
+                    
+                    self.imagePicker.layoutConfiguration.scrollDirection = .horizontal
+                    self.presentPickerAsInputView(self.imagePicker)
+                    
+                }
+            })
+             pickerIsShown = true
         }
-        
-        inputContainer.snp.makeConstraints { (make) in
-            make.bottom.equalTo(self.view.snp.bottom).inset(self.keyboardFrame.height)
-        }
-        
-        container.snp.makeConstraints({ (update) in
-            update.bottom.equalTo(self.inputContainer.snp.top)
-        })
-        
-        chatView.snp.makeConstraints { (make) in
-            make.bottom.equalTo(container.snp.bottom)
-        }
-        
-        let imagePicker = ImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.dataSource = self
-        imagePicker.layoutConfiguration.showsFirstActionItem = true
-        imagePicker.layoutConfiguration.showsSecondActionItem = true
-        imagePicker.layoutConfiguration.showsCameraItem = false
-        imagePicker.layoutConfiguration.numberOfAssetItemsInRow = 1
-        PHPhotoLibrary.requestAuthorization({ [unowned self] (_) in
-            DispatchQueue.main.async {
-   
-                    imagePicker.layoutConfiguration.scrollDirection = .horizontal
-                    self.presentPickerAsInputView(imagePicker)
-                
-            }
-        })
-        
     }
     
     func presentPickerAsInputView(_ vc: ImagePickerController) {
@@ -204,7 +187,7 @@ class ChatController: UIViewController {
         
 
         
-        let url = "https://app-api.crm.nmma.co/upload-file"
+        let url = "https:/crm.nmma.co/upload-file"
         let imgData = UIImageJPEGRepresentation(image, 0.5)!
         let size = imgData.count
         let bcf = ByteCountFormatter()
@@ -397,7 +380,23 @@ class ChatController: UIViewController {
     }
     
    @objc func sendMessage(_ sender:UIButton){
-        
+    if imagePicker.selectedAssets.count != 0 {
+        for asset in imagePicker.selectedAssets {
+            print("asset = ",asset)
+            
+
+            let requestOptions = PHImageRequestOptions()
+            requestOptions.resizeMode = .exact
+            requestOptions.deliveryMode = .highQualityFormat
+            requestOptions.isSynchronous = true
+            let manager = PHImageManager.default()
+            manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: requestOptions) { (selectedImage, _) in
+                            self.uploadFile(image: selectedImage!)
+                            self.attachments = [JSON]()
+                            self.attachments.append(self.uploaded)
+            }
+        }
+    }
     let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!, content: self.chatInputView.text!)
         client.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
@@ -498,6 +497,23 @@ class ChatController: UIViewController {
             make.center.equalTo(self.view.snp.center)
         }
     }
+    
+    func moveTextField(){
+        print("height = ", keyboardFrame.height)
+        inputContainer.snp.remakeConstraints { (make) in
+            make.bottom.equalTo(self.view.snp.bottom).inset(keyboardFrame.height)
+        }
+        print("input = ",inputContainer.frame)
+        container.snp.remakeConstraints({ (update) in
+            update.bottom.equalTo(self.inputContainer.snp.top)
+        })
+        
+        chatView.snp.remakeConstraints { (make) in
+            make.bottom.equalTo(container.snp.bottom)
+        }
+        
+        self.view.layoutIfNeeded()
+    }
 }
 
 extension ChatController: UITextFieldDelegate{
@@ -510,23 +526,35 @@ extension ChatController: UITextFieldDelegate{
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-           
+           print("will show")
             self.keyboardFrame = keyboardSize
-            inputContainer.snp.makeConstraints { (make) in
-                make.bottom.equalTo(self.view.snp.bottom).inset(keyboardSize.height)
+
+        }
+        
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if Constants.SCREEN_HEIGHT == 812 {
+            inputContainer.snp.remakeConstraints { (make) in
+                make.bottom.equalTo(self.view.snp.bottom).inset(keyboardFrame.height+58)
             }
-            
-            container.snp.makeConstraints({ (update) in
+         
+            container.snp.remakeConstraints({ (update) in
                 update.bottom.equalTo(self.inputContainer.snp.top)
             })
             
-            chatView.snp.makeConstraints { (make) in
+            chatView.snp.remakeConstraints { (make) in
                 make.bottom.equalTo(container.snp.bottom)
             }
             
             self.view.layoutIfNeeded()
         }
+        pickerIsShown = false
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
+        return true
     }
 }
 
@@ -608,6 +636,7 @@ extension ChatController : ImagePickerControllerDelegate {
     
     public func imagePicker(controller: ImagePickerController, didSelect asset: PHAsset) {
         print("selected assets: \(controller.selectedAssets.count)")
+    
 //        updateNavigationItem(with: controller.selectedAssets.count)
     }
     

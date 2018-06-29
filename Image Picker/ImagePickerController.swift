@@ -211,7 +211,7 @@ open class ImagePickerController : UIViewController {
     
     private var collectionViewCoordinator: CollectionViewUpdatesCoordinator!
     
-    fileprivate var imagePickerView: ImagePickerView! {
+     var imagePickerView: ImagePickerView! {
         return view as! ImagePickerView
     }
     
@@ -297,7 +297,7 @@ open class ImagePickerController : UIViewController {
         let appearance = instanceAppearanceProxy ?? ImagePickerController.classAppearanceProxy
         imagePickerView.backgroundColor = appearance.backgroundColor
         collectionView.backgroundColor = appearance.backgroundColor
-        
+        self.view.backgroundColor = appearance.backgroundColor
         //create animator
         collectionViewCoordinator = CollectionViewUpdatesCoordinator(collectionView: collectionView)
         
