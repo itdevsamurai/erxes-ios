@@ -11,8 +11,8 @@ class Constants: NSObject {
 
  
     
-    static let API_ENDPOINT = "https://"
-    static let SUBSCRITION_ENDPOINT = "wss://"
+    static let API_ENDPOINT = "https://app-api.crm.nmma.co/graphql"
+    static let SUBSCRITION_ENDPOINT = "wss://app-api.crm.nmma.co/subscriptions"
 
     
     

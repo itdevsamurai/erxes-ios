@@ -19,13 +19,25 @@ import MobileCoreServices
 
 class ChatController: UIViewController {
 
-    var player: AVAudioPlayer?
-    var isPickerActive = false
+    
+    // MARK: variables
+    let currentUser = ErxesUser.sharedUserInfo()
+    let client: ApolloClient = {
+        let configuration = URLSessionConfiguration.default
+        let currentUser = ErxesUser.sharedUserInfo()
+        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
+                                               "x-refresh-token": currentUser.refreshToken as Any]
+        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
+        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+    }()
     var loader: ErxesLoader = {
         let loader = ErxesLoader()
         loader.lineWidth = 3
         return loader
     }()
+    var player: AVAudioPlayer?
+    var isPickerActive = false
+   
     var selectedImageIndex = Int()
     var pickerIsShown:Bool = false
     var currentInputView: UIView?
@@ -40,69 +52,32 @@ class ChatController: UIViewController {
     var imagePicker = ImagePickerController()
     var keyboardFrame = CGRect(){
         didSet{
-            
-
             moveTextField()
-           print(keyboardFrame)
         }
     }
-    
-    func playSound() {
-        guard let url = Bundle.main.url(forResource: "facebook_messagetone", withExtension: "mp3") else { return }
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
-            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            guard let player = player else { return }
-            player.play()
-           
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-    
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
-    
-//    ws://\(host):3300/subscriptions
     
     let gql = LiveGQL(socket: Constants.SUBSCRITION_ENDPOINT)
-    
-    func configLive(){
-        gql.delegate = self
-    }
-    
-    func subscribe(){
-        gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){content,userId,createdAt,customerId,user{details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
-    }
-    
     var conversationId:String?
+    var customerId:String?
+    
     var inited = false
     var bg = "#5629b6"
     var css = ""
     var container: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.init(hexString: "cccfd6")
-//         view.backgroundColor = UIColor.groupTableViewBackground
+        //         view.backgroundColor = UIColor.groupTableViewBackground
         return view
     }()
     
     var inputContainer:UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = UIColor.init(hexString: "cccfd6")
-//        view.backgroundColor = UIColor.groupTableViewBackground
         return view
     }()
     
     var chatInputView: UITextField = {
-       let textfield = UITextField()
+        let textfield = UITextField()
         textfield.backgroundColor = UIColor.init(hexString: "f0ebf8")
         textfield.layer.cornerRadius = 5.0
         textfield.tintColor = Constants.ERXES_COLOR!
@@ -139,6 +114,40 @@ class ChatController: UIViewController {
         return textfield
     }()
     
+    var chatView: UIWebView = {
+        let webview = UIWebView()
+        webview.backgroundColor = .clear
+        webview.scrollView.bounces = false
+        return webview
+    }()
+    
+   // MARK: actions
+    func playSound() {
+        guard let url = Bundle.main.url(forResource: "facebook_messagetone", withExtension: "mp3") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+            guard let player = player else { return }
+            player.play()
+           
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+
+    
+    func configLive(){
+        gql.delegate = self
+    }
+    
+    func subscribe(){
+        gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){content,userId,createdAt,customerId,user{details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
+    }
+    
+
+    
     @objc func launchCamera(sender:UIButton){
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         {
@@ -161,9 +170,6 @@ class ChatController: UIViewController {
         if !pickerIsShown{
             self.chatInputView.becomeFirstResponder()
             self.view.endEditing(true)
-            
-        
-            
             imagePicker = ImagePickerController()
             imagePicker.delegate = self
             imagePicker.dataSource = self
@@ -187,36 +193,20 @@ class ChatController: UIViewController {
     }
     
     func presentPickerAsInputView(_ vc: ImagePickerController) {
-        //if you want to present view as input view, you have to set flexible height
-        //to adopt natural keyboard height or just set an layout constraint height
-        //for specific height.
         vc.view.autoresizingMask = .flexibleHeight
         vc.view.backgroundColor = UIColor.init(hexString: "cccfd6")
-        
         currentInputView = vc.view
         currentInputView?.backgroundColor = UIColor.init(hexString: "cccfd6")
-//        pickerContainer = vc.view
-        
-        
-   
-        
-        self.view.layoutIfNeeded()
-        
         reloadInputViews()
     }
     
     func uploadFile(image:UIImage){
-        
-
-        
         let url = "http://crm.nmma.co/upload-file"
         let imgData = UIImageJPEGRepresentation(image, 0.5)!
         let size = imgData.count
         let bcf = ByteCountFormatter()
         bcf.allowedUnits = [.useKB] // optional: restricts the units to MB only
         bcf.countStyle = .file
-
-        
         Alamofire.upload(multipartFormData: { multipartFormData in
             multipartFormData.append(imgData, withName: "file",fileName: "file.jpg", mimeType: "image/jpg")
 
@@ -244,18 +234,15 @@ class ChatController: UIViewController {
         
     }
     
-    var chatView: UIWebView = {
-        let webview = UIWebView()
-        webview.backgroundColor = .clear
-        webview.scrollView.bounces = false
-        return webview
-    }()
+    @objc func navigateProfile(sender:UIButton){
+        self.navigate(.customerProfile(_id: self.customerId!))
+    }
     
-  
-    
-    convenience init(chatId:String,title:String){
+
+    convenience init(chatId:String,title:String,customerId:String){
         self.init()
         self.conversationId = chatId
+        self.customerId = customerId
         self.title = title
     }
     
@@ -284,17 +271,17 @@ class ChatController: UIViewController {
     
     func configureViews(){
         self.view.backgroundColor = .white
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage.init(color: .white), for: .default)
+
         let rightItem: UIBarButtonItem = {
             let rightImage = #imageLiteral(resourceName: "ic_profile")
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
-            //            button.addTarget(self, action: #selector(toggleSideMenu(sender:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(navigateProfile(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
         }()
-//        self.navigationItem.rightBarButtonItem = rightItem
+        self.navigationItem.rightBarButtonItem = rightItem
         chatView.delegate = self
         chatInputView.delegate = self
         self.view.addSubview(container)
@@ -307,7 +294,7 @@ class ChatController: UIViewController {
 
     }
     
-    let currentUser = ErxesUser.sharedUserInfo()
+   
     
     func initChat(){
    
@@ -535,9 +522,10 @@ class ChatController: UIViewController {
     }
 }
 
+// MARK: extensions
 extension ChatController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        self.sendMessage(self.chatInputView.text!)
+
         self.sendMessage(UIButton())
         return true
     }

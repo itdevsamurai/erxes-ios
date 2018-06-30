@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UINavigationBar.appearance().barTintColor = nil
         UINavigationBar.appearance().backIndicatorImage = #imageLiteral(resourceName: "ic_back")
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "ic_back")
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-100, 0), for: .default)
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-1000, 0), for: .default)
         Route.default.setupAppNavigation(appNavigation: MyAppNavigation())
         loginContoller.title = "Login"
         window = UIWindow(frame: UIScreen.main.bounds)

@@ -709,7 +709,8 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversation = conversations[indexPath.row]
-        navigate(.chat(withId: conversation.id, title: (conversation.integration?.brand?.name)!))
+        navigate(.chat(withId: conversation.id, title: (conversation.integration?.brand?.name)!, customerId: (conversation.customer?.id)!))
+
 
     }
 
