@@ -276,19 +276,40 @@ extension FilterController:UITableViewDataSource {
            cell.value.text = ""
            cell.desc.text = "Channel:"
            cell.tintColor = Constants.ERXES_COLOR!
-          
+           if self.filterOptions.channel != nil && self.filterOptions.channel?.name.count != 0 {
+                cell.value.text = self.filterOptions.channel?.name
+           }
             return cell
         case 1:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell)!
             cell.contentView.backgroundColor = .clear
             cell.value.text = ""
             cell.desc.text = dates[indexPath.row]
+            if indexPath.row == 0 && self.filterOptions.startDate.count != 0 {
+                cell.value.text = self.filterOptions.startDate
+            }else if indexPath.row == 1 && self.filterOptions.endDate.count != 0 {
+                cell.value.text = self.filterOptions.endDate
+            }
             return cell
         case 2:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "CheckBoxCell", for: indexPath) as? CheckBoxCell)!
             cell.contentView.backgroundColor = .clear
             cell.checkButton.isOn = false
             cell.desc.text = statusArray[indexPath.row]
+            if self.filterOptions.unassigned.count != 0 {
+                if indexPath.row == 0 {
+                    cell.checkButton.isOn = true
+                }
+            }else if self.filterOptions.participating.count != 0 {
+                if indexPath.row == 1 {
+                    cell.checkButton.isOn = true
+                }
+            }else if self.filterOptions.status.count != 0 {
+                if indexPath.row == 2 {
+                    cell.checkButton.isOn = true
+                }
+            }
+            
             return cell
         case 3:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell)!
@@ -296,12 +317,32 @@ extension FilterController:UITableViewDataSource {
             cell.value.text = ""
             cell.desc.text = "Brand:"
             cell.tintColor = Constants.ERXES_COLOR!
+            if self.filterOptions.brand != nil && self.filterOptions.brand?.name?.count != 0 {
+                cell.value.text = self.filterOptions.brand?.name
+            }
             return cell
         case 4:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "CheckBoxCell", for: indexPath) as? CheckBoxCell)!
             cell.contentView.backgroundColor = .clear
             cell.checkButton.isOn = false
             cell.desc.text = integrations[indexPath.row]
+            if self.filterOptions.integrationType == "messenger"{
+                if indexPath.row == 0 {
+                    cell.checkButton.isOn = true
+                }
+            }else if self.filterOptions.integrationType == "twitter"{
+                if indexPath.row == 1 {
+                    cell.checkButton.isOn = true
+                }
+            }else if self.filterOptions.integrationType == "facebook"{
+                if indexPath.row == 2 {
+                    cell.checkButton.isOn = true
+                }
+            }else if self.filterOptions.integrationType == "form"{
+                if indexPath.row == 3 {
+                    cell.checkButton.isOn = true
+                }
+            }
             return cell
         case 5:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell)!
@@ -309,6 +350,9 @@ extension FilterController:UITableViewDataSource {
             cell.value.text = ""
             cell.desc.text = "Tag:"
             cell.tintColor = Constants.ERXES_COLOR!
+            if self.filterOptions.tag != nil && self.filterOptions.tag?.name?.count != 0 {
+                cell.value.text = self.filterOptions.tag?.name
+            }
             return cell
         default:
             let cell = (tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell)!

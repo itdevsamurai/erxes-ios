@@ -29,12 +29,16 @@ class LoginController: UIViewController {
         field.attributedPlaceholder = NSAttributedString(string: "Email",
                                                          attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         field.alpha = 0.0
+        field.keyboardType = .emailAddress
+
+       
         return field
     }()
     
     var passwordField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Password"
+
         field.attributedPlaceholder = NSAttributedString(string: "Password",
                                                                attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         field.isSecureTextEntry = true

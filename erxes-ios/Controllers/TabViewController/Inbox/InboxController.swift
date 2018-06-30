@@ -140,6 +140,9 @@ class InboxController: UIViewController {
         let nav = NavigationController()
         let controller = FilterController()
         controller.delegate = self
+        if self.options != nil {
+            controller.filterOptions = self.options!
+        }
         nav.viewControllers = [controller]
         self.present(nav, animated: true) {
 

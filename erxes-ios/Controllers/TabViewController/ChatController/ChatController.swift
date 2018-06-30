@@ -29,7 +29,11 @@ class ChatController: UIViewController {
     var selectedImageIndex = Int()
     var pickerIsShown:Bool = false
     var currentInputView: UIView?
-    var uploadUrl = ""
+    var uploadUrl = "" {
+        didSet{
+            sendMessage(UIButton())
+        }
+    }
     var uploaded = JSON()
     var pickerContainer = UIView()
     var attachments = [JSON]()
@@ -127,12 +131,30 @@ class ChatController: UIViewController {
         cameraButton.setImage(#imageLiteral(resourceName: "ic_camera"), for: .normal)
         cameraButton.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
         cameraButton.imageView?.contentMode = .scaleAspectFit
+        cameraButton.addTarget(self, action: #selector(launchCamera(sender:)), for: .touchUpInside)
         leftView.addSubview(cameraButton)
         textfield.leftView = leftView
         textfield.leftViewMode = .always
         
         return textfield
     }()
+    
+    @objc func launchCamera(sender:UIButton){
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        {
+            let imagePicker:UIImagePickerController = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.allowsEditing = true
+            
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        else
+        {
+            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertControllerStyle.alert)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
     
     @objc func openImagePicker(sender:UIButton){
        
@@ -187,21 +209,17 @@ class ChatController: UIViewController {
         
 
         
-        let url = "https:/crm.nmma.co/upload-file"
+        let url = "http://crm.nmma.co/upload-file"
         let imgData = UIImageJPEGRepresentation(image, 0.5)!
         let size = imgData.count
         let bcf = ByteCountFormatter()
         bcf.allowedUnits = [.useKB] // optional: restricts the units to MB only
         bcf.countStyle = .file
-       
-        
-        //        let parameters = ["name": rname] //Optional for extra parameter
+
         
         Alamofire.upload(multipartFormData: { multipartFormData in
             multipartFormData.append(imgData, withName: "file",fileName: "file.jpg", mimeType: "image/jpg")
-            //            for (key, value) in parameters {
-            //                multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
-            //            } //Optional for extra parameters
+
         },
                          to:url)
         { (result) in
@@ -396,6 +414,7 @@ class ChatController: UIViewController {
                             self.attachments.append(self.uploaded)
             }
         }
+        imagePicker = ImagePickerController()
     }
     let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!, content: self.chatInputView.text!)
         client.perform(mutation: mutation) { [weak self] result, error in
@@ -528,7 +547,7 @@ extension ChatController: UITextFieldDelegate{
             
            print("will show")
             self.keyboardFrame = keyboardSize
-
+            moveTextField()
         }
         
     }
@@ -550,6 +569,7 @@ extension ChatController: UITextFieldDelegate{
             self.view.layoutIfNeeded()
         }
         pickerIsShown = false
+        chatInputView.becomeFirstResponder()
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -711,4 +731,23 @@ extension ChatController: ImagePickerControllerDataSource {
     
 }
 
+extension ChatController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let originalImg:UIImage? = info[UIImagePickerControllerOriginalImage] as? UIImage
+        self.dismiss(animated: true) {
+            self.uploadFile(image: originalImg!)
+            self.chatInputView.becomeFirstResponder()
+        }
+
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true , completion: nil)
+        chatInputView.becomeFirstResponder()
+    }
+}
+
+extension ChatController: UINavigationControllerDelegate {
+    
+}
 
