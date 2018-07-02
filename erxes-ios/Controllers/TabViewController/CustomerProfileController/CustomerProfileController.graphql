@@ -1,0 +1,57 @@
+query customerDetail($_id: String!) {
+    customerDetail(_id: $_id) {
+        ...CustomerInfo
+    }
+}
+
+fragment CustomerInfo on Customer {
+    _id
+    integration {
+        kind
+        __typename
+    }
+    firstName
+    lastName
+    email
+    phone
+    isUser
+    visitorContactInfo
+    position
+    department
+    leadStatus
+    lifecycleState
+    hasAuthority
+    description
+    doNotDisturb
+    links {
+        linkedIn
+        twitter
+        facebook
+        github
+        youtube
+        website
+        __typename
+    }
+    owner {
+        details {
+            fullName
+            __typename
+        }
+        __typename
+    }
+    companies {
+        _id
+        name
+        website
+        __typename
+    }
+    messengerData
+    getTags {
+        _id
+        name
+        colorCode
+        __typename
+    }
+    __typename
+}
+

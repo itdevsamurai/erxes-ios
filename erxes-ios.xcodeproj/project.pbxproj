@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B008BAB20EA26B20054997E /* CustomerProfileController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */; };
 		9B02B95C209701A500C10A6E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B02B95B209701A500C10A6E /* Extensions.swift */; };
 		9B089B3F20CA7A67003EC255 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B089B3E20CA7A67003EC255 /* avatar.png */; };
 		9B089B4120CA7EA6003EC255 /* facebook_messagetone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9B089B4020CA7EA5003EC255 /* facebook_messagetone.mp3 */; };
@@ -115,7 +116,7 @@
 		F58F2064207B4FE900D8564D /* ErxesField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58F2061207B4FE900D8564D /* ErxesField.swift */; };
 		F5BEE31620772C0D0042DFC2 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BEE31520772C0D0042DFC2 /* LoginController.swift */; };
 		F5BEE32520774ADE0042DFC2 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F5BEE32420774ADE0042DFC2 /* Podfile */; };
-		F5BEE327207760E10042DFC2 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BEE326207760E10042DFC2 /* FormViewController.swift */; };
+		F5BEE327207760E10042DFC2 /* MyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BEE326207760E10042DFC2 /* MyFormViewController.swift */; };
 		F5BEE329207761730042DFC2 /* MyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BEE328207761730042DFC2 /* MyTextField.swift */; };
 		F5BEE33420776BD40042DFC2 /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5BEE32B20776BD20042DFC2 /* Montserrat-Thin.ttf */; };
 		F5BEE33520776BD40042DFC2 /* Montserrat-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = F5BEE32C20776BD20042DFC2 /* Montserrat-Light.otf */; };
@@ -134,6 +135,7 @@
 		4B517246B47FE17016C552D6 /* Pods-erxes-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-erxes-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-erxes-ios/Pods-erxes-ios.release.xcconfig"; sourceTree = "<group>"; };
 		8FB018212DBB53FDAA50FCA6 /* Pods-NMG.CRM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NMG.CRM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NMG.CRM/Pods-NMG.CRM.debug.xcconfig"; sourceTree = "<group>"; };
 		9634C14764D6BB1A1913F342 /* Pods_NMG_CRM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NMG_CRM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CustomerProfileController.graphql; sourceTree = "<group>"; };
 		9B02B95B209701A500C10A6E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		9B089B3E20CA7A67003EC255 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		9B089B4020CA7EA5003EC255 /* facebook_messagetone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = facebook_messagetone.mp3; sourceTree = "<group>"; };
@@ -246,7 +248,7 @@
 		F58F2061207B4FE900D8564D /* ErxesField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErxesField.swift; sourceTree = "<group>"; };
 		F5BEE31520772C0D0042DFC2 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F5BEE32420774ADE0042DFC2 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		F5BEE326207760E10042DFC2 /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
+		F5BEE326207760E10042DFC2 /* MyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFormViewController.swift; sourceTree = "<group>"; };
 		F5BEE328207761730042DFC2 /* MyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextField.swift; sourceTree = "<group>"; };
 		F5BEE32B20776BD20042DFC2 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Thin.ttf"; sourceTree = "<group>"; };
 		F5BEE32C20776BD20042DFC2 /* Montserrat-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.otf"; sourceTree = "<group>"; };
@@ -351,7 +353,7 @@
 			isa = PBXGroup;
 			children = (
 				F55583BE2077173C00413F6A /* NavigationController.swift */,
-				F5BEE326207760E10042DFC2 /* FormViewController.swift */,
+				F5BEE326207760E10042DFC2 /* MyFormViewController.swift */,
 			);
 			name = Abstract;
 			path = ..;
@@ -389,6 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */,
+				9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */,
 				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
 			);
 			path = CustomerProfileController;
@@ -708,6 +711,7 @@
 				F5BEE33C20776BD40042DFC2 /* Montserrat-Regular.otf in Resources */,
 				F58F2038207B313200D8564D /* LoginController.graphql in Resources */,
 				F58F2047207B497500D8564D /* me.png in Resources */,
+				9B008BAB20EA26B20054997E /* CustomerProfileController.graphql in Resources */,
 				9BD9BE1C20E375A400CCFEA6 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -726,6 +730,7 @@
 				"${BUILT_PRODUCTS_DIR}/Apollo/Apollo.framework",
 				"${BUILT_PRODUCTS_DIR}/BetterSegmentedControl/BetterSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/Daysquare/Daysquare.framework",
+				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/IoniconsKit/IoniconsKit.framework",
 				"${BUILT_PRODUCTS_DIR}/LUNSegmentedControl/LUNSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/LiveGQL/LiveGQL.framework",
@@ -743,6 +748,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Apollo.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BetterSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Daysquare.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IoniconsKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LUNSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiveGQL.framework",
@@ -800,7 +806,7 @@
 			files = (
 				9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */,
 				9B80E79720E75A10008BA4BF /* CustomerProfileController.swift in Sources */,
-				F5BEE327207760E10042DFC2 /* FormViewController.swift in Sources */,
+				F5BEE327207760E10042DFC2 /* MyFormViewController.swift in Sources */,
 				9BD9BE3C20E3786B00CCFEA6 /* CustomVideoCell.swift in Sources */,
 				9BD9BE1020E375A400CCFEA6 /* CarvedLabel.swift in Sources */,
 				F58F2040207B381400D8564D /* FailureAlert.swift in Sources */,

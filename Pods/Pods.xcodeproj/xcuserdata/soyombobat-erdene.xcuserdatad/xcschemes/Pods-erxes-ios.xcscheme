@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "95F170B2DC6F70FBBE2D4A99A523E148"
+               BlueprintIdentifier = "7CF2FCF7A40CC4C4496810F5D9CF03F5"
                BuildableName = "Pods_erxes_ios.framework"
                BlueprintName = "Pods-erxes-ios"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "95F170B2DC6F70FBBE2D4A99A523E148"
+            BlueprintIdentifier = "7CF2FCF7A40CC4C4496810F5D9CF03F5"
             BuildableName = "Pods_erxes_ios.framework"
             BlueprintName = "Pods-erxes-ios"
             ReferencedContainer = "container:Pods.xcodeproj">

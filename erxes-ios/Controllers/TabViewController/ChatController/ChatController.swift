@@ -201,7 +201,7 @@ class ChatController: UIViewController {
     }
     
     func uploadFile(image:UIImage){
-        let url = "http://crm.nmma.co/upload-file"
+        let url = "https://crm.nmma.co/upload-file"
         let imgData = UIImageJPEGRepresentation(image, 0.5)!
         let size = imgData.count
         let bcf = ByteCountFormatter()

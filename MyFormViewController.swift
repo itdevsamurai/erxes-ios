@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FormViewController: UIViewController {
+class MyFormViewController: UIViewController {
 
     let scrollView = UIScrollView()
     
