@@ -1,14 +1,14 @@
 PODS:
   - Alamofire (4.7.2)
-  - Apollo (0.8.0):
-    - Apollo/Core (= 0.8.0)
-  - Apollo/Core (0.8.0)
-  - Apollo/SQLite (0.8.0):
+  - Apollo (0.9.0):
+    - Apollo/Core (= 0.9.0)
+  - Apollo/Core (0.9.0)
+  - Apollo/SQLite (0.9.0):
     - Apollo/Core
     - SQLite.swift (~> 0.11.4)
   - BetterSegmentedControl (0.9)
   - Daysquare (0.1.0)
-  - Eureka (4.1.1)
+  - Eureka (4.2.0)
   - IoniconsKit (1.1.0)
   - LiveGQL (2.0.0):
     - SocketRocket
@@ -61,10 +61,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
-  Apollo: 66e0f52289551545adb7ecdd994e713fdbae26eb
+  Apollo: eb307e71d1db78fe92cb1936c0611aa0cbc2293b
   BetterSegmentedControl: 40b2b6a08bbc59663149624d1b5235efa8d43a3c
   Daysquare: 682586c9b2a96958633e2f967a43054a718d1a09
-  Eureka: b88fb930e42c79f8c03c373d0fcdc28c1d6c50ed
+  Eureka: 0748c7bbb2560130e43c7bfa83e99c98854a1f42
   IoniconsKit: 11e04bb11af3d052bcdd34a837e0421affe6f3bd
   LiveGQL: bc97d1f0c5d70e200f27126f863e0be62e732298
   LUNSegmentedControl: f868b1ea740f9917f05dbcb4cded85c33ec606e6
@@ -76,6 +76,6 @@ SPEC CHECKSUMS:
   SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
 
-PODFILE CHECKSUM: 029606961b5b4bb3bddb505f7dd831e9994ea655
+PODFILE CHECKSUM: 141d1b2dfffb546bcfedb2a60c867922664a4093
 
 COCOAPODS: 1.5.0

@@ -25,6 +25,14 @@
 		9B5CE65620D90846003EDBF9 /* UsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5CE65520D90846003EDBF9 /* UsersController.swift */; };
 		9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5CE65720D9088E003EDBF9 /* UserCell.swift */; };
 		9B5CE65A20D90993003EDBF9 /* UsersController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B5CE65920D90993003EDBF9 /* UsersController.graphql */; };
+		9B6202E920EC60820094A87D /* CustomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202E820EC60820094A87D /* CustomRow.swift */; };
+		9B6202F220EC817A0094A87D /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202EB20EC81790094A87D /* SuggestionTableViewCell.swift */; };
+		9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202EC20EC81790094A87D /* SuggestionCollectionCell.swift */; };
+		9B6202F420EC817A0094A87D /* SuggestionTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202ED20EC81790094A87D /* SuggestionTableCell.swift */; };
+		9B6202F520EC817A0094A87D /* SuggestionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202EE20EC81790094A87D /* SuggestionCollectionViewCell.swift */; };
+		9B6202F620EC817A0094A87D /* SuggestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202EF20EC81790094A87D /* SuggestionCell.swift */; };
+		9B6202F720EC817A0094A87D /* String+SuggestionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */; };
+		9B6202F820EC817A0094A87D /* SuggestionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202F120EC817A0094A87D /* SuggestionRow.swift */; };
 		9B6D056120AAED3F00F5D77C /* ChannelFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D056020AAED3F00F5D77C /* ChannelFilterController.swift */; };
 		9B6D056520AAF26400F5D77C /* BrandFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D056420AAF26400F5D77C /* BrandFilterController.swift */; };
 		9B80E79720E75A10008BA4BF /* CustomerProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */; };
@@ -153,6 +161,14 @@
 		9B5CE65520D90846003EDBF9 /* UsersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersController.swift; sourceTree = "<group>"; };
 		9B5CE65720D9088E003EDBF9 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		9B5CE65920D90993003EDBF9 /* UsersController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UsersController.graphql; sourceTree = "<group>"; };
+		9B6202E820EC60820094A87D /* CustomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRow.swift; sourceTree = "<group>"; };
+		9B6202EB20EC81790094A87D /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewCell.swift; sourceTree = "<group>"; };
+		9B6202EC20EC81790094A87D /* SuggestionCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionCollectionCell.swift; sourceTree = "<group>"; };
+		9B6202ED20EC81790094A87D /* SuggestionTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTableCell.swift; sourceTree = "<group>"; };
+		9B6202EE20EC81790094A87D /* SuggestionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionCollectionViewCell.swift; sourceTree = "<group>"; };
+		9B6202EF20EC81790094A87D /* SuggestionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionCell.swift; sourceTree = "<group>"; };
+		9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SuggestionValue.swift"; sourceTree = "<group>"; };
+		9B6202F120EC817A0094A87D /* SuggestionRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionRow.swift; sourceTree = "<group>"; };
 		9B6D056020AAED3F00F5D77C /* ChannelFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelFilterController.swift; sourceTree = "<group>"; };
 		9B6D056420AAF26400F5D77C /* BrandFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandFilterController.swift; sourceTree = "<group>"; };
 		9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerProfileController.swift; sourceTree = "<group>"; };
@@ -247,7 +263,7 @@
 		F58F2060207B4FE800D8564D /* ErxesLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErxesLabel.swift; sourceTree = "<group>"; };
 		F58F2061207B4FE900D8564D /* ErxesField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErxesField.swift; sourceTree = "<group>"; };
 		F5BEE31520772C0D0042DFC2 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		F5BEE32420774ADE0042DFC2 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F5BEE32420774ADE0042DFC2 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		F5BEE326207760E10042DFC2 /* MyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFormViewController.swift; sourceTree = "<group>"; };
 		F5BEE328207761730042DFC2 /* MyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTextField.swift; sourceTree = "<group>"; };
 		F5BEE32B20776BD20042DFC2 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Thin.ttf"; sourceTree = "<group>"; };
@@ -387,12 +403,27 @@
 			path = detail;
 			sourceTree = "<group>";
 		};
+		9B6202EA20EC81670094A87D /* SuggestionRow */ = {
+			isa = PBXGroup;
+			children = (
+				9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */,
+				9B6202EF20EC81790094A87D /* SuggestionCell.swift */,
+				9B6202EC20EC81790094A87D /* SuggestionCollectionCell.swift */,
+				9B6202EE20EC81790094A87D /* SuggestionCollectionViewCell.swift */,
+				9B6202F120EC817A0094A87D /* SuggestionRow.swift */,
+				9B6202ED20EC81790094A87D /* SuggestionTableCell.swift */,
+				9B6202EB20EC81790094A87D /* SuggestionTableViewCell.swift */,
+			);
+			path = SuggestionRow;
+			sourceTree = "<group>";
+		};
 		9B80E79520E759F4008BA4BF /* CustomerProfileController */ = {
 			isa = PBXGroup;
 			children = (
 				9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */,
 				9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */,
 				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
+				9B6202E820EC60820094A87D /* CustomRow.swift */,
 			);
 			path = CustomerProfileController;
 			sourceTree = "<group>";
@@ -400,6 +431,7 @@
 		9B94F41020DB305800313543 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				9B6202EA20EC81670094A87D /* SuggestionRow */,
 				9BD9BDE320E3758600CCFEA6 /* Image Picker */,
 				9B35E99B20D78EF300733FAD /* UI Elements */,
 				9B94F41120DB309200313543 /* KCKeyboardImagePickerController.swift */,
@@ -816,6 +848,7 @@
 				9BD9BE1720E375A400CCFEA6 /* PhotoCaptureDelegate.swift in Sources */,
 				9B82254420B7DE0300B7C16D /* SwiftHEXColors.swift in Sources */,
 				F5BEE329207761730042DFC2 /* MyTextField.swift in Sources */,
+				9B6202F520EC817A0094A87D /* SuggestionCollectionViewCell.swift in Sources */,
 				9BD9BE1F20E375A400CCFEA6 /* ImagePickerController.swift in Sources */,
 				9B5CE65620D90846003EDBF9 /* UsersController.swift in Sources */,
 				9BD9BE1120E375A400CCFEA6 /* ShutterButton.swift in Sources */,
@@ -829,6 +862,7 @@
 				9BD9BE2720E375A400CCFEA6 /* VideoCaptureDelegate.swift in Sources */,
 				9B1E939720C8D45800AC4FED /* ChatController.swift in Sources */,
 				9BD9BE3120E375A400CCFEA6 /* CollectionViewBatchAnimation.swift in Sources */,
+				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
 				9BD9BE2820E375A400CCFEA6 /* CameraCollectionViewCell.swift in Sources */,
 				9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */,
@@ -866,10 +900,14 @@
 				9BD9BE4020E37FEF00CCFEA6 /* ChatController+Helpers.swift in Sources */,
 				9B576F4F20D39B7C00E70269 /* CircleLayer.swift in Sources */,
 				F55583A72077166E00413F6A /* AppDelegate.swift in Sources */,
+				9B6202F220EC817A0094A87D /* SuggestionTableViewCell.swift in Sources */,
 				9BD9BE0F20E375A400CCFEA6 /* LayoutConfiguration.swift in Sources */,
 				9BD9BE2B20E375A400CCFEA6 /* ImagePickerAssetModel.swift in Sources */,
+				9B6202E920EC60820094A87D /* CustomRow.swift in Sources */,
 				9B94F41C20DBB48400313543 /* API.swift in Sources */,
+				9B6202F820EC817A0094A87D /* SuggestionRow.swift in Sources */,
 				9B1E93A320C94D2800AC4FED /* Message.swift in Sources */,
+				9B6202F720EC817A0094A87D /* String+SuggestionValue.swift in Sources */,
 				9BD9BE1D20E375A400CCFEA6 /* UIImageEffects.m in Sources */,
 				9BD9BE2E20E375A400CCFEA6 /* StationaryButton.swift in Sources */,
 				9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */,
@@ -880,7 +918,9 @@
 				9BD9BE1620E375A400CCFEA6 /* LivePhotoCameraCell.swift in Sources */,
 				9B82254820B7EBAE00B7C16D /* DateFilterController.swift in Sources */,
 				9B02B95C209701A500C10A6E /* Extensions.swift in Sources */,
+				9B6202F420EC817A0094A87D /* SuggestionTableCell.swift in Sources */,
 				9BD9BE2120E375A400CCFEA6 /* CollectionViewUpdatesCoordinator.swift in Sources */,
+				9B6202F620EC817A0094A87D /* SuggestionCell.swift in Sources */,
 				F58F205E207B4F4B00D8564D /* ErxesInboxCell.swift in Sources */,
 				F55583BB207716BB00413F6A /* Constants.swift in Sources */,
 				9BD9BE3020E375A400CCFEA6 /* LayoutModel.swift in Sources */,

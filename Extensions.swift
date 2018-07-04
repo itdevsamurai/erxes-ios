@@ -47,6 +47,12 @@ extension Date {
     init(milliseconds:Int64) {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
     }
+    
+    func stringFromDate()->String{
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM dd, yyyy hh:mm"
+        return formatter.string(from: self)
+    }
 }
 
 extension UIView {

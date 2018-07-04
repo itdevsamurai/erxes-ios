@@ -9,6 +9,17 @@ fragment CustomerInfo on Customer {
     integration {
         kind
         __typename
+        brand{
+            name
+        }
+        channels{
+            name
+        }
+    }
+    conversations{
+        createdAt
+        status
+        updatedAt
     }
     firstName
     lastName
@@ -44,6 +55,7 @@ fragment CustomerInfo on Customer {
         name
         website
         __typename
+        industry
     }
     messengerData
     getTags {

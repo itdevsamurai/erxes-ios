@@ -28,6 +28,11 @@ class CustomerProfileController: FormViewController {
         return loader
     }()
     
+    var companies = [CompanyDetail]() {
+        didSet{
+            
+        }
+    }
     
 
 //    var tableView:UITableView = {
@@ -43,8 +48,8 @@ class CustomerProfileController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Customer"
-        configureViews()
-        getCustomerData()
+        self.configureViews()
+        self.getCustomerData()
         // Do any additional setup after loading the view.
     }
     
@@ -70,12 +75,14 @@ class CustomerProfileController: FormViewController {
                 if let result = result?.data?.customerDetail?.fragments.customerInfo {
                     self?.buildForm(customer: result)
                     self?.loader.stopAnimating()
+                    
                 }
             }
         }
     }
     
     func buildForm(customer:CustomerInfo){
+        
         form +++ Section("PROFILE")
             <<< NameRow() { row in
                 row.title = "First Name:"
@@ -158,6 +165,9 @@ class CustomerProfileController: FormViewController {
             <<< TextRow() {
                 $0.title = "Description:"
                 $0.placeholder = "-"
+                if customer.description != nil {
+                    $0.value = customer.description
+                }
             }
             <<< SwitchRow() {
                 $0.title = "Do not disturb:"
@@ -175,64 +185,153 @@ class CustomerProfileController: FormViewController {
             <<< TextRow() {
                 $0.title = "Opened:"
                 $0.placeholder = "-"
+                let conversation = customer.conversations![0]
+                let date = conversation?.createdAt?.dateFromUnixTime()
+                $0.value = date?.stringFromDate()
             }
             <<< TextRow() {
                 $0.title = "Channels:"
                 $0.placeholder = "-"
+                let channels = customer.integration?.channels
+                if channels?.count != 0 {
+                    if channels?.count == 1 {
+                        $0.value = channels![0]?.name
+                    }else{
+                        var str = ""
+                        for ch in channels! {
+                            str.append((ch?.name)! + " ")
+                        }
+                        $0.value = str
+                    }
+                }
+               
             }
             <<< TextRow() {
                 $0.title = "Brand:"
                 $0.placeholder = "-"
+                if customer.integration?.brand != nil {
+                    $0.value = customer.integration?.brand?.name
+                }
             }
             <<< TextRow() {
                 $0.title = "Integration:"
                 $0.placeholder = "-"
+                if customer.integration != nil {
+                    $0.value = customer.integration?.kind
+                }
             }
-            <<< TextRow() {
+            <<< IntRow() {
                 $0.title = "Conversations:"
                 $0.placeholder = "-"
+                if customer.conversations != nil {
+                    $0.value = customer.conversations?.count
+                }
             }
             +++ Section("CONTACT INFORMATION")
             <<< DateRow() {
                 $0.title = "Close Date"
-                $0.value = Date(timeIntervalSinceReferenceDate: 0)
+//                $0.value = Date(timeIntervalSinceReferenceDate: 0)
+                
             }
             <<< TextRow() {
                 $0.title = "Industry:"
                 $0.placeholder = "-"
+                if customer.companies?.count != 0 {
+                    $0.value = customer.companies![0]?.industry
+                }
+                
             }
-            <<< TextRow() {
+            <<< ActionSheetRow<String>() {
                 $0.title = "Persona:"
-                $0.placeholder = "-"
+                $0.selectorTitle = "Select a value"
+                $0.options = ["Trailblazer","Leader","Follower","Laggard","Astray"]
+                $0.value = "Trailblazer"
+               
             }
-            +++ Section("COMPANIES")
-            <<< TextRow() {
-                $0.placeholder = "-"
-            }
-            +++ Section("DEALS")
-            <<< TextRow() {
-                //                $0.title = "Opened:"
-                $0.placeholder = "-"
-            }
+            +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "COMPANIES",  { (section) in
+                section.addButtonProvider = { s in
+                    return ButtonRow(){ row in
+                        row.title = "Add a company"
+                        
+                    }
+                }
+                section.multivaluedRowToInsertAt = { index in
+                    return SuggestionTableRow<CompanyDetail>() { row in
+                        
+                    }
+                }
+
+            })
+
+
+//            +++ Section("DEALS")
+//            <<< TextRow() {
+//                $0.placeholder = "-"
+//            }
             +++ Section("MESSENGER USAGE")
             <<< TextRow() {
                 $0.title = "Status:"
-                $0.placeholder = "-"
+                if customer.conversations![0]?.status != nil {
+                    $0.value = customer.conversations![0]?.status
+                }
             }
             <<< TextRow() {
                 $0.title = "Last online:"
                 $0.placeholder = "-"
+                if customer.conversations![0]?.updatedAt != nil {
+                    $0.value = customer.conversations![0]?.updatedAt?.dateFromUnixTime().stringFromDate()
+                }
             }
-            <<< TextRow() {
-                $0.title = "Session count:"
-                $0.placeholder = "-"
-            }
+//            <<< TextRow() {
+//                $0.title = "Session count:"
+//                $0.placeholder = "-"
+//            }
             +++ Section("TAGS")
             <<< TextRow() {
-                
-                $0.placeholder = "-"
+                if customer.getTags != nil {
+                    let tags = customer.getTags
+                    print(tags)
+                    for tag in tags! {
+                        $0.title?.append((tag?.name)! + " ")
+                    }
+                    
+                }
         }
+        self.getCompanies()
+    }
+    
+    
+    func getCompanies(){
+        loader.startAnimating()
+        
+        let query = CompaniesQuery()
+        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+            
+            if result?.data != nil {
+                if let allCompanies = result?.data?.companies {
+                   
+                    self?.companies = allCompanies.map { ($0?.fragments.companyDetail)! }
+                   
+                    self?.loader.stopAnimating()
+                   
 
+                }
+            }
+        }
+        
     }
 
     func configureViews() {
@@ -291,6 +390,44 @@ class CustomerProfileController: FormViewController {
             cell.switchControl.tintColor = Constants.ERXES_COLOR
             cell.switchControl.onTintColor = Constants.ERXES_COLOR
         }
+        IntRow.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = Constants.LIGHT
+            cell.detailTextLabel?.font = Constants.LIGHT
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+            cell.detailTextLabel?.textColor = Constants.ERXES_COLOR
+        }
+        ActionSheetRow<String>.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = Constants.LIGHT
+            cell.detailTextLabel?.font = Constants.LIGHT
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+            cell.detailTextLabel?.textColor = Constants.ERXES_COLOR
+        }
+        ButtonRow.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = Constants.LIGHT
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+            cell.tintColor = Constants.ERXES_COLOR
+            cell.accessoryView?.tintColor = Constants.ERXES_COLOR
+            
+        }
+        PushRow<CompanyDetail>.defaultCellUpdate = { cell, row in
+            row.options = self.companies
+            cell.textLabel?.font = Constants.LIGHT
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+        }
+        SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
+            row.cell.textLabel?.font = Constants.LIGHT
+            row.cell.textLabel?.textColor = Constants.ERXES_COLOR
+            row.placeholder = "Type to search companies"
+            cell.textField.textColor = Constants.ERXES_COLOR
+            cell.textField.font = Constants.LIGHT
+            cell.detailTextLabel?.font = Constants.LIGHT
+            cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
+            row.filterFunction = { [unowned self] text in
+                self.companies.filter({($0.name?.lowercased().contains(text.lowercased()))!})
+            }
+            
+        }
+        
     
     }
 
@@ -313,5 +450,23 @@ class CustomerProfileController: FormViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+
+extension CompanyDetail: Equatable {
+    public static func == (lhs: CompanyDetail, rhs: CompanyDetail) -> Bool {
+        let isEqual = lhs.id == rhs.id
+        return isEqual
+    }
+}
+
+extension CompanyDetail: SuggestionValue {
+    public init?(string stringValue: String) {
+        return nil
+    }
+    
+    // Text that is displayed as a completion suggestion.
+    public var suggestionString: String {
+        return name!
+    }
 }
 
