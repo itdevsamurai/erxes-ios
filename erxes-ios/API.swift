@@ -2831,6 +2831,320 @@ public final class CustomerDetailQuery: GraphQLQuery {
   }
 }
 
+public final class CustomersEditMutation: GraphQLMutation {
+  public let operationDefinition =
+    "mutation customersEdit($_id: String!, $firstName: String, $lastName: String, $email: String, $phone: String, $ownerId: String, $position: String, $department: String, $leadStatus: String, $lifecycleState: String, $hasAuthority: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {\n  customersEdit(_id: $_id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, ownerId: $ownerId, position: $position, department: $department, leadStatus: $leadStatus, lifecycleState: $lifecycleState, hasAuthority: $hasAuthority, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {\n    __typename\n    firstName\n    lastName\n    email\n    phone\n    ownerId\n    position\n    department\n    leadStatus\n    lifecycleState\n    hasAuthority\n    description\n    doNotDisturb\n    links {\n      __typename\n      linkedIn\n      twitter\n      facebook\n      github\n      youtube\n      website\n    }\n  }\n}"
+
+  public var _id: String
+  public var firstName: String?
+  public var lastName: String?
+  public var email: String?
+  public var phone: String?
+  public var ownerId: String?
+  public var position: String?
+  public var department: String?
+  public var leadStatus: String?
+  public var lifecycleState: String?
+  public var hasAuthority: String?
+  public var description: String?
+  public var doNotDisturb: String?
+  public var links: JSON?
+  public var customFieldsData: JSON?
+
+  public init(_id: String, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, ownerId: String? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: JSON? = nil, customFieldsData: JSON? = nil) {
+    self._id = _id
+    self.firstName = firstName
+    self.lastName = lastName
+    self.email = email
+    self.phone = phone
+    self.ownerId = ownerId
+    self.position = position
+    self.department = department
+    self.leadStatus = leadStatus
+    self.lifecycleState = lifecycleState
+    self.hasAuthority = hasAuthority
+    self.description = description
+    self.doNotDisturb = doNotDisturb
+    self.links = links
+    self.customFieldsData = customFieldsData
+  }
+
+  public var variables: GraphQLMap? {
+    return ["_id": _id, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "ownerId": ownerId, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links, "customFieldsData": customFieldsData]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("customersEdit", arguments: ["_id": GraphQLVariable("_id"), "firstName": GraphQLVariable("firstName"), "lastName": GraphQLVariable("lastName"), "email": GraphQLVariable("email"), "phone": GraphQLVariable("phone"), "ownerId": GraphQLVariable("ownerId"), "position": GraphQLVariable("position"), "department": GraphQLVariable("department"), "leadStatus": GraphQLVariable("leadStatus"), "lifecycleState": GraphQLVariable("lifecycleState"), "hasAuthority": GraphQLVariable("hasAuthority"), "description": GraphQLVariable("description"), "doNotDisturb": GraphQLVariable("doNotDisturb"), "links": GraphQLVariable("links"), "customFieldsData": GraphQLVariable("customFieldsData")], type: .object(CustomersEdit.selections)),
+    ]
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(customersEdit: CustomersEdit? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "customersEdit": customersEdit.flatMap { (value: CustomersEdit) -> ResultMap in value.resultMap }])
+    }
+
+    public var customersEdit: CustomersEdit? {
+      get {
+        return (resultMap["customersEdit"] as? ResultMap).flatMap { CustomersEdit(unsafeResultMap: $0) }
+      }
+      set {
+        resultMap.updateValue(newValue?.resultMap, forKey: "customersEdit")
+      }
+    }
+
+    public struct CustomersEdit: GraphQLSelectionSet {
+      public static let possibleTypes = ["Customer"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("firstName", type: .scalar(String.self)),
+        GraphQLField("lastName", type: .scalar(String.self)),
+        GraphQLField("email", type: .scalar(String.self)),
+        GraphQLField("phone", type: .scalar(String.self)),
+        GraphQLField("ownerId", type: .scalar(String.self)),
+        GraphQLField("position", type: .scalar(String.self)),
+        GraphQLField("department", type: .scalar(String.self)),
+        GraphQLField("leadStatus", type: .scalar(String.self)),
+        GraphQLField("lifecycleState", type: .scalar(String.self)),
+        GraphQLField("hasAuthority", type: .scalar(String.self)),
+        GraphQLField("description", type: .scalar(String.self)),
+        GraphQLField("doNotDisturb", type: .scalar(String.self)),
+        GraphQLField("links", type: .object(Link.selections)),
+      ]
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, ownerId: String? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil) {
+        self.init(unsafeResultMap: ["__typename": "Customer", "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "ownerId": ownerId, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> ResultMap in value.resultMap }])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var firstName: String? {
+        get {
+          return resultMap["firstName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "firstName")
+        }
+      }
+
+      public var lastName: String? {
+        get {
+          return resultMap["lastName"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lastName")
+        }
+      }
+
+      public var email: String? {
+        get {
+          return resultMap["email"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "email")
+        }
+      }
+
+      public var phone: String? {
+        get {
+          return resultMap["phone"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "phone")
+        }
+      }
+
+      public var ownerId: String? {
+        get {
+          return resultMap["ownerId"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "ownerId")
+        }
+      }
+
+      public var position: String? {
+        get {
+          return resultMap["position"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "position")
+        }
+      }
+
+      public var department: String? {
+        get {
+          return resultMap["department"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "department")
+        }
+      }
+
+      public var leadStatus: String? {
+        get {
+          return resultMap["leadStatus"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "leadStatus")
+        }
+      }
+
+      public var lifecycleState: String? {
+        get {
+          return resultMap["lifecycleState"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "lifecycleState")
+        }
+      }
+
+      public var hasAuthority: String? {
+        get {
+          return resultMap["hasAuthority"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "hasAuthority")
+        }
+      }
+
+      public var description: String? {
+        get {
+          return resultMap["description"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "description")
+        }
+      }
+
+      public var doNotDisturb: String? {
+        get {
+          return resultMap["doNotDisturb"] as? String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "doNotDisturb")
+        }
+      }
+
+      public var links: Link? {
+        get {
+          return (resultMap["links"] as? ResultMap).flatMap { Link(unsafeResultMap: $0) }
+        }
+        set {
+          resultMap.updateValue(newValue?.resultMap, forKey: "links")
+        }
+      }
+
+      public struct Link: GraphQLSelectionSet {
+        public static let possibleTypes = ["CustomerLinks"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("linkedIn", type: .scalar(String.self)),
+          GraphQLField("twitter", type: .scalar(String.self)),
+          GraphQLField("facebook", type: .scalar(String.self)),
+          GraphQLField("github", type: .scalar(String.self)),
+          GraphQLField("youtube", type: .scalar(String.self)),
+          GraphQLField("website", type: .scalar(String.self)),
+        ]
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(linkedIn: String? = nil, twitter: String? = nil, facebook: String? = nil, github: String? = nil, youtube: String? = nil, website: String? = nil) {
+          self.init(unsafeResultMap: ["__typename": "CustomerLinks", "linkedIn": linkedIn, "twitter": twitter, "facebook": facebook, "github": github, "youtube": youtube, "website": website])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var linkedIn: String? {
+          get {
+            return resultMap["linkedIn"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "linkedIn")
+          }
+        }
+
+        public var twitter: String? {
+          get {
+            return resultMap["twitter"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "twitter")
+          }
+        }
+
+        public var facebook: String? {
+          get {
+            return resultMap["facebook"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "facebook")
+          }
+        }
+
+        public var github: String? {
+          get {
+            return resultMap["github"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "github")
+          }
+        }
+
+        public var youtube: String? {
+          get {
+            return resultMap["youtube"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "youtube")
+          }
+        }
+
+        public var website: String? {
+          get {
+            return resultMap["website"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "website")
+          }
+        }
+      }
+    }
+  }
+}
+
 public final class ConversationsQuery: GraphQLQuery {
   public let operationDefinition =
     "query Conversations {\n  conversations {\n    __typename\n    ...ConversationDetail\n  }\n}"

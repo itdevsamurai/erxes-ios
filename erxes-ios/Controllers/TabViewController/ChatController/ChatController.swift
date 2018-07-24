@@ -201,7 +201,7 @@ class ChatController: UIViewController {
     }
     
     func uploadFile(image:UIImage){
-        let url = "https://crm.nmma.co/upload-file"
+        let url = "http://192.168.86.244/upload-file"
         let imgData = UIImageJPEGRepresentation(image, 0.5)!
         let size = imgData.count
         let bcf = ByteCountFormatter()
@@ -273,10 +273,12 @@ class ChatController: UIViewController {
         self.view.backgroundColor = .white
 
         let rightItem: UIBarButtonItem = {
-            let rightImage = #imageLiteral(resourceName: "ic_profile")
+            var rightImage = #imageLiteral(resourceName: "ic_profile")
+            rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
+            button.tintColor = Constants.ERXES_COLOR
             button.addTarget(self, action: #selector(navigateProfile(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem

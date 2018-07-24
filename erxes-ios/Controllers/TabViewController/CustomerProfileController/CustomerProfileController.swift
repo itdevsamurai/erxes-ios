@@ -13,7 +13,7 @@ import Eureka
 class CustomerProfileController: FormViewController {
 
     var customerId: String?
-   
+
     let client: ApolloClient = {
         let configuration = URLSessionConfiguration.default
         let currentUser = ErxesUser.sharedUserInfo()
@@ -27,23 +27,20 @@ class CustomerProfileController: FormViewController {
         loader.lineWidth = 3
         return loader
     }()
-    
+
     var companies = [CompanyDetail]() {
-        didSet{
-            
+        didSet {
+
         }
     }
-    
 
-//    var tableView:UITableView = {
-//        let tableview = UITableView()
-//        tableview.backgroundColor = .clear
-//        tableview.register(CustomerProfileCell.self, forCellReuseIdentifier: "CustomerProfileCell")
-//        tableview.register(UITableViewCell.self, forCellReuseIdentifier: "AvatarCell")
-//        tableview.tableFooterView = UIView()
-//
-//        return tableview
-//    }()
+    var users = [UserData]() {
+        didSet {
+
+        }
+    }
+
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,8 +49,8 @@ class CustomerProfileController: FormViewController {
         self.getCustomerData()
         // Do any additional setup after loading the view.
     }
-    
-    func getCustomerData(){
+
+    func getCustomerData() {
         loader.startAnimating()
         let query = CustomerDetailQuery(_id: self.customerId!)
         client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
@@ -64,200 +61,212 @@ class CustomerProfileController: FormViewController {
                 self?.loader.stopAnimating()
                 return
             }
-            
+
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
                 self?.loader.stopAnimating()
             }
-            
+
             if result?.data != nil {
                 if let result = result?.data?.customerDetail?.fragments.customerInfo {
                     self?.buildForm(customer: result)
                     self?.loader.stopAnimating()
-                    
+
                 }
             }
         }
     }
-    
-    func buildForm(customer:CustomerInfo){
-        
+
+    func buildForm(customer: CustomerInfo) {
+
         form +++ Section("PROFILE")
-            <<< NameRow() { row in
-                row.title = "First Name:"
-                row.placeholder = "-"
-                if (customer.firstName != nil)  {
-                    row.value = customer.firstName
-                }
-                }.cellSetup({ (cell , row) in
-                    cell.textField.textColor = Constants.ERXES_COLOR
-                    cell.textField.font = Constants.LIGHT
+        <<< NameRow("firstRow") { row in
+            row.title = "First Name:"
+            row.placeholder = "-"
+            if (customer.firstName != nil) {
+                row.value = customer.firstName
+            }
+        }.cellSetup({ (cell, row) in
+            cell.textField.textColor = Constants.ERXES_COLOR
+            cell.textField.font = Constants.LIGHT
+        })
+        <<< NameRow() { row in
+            row.title = "Last Name:"
+            row.placeholder = "-"
+            if (customer.lastName != nil) {
+                row.value = customer.lastName
+            }
+        }
+        <<< EmailRow() { row in
+            row.title = "Email:"
+            row.placeholder = "-"
+            if (customer.email != nil) {
+                row.value = customer.email
+            }
+        }
+        <<< PhoneRow() {
+            $0.title = "Phone:"
+            $0.placeholder = "-"
+            if (customer.phone != nil) {
+                $0.value = customer.phone
+            }
+        }
+        <<< PushRow<UserData>() {
+            $0.title = "Owner:"
+//                $0.placeholder = "-"
+//                $0.noValueDisplayText = "-"
+            if customer.owner != nil {
+
+//                    $0.value = customer.owner?.details?.fullName
+//                    $0.value = customer.owner
+            }
+            }.onPresent { from, to in
+                to.title = "Users"
+                to.view.backgroundColor = Constants.INBOX_BG_COLOR
+                to.tableView.backgroundColor = .clear
+                to.tableView.snp.makeConstraints({ (make) in
+                    make.width.right.left.bottom.equalToSuperview()
+                    make.top.equalTo(to.topLayoutGuide.snp.bottom)
                 })
-            <<< NameRow() { row in
-                row.title = "Last Name:"
-                row.placeholder = "-"
-                if (customer.lastName != nil)  {
-                    row.value = customer.lastName
-                }
+                to.view.layoutSubviews()
             }
-            <<< EmailRow() { row in
-                row.title = "Email:"
-                row.placeholder = "-"
-                if (customer.email != nil) {
-                    row.value = customer.email
-                }
+        <<< TextRow() {
+            $0.title = "Position:"
+            $0.placeholder = "-"
+            if customer.position != nil {
+                $0.value = customer.position
             }
-            <<< PhoneRow() {
-                $0.title = "Phone:"
-                $0.placeholder = "-"
-                if (customer.phone != nil) {
-                    $0.value = customer.phone
-                }
+        }
+        <<< TextRow() {
+            $0.title = "Department:"
+            $0.placeholder = "-"
+            if customer.department != nil {
+                $0.value = customer.department
             }
-            <<< TextRow() {
-                $0.title = "Owner:"
-                $0.placeholder = "-"
-                if customer.owner != nil {
-                    $0.value = customer.owner?.details?.fullName
-                }
+        }
+        <<< TextRow() {
+            $0.title = "Lead status:"
+            $0.placeholder = "-"
+            if customer.leadStatus != nil {
+                $0.value = customer.leadStatus
             }
-            <<< TextRow() {
-                $0.title = "Position:"
-                $0.placeholder = "-"
-                if customer.position != nil {
-                    $0.value = customer.position
-                }
+        }
+        <<< TextRow() {
+            $0.title = "Lifecycle State:"
+            $0.placeholder = "-"
+            if customer.lifecycleState != nil {
+                $0.value = customer.lifecycleState
             }
-            <<< TextRow() {
-                $0.title = "Department:"
-                $0.placeholder = "-"
-                if customer.department != nil {
-                    $0.value = customer.department
-                }
+        }
+        <<< SwitchRow() {
+            $0.title = "Has Authority:"
+
+            if customer.hasAuthority == nil {
+                $0.value = false
+            } else if customer.hasAuthority == "true" {
+                $0.value = true
+            } else {
+                $0.value = false
             }
-            <<< TextRow() {
-                $0.title = "Lead status:"
-                $0.placeholder = "-"
-                if customer.leadStatus != nil {
-                    $0.value = customer.leadStatus
-                }
+
+        }
+        <<< TextRow() {
+            $0.title = "Description:"
+            $0.placeholder = "-"
+            if customer.description != nil {
+                $0.value = customer.description
             }
-            <<< TextRow() {
-                $0.title = "Lifecycle State:"
-                $0.placeholder = "-"
-                if customer.lifecycleState != nil {
-                    $0.value = customer.lifecycleState
-                }
-            }
-            <<< SwitchRow() {
-                $0.title = "Has Authority:"
-                
-                if customer.hasAuthority == nil {
-                    $0.value = false
-                }else if customer.hasAuthority == "true" {
+        }
+        <<< SwitchRow() {
+            $0.title = "Do not disturb:"
+            if customer.doNotDisturb != nil {
+                if customer.doNotDisturb == "true" {
                     $0.value = true
-                }else{
+                } else {
                     $0.value = false
                 }
-                
+            } else {
+                $0.value = false
             }
-            <<< TextRow() {
-                $0.title = "Description:"
-                $0.placeholder = "-"
-                if customer.description != nil {
-                    $0.value = customer.description
-                }
-            }
-            <<< SwitchRow() {
-                $0.title = "Do not disturb:"
-                if customer.doNotDisturb != nil {
-                    if customer.doNotDisturb == "true"{
-                        $0.value = true
-                    }else{
-                        $0.value = false
-                    }
-                }else{
-                    $0.value = false
-                }
-            }
+        }
             +++ Section("CONVERSATION DETAILS")
-            <<< TextRow() {
-                $0.title = "Opened:"
-                $0.placeholder = "-"
-                let conversation = customer.conversations![0]
-                let date = conversation?.createdAt?.dateFromUnixTime()
-                $0.value = date?.stringFromDate()
-            }
-            <<< TextRow() {
-                $0.title = "Channels:"
-                $0.placeholder = "-"
-                let channels = customer.integration?.channels
-                if channels?.count != 0 {
-                    if channels?.count == 1 {
-                        $0.value = channels![0]?.name
-                    }else{
-                        var str = ""
-                        for ch in channels! {
-                            str.append((ch?.name)! + " ")
-                        }
-                        $0.value = str
+        <<< TextRow() {
+            $0.title = "Opened:"
+            $0.placeholder = "-"
+            let conversation = customer.conversations![0]
+            let date = conversation?.createdAt?.dateFromUnixTime()
+            $0.value = date?.stringFromDate()
+        }
+        <<< TextRow() {
+            $0.title = "Channels:"
+            $0.placeholder = "-"
+            let channels = customer.integration?.channels
+            if channels?.count != 0 {
+                if channels?.count == 1 {
+                    $0.value = channels![0]?.name
+                } else {
+                    var str = ""
+                    for ch in channels! {
+                        str.append((ch?.name)! + " ")
                     }
-                }
-               
-            }
-            <<< TextRow() {
-                $0.title = "Brand:"
-                $0.placeholder = "-"
-                if customer.integration?.brand != nil {
-                    $0.value = customer.integration?.brand?.name
+                    $0.value = str
                 }
             }
-            <<< TextRow() {
-                $0.title = "Integration:"
-                $0.placeholder = "-"
-                if customer.integration != nil {
-                    $0.value = customer.integration?.kind
-                }
+
+        }
+        <<< TextRow() {
+            $0.title = "Brand:"
+            $0.placeholder = "-"
+            if customer.integration?.brand != nil {
+                $0.value = customer.integration?.brand?.name
             }
-            <<< IntRow() {
-                $0.title = "Conversations:"
-                $0.placeholder = "-"
-                if customer.conversations != nil {
-                    $0.value = customer.conversations?.count
-                }
+        }
+        <<< TextRow() {
+            $0.title = "Integration:"
+            $0.placeholder = "-"
+            if customer.integration != nil {
+                $0.value = customer.integration?.kind
             }
+        }
+        <<< IntRow() {
+            $0.title = "Conversations:"
+            $0.placeholder = "-"
+            if customer.conversations != nil {
+                $0.value = customer.conversations?.count
+            }
+        }
             +++ Section("CONTACT INFORMATION")
-            <<< DateRow() {
-                $0.title = "Close Date"
+        <<< DateRow() {
+            $0.title = "Close Date"
 //                $0.value = Date(timeIntervalSinceReferenceDate: 0)
-                
+
+        }
+        <<< TextRow() {
+            $0.title = "Industry:"
+            $0.placeholder = "-"
+            if customer.companies?.count != 0 {
+                $0.value = customer.companies![0]?.industry
             }
-            <<< TextRow() {
-                $0.title = "Industry:"
-                $0.placeholder = "-"
-                if customer.companies?.count != 0 {
-                    $0.value = customer.companies![0]?.industry
-                }
-                
-            }
-            <<< ActionSheetRow<String>() {
-                $0.title = "Persona:"
-                $0.selectorTitle = "Select a value"
-                $0.options = ["Trailblazer","Leader","Follower","Laggard","Astray"]
-                $0.value = "Trailblazer"
-               
-            }
-            +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "COMPANIES",  { (section) in
+
+        }
+        <<< ActionSheetRow<String>() {
+            $0.title = "Persona:"
+            $0.selectorTitle = "Select a value"
+            $0.options = ["Trailblazer", "Leader", "Follower", "Laggard", "Astray"]
+            $0.value = "Trailblazer"
+
+        }
+            +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "COMPANIES", { (section) in
                 section.addButtonProvider = { s in
-                    return ButtonRow(){ row in
+                    return ButtonRow() { row in
                         row.title = "Add a company"
-                        
+
                     }
                 }
                 section.multivaluedRowToInsertAt = { index in
                     return SuggestionTableRow<CompanyDetail>() { row in
-                        
+
                     }
                 }
 
@@ -268,42 +277,44 @@ class CustomerProfileController: FormViewController {
 //            <<< TextRow() {
 //                $0.placeholder = "-"
 //            }
-            +++ Section("MESSENGER USAGE")
-            <<< TextRow() {
-                $0.title = "Status:"
-                if customer.conversations![0]?.status != nil {
-                    $0.value = customer.conversations![0]?.status
-                }
+        +++ Section("MESSENGER USAGE")
+        <<< TextRow() {
+            $0.title = "Status:"
+            if customer.conversations![0]?.status != nil {
+                $0.value = customer.conversations![0]?.status
             }
-            <<< TextRow() {
-                $0.title = "Last online:"
-                $0.placeholder = "-"
-                if customer.conversations![0]?.updatedAt != nil {
-                    $0.value = customer.conversations![0]?.updatedAt?.dateFromUnixTime().stringFromDate()
-                }
+        }
+        <<< TextRow() {
+            $0.title = "Last online:"
+            $0.placeholder = "-"
+            if customer.conversations![0]?.updatedAt != nil {
+                $0.value = customer.conversations![0]?.updatedAt?.dateFromUnixTime().stringFromDate()
             }
-//            <<< TextRow() {
-//                $0.title = "Session count:"
-//                $0.placeholder = "-"
-//            }
+        }
+
             +++ Section("TAGS")
-            <<< TextRow() {
-                if customer.getTags != nil {
-                    let tags = customer.getTags
-                    print(tags)
-                    for tag in tags! {
-                        $0.title?.append((tag?.name)! + " ")
-                    }
-                    
+        <<< TextRow() {
+            if customer.getTags != nil {
+                let tags = customer.getTags
+
+                for tag in tags! {
+                    $0.title?.append((tag?.name)! + " ")
                 }
+
+            }
         }
         self.getCompanies()
+        self.getUsers()
+        for row in form.allRows {
+            row.baseCell.alpha = 0.7
+            row.baseCell.isUserInteractionEnabled = false
+        }
     }
-    
-    
-    func getCompanies(){
+
+
+    func getCompanies() {
         loader.startAnimating()
-        
+
         let query = CompaniesQuery()
         client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
@@ -313,44 +324,97 @@ class CustomerProfileController: FormViewController {
                 self?.loader.stopAnimating()
                 return
             }
-            
+
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
                 self?.loader.stopAnimating()
             }
-            
+
             if result?.data != nil {
                 if let allCompanies = result?.data?.companies {
-                   
+
                     self?.companies = allCompanies.map { ($0?.fragments.companyDetail)! }
-                   
+
                     self?.loader.stopAnimating()
-                   
+
 
                 }
             }
         }
-        
+
+    }
+
+    func getUsers() {
+        loader.startAnimating()
+        let query = GetUsersQuery()
+        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+
+            if result?.data != nil {
+                if let result = result?.data?.users {
+                    self?.users = result.map { ($0?.fragments.userData)! }
+                    self?.loader.stopAnimating()
+                }
+            }
+        }
+
+    }
+
+    @objc func editAction(sender: UIButton) {
+        if sender.isSelected {
+            sender.isSelected = false
+            for row in form.allRows {
+                row.baseCell.alpha = 0.7
+                row.baseCell.isUserInteractionEnabled = false
+            }
+        } else {
+            sender.isSelected = true
+            for row in form.allRows {
+                row.baseCell.alpha = 1.0
+                row.baseCell.isUserInteractionEnabled = true
+                
+            }
+            let firstRow = form.rowBy(tag: "firstRow")
+//            firstRow?.baseCell.setEditing(true , animated: true)
+            firstRow?.baseCell.cellBecomeFirstResponder()
+        }
+
+
     }
 
     func configureViews() {
         self.view.backgroundColor = .white
         let rightItem: UIBarButtonItem = {
             var rightImage = #imageLiteral(resourceName: "ic_edit")
+            var saveImage = #imageLiteral(resourceName: "ic_saveCustomer")
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
+            saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
+            button.setBackgroundImage(saveImage, for: .selected)
             button.tintColor = Constants.ERXES_COLOR
-//            button.addTarget(self, action: #selector(navigateProfile(sender:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
         }()
         rightItem.tintColor = Constants.ERXES_COLOR
         self.navigationItem.rightBarButtonItem = rightItem
         self.view.addSubview(loader)
- 
+
         NameRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Constants.LIGHT
             cell.textField.font = Constants.LIGHT
@@ -369,21 +433,21 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.textColor = Constants.ERXES_COLOR
             cell.textField.textColor = Constants.TEXT_COLOR
         }
-        
+
         EmailRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Constants.LIGHT
             cell.textField.font = Constants.LIGHT
             cell.textLabel?.textColor = Constants.ERXES_COLOR
             cell.textField.textColor = Constants.TEXT_COLOR
         }
-        
+
         DateRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Constants.LIGHT
             cell.detailTextLabel?.font = Constants.LIGHT
             cell.textLabel?.textColor = Constants.ERXES_COLOR
             cell.detailTextLabel?.textColor = Constants.ERXES_COLOR
         }
-        
+
         SwitchRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Constants.LIGHT
             cell.textLabel?.textColor = Constants.ERXES_COLOR
@@ -407,13 +471,28 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.textColor = Constants.ERXES_COLOR
             cell.tintColor = Constants.ERXES_COLOR
             cell.accessoryView?.tintColor = Constants.ERXES_COLOR
-            
+
         }
         PushRow<CompanyDetail>.defaultCellUpdate = { cell, row in
             row.options = self.companies
             cell.textLabel?.font = Constants.LIGHT
             cell.textLabel?.textColor = Constants.ERXES_COLOR
+
         }
+
+        PushRow<UserData>.defaultCellUpdate = { cell, row in
+            row.options = self.users
+            cell.textLabel?.font = Constants.LIGHT
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+            row.displayValueFor = {
+                if let t = $0 {
+                    print("owner = ", t)
+                    return t.details?.fullName
+                }
+                return nil
+            }
+        }
+
         SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
             row.cell.textLabel?.font = Constants.LIGHT
             row.cell.textLabel?.textColor = Constants.ERXES_COLOR
@@ -423,12 +502,12 @@ class CustomerProfileController: FormViewController {
             cell.detailTextLabel?.font = Constants.LIGHT
             cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
             row.filterFunction = { [unowned self] text in
-                self.companies.filter({($0.name?.lowercased().contains(text.lowercased()))!})
+                self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
             }
-            
+
         }
-        
-    
+
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -459,11 +538,20 @@ extension CompanyDetail: Equatable {
     }
 }
 
+extension UserData: Equatable {
+    public static func == (lhs: UserData, rhs: UserData) -> Bool {
+        let isEqual = lhs.id == rhs.id
+        return isEqual
+    }
+}
+
+
+
 extension CompanyDetail: SuggestionValue {
     public init?(string stringValue: String) {
         return nil
     }
-    
+
     // Text that is displayed as a completion suggestion.
     public var suggestionString: String {
         return name!

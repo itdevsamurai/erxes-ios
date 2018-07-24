@@ -180,8 +180,10 @@ class LoginController: UIViewController {
         self.view.backgroundColor = Constants.ERXES_COLOR!
         self.navigationController?.isNavigationBarHidden = true
         configureViews()
-
+   
     }
+    
+ 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
