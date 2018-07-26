@@ -17,8 +17,8 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
                 return TabController()
             case .chat(let chatId, let title, let customerId):
                 return ChatController(chatId: chatId,title:title,customerId:customerId)
-            case .customerProfile(let id):
-                return CustomerProfileController(_id: id)
+            case .customerProfile(let id, let count):
+                return CustomerProfileController(_id: id, count: count)
             }
         }
         return UIViewController()
@@ -35,5 +35,5 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
 enum MyNavigation: Navigation {
     case tab
     case chat(withId:String,title:String,customerId:String)
-    case customerProfile(_id:String)
+    case customerProfile(_id:String, count:Int)
 }

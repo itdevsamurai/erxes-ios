@@ -37,7 +37,7 @@ class ChatController: UIViewController {
     }()
     var player: AVAudioPlayer?
     var isPickerActive = false
-   
+    var messagesCount = 0
     var selectedImageIndex = Int()
     var pickerIsShown:Bool = false
     var currentInputView: UIView?
@@ -235,7 +235,7 @@ class ChatController: UIViewController {
     }
     
     @objc func navigateProfile(sender:UIButton){
-        self.navigate(.customerProfile(_id: self.customerId!))
+        self.navigate(.customerProfile(_id: self.customerId!, count: self.messagesCount))
     }
     
 
@@ -332,7 +332,7 @@ class ChatController: UIViewController {
                 let messagesArray = (allMessages.messages?.map {($0?.fragments.messageDetail)!})!
                 var me = ""
                 var str = ""
- 
+                self?.messagesCount = messagesArray.count
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
 
@@ -462,6 +462,7 @@ class ChatController: UIViewController {
             
             self.chatView.stringByEvaluatingJavaScript(from: str)
         }
+        self.messagesCount = self.messagesCount + 1
     }
 
     override func didReceiveMemoryWarning() {

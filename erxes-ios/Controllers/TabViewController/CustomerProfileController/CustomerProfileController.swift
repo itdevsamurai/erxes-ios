@@ -13,7 +13,7 @@ import Eureka
 class CustomerProfileController: FormViewController {
 
     var customerId: String?
-
+    var messagesCount = 0
     let client: ApolloClient = {
         let configuration = URLSessionConfiguration.default
         let currentUser = ErxesUser.sharedUserInfo()
@@ -81,7 +81,7 @@ class CustomerProfileController: FormViewController {
     func buildForm(customer: CustomerInfo) {
 
         form +++ Section("PROFILE")
-        <<< NameRow("firstRow") { row in
+        <<< NameRow("firstName") { row in
             row.title = "First Name:"
             row.placeholder = "-"
             if (customer.firstName != nil) {
@@ -91,35 +91,32 @@ class CustomerProfileController: FormViewController {
             cell.textField.textColor = Constants.ERXES_COLOR
             cell.textField.font = Constants.LIGHT
         })
-        <<< NameRow() { row in
+        <<< NameRow("lastName") { row in
             row.title = "Last Name:"
             row.placeholder = "-"
             if (customer.lastName != nil) {
                 row.value = customer.lastName
             }
         }
-        <<< EmailRow() { row in
+        <<< EmailRow("email") { row in
             row.title = "Email:"
             row.placeholder = "-"
             if (customer.email != nil) {
                 row.value = customer.email
             }
         }
-        <<< PhoneRow() {
+        <<< PhoneRow("phone") {
             $0.title = "Phone:"
             $0.placeholder = "-"
             if (customer.phone != nil) {
                 $0.value = customer.phone
             }
         }
-        <<< PushRow<UserData>() {
+        <<< PushRow<UserData>("owner") {
             $0.title = "Owner:"
-//                $0.placeholder = "-"
-//                $0.noValueDisplayText = "-"
+
             if customer.owner != nil {
 
-//                    $0.value = customer.owner?.details?.fullName
-//                    $0.value = customer.owner
             }
             }.onPresent { from, to in
                 to.title = "Users"
@@ -131,35 +128,35 @@ class CustomerProfileController: FormViewController {
                 })
                 to.view.layoutSubviews()
             }
-        <<< TextRow() {
+        <<< TextRow("position") {
             $0.title = "Position:"
             $0.placeholder = "-"
             if customer.position != nil {
                 $0.value = customer.position
             }
         }
-        <<< TextRow() {
+        <<< TextRow("department") {
             $0.title = "Department:"
             $0.placeholder = "-"
             if customer.department != nil {
                 $0.value = customer.department
             }
         }
-        <<< TextRow() {
+        <<< TextRow("leadStatus") {
             $0.title = "Lead status:"
             $0.placeholder = "-"
             if customer.leadStatus != nil {
                 $0.value = customer.leadStatus
             }
         }
-        <<< TextRow() {
+        <<< TextRow("lifecycle") {
             $0.title = "Lifecycle State:"
             $0.placeholder = "-"
             if customer.lifecycleState != nil {
                 $0.value = customer.lifecycleState
             }
         }
-        <<< SwitchRow() {
+        <<< SwitchRow("hasAuthority") {
             $0.title = "Has Authority:"
 
             if customer.hasAuthority == nil {
@@ -171,14 +168,14 @@ class CustomerProfileController: FormViewController {
             }
 
         }
-        <<< TextRow() {
+        <<< TextRow("description") {
             $0.title = "Description:"
             $0.placeholder = "-"
             if customer.description != nil {
                 $0.value = customer.description
             }
         }
-        <<< SwitchRow() {
+        <<< SwitchRow("doNotDisturb") {
             $0.title = "Do not disturb:"
             if customer.doNotDisturb != nil {
                 if customer.doNotDisturb == "true" {
@@ -197,9 +194,11 @@ class CustomerProfileController: FormViewController {
             let conversation = customer.conversations![0]
             let date = conversation?.createdAt?.dateFromUnixTime()
             $0.value = date?.stringFromDate()
+            $0.disabled = true
         }
         <<< TextRow() {
             $0.title = "Channels:"
+            $0.disabled = true
             $0.placeholder = "-"
             let channels = customer.integration?.channels
             if channels?.count != 0 {
@@ -217,6 +216,7 @@ class CustomerProfileController: FormViewController {
         }
         <<< TextRow() {
             $0.title = "Brand:"
+            $0.disabled = true
             $0.placeholder = "-"
             if customer.integration?.brand != nil {
                 $0.value = customer.integration?.brand?.name
@@ -224,6 +224,7 @@ class CustomerProfileController: FormViewController {
         }
         <<< TextRow() {
             $0.title = "Integration:"
+            $0.disabled = true
             $0.placeholder = "-"
             if customer.integration != nil {
                 $0.value = customer.integration?.kind
@@ -231,10 +232,10 @@ class CustomerProfileController: FormViewController {
         }
         <<< IntRow() {
             $0.title = "Conversations:"
+            $0.disabled = true
             $0.placeholder = "-"
-            if customer.conversations != nil {
-                $0.value = customer.conversations?.count
-            }
+            $0.value = self.messagesCount
+            
         }
             +++ Section("CONTACT INFORMATION")
         <<< DateRow() {
@@ -379,7 +380,9 @@ class CustomerProfileController: FormViewController {
             for row in form.allRows {
                 row.baseCell.alpha = 0.7
                 row.baseCell.isUserInteractionEnabled = false
+                
             }
+            saveAction()
         } else {
             sender.isSelected = true
             for row in form.allRows {
@@ -387,12 +390,48 @@ class CustomerProfileController: FormViewController {
                 row.baseCell.isUserInteractionEnabled = true
                 
             }
-            let firstRow = form.rowBy(tag: "firstRow")
-//            firstRow?.baseCell.setEditing(true , animated: true)
+            let firstRow = form.rowBy(tag: "firstName")
             firstRow?.baseCell.cellBecomeFirstResponder()
         }
-
-
+    }
+    
+    
+    func saveAction(){
+        self.loader.startAnimating()
+        let mutation = CustomersEditMutation(_id: customerId!)
+        mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
+        mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
+        mutation.email = form.rowBy(tag: "email")?.baseValue as? String
+        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
+        mutation.ownerId = owner?.id
+        mutation.position = form.rowBy(tag: "position")?.baseValue as? String
+        mutation.department = form.rowBy(tag: "department")?.baseValue as? String
+        mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
+        mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
+        mutation.hasAuthority = (form.rowBy(tag: "hasAuthority")?.baseValue as? Bool)?.description
+        mutation.description = form.rowBy(tag: "description")?.baseValue as? String
+        mutation.doNotDisturb = (form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool)?.description
+        mutation.links = JSON()
+        client.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+            if result?.data != nil {
+                print(result)
+                self?.loader.stopAnimating()
+                
+            }
+        }
     }
 
     func configureViews() {
@@ -413,7 +452,7 @@ class CustomerProfileController: FormViewController {
         }()
         rightItem.tintColor = Constants.ERXES_COLOR
         self.navigationItem.rightBarButtonItem = rightItem
-        self.view.addSubview(loader)
+       
 
         NameRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Constants.LIGHT
@@ -506,7 +545,7 @@ class CustomerProfileController: FormViewController {
             }
 
         }
-
+        self.view.addSubview(loader)
 
     }
 
@@ -516,12 +555,17 @@ class CustomerProfileController: FormViewController {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
+        
+        loader.snp.makeConstraints { (make) in
+            make.width.height.equalTo(50)
+            make.center.equalTo(self.view.snp.center)
+        }
     }
 
-    convenience init(_id: String) {
+    convenience init(_id: String, count: Int) {
         self.init()
         self.customerId = _id
-
+        self.messagesCount = count
     }
 
     override func didReceiveMemoryWarning() {
