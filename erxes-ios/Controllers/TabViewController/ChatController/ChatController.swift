@@ -114,11 +114,11 @@ class ChatController: UIViewController {
         return textfield
     }()
     
-    var chatView: UIWebView = {
-        let webview = UIWebView()
-        webview.backgroundColor = .clear
-        webview.scrollView.bounces = false
-        return webview
+    var chatView: WKWebView = {
+        let chatView = WKWebView()
+        chatView.backgroundColor = .clear
+        chatView.scrollView.bounces = false
+        return chatView
     }()
     
    // MARK: actions
@@ -248,22 +248,16 @@ class ChatController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.automaticallyAdjustsScrollViewInsets = false
         configureViews()
-
         initChat()
-        
-
         let path = Bundle.main.bundlePath
         let url = URL.init(fileURLWithPath: path)
 
         self.isPickerActive = false
-        self.chatView.scrollView.bounces = false
-        self.chatView.loadHTMLString(self.css, baseURL: url)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         configLive()
-        
+        loadMessages()
         if conversationId != nil {
             subscribe()
         }
@@ -284,7 +278,7 @@ class ChatController: UIViewController {
             return barButtomItem
         }()
         self.navigationItem.rightBarButtonItem = rightItem
-        chatView.delegate = self
+        chatView.navigationDelegate = self
         chatInputView.delegate = self
         self.view.addSubview(container)
         container.addSubview(chatView)
@@ -292,15 +286,13 @@ class ChatController: UIViewController {
         self.view.addSubview(inputContainer)
         inputContainer.addSubview(chatInputView)
         self.view.addSubview(loader)
-        
-
     }
     
    
     
     func initChat(){
    
-        css = "<style>.row,.row .text{overflow:hidden}body{background:url(bg-1.png);background:#f4f4f4;padding:0;margin:0 20px}.row{position:relative;margin-bottom:10px;margin-top:15px;font-family:Roboto,Arial,sans-serif;font-weight:500}.row .text a{float:left;padding:12px 20px;background:#f6f4fb;border-radius:20px 20px 20px 2px;color:#444;margin-bottom:5px;margin-left:38px;margin-right:40px;font-size:14px;box-shadow:0 1px 1px 0 rgba(0,0,0,.2)}.me .text a{float:right;background:\(bg);color:#fff;border-radius:20px 2px 20px 20px;margin-left:50px;margin-right:38px;}.row .text img{max-width:100%;padding-top:3px}.row .date{color:#cbcbcb;font-size:11px;margin-left:36px}.me .date{text-align:right;margin-right:38px;}.row .img{float:left;position:absolute;bottom:17px;left:0;margin-right:8px}.row .img img{width:30px;height:30px;border-radius:15px;box-sizing:border-box;border:1px solid white;}.me .img{right:0;left:auto;right:0}.me .img img{margin-right:0;margin-left:8px}p{display:inline}</style>"
+        css = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style>.row,.row .text{overflow:hidden}body{background:url(bg-1.png);;padding:0;margin:0 20px}.row{position:relative;margin-bottom:10px;margin-top:15px;font-family:Roboto,Arial,sans-serif;font-weight:500}.row .text a{float:left;padding:12px 20px;background:#f6f4fb;border-radius:20px 20px 20px 2px;color:#444;margin-bottom:5px;margin-left:38px;margin-right:40px;font-size:14px;box-shadow:0 1px 1px 0 rgba(0,0,0,.2)}.me .text a{float:right;background:\(bg);color:#fff;border-radius:20px 2px 20px 20px;margin-left:50px;margin-right:38px;}.row .text img{max-width:100%;padding-top:3px}.row .date{color:#cbcbcb;font-size:11px;margin-left:36px}.me .date{text-align:right;margin-right:38px;}.row .img{float:left;position:absolute;bottom:17px;left:0;margin-right:8px}.row .img img{width:30px;height:30px;border-radius:15px;box-sizing:border-box;border:1px solid white;}.me .img{right:0;left:auto;right:0}.me .img img{margin-right:0;margin-left:8px}p{display:inline} table{border-collapse: collapse; color: #444; font-family:Roboto,Arial,sans-serif; font-size:12px;} table, th, td {border: 1px solid #eee; padding: 10px; } tr:nth-child(even) {background-color: #F7F8FC;font-weight:bold;}tr:first-child {text-align:center; font-size:11px; text-transform:uppercase; font-weight:bold;}</style>"
         
     }
     
@@ -311,8 +303,6 @@ class ChatController: UIViewController {
         if conversationId == nil{
             return
         }
-
-        print("loaded")
 
         let messagesQuery = ConversationDetailQuery(_id: self.conversationId!)
         client.fetch(query: messagesQuery, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
@@ -341,7 +331,23 @@ class ChatController: UIViewController {
                     let date = item.createdAt?.dateFromUnixTime()
                     let now = date?.hourMinutes!
                     
-         
+                    if let formData = item.formWidgetData {
+                    
+                        if let rows = formData["data"] as? [[String:Any]] {
+                            
+                            var form = "<table>"
+                            form += "<tr><td>\(item.content!)</td></tr>"
+                            for row in rows {
+                                form += "<tr><td>\(row["text"]!)</td></tr>"
+                                form += "<tr><td>\(row["value"]!)</td></tr>"
+                            }
+                            
+                            form += "</table>"
+                            str += (self?.css)!
+                            str += form
+                            continue
+                        }
+                    }
 
                     var avatar = "avatar.png"
 
@@ -376,8 +382,9 @@ class ChatController: UIViewController {
              
 
                 self?.inited = true
-                str = "document.body.innerHTML += '\(str)';window.location.href = \"inapp://scroll\""
-                self?.chatView.stringByEvaluatingJavaScript(from: str)
+                str += "<script>window.location.href = \"inapp://scroll\"</script>"
+                self?.chatView.evaluateJavaScript(str, completionHandler: nil)
+                self?.chatView.loadHTMLString(str, baseURL: nil)
                 let scrollPoint = CGPoint(x: 0, y: (self?.chatView.scrollView.contentSize.height)! - (self?.chatView.frame.size.height)!)
                 print(str)
                 self?.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
@@ -460,7 +467,7 @@ class ChatController: UIViewController {
             str = "<div class=\"row \(me)\"><div class=\"img\"><img src=\"\(avatar)\"/></div><div class=\"text\"><a>\(str)<img src=\"\(image)\"/></a></div><div class=\"date\">\(now)</div></div>"
             str = "document.body.innerHTML += '\(str)';window.location.href = \"inapp://scroll\""
             
-            self.chatView.stringByEvaluatingJavaScript(from: str)
+            self.chatView.evaluateJavaScript(str, completionHandler: nil)
         }
         self.messagesCount = self.messagesCount + 1
     }
@@ -498,7 +505,6 @@ class ChatController: UIViewController {
         self.chatView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(self.inputContainer.snp.top)
-
         }
         
         self.loader.snp.makeConstraints { (make) in
@@ -569,35 +575,19 @@ extension ChatController: UITextFieldDelegate{
     }
 }
 
-extension ChatController: UIWebViewDelegate{
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if request.url?.scheme == "inapp"{
-            if request.url?.host == "scroll"{
-
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)
-                    self.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
-                })
-                
-                loader.stopAnimating()
-                return false
-            }
-        }
-        return true
-    }
-    
-    
-    
-    public func webViewDidFinishLoad(_ webView: UIWebView) {
-        
+extension ChatController:WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if(!inited){
-            loadMessages()
+//            loadMessages()
         }
-        
+        loader.stopAnimating()
     }
     
-    public func webViewDidStartLoad(_ webView: UIWebView) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        loader.stopAnimating()
+    }
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         loader.startAnimating()
     }
 }

@@ -211,6 +211,16 @@ public typealias JSON = [String: JSONDecodable & JSONEncodable]
 
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {
+        
+        if var array = value as? NSArray {
+            self.init()
+            if var dict = self as? [String: JSONDecodable & JSONEncodable] {
+                dict["data"] = array as! [[String:Any]]
+                self = dict as! Dictionary<Key, Value>
+                return
+            }
+        }
+        
         guard let dictionary = forceBridgeFromObjectiveC(value) as? Dictionary else {
             
             

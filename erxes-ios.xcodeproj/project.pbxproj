@@ -104,6 +104,7 @@
 		9BFFA5F520B2D8B40029A028 /* TagFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */; };
 		9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F620B2D9780029A028 /* TagCell.swift */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
+		B83E217F21130CA8005AD39E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83E217E21130CA8005AD39E /* WebKit.framework */; };
 		F55583A72077166E00413F6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583A62077166E00413F6A /* AppDelegate.swift */; };
 		F55583AE2077166E00413F6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F55583AD2077166E00413F6A /* Assets.xcassets */; };
 		F55583B12077166E00413F6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F55583AF2077166E00413F6A /* LaunchScreen.storyboard */; };
@@ -242,6 +243,7 @@
 		9BF5B465209989F6006CF2D3 /* TagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFilterController.swift; sourceTree = "<group>"; };
 		9BFFA5F620B2D9780029A028 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		B83E217E21130CA8005AD39E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		F55583A32077166E00413F6A /* erxes-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "erxes-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F55583A62077166E00413F6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F55583AD2077166E00413F6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -250,7 +252,7 @@
 		F55583BA207716BB00413F6A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F55583BC207716F800413F6A /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		F55583BE2077173C00413F6A /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		F58F2037207B313200D8564D /* LoginController.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LoginController.graphql; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.graphql; };
+		F58F2037207B313200D8564D /* LoginController.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LoginController.graphql; sourceTree = "<group>"; };
 		F58F203A207B372800D8564D /* ErxesUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErxesUser.swift; sourceTree = "<group>"; };
 		F58F203C207B37F900D8564D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		F58F203E207B381400D8564D /* FailureAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailureAlert.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B83E217F21130CA8005AD39E /* WebKit.framework in Frameworks */,
 				F58F203D207B37F900D8564D /* LocalAuthentication.framework in Frameworks */,
 				A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */,
 			);
@@ -305,6 +308,7 @@
 		5B23F9527E4F6C2FBA7439DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B83E217E21130CA8005AD39E /* WebKit.framework */,
 				F58F203C207B37F900D8564D /* LocalAuthentication.framework */,
 				9634C14764D6BB1A1913F342 /* Pods_NMG_CRM.framework */,
 				FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */,
