@@ -967,6 +967,7 @@ public final class ConversationDetailQuery: GraphQLQuery {
           GraphQLField("_id", type: .nonNull(.scalar(String.self))),
           GraphQLField("content", type: .scalar(String.self)),
           GraphQLField("attachments", type: .list(.scalar(JSON.self))),
+          GraphQLField("formWidgetData", type: .scalar(JSON.self)),
           GraphQLField("conversationId", type: .scalar(String.self)),
           GraphQLField("customerId", type: .scalar(String.self)),
           GraphQLField("userId", type: .scalar(String.self)),
@@ -980,8 +981,8 @@ public final class ConversationDetailQuery: GraphQLQuery {
           self.resultMap = unsafeResultMap
         }
 
-        public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, createdAt: Int? = nil, user: User? = nil) {
-          self.init(unsafeResultMap: ["__typename": "ConversationMessage", "_id": id, "content": content, "attachments": attachments, "conversationId": conversationId, "customerId": customerId, "userId": userId, "createdAt": createdAt, "user": user.flatMap { (value: User) -> ResultMap in value.resultMap }])
+        public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, formWidgetData: JSON? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, createdAt: Int? = nil, user: User? = nil) {
+          self.init(unsafeResultMap: ["__typename": "ConversationMessage", "_id": id, "content": content, "attachments": attachments, "formWidgetData": formWidgetData, "conversationId": conversationId, "customerId": customerId, "userId": userId, "createdAt": createdAt, "user": user.flatMap { (value: User) -> ResultMap in value.resultMap }])
         }
 
         public var __typename: String {
@@ -1017,6 +1018,15 @@ public final class ConversationDetailQuery: GraphQLQuery {
           }
           set {
             resultMap.updateValue(newValue, forKey: "attachments")
+          }
+        }
+
+        public var formWidgetData: JSON? {
+          get {
+            return resultMap["formWidgetData"] as? JSON
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "formWidgetData")
           }
         }
 
@@ -5594,7 +5604,7 @@ public struct TagDetail: GraphQLFragment {
 
 public struct MessageDetail: GraphQLFragment {
   public static let fragmentDefinition =
-    "fragment MessageDetail on ConversationMessage {\n  __typename\n  _id\n  content\n  attachments\n  conversationId\n  customerId\n  userId\n  createdAt\n  user {\n    __typename\n    username\n    email\n    role\n    getNotificationByEmail\n    details {\n      __typename\n      avatar\n    }\n  }\n}"
+    "fragment MessageDetail on ConversationMessage {\n  __typename\n  _id\n  content\n  attachments\n  formWidgetData\n  conversationId\n  customerId\n  userId\n  createdAt\n  user {\n    __typename\n    username\n    email\n    role\n    getNotificationByEmail\n    details {\n      __typename\n      avatar\n    }\n  }\n}"
 
   public static let possibleTypes = ["ConversationMessage"]
 
@@ -5603,6 +5613,7 @@ public struct MessageDetail: GraphQLFragment {
     GraphQLField("_id", type: .nonNull(.scalar(String.self))),
     GraphQLField("content", type: .scalar(String.self)),
     GraphQLField("attachments", type: .list(.scalar(JSON.self))),
+    GraphQLField("formWidgetData", type: .scalar(JSON.self)),
     GraphQLField("conversationId", type: .scalar(String.self)),
     GraphQLField("customerId", type: .scalar(String.self)),
     GraphQLField("userId", type: .scalar(String.self)),
@@ -5616,8 +5627,8 @@ public struct MessageDetail: GraphQLFragment {
     self.resultMap = unsafeResultMap
   }
 
-  public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, createdAt: Int? = nil, user: User? = nil) {
-    self.init(unsafeResultMap: ["__typename": "ConversationMessage", "_id": id, "content": content, "attachments": attachments, "conversationId": conversationId, "customerId": customerId, "userId": userId, "createdAt": createdAt, "user": user.flatMap { (value: User) -> ResultMap in value.resultMap }])
+  public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, formWidgetData: JSON? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, createdAt: Int? = nil, user: User? = nil) {
+    self.init(unsafeResultMap: ["__typename": "ConversationMessage", "_id": id, "content": content, "attachments": attachments, "formWidgetData": formWidgetData, "conversationId": conversationId, "customerId": customerId, "userId": userId, "createdAt": createdAt, "user": user.flatMap { (value: User) -> ResultMap in value.resultMap }])
   }
 
   public var __typename: String {
@@ -5653,6 +5664,15 @@ public struct MessageDetail: GraphQLFragment {
     }
     set {
       resultMap.updateValue(newValue, forKey: "attachments")
+    }
+  }
+
+  public var formWidgetData: JSON? {
+    get {
+      return resultMap["formWidgetData"] as? JSON
+    }
+    set {
+      resultMap.updateValue(newValue, forKey: "formWidgetData")
     }
   }
 
