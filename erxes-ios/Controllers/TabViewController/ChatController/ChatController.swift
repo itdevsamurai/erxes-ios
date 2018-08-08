@@ -322,6 +322,7 @@ class ChatController: UIViewController {
                 let messagesArray = (allMessages.messages?.map {($0?.fragments.messageDetail)!})!
                 var me = ""
                 var str = ""
+                str += (self?.css)!
                 self?.messagesCount = messagesArray.count
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
@@ -343,7 +344,6 @@ class ChatController: UIViewController {
                             }
                             
                             form += "</table>"
-                            str += (self?.css)!
                             str += form
                             continue
                         }
