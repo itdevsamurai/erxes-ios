@@ -604,9 +604,19 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
 
 
             cell?.fullName.text = userName
-
-            cell?.desc.text = "to " + (conversation.integration?.brand?.name)! + " via " + (conversation.integration?.kind)!
-
+            
+            var desc = ""
+            
+            if let brandName = conversation.integration?.brand?.name {
+                desc += "to \(brandName)"
+            }
+            
+            if let integrationKind = conversation.integration?.kind {
+                desc += " via \(integrationKind)"
+            }
+            
+            cell?.desc.text = desc
+            
             if conversation.readUserIds?.count == 0 {
                 cell?.message.font = Constants.BOLD
                 cell?.message.textColor = .black
@@ -709,9 +719,11 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let conversation = conversations[indexPath.row]
-        navigate(.chat(withId: conversation.id, title: (conversation.integration?.brand?.name)!, customerId: (conversation.customer?.id)!))
-
-
+        if let brand = conversation.integration?.brand {
+            navigate(.chat(withId: conversation.id, title: brand.name!, customerId: (conversation.customer?.id)!))
+        } else {
+            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!, customerId: (conversation.customer?.id)!))
+        }
     }
 
 

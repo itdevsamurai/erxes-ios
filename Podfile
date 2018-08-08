@@ -7,7 +7,7 @@ use_frameworks!
 pod 'IoniconsKit'
 pod 'SnapKit'
 pod 'BetterSegmentedControl'
-pod 'Apollo'
+pod 'Apollo', '0.8'
 pod 'Apollo/SQLite'
 pod 'LiveGQL'
 pod 'SDWebImage'
