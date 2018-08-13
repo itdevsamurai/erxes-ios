@@ -207,7 +207,7 @@ public extension UIImage {
     
 }
 
-public typealias JSON = [String: JSONDecodable & JSONEncodable]
+public typealias JSON = [String: Any]
 
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {

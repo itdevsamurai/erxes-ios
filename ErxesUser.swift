@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class ErxesUser{
 
     private static var info: ErxesUser?
@@ -35,5 +34,50 @@ class ErxesUser{
     var twitterUsername:String?
     var token:String?
     var refreshToken:String?
+    
+    static let serviceName = "ErxesService"
+    
+    static var isSignedIn: Bool {
+        if ErxesUser.storedEmail().count == 0 {
+            return false
+        }
+
+        do {
+            let password = try KeychainPasswordItem(service: serviceName, account: ErxesUser.storedEmail()).readPassword()
+            return password.count > 0
+        } catch {
+            return false
+        }
+    }
+    
+    static func storedEmail() -> String {
+        guard let email = UserDefaults.standard.string(forKey: "email"), email.count > 0 else {
+            return ""
+        }
+        return email
+    }
+    
+    static func storedPassword() -> String {
+        do {
+            let password = try KeychainPasswordItem(service: ErxesUser.serviceName, account: storedEmail()).readPassword()
+            return password
+        } catch {
+            return ""
+        }
+    }
+
+    class func signIn(_ email: String, password: String) throws {
+        UserDefaults.standard.set(email, forKey: "email")
+        UserDefaults.standard.synchronize()
+        try KeychainPasswordItem(service: serviceName, account: email).savePassword(password)
+    }
+
+    class func signOut() throws {
+        guard let email = ErxesUser.sharedUserInfo().email else {
+            return
+        }
+
+        try KeychainPasswordItem(service: serviceName, account: email).deleteItem()
+    }
     
 }
