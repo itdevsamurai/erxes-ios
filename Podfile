@@ -19,4 +19,5 @@ pod 'LUNSegmentedControl'
 pod 'Alamofire', '~> 4.7'
 pod 'Eureka'
 #pod 'SuggestionRow'
+#pod 'CryptoSwift', '0.8.3'
 end

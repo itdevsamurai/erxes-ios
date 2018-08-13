@@ -30,7 +30,7 @@ class LoginController: UIViewController {
                                                          attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         field.alpha = 0.0
         field.keyboardType = .emailAddress
-        field.text = "batamar.b@nmtec.co"
+        field.text = "admin"
 //        field.text = "munkhtungalag.n@nmma.co"
         return field
     }()
@@ -38,7 +38,7 @@ class LoginController: UIViewController {
     var passwordField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Password"
-        field.text = "Dombo@123"
+        field.text = "admin123"
 //        field.text = "pass"
         field.attributedPlaceholder = NSAttributedString(string: "Password",
                                                                attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
@@ -180,7 +180,7 @@ class LoginController: UIViewController {
         self.view.backgroundColor = Constants.ERXES_COLOR!
         self.navigationController?.isNavigationBarHidden = true
         configureViews()
-   
+        checkAuthentication()
     }
     
  
@@ -197,6 +197,12 @@ class LoginController: UIViewController {
     
     // MARK: Functions
     
+    func checkAuthentication() {
+        if ErxesUser.isSignedIn {
+            mutateLogin(email: ErxesUser.storedEmail(), password: ErxesUser.storedPassword())
+        }
+    }
+    
     @objc func loginAction(sender:UIButton){
 
         loader.startAnimating()
@@ -206,7 +212,6 @@ class LoginController: UIViewController {
             mutateLogin(email: emailField.text!, password: passwordField.text!)
         }
     }
-    
 
     
     func authenticateUser() {
@@ -246,9 +251,8 @@ class LoginController: UIViewController {
         }
     }
     
-    func mutateLogin(email:String, password:String){
+    func mutateLogin(email:String, password:String) {
     
-
         let loginMutation = LoginMutation(email:email ,password:password)
         apollo.perform(mutation: loginMutation) { [weak self] result, error in
             if let error = error {
@@ -264,67 +268,71 @@ class LoginController: UIViewController {
                self?.loader.stopAnimating()
             }
             if result?.data != nil {
+                
+                do {
+                    try ErxesUser.signIn(email, password: password)
+                } catch {
+                    print("Could't save user credential")
+                }
+                
                 let currentUser = ErxesUser.sharedUserInfo()
                 currentUser.token = (result?.data?.login.token)!
                 currentUser.refreshToken = (result?.data?.login.token)!
-
-
-
-                let client: ApolloClient = {
-                    let configuration = URLSessionConfiguration.default
-                    let currentUser = ErxesUser.sharedUserInfo()
-                    configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                                           "x-refresh-token": currentUser.refreshToken as Any]
-                    let url = URL(string: Constants.API_ENDPOINT +  "/graphql")!
-
-                    return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-                }()
-                //
-              
-                let query = CurrentUserQuery()
-                client.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
-                    if let error = error {
-                        print(error.localizedDescription)
-                        let alert = FailureAlert(message:error.localizedDescription)
-                        alert.show(animated: true)
-                        return
-                    }
-
-                    if let err = result?.errors {
-                        let alert = FailureAlert(message:err[0].localizedDescription)
-                        alert.show(animated: true)
-                    }
-
-                    if result?.data != nil {
-                       
-                        let user = result?.data?.currentUser
-                        let currentUser  = ErxesUser.sharedUserInfo()
-                        currentUser._id = user?.id
-                        currentUser.username = user?.username
-                        currentUser.email = user?.email
-                        currentUser.role = user?.role
-                        currentUser.avatar = user?.details?.avatar
-                        currentUser.fullName = user?.details?.fullName
-                        currentUser.position = user?.details?.position
-//                        currentUser.twitterUsername = user?.details?.twitterUsername
-                        //                        currentUser.emailSignatures = user?.emailSignatures
-                        currentUser.getNotificationByEmail = user?.getNotificationByEmail
-
-                        if (self?.touchIDButtonState.isSelected)! {
-                            UserDefaults.standard.set(self?.emailField.text, forKey: "email")
-                            UserDefaults.standard.set(self?.passwordField.text, forKey: "password")
-                            UserDefaults.standard.synchronize()
-                        }
-                        self?.loader.stopAnimating()
-                        self?.navigate(.tab)
-                    }
-
-
-                }
-
-
+                
+                self?.mutateCurrrentUser()
             }
 
+        }
+    }
+    
+    func mutateCurrrentUser() {
+        
+        let client: ApolloClient = {
+            let configuration = URLSessionConfiguration.default
+            let currentUser = ErxesUser.sharedUserInfo()
+            configuration.httpAdditionalHeaders = ["Authorization": "Bearer <\(currentUser.token!)>"]
+            let url = URL(string: Constants.API_ENDPOINT +  "/graphql")!
+            
+            return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+        }()
+        
+        let query = CurrentUserQuery()
+        client.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message:error.localizedDescription)
+                alert.show(animated: true)
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message:err[0].localizedDescription)
+                alert.show(animated: true)
+            }
+            
+            if result?.data != nil {
+                
+                let user = result?.data?.currentUser
+                let currentUser  = ErxesUser.sharedUserInfo()
+                currentUser._id = user?.id
+                currentUser.username = user?.username
+                currentUser.email = user?.email
+                currentUser.role = user?.role
+                currentUser.avatar = user?.details?.avatar
+                currentUser.fullName = user?.details?.fullName
+                currentUser.position = user?.details?.position
+                //                        currentUser.twitterUsername = user?.details?.twitterUsername
+                //                        currentUser.emailSignatures = user?.emailSignatures
+                currentUser.getNotificationByEmail = user?.getNotificationByEmail
+                
+                if (self?.touchIDButtonState.isSelected)! {
+                    UserDefaults.standard.set(self?.emailField.text, forKey: "email")
+                    UserDefaults.standard.set(self?.passwordField.text, forKey: "password")
+                    UserDefaults.standard.synchronize()
+                }
+                self?.loader.stopAnimating()
+                self?.navigate(.tab)
+            }
         }
     }
     
