@@ -62,12 +62,40 @@ query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids:
     }
 }
 
+query CompanyDetail($id: String!) {
+    companyDetail(_id:$id) {
+        ...CompanyDetail
+    }
+}
+
 fragment CompanyDetail on Company{
     _id
     name
     size
     industry
     website
+    email
+    phone
+    leadStatus
+    lifecycleState
+    businessType
+    description
+    employees
+    doNotDisturb
+    owner{
+        username
+    }
+    parentCompany {
+        name
+    }
+    links {
+        linkedIn
+        twitter
+        facebook
+        github
+        youtube
+        website
+    }
     plan
     customFieldsData
     tagIds

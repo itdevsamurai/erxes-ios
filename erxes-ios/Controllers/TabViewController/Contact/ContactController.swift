@@ -257,6 +257,11 @@ extension ContactController: UITableViewDelegate {
         
         return cell!
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let company = companies[indexPath.row]
+        navigate(.companyProfile(id: company.id))
+    }
 }
 
 extension ContactController: UITableViewDataSource {
