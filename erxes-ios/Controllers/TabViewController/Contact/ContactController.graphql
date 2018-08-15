@@ -84,6 +84,9 @@ fragment CompanyDetail on Company{
     doNotDisturb
     owner{
         username
+        details{
+            fullName
+        }
     }
     parentCompany {
         name
@@ -106,4 +109,26 @@ fragment CompanyDetail on Company{
         __typename
     }
     __typename
+}
+
+query FieldsGroups($contentType:String)
+{
+fieldsGroups(contentType:$contentType){
+_id
+name
+contentType
+order
+description
+isVisible
+fields{
+type
+validation
+text
+description
+options
+isRequired
+order
+isVisible
+}
+}
 }
