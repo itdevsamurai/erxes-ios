@@ -1,0 +1,19 @@
+mutation CompaniesAdd($name:String, $size:Int, $website:String, $industry:String, $plan:String, $parentCompanyId:String, $email:String, $ownerId:String, $phone:String, $leadStatus:String, $lifecycleState:String, $businessType:String, $description:String, $employees:Int, $doNotDisturb:String, $links:JSON, $tagIds:[String], $customFieldsData:JSON)
+{
+    companiesAdd(name:$name, size:$size, website:$website, industry:$industry, plan:$plan, parentCompanyId:$parentCompanyId, email:$email, ownerId:$ownerId, phone:$phone, leadStatus:$leadStatus, lifecycleState:$lifecycleState, businessType:$businessType, description:$description, employees:$employees, doNotDisturb:$doNotDisturb, links:$links, tagIds:$tagIds, customFieldsData:$customFieldsData){
+        _id
+    }
+}
+
+mutation CompaniesEdit($id:String!, $name:String, $size:Int, $website:String, $industry:String, $plan:String, $parentCompanyId:String, $email:String, $ownerId:String, $phone:String, $leadStatus:String, $lifecycleState:String, $businessType:String, $description:String, $employees:Int, $doNotDisturb:String, $links:JSON, $tagIds:[String], $customFieldsData:JSON)
+{
+    companiesEdit(_id:$id name:$name, size:$size, website:$website, industry:$industry, plan:$plan, parentCompanyId:$parentCompanyId, email:$email, ownerId:$ownerId, phone:$phone, leadStatus:$leadStatus, lifecycleState:$lifecycleState, businessType:$businessType, description:$description, employees:$employees, doNotDisturb:$doNotDisturb, links:$links, tagIds:$tagIds, customFieldsData:$customFieldsData){
+        _id
+    }
+}
+
+query CompanyDetail($id: String!) {
+    companyDetail(_id:$id) {
+        ...CompanyDetail
+    }
+}

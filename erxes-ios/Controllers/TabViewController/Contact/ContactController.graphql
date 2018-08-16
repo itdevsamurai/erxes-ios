@@ -62,12 +62,6 @@ query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids:
     }
 }
 
-query CompanyDetail($id: String!) {
-    companyDetail(_id:$id) {
-        ...CompanyDetail
-    }
-}
-
 fragment CompanyDetail on Company{
     _id
     name
@@ -83,12 +77,14 @@ fragment CompanyDetail on Company{
     employees
     doNotDisturb
     owner{
+        _id
         username
         details{
             fullName
         }
     }
     parentCompany {
+        _id
         name
     }
     links {

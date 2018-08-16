@@ -69,7 +69,7 @@ class CompanyController: FormViewController {
                 row.baseCell.isUserInteractionEnabled = false
                 
             }
-//            saveAction()
+            saveAction()
         } else {
             sender.isSelected = true
             for row in form.allRows {
@@ -79,6 +79,14 @@ class CompanyController: FormViewController {
             }
             let firstRow = form.rowBy(tag: "firstName")
             firstRow?.baseCell.cellBecomeFirstResponder()
+        }
+    }
+    
+    func saveAction() {
+        if let comId = company?.id, comId.count > 0 {
+            mutateCompaiesEdit()
+        } else {
+            mutateCompaniesAdd()
         }
     }
     
@@ -231,7 +239,7 @@ class CompanyController: FormViewController {
                 }
             }
         
-            <<< NameRow("email") { row in
+            <<< EmailRow("email") { row in
                 row.title = "email:"
                 row.placeholder = "-"
                 if let item = company?.email {
@@ -239,16 +247,16 @@ class CompanyController: FormViewController {
                 }
             }
         
-            <<< NameRow("size") { row in
+            <<< IntRow("size") { row in
                 row.title = "size:"
                 row.placeholder = "-"
                 if let item = company?.size {
-                    row.value = "\(item)"
+                    row.value = item
                 }
             }
         
         //industry
-            <<< PushRow<String>() {
+            <<< PushRow<String>("industry") {
                 $0.title = "industry"
                 $0.selectorTitle = "industry"
                 $0.options = self.industries
@@ -264,7 +272,7 @@ class CompanyController: FormViewController {
                     row.value = item
                 }
             }
-            <<< NameRow("phone") { row in
+            <<< PhoneRow("phone") { row in
                 row.title = "phone:"
                 row.placeholder = "-"
                 if let item = company?.phone {
@@ -273,8 +281,8 @@ class CompanyController: FormViewController {
             }
         
         //leadstatus
-            <<< PushRow<String>() {
-                $0.title = "lead status"
+            <<< PushRow<String>("leadStatus") {
+                $0.title = "leadStatus"
                 $0.selectorTitle = "lead status"
                 $0.options = self.leadStatus
                 if let item = company?.leadStatus {
@@ -283,8 +291,8 @@ class CompanyController: FormViewController {
             }
             
         //lifecycle state
-            <<< PushRow<String>() {
-                $0.title = "lifecycle state"
+            <<< PushRow<String>("lifecycleState") {
+                $0.title = "lifecycleState"
                 $0.selectorTitle = "lifecycle state"
                 $0.options = self.lifecycleStates
                 if let item = company?.lifecycleState {
@@ -292,10 +300,10 @@ class CompanyController: FormViewController {
                 }
             }
         //business type
-            <<< PushRow<String>() {
-                $0.title = "business type"
+            <<< PushRow<String>("businessType") {
+                $0.title = "businessType"
                 $0.selectorTitle = "business type"
-                $0.options = self.industries
+                $0.options = self.businessTypes
                 if let item = company?.businessType {
                     $0.value = item
                 }
@@ -304,9 +312,13 @@ class CompanyController: FormViewController {
         //employee count
         //do not disturb radiobox
             
-            <<< SwitchRow("donotdisturb") { row in
+            <<< SwitchRow("doNotDisturb") { row in
                 row.title = "Do not disturb"
-
+                if let doNotDisturb = company?.doNotDisturb, doNotDisturb == "Yes" {
+                    row.value = true
+                } else {
+                    row.value = false
+                }
             }
             
             +++ Section("Owner"){
@@ -316,13 +328,13 @@ class CompanyController: FormViewController {
             }
             
             //owner
-            <<< SuggestionTableRow<UserData>() {
+            <<< SuggestionTableRow<UserData>("owner") {
                 $0.filterFunction = { [unowned self] text in
                     self.users.filter({ ($0.details?.fullName?.lowercased().contains(text.lowercased()))! })
                 }
                 $0.placeholder = "Search for a user"
-                if let item = company?.owner?.details?.fullName {
-                    let owner = UserData(id: "", details: UserData.Detail(fullName: item))
+                if let item = company?.owner {
+                    let owner = UserData(id: item.id, details: UserData.Detail(fullName: item.details?.fullName, avatar: ""))
                     $0.value = owner
                 }
             }
@@ -334,13 +346,13 @@ class CompanyController: FormViewController {
                 $0.footer?.height = { 0 }
             }
             
-            <<< SuggestionTableRow<CompanyDetail>() {
+            <<< SuggestionTableRow<CompanyDetail>("parentCompany") {
                 $0.filterFunction = { [unowned self] text in
                     self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
                 }
                 $0.placeholder = "Search for a company"
-                if let item = company?.parentCompany?.name {
-                    let parent = CompanyDetail(id: "", name: item)
+                if let item = company?.parentCompany {
+                    let parent = CompanyDetail(id: item.id, name: item.name)
                     $0.value = parent
                 }
             }
@@ -351,8 +363,8 @@ class CompanyController: FormViewController {
                 $0.footer?.height = { 0 }
             }
         
-            <<< NameRow("linkedin") { row in
-                row.title = "linkedin:"
+            <<< NameRow("linkedIn") { row in
+                row.title = "linkedIn:"
                 row.placeholder = "-"
                 if let item = company?.links?.linkedIn {
                     row.value = item
@@ -401,6 +413,7 @@ class CompanyController: FormViewController {
         
         self.getCompanies()
         self.getUsers()
+        
         for row in form.allRows {
             row.baseCell.alpha = 0.7
             row.baseCell.isUserInteractionEnabled = false
@@ -576,6 +589,100 @@ class CompanyController: FormViewController {
             }
         }
         
+    }
+    
+    func mutateCompaniesAdd(){
+        
+        
+        if let item = form.rowBy(tag: "email")?.baseValue as? String {
+            company?.email = item
+        }
+        
+        
+        
+        let links = ["facebook":company?.links?.facebook,
+                     "linkenIn":company?.links?.linkedIn,
+                     "github":company?.links?.github,
+                     "twitter":company?.links?.twitter,
+                     "website":company?.links?.website,
+                     "youtube":company?.links?.youtube]
+        
+        let mutation = CompaniesAddMutation(name: company?.name,
+                                            size: company?.size,
+                                            website: company?.website,
+                                            industry: company?.industry,
+                                            plan: company?.plan,
+                                            parentCompanyId: "",
+                                            email: company?.email,
+                                            ownerId: "",
+                                            phone: company?.phone,
+                                            leadStatus: company?.leadStatus,
+                                            lifecycleState: company?.lifecycleState,
+                                            businessType: company?.businessType,
+                                            description: company?.description,
+                                            employees: company?.employees,
+                                            doNotDisturb: company?.doNotDisturb,
+                                            links: links,
+                                            tagIds: company?.tagIds,
+                                            customFieldsData: company?.customFieldsData)
+        
+        client.perform(mutation: mutation){ [weak self] result, error in
+            
+        }
+    }
+    
+    func mutateCompaiesEdit() {
+        
+        
+        guard let comId = company?.id, comId.count > 0 else {
+            return
+        }
+        
+        let mutation = CompaniesEditMutation(id: comId)
+        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
+        mutation.email = form.rowBy(tag: "email")?.baseValue as? String
+        mutation.size = form.rowBy(tag: "size")?.baseValue as? Int
+        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
+        mutation.industry = form.rowBy(tag: "industry")?.baseValue as? String
+        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
+        let parent = form.rowBy(tag: "parentCompany")?.baseValue as? CompanyDetail
+        mutation.parentCompanyId = parent?.id
+        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
+        mutation.ownerId = owner?.id
+        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+        mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
+        mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
+        mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String
+        mutation.description = form.rowBy(tag: "description")?.baseValue as? String
+        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
+        mutation.doNotDisturb = form.rowBy(tag: "doNotDisturb")?.baseValue as? String
+
+//        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String
+//        mutation.customFieldsData = form.rowBy(tag: "name")?.baseValue as? String
+        
+        if let item = form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool, item {
+            mutation.doNotDisturb = "Yes"
+        } else {
+            mutation.doNotDisturb = "No"
+        }
+        
+        let links = ["facebook":form.rowBy(tag: "facebook")?.baseValue as? String,
+                     "linkedIn":form.rowBy(tag: "linkedIn")?.baseValue as? String,
+                     "github":form.rowBy(tag: "github")?.baseValue as? String,
+                     "twitter":form.rowBy(tag: "twitter")?.baseValue as? String,
+                     "website":form.rowBy(tag: "website")?.baseValue as? String,
+                     "youtube":form.rowBy(tag: "youtube")?.baseValue as? String]
+        
+        mutation.links = links
+        
+        client.perform(mutation: mutation){ [weak self] result, error in
+            if let err = error {
+                print(err)
+            }
+            else {
+                print(result?.data?.companiesEdit)
+            }
+        }
     }
 
 }
