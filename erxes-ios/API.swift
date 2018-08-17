@@ -1318,7 +1318,7 @@ public final class CompaniesAddMutation: GraphQLMutation {
 
 public final class CompaniesEditMutation: GraphQLMutation {
   public static let operationString =
-    "mutation CompaniesEdit($id: String!, $name: String, $size: Int, $website: String, $industry: String, $plan: String, $parentCompanyId: String, $email: String, $ownerId: String, $phone: String, $leadStatus: String, $lifecycleState: String, $businessType: String, $description: String, $employees: Int, $doNotDisturb: String, $links: JSON, $tagIds: [String], $customFieldsData: JSON) {\n  companiesEdit(_id: $id, name: $name, size: $size, website: $website, industry: $industry, plan: $plan, parentCompanyId: $parentCompanyId, email: $email, ownerId: $ownerId, phone: $phone, leadStatus: $leadStatus, lifecycleState: $lifecycleState, businessType: $businessType, description: $description, employees: $employees, doNotDisturb: $doNotDisturb, links: $links, tagIds: $tagIds, customFieldsData: $customFieldsData) {\n    __typename\n    _id\n  }\n}"
+    "mutation CompaniesEdit($id: String!, $name: String, $size: Int, $website: String, $industry: String, $plan: String, $parentCompanyId: String, $email: String, $ownerId: String, $phone: String, $leadStatus: String, $lifecycleState: String, $businessType: String, $description: String, $employees: Int, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {\n  companiesEdit(_id: $id, name: $name, size: $size, website: $website, industry: $industry, plan: $plan, parentCompanyId: $parentCompanyId, email: $email, ownerId: $ownerId, phone: $phone, leadStatus: $leadStatus, lifecycleState: $lifecycleState, businessType: $businessType, description: $description, employees: $employees, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {\n    __typename\n    _id\n  }\n}"
 
   public var id: String
   public var name: String?
@@ -1337,10 +1337,9 @@ public final class CompaniesEditMutation: GraphQLMutation {
   public var employees: Int?
   public var doNotDisturb: String?
   public var links: JSON?
-  public var tagIds: [String?]?
   public var customFieldsData: JSON?
 
-  public init(id: String, name: String? = nil, size: Int? = nil, website: String? = nil, industry: String? = nil, plan: String? = nil, parentCompanyId: String? = nil, email: String? = nil, ownerId: String? = nil, phone: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, businessType: String? = nil, description: String? = nil, employees: Int? = nil, doNotDisturb: String? = nil, links: JSON? = nil, tagIds: [String?]? = nil, customFieldsData: JSON? = nil) {
+  public init(id: String, name: String? = nil, size: Int? = nil, website: String? = nil, industry: String? = nil, plan: String? = nil, parentCompanyId: String? = nil, email: String? = nil, ownerId: String? = nil, phone: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, businessType: String? = nil, description: String? = nil, employees: Int? = nil, doNotDisturb: String? = nil, links: JSON? = nil, customFieldsData: JSON? = nil) {
     self.id = id
     self.name = name
     self.size = size
@@ -1358,19 +1357,18 @@ public final class CompaniesEditMutation: GraphQLMutation {
     self.employees = employees
     self.doNotDisturb = doNotDisturb
     self.links = links
-    self.tagIds = tagIds
     self.customFieldsData = customFieldsData
   }
 
   public var variables: GraphQLMap? {
-    return ["id": id, "name": name, "size": size, "website": website, "industry": industry, "plan": plan, "parentCompanyId": parentCompanyId, "email": email, "ownerId": ownerId, "phone": phone, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "businessType": businessType, "description": description, "employees": employees, "doNotDisturb": doNotDisturb, "links": links, "tagIds": tagIds, "customFieldsData": customFieldsData]
+    return ["id": id, "name": name, "size": size, "website": website, "industry": industry, "plan": plan, "parentCompanyId": parentCompanyId, "email": email, "ownerId": ownerId, "phone": phone, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "businessType": businessType, "description": description, "employees": employees, "doNotDisturb": doNotDisturb, "links": links, "customFieldsData": customFieldsData]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("companiesEdit", arguments: ["_id": GraphQLVariable("id"), "name": GraphQLVariable("name"), "size": GraphQLVariable("size"), "website": GraphQLVariable("website"), "industry": GraphQLVariable("industry"), "plan": GraphQLVariable("plan"), "parentCompanyId": GraphQLVariable("parentCompanyId"), "email": GraphQLVariable("email"), "ownerId": GraphQLVariable("ownerId"), "phone": GraphQLVariable("phone"), "leadStatus": GraphQLVariable("leadStatus"), "lifecycleState": GraphQLVariable("lifecycleState"), "businessType": GraphQLVariable("businessType"), "description": GraphQLVariable("description"), "employees": GraphQLVariable("employees"), "doNotDisturb": GraphQLVariable("doNotDisturb"), "links": GraphQLVariable("links"), "tagIds": GraphQLVariable("tagIds"), "customFieldsData": GraphQLVariable("customFieldsData")], type: .object(CompaniesEdit.selections)),
+      GraphQLField("companiesEdit", arguments: ["_id": GraphQLVariable("id"), "name": GraphQLVariable("name"), "size": GraphQLVariable("size"), "website": GraphQLVariable("website"), "industry": GraphQLVariable("industry"), "plan": GraphQLVariable("plan"), "parentCompanyId": GraphQLVariable("parentCompanyId"), "email": GraphQLVariable("email"), "ownerId": GraphQLVariable("ownerId"), "phone": GraphQLVariable("phone"), "leadStatus": GraphQLVariable("leadStatus"), "lifecycleState": GraphQLVariable("lifecycleState"), "businessType": GraphQLVariable("businessType"), "description": GraphQLVariable("description"), "employees": GraphQLVariable("employees"), "doNotDisturb": GraphQLVariable("doNotDisturb"), "links": GraphQLVariable("links"), "customFieldsData": GraphQLVariable("customFieldsData")], type: .object(CompaniesEdit.selections)),
     ]
 
     public var snapshot: Snapshot

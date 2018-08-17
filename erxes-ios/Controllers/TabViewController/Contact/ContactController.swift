@@ -96,12 +96,31 @@ class ContactController: UIViewController {
     }
     
     func configureViews(){
+        
+        let rightItem: UIBarButtonItem = {
+            var rightImage = #imageLiteral(resourceName: "ic_edit")
+   
+            rightImage = rightImage.withRenderingMode(.alwaysTemplate)
+            let barButtomItem = UIBarButtonItem()
+            let button = UIButton()
+            button.setBackgroundImage(rightImage, for: .normal)
+            button.tintColor = Constants.ERXES_COLOR
+            button.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+            barButtomItem.customView = button
+            return barButtomItem
+        }()
+        self.navigationItem.rightBarButtonItem = rightItem
+        
         self.view.addSubview(customersButton)
         self.view.addSubview(companiesButton)
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
         self.view.addSubview(loader)
+    }
+    
+    @objc func addAction(sender:UIButton) {
+        navigate(.companyProfile(id:nil))
     }
     
     override func viewDidLoad() {

@@ -35,12 +35,14 @@ class CompanyController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.title = "Company"
-        configureViews()
-        queryCompanyDetail()
-        queryFields()
         loadData()
+        configureViews()
+        if isEdit() {
+            queryCompanyDetail()
+        } else {
+            buildForm()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -56,34 +58,32 @@ class CompanyController: FormViewController {
         }
     }
     
-    convenience init(id:String) {
+    convenience init(id:String?) {
         self.init()
-        self.companyId = id
+        if let id = id {
+            self.companyId = id
+        }
     }
     
     @objc func editAction(sender: UIButton) {
         if sender.isSelected {
             sender.isSelected = false
-            for row in form.allRows {
-                row.baseCell.alpha = 0.7
-                row.baseCell.isUserInteractionEnabled = false
-                
-            }
+            formReadOnly()
             saveAction()
         } else {
             sender.isSelected = true
-            for row in form.allRows {
-                row.baseCell.alpha = 1.0
-                row.baseCell.isUserInteractionEnabled = true
-                
-            }
+            formWritable()
             let firstRow = form.rowBy(tag: "firstName")
             firstRow?.baseCell.cellBecomeFirstResponder()
         }
     }
     
+    func isEdit() -> Bool {
+        return self.companyId != nil
+    }
+    
     func saveAction() {
-        if let comId = company?.id, comId.count > 0 {
+        if isEdit() {
             mutateCompaiesEdit()
         } else {
             mutateCompaniesAdd()
@@ -103,6 +103,9 @@ class CompanyController: FormViewController {
             button.setBackgroundImage(saveImage, for: .selected)
             button.tintColor = Constants.ERXES_COLOR
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
+            if !isEdit() {
+                button.isSelected = true
+            }
             barButtomItem.customView = button
             return barButtomItem
         }()
@@ -414,9 +417,25 @@ class CompanyController: FormViewController {
         self.getCompanies()
         self.getUsers()
         
+        if isEdit() {
+            formWritable()
+        }
+        else {
+            formReadOnly()
+        }
+    }
+    
+    func formWritable() {
         for row in form.allRows {
             row.baseCell.alpha = 0.7
             row.baseCell.isUserInteractionEnabled = false
+        }
+    }
+    
+    func formReadOnly() {
+        for row in form.allRows {
+            row.baseCell.alpha = 1.0
+            row.baseCell.isUserInteractionEnabled = true
         }
     }
     
@@ -444,30 +463,6 @@ class CompanyController: FormViewController {
             
             if result?.data != nil {
                 self?.company = result?.data?.companyDetail
-            }
-        }
-    }
-    
-    func queryFields() {
-        let query = FieldsGroupsQuery(contentType: "company")
-        
-        client.fetch(query: query) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-                return
-            }
-            
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-            }
-            
-            if result?.data != nil {
-                print(result)
             }
         }
     }
@@ -592,42 +587,61 @@ class CompanyController: FormViewController {
     }
     
     func mutateCompaniesAdd(){
-        
-        
-        if let item = form.rowBy(tag: "email")?.baseValue as? String {
-            company?.email = item
+        if self.companyId != nil {
+            return
         }
         
+        let mutation = CompaniesAddMutation()
+        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
+        mutation.email = form.rowBy(tag: "email")?.baseValue as? String
+        mutation.size = form.rowBy(tag: "size")?.baseValue as? Int
+        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
+        mutation.industry = form.rowBy(tag: "industry")?.baseValue as? String ?? ""
+        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
+        let parent = form.rowBy(tag: "parentCompany")?.baseValue as? CompanyDetail
+        mutation.parentCompanyId = parent?.id
+        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
+        mutation.ownerId = owner?.id
+        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+        mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String ?? ""
+        mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String ?? ""
+        mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String ?? ""
+        mutation.description = form.rowBy(tag: "description")?.baseValue as? String
+        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
+        mutation.doNotDisturb = form.rowBy(tag: "doNotDisturb")?.baseValue as? String
         
+        //        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String
+        //        mutation.customFieldsData = form.rowBy(tag: "name")?.baseValue as? String
         
-        let links = ["facebook":company?.links?.facebook,
-                     "linkenIn":company?.links?.linkedIn,
-                     "github":company?.links?.github,
-                     "twitter":company?.links?.twitter,
-                     "website":company?.links?.website,
-                     "youtube":company?.links?.youtube]
+        if let item = form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool, item {
+            mutation.doNotDisturb = "Yes"
+        } else {
+            mutation.doNotDisturb = "No"
+        }
         
-        let mutation = CompaniesAddMutation(name: company?.name,
-                                            size: company?.size,
-                                            website: company?.website,
-                                            industry: company?.industry,
-                                            plan: company?.plan,
-                                            parentCompanyId: "",
-                                            email: company?.email,
-                                            ownerId: "",
-                                            phone: company?.phone,
-                                            leadStatus: company?.leadStatus,
-                                            lifecycleState: company?.lifecycleState,
-                                            businessType: company?.businessType,
-                                            description: company?.description,
-                                            employees: company?.employees,
-                                            doNotDisturb: company?.doNotDisturb,
-                                            links: links,
-                                            tagIds: company?.tagIds,
-                                            customFieldsData: company?.customFieldsData)
+        let links = ["facebook":form.rowBy(tag: "facebook")?.baseValue as? String,
+                     "linkedIn":form.rowBy(tag: "linkedIn")?.baseValue as? String,
+                     "github":form.rowBy(tag: "github")?.baseValue as? String,
+                     "twitter":form.rowBy(tag: "twitter")?.baseValue as? String,
+                     "website":form.rowBy(tag: "website")?.baseValue as? String,
+                     "youtube":form.rowBy(tag: "youtube")?.baseValue as? String]
+        
+        mutation.links = links
         
         client.perform(mutation: mutation){ [weak self] result, error in
-            
+            if let err = error {
+                print(err)
+            }
+            else {
+                
+                if let errs = result?.errors {
+                    print(errs)
+                }
+                else {
+                    print(result?.data?.companiesAdd)
+                    self?.navigationController?.popViewController(animated:true)
+                }
+            }
         }
     }
     

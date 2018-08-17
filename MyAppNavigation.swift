@@ -37,5 +37,5 @@ enum MyNavigation: Navigation {
     case tab
     case chat(withId:String,title:String,customerId:String)
     case customerProfile(_id:String, count:Int)
-    case companyProfile(id:String)
+    case companyProfile(id:String?)
 }
