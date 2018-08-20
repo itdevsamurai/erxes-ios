@@ -2008,6 +2008,48 @@ public final class CompanyDetailQuery: GraphQLQuery {
   }
 }
 
+public final class CompaniesRemoveMutation: GraphQLMutation {
+  public static let operationString =
+    "mutation CompaniesRemove($companyIds: [String]) {\n  companiesRemove(companyIds: $companyIds)\n}"
+
+  public var companyIds: [String?]?
+
+  public init(companyIds: [String?]? = nil) {
+    self.companyIds = companyIds
+  }
+
+  public var variables: GraphQLMap? {
+    return ["companyIds": companyIds]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("companiesRemove", arguments: ["companyIds": GraphQLVariable("companyIds")], type: .list(.scalar(String.self))),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(companiesRemove: [String?]? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "companiesRemove": companiesRemove])
+    }
+
+    public var companiesRemove: [String?]? {
+      get {
+        return snapshot["companiesRemove"] as? [String?]
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "companiesRemove")
+      }
+    }
+  }
+}
+
 public final class CustomersQuery: GraphQLQuery {
   public static let operationString =
     "query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String) {\n  customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue) {\n    __typename\n    ...CustomerDetail\n  }\n}"

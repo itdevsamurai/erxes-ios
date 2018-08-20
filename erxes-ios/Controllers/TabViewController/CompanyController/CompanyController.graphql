@@ -17,3 +17,7 @@ query CompanyDetail($id: String!) {
         ...CompanyDetail
     }
 }
+
+mutation CompaniesRemove($companyIds:[String]) {
+    companiesRemove(companyIds:$companyIds)
+}
