@@ -70,6 +70,7 @@ class ContactController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
         tableView.separatorColor = Constants.ERXES_COLOR!
+//        tableView.allowsMultipleSelectionDuringEditing = true
         return tableView
     }()
     
@@ -96,12 +97,40 @@ class ContactController: UIViewController {
     }
     
     func configureViews(){
+        
+        let rightItem: UIBarButtonItem = {
+            var rightImage = #imageLiteral(resourceName: "ic_edit")
+   
+            rightImage = rightImage.withRenderingMode(.alwaysTemplate)
+            let barButtomItem = UIBarButtonItem()
+            let button = UIButton()
+            button.setBackgroundImage(rightImage, for: .normal)
+            button.tintColor = Constants.ERXES_COLOR
+            button.addTarget(self, action: #selector(changeEditMode(sender:)), for: .touchUpInside)
+            barButtomItem.customView = button
+            return barButtomItem
+        }()
+        self.navigationItem.rightBarButtonItem = rightItem
+        
         self.view.addSubview(customersButton)
         self.view.addSubview(companiesButton)
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
         self.view.addSubview(loader)
+    }
+    
+    func isEditing() {
+        
+    }
+    
+    @objc func changeEditMode(sender:UIButton) {
+        sender.isSelected = !sender.isSelected
+        tableView.isEditing = sender.isSelected
+    }
+    
+    @objc func addAction(sender:UIButton) {
+        navigate(.companyProfile(id:nil))
     }
     
     override func viewDidLoad() {
@@ -212,8 +241,19 @@ class ContactController: UIViewController {
             }
         }
     }
+    
+    func deleteCompany(index:Int) {
+        let company = companies[index]
+        mutateDeleteCompany(companyIds: [company.id])
+    }
 
-
+    func mutateDeleteCompany(companyIds:[String]) {
+        let mutation = CompaniesRemoveMutation(companyIds: companyIds)
+        
+        client.perform(mutation: mutation) { [weak self] result, error in
+            self?.getCompanies()
+        }
+    }
 }
 
 extension ContactController: UITableViewDelegate {
@@ -256,6 +296,18 @@ extension ContactController: UITableViewDelegate {
         }
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print(indexPath)
+            deleteCompany(index: indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let company = companies[indexPath.row]
+        navigate(.companyProfile(id: company.id))
     }
 }
 

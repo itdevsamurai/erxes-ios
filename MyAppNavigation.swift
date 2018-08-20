@@ -19,6 +19,8 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
                 return ChatController(chatId: chatId,title:title,customerId:customerId)
             case .customerProfile(let id, let count):
                 return CustomerProfileController(_id: id, count: count)
+            case .companyProfile(let id):
+                return CompanyController(id: id)
             }
         }
         return UIViewController()
@@ -28,12 +30,12 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
         to.hidesBottomBarWhenPushed = true
         from.navigationController?.pushViewController(to, animated: true)
     }
-    
-    
+
 }
 
 enum MyNavigation: Navigation {
     case tab
     case chat(withId:String,title:String,customerId:String)
     case customerProfile(_id:String, count:Int)
+    case companyProfile(id:String?)
 }
