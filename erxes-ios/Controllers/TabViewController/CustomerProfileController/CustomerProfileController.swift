@@ -437,15 +437,15 @@ class CustomerProfileController: FormViewController {
     func configureViews() {
         self.view.backgroundColor = .white
         let rightItem: UIBarButtonItem = {
-            var rightImage = #imageLiteral(resourceName: "ic_edit")
-            var saveImage = #imageLiteral(resourceName: "ic_saveCustomer")
+            var rightImage = UIImage.erxes(with: .edit, textColor: Constants.ERXES_COLOR!)
+            var saveImage = UIImage.erxes(with: .user2, textColor: Constants.ERXES_COLOR!)
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
-            button.tintColor = Constants.ERXES_COLOR
+//            button.tintColor = Constants.ERXES_COLOR
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem

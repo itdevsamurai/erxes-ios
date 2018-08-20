@@ -30,7 +30,7 @@ class LoginController: UIViewController {
                                                          attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
         field.alpha = 0.0
         field.keyboardType = .emailAddress
-        field.text = "admin"
+        field.text = "batamar.b@nmtec.co"
 //        field.text = "munkhtungalag.n@nmma.co"
         return field
     }()
@@ -38,7 +38,7 @@ class LoginController: UIViewController {
     var passwordField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Password"
-        field.text = "admin123"
+        field.text = "Dombo@123"
 //        field.text = "pass"
         field.attributedPlaceholder = NSAttributedString(string: "Password",
                                                                attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])

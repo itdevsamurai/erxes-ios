@@ -37,6 +37,7 @@
 	<string>Erxes wants to access your photos</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>erxes.ttf</string>
 		<string>Montserrat-Black.otf</string>
 		<string>Montserrat-Bold.otf</string>
 		<string>Montserrat-ExtraBold.otf</string>

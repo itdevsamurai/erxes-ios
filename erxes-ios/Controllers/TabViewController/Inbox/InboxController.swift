@@ -167,14 +167,14 @@ class InboxController: UIViewController {
 
     func configureViews() {
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        var leftImage = #imageLiteral(resourceName: "ic_filter")
-        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
+        var leftImage = UIImage.erxes(with: .filter, textColor: Constants.ERXES_COLOR!, size: CGSize(width: 22, height: 22))
+//        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
         let leftButton = UIButton()
         leftButton.setImage(leftImage, for: .normal)
         leftButton.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
-        leftButton.tintColor = Constants.ERXES_COLOR!
+//        leftButton.tintColor = Constants.ERXES_COLOR!
         let leftItem = UIBarButtonItem()
-        leftItem.tintColor = Constants.ERXES_COLOR!
+//        leftItem.tintColor = Constants.ERXES_COLOR!
         leftItem.customView = leftButton
 //        leftItem.image = leftImage
 

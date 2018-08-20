@@ -19,6 +19,10 @@
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
 		9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */; };
 		9B441AB020DBCB0A008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AAF20DBCB0A008B29AF /* screenshot.png */; };
+		9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */; };
+		9B567094212A84FA0023B5AF /* erxes.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B567093212A84FA0023B5AF /* erxes.ttf */; };
+		9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567095212A856E0023B5AF /* ErxesFont.swift */; };
+		9B567098212A89480023B5AF /* ErxesFontKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567097212A89480023B5AF /* ErxesFontKit.swift */; };
 		9B576F4F20D39B7C00E70269 /* CircleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B576F4E20D39B7C00E70269 /* CircleLayer.swift */; };
 		9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B576F5020D3A62000E70269 /* ErxesLoader.swift */; };
 		9B5CE65420D8DC6E003EDBF9 /* MyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5CE65320D8DC6E003EDBF9 /* MyData.swift */; };
@@ -156,6 +160,10 @@
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
 		9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		9B441AAF20DBCB0A008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
+		9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
+		9B567093212A84FA0023B5AF /* erxes.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = erxes.ttf; sourceTree = "<group>"; };
+		9B567095212A856E0023B5AF /* ErxesFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesFont.swift; sourceTree = "<group>"; };
+		9B567097212A89480023B5AF /* ErxesFontKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesFontKit.swift; sourceTree = "<group>"; };
 		9B576F4E20D39B7C00E70269 /* CircleLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleLayer.swift; sourceTree = "<group>"; };
 		9B576F5020D3A62000E70269 /* ErxesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesLoader.swift; sourceTree = "<group>"; };
 		9B5CE65320D8DC6E003EDBF9 /* MyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyData.swift; sourceTree = "<group>"; };
@@ -407,6 +415,16 @@
 			path = detail;
 			sourceTree = "<group>";
 		};
+		9B567092212A84E00023B5AF /* ErxesFont */ = {
+			isa = PBXGroup;
+			children = (
+				9B567093212A84FA0023B5AF /* erxes.ttf */,
+				9B567095212A856E0023B5AF /* ErxesFont.swift */,
+				9B567097212A89480023B5AF /* ErxesFontKit.swift */,
+			);
+			path = ErxesFont;
+			sourceTree = "<group>";
+		};
 		9B6202EA20EC81670094A87D /* SuggestionRow */ = {
 			isa = PBXGroup;
 			children = (
@@ -435,6 +453,8 @@
 		9B94F41020DB305800313543 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				9B567092212A84E00023B5AF /* ErxesFont */,
+				9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */,
 				9B6202EA20EC81670094A87D /* SuggestionRow */,
 				9BD9BDE320E3758600CCFEA6 /* Image Picker */,
 				9B35E99B20D78EF300733FAD /* UI Elements */,
@@ -746,6 +766,7 @@
 				F58F2054207B4F2C00D8564D /* InboxController.graphql in Resources */,
 				F5BEE33C20776BD40042DFC2 /* Montserrat-Regular.otf in Resources */,
 				F58F2038207B313200D8564D /* LoginController.graphql in Resources */,
+				9B567094212A84FA0023B5AF /* erxes.ttf in Resources */,
 				F58F2047207B497500D8564D /* me.png in Resources */,
 				9B008BAB20EA26B20054997E /* CustomerProfileController.graphql in Resources */,
 				9BD9BE1C20E375A400CCFEA6 /* Info.plist in Resources */,
@@ -861,6 +882,7 @@
 				9BF5B467209989F6006CF2D3 /* TagListView.swift in Sources */,
 				9BD9BE2020E375A400CCFEA6 /* CaptureSettings.swift in Sources */,
 				9BD9BE2F20E375A400CCFEA6 /* AssetCell.swift in Sources */,
+				9B567098212A89480023B5AF /* ErxesFontKit.swift in Sources */,
 				F58F2063207B4FE900D8564D /* ErxesLabel.swift in Sources */,
 				9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */,
 				9BD9BE2720E375A400CCFEA6 /* VideoCaptureDelegate.swift in Sources */,
@@ -872,6 +894,7 @@
 				9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */,
 				9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */,
 				9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */,
+				9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */,
 				9BD9BE2220E375A400CCFEA6 /* CaptureSession.swift in Sources */,
 				9BD9BE2520E375A400CCFEA6 /* RecordDurationLabel.swift in Sources */,
 				9B1E939B20C8D8F700AC4FED /* Route.swift in Sources */,
@@ -883,6 +906,7 @@
 				9BD9BE2320E375A400CCFEA6 /* ImagePickerLayout.swift in Sources */,
 				9B94F41220DB309200313543 /* KCKeyboardImagePickerController.swift in Sources */,
 				9BD9BE4220E38D1000CCFEA6 /* ComposeView.swift in Sources */,
+				9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */,
 				9BD9BE2C20E375A400CCFEA6 /* Miscellaneous.swift in Sources */,
 				9BF5B468209989F6006CF2D3 /* TagView.swift in Sources */,
 				9BD9BE3220E375A400CCFEA6 /* VideoCameraCell.swift in Sources */,

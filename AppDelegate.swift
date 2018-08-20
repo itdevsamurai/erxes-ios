@@ -28,9 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
 //        UINavigationBar.appearance().barTintColor = nil
-        var backImage = #imageLiteral(resourceName: "ic_back")
-        backImage = backImage.withRenderingMode(.alwaysTemplate)
-        backImage.tint(with: Constants.ERXES_COLOR!)
+        var backImage = UIImage.erxes(with: .leftarrow, textColor: Constants.ERXES_COLOR!)
         UINavigationBar.appearance().tintColor = Constants.ERXES_COLOR
         UINavigationBar.appearance().backIndicatorImage = backImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage

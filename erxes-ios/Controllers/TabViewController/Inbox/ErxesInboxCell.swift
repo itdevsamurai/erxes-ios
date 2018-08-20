@@ -196,33 +196,33 @@ class ErxesInboxCell: UITableViewCell {
     func setIcon(type: integrationKind) {
         switch type {
         case .messenger:
-            iconView.image = #imageLiteral(resourceName: "messenger")
+//            iconView.image = #imageLiteral(resourceName: "messenger")
+            iconView.image = UIImage.erxes(with: .facebookmessengerlogo, textColor: Constants.FB_COLOR)
             circleView.backgroundColor = Constants.FB_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
-            iconView.tintColor = .white
+            
         case .form:
-            iconView.image = #imageLiteral(resourceName: "form")
-            circleView.backgroundColor = UIColor(red: 248 / 255, green: 208 / 255, blue: 94 / 255, alpha: 1.0)
+            iconView.image = UIImage.erxes(with: .file, textColor: Constants.FB_COLOR)
+            circleView.backgroundColor =   UIColor.init(hexString: "60d2d6")
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
-            iconView.tintColor = .white
         case .feed:
-            iconView.image = #imageLiteral(resourceName: "feed")
+            iconView.image = UIImage.erxes(with: .facebooklogo, textColor: Constants.FB_COLOR)
             circleView.backgroundColor = Constants.FB_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
-            iconView.tintColor = .white
         case .user:
-            iconView.image = #imageLiteral(resourceName: "notuser")
+            iconView.image = UIImage.erxes(with: .chat, textColor: Constants.ERXES_COLOR!)
             circleView.backgroundColor = Constants.ERXES_COLOR!
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
-            iconView.tintColor = .white
-            avatar.backgroundColor = UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0)
+            avatar.backgroundColor =  UIColor.init(hexString: "60d2d6")
             
         case .notuser:
-            iconView.image = #imageLiteral(resourceName: "user")
+//            iconView.image = #imageLiteral(resourceName: "user")
+            iconView.image = UIImage.erxes(with: .speechbubble2, textColor: Constants.ERXES_COLOR!)
             circleView.backgroundColor = Constants.ERXES_COLOR!
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
-            iconView.tintColor = .white
+           
         }
+        iconView.tintColor = .white
     }
 
 }
