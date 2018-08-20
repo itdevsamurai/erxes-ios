@@ -266,3 +266,25 @@ extension Array {
         return self.filter({$0 as? T == obj}).count > 0
     }
 }
+
+public extension UIFont {
+    enum FontType: String {
+        case black = "Montserrat-Black"
+        case bold = "Montserrat-Bold"
+        case extrabold = "Montserrat-ExtraBold"
+        case hairline = "Montserrat-Hairline"
+        case light = "Montserrat-Light"
+        case regular = "Montserrat-Regular"
+        case semibold = "Montserrat-SemiBold"
+        case thin = "Montserrat-Thin"
+        case ultralight = "Montserrat-UltraLight"
+        case medium = "Montserrat-Medium"
+    }
+    
+    public class func fontWith(type:FontType, size:CGFloat)->UIFont{
+        return UIFont(name:type.rawValue, size: size)!
+    }
+    
+}
+
+

@@ -237,8 +237,7 @@ extension FilterController:UITableViewDataSource {
         titleLabel.frame = headerView.frame
         
         titleLabel.textColor = Constants.ERXES_COLOR!
-        titleLabel.font = Constants.LIGHT
-//        titleLabel.text = "asd"
+        titleLabel.font = UIFont.fontWith(type: .light, size: 14)
         headerView.addSubview(titleLabel)
         titleLabel.text = self.sections[section]
         return headerView
