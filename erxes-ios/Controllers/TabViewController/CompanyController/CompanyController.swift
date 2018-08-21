@@ -91,7 +91,7 @@ class CompanyController: FormViewController {
     }
     
     func configureViews() {
-        
+        self.view.backgroundColor = .white
         let rightItem: UIBarButtonItem = {
             var rightImage = #imageLiteral(resourceName: "ic_edit")
             var saveImage = #imageLiteral(resourceName: "ic_saveCustomer")

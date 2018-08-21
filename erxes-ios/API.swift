@@ -3221,252 +3221,6 @@ public final class CompaniesQuery: GraphQLQuery {
   }
 }
 
-public final class FieldsGroupsQuery: GraphQLQuery {
-  public static let operationString =
-    "query FieldsGroups($contentType: String) {\n  fieldsGroups(contentType: $contentType) {\n    __typename\n    _id\n    name\n    contentType\n    order\n    description\n    isVisible\n    fields {\n      __typename\n      type\n      validation\n      text\n      description\n      options\n      isRequired\n      order\n      isVisible\n    }\n  }\n}"
-
-  public var contentType: String?
-
-  public init(contentType: String? = nil) {
-    self.contentType = contentType
-  }
-
-  public var variables: GraphQLMap? {
-    return ["contentType": contentType]
-  }
-
-  public struct Data: GraphQLSelectionSet {
-    public static let possibleTypes = ["Query"]
-
-    public static let selections: [GraphQLSelection] = [
-      GraphQLField("fieldsGroups", arguments: ["contentType": GraphQLVariable("contentType")], type: .list(.object(FieldsGroup.selections))),
-    ]
-
-    public var snapshot: Snapshot
-
-    public init(snapshot: Snapshot) {
-      self.snapshot = snapshot
-    }
-
-    public init(fieldsGroups: [FieldsGroup?]? = nil) {
-      self.init(snapshot: ["__typename": "Query", "fieldsGroups": fieldsGroups.flatMap { (value: [FieldsGroup?]) -> [Snapshot?] in value.map { (value: FieldsGroup?) -> Snapshot? in value.flatMap { (value: FieldsGroup) -> Snapshot in value.snapshot } } }])
-    }
-
-    public var fieldsGroups: [FieldsGroup?]? {
-      get {
-        return (snapshot["fieldsGroups"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [FieldsGroup?] in value.map { (value: Snapshot?) -> FieldsGroup? in value.flatMap { (value: Snapshot) -> FieldsGroup in FieldsGroup(snapshot: value) } } }
-      }
-      set {
-        snapshot.updateValue(newValue.flatMap { (value: [FieldsGroup?]) -> [Snapshot?] in value.map { (value: FieldsGroup?) -> Snapshot? in value.flatMap { (value: FieldsGroup) -> Snapshot in value.snapshot } } }, forKey: "fieldsGroups")
-      }
-    }
-
-    public struct FieldsGroup: GraphQLSelectionSet {
-      public static let possibleTypes = ["FieldsGroup"]
-
-      public static let selections: [GraphQLSelection] = [
-        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("_id", type: .nonNull(.scalar(String.self))),
-        GraphQLField("name", type: .scalar(String.self)),
-        GraphQLField("contentType", type: .scalar(String.self)),
-        GraphQLField("order", type: .scalar(Int.self)),
-        GraphQLField("description", type: .scalar(String.self)),
-        GraphQLField("isVisible", type: .scalar(Bool.self)),
-        GraphQLField("fields", type: .list(.object(Field.selections))),
-      ]
-
-      public var snapshot: Snapshot
-
-      public init(snapshot: Snapshot) {
-        self.snapshot = snapshot
-      }
-
-      public init(id: String, name: String? = nil, contentType: String? = nil, order: Int? = nil, description: String? = nil, isVisible: Bool? = nil, fields: [Field?]? = nil) {
-        self.init(snapshot: ["__typename": "FieldsGroup", "_id": id, "name": name, "contentType": contentType, "order": order, "description": description, "isVisible": isVisible, "fields": fields.flatMap { (value: [Field?]) -> [Snapshot?] in value.map { (value: Field?) -> Snapshot? in value.flatMap { (value: Field) -> Snapshot in value.snapshot } } }])
-      }
-
-      public var __typename: String {
-        get {
-          return snapshot["__typename"]! as! String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var id: String {
-        get {
-          return snapshot["_id"]! as! String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "_id")
-        }
-      }
-
-      public var name: String? {
-        get {
-          return snapshot["name"] as? String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "name")
-        }
-      }
-
-      public var contentType: String? {
-        get {
-          return snapshot["contentType"] as? String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "contentType")
-        }
-      }
-
-      public var order: Int? {
-        get {
-          return snapshot["order"] as? Int
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "order")
-        }
-      }
-
-      public var description: String? {
-        get {
-          return snapshot["description"] as? String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "description")
-        }
-      }
-
-      public var isVisible: Bool? {
-        get {
-          return snapshot["isVisible"] as? Bool
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "isVisible")
-        }
-      }
-
-      public var fields: [Field?]? {
-        get {
-          return (snapshot["fields"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Field?] in value.map { (value: Snapshot?) -> Field? in value.flatMap { (value: Snapshot) -> Field in Field(snapshot: value) } } }
-        }
-        set {
-          snapshot.updateValue(newValue.flatMap { (value: [Field?]) -> [Snapshot?] in value.map { (value: Field?) -> Snapshot? in value.flatMap { (value: Field) -> Snapshot in value.snapshot } } }, forKey: "fields")
-        }
-      }
-
-      public struct Field: GraphQLSelectionSet {
-        public static let possibleTypes = ["Field"]
-
-        public static let selections: [GraphQLSelection] = [
-          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("type", type: .scalar(String.self)),
-          GraphQLField("validation", type: .scalar(String.self)),
-          GraphQLField("text", type: .scalar(String.self)),
-          GraphQLField("description", type: .scalar(String.self)),
-          GraphQLField("options", type: .list(.scalar(String.self))),
-          GraphQLField("isRequired", type: .scalar(Bool.self)),
-          GraphQLField("order", type: .scalar(Int.self)),
-          GraphQLField("isVisible", type: .scalar(Bool.self)),
-        ]
-
-        public var snapshot: Snapshot
-
-        public init(snapshot: Snapshot) {
-          self.snapshot = snapshot
-        }
-
-        public init(type: String? = nil, validation: String? = nil, text: String? = nil, description: String? = nil, options: [String?]? = nil, isRequired: Bool? = nil, order: Int? = nil, isVisible: Bool? = nil) {
-          self.init(snapshot: ["__typename": "Field", "type": type, "validation": validation, "text": text, "description": description, "options": options, "isRequired": isRequired, "order": order, "isVisible": isVisible])
-        }
-
-        public var __typename: String {
-          get {
-            return snapshot["__typename"]! as! String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "__typename")
-          }
-        }
-
-        public var type: String? {
-          get {
-            return snapshot["type"] as? String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "type")
-          }
-        }
-
-        public var validation: String? {
-          get {
-            return snapshot["validation"] as? String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "validation")
-          }
-        }
-
-        public var text: String? {
-          get {
-            return snapshot["text"] as? String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "text")
-          }
-        }
-
-        public var description: String? {
-          get {
-            return snapshot["description"] as? String
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "description")
-          }
-        }
-
-        public var options: [String?]? {
-          get {
-            return snapshot["options"] as? [String?]
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "options")
-          }
-        }
-
-        public var isRequired: Bool? {
-          get {
-            return snapshot["isRequired"] as? Bool
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "isRequired")
-          }
-        }
-
-        public var order: Int? {
-          get {
-            return snapshot["order"] as? Int
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "order")
-          }
-        }
-
-        public var isVisible: Bool? {
-          get {
-            return snapshot["isVisible"] as? Bool
-          }
-          set {
-            snapshot.updateValue(newValue, forKey: "isVisible")
-          }
-        }
-      }
-    }
-  }
-}
-
 public final class CustomerDetailQuery: GraphQLQuery {
   public static let operationString =
     "query customerDetail($_id: String!) {\n  customerDetail(_id: $_id) {\n    __typename\n    ...CustomerInfo\n  }\n}"
@@ -4551,6 +4305,297 @@ public final class CustomersEditMutation: GraphQLMutation {
           }
           set {
             snapshot.updateValue(newValue, forKey: "website")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class FieldsGroupsQuery: GraphQLQuery {
+  public static let operationString =
+    "query fieldsGroups($contentType: String!) {\n  fieldsGroups(contentType: $contentType) {\n    __typename\n    ...FieldGroup\n  }\n}"
+
+  public static var requestString: String { return operationString.appending(FieldGroup.fragmentString) }
+
+  public var contentType: String
+
+  public init(contentType: String) {
+    self.contentType = contentType
+  }
+
+  public var variables: GraphQLMap? {
+    return ["contentType": contentType]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("fieldsGroups", arguments: ["contentType": GraphQLVariable("contentType")], type: .list(.object(FieldsGroup.selections))),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(fieldsGroups: [FieldsGroup?]? = nil) {
+      self.init(snapshot: ["__typename": "Query", "fieldsGroups": fieldsGroups.flatMap { (value: [FieldsGroup?]) -> [Snapshot?] in value.map { (value: FieldsGroup?) -> Snapshot? in value.flatMap { (value: FieldsGroup) -> Snapshot in value.snapshot } } }])
+    }
+
+    public var fieldsGroups: [FieldsGroup?]? {
+      get {
+        return (snapshot["fieldsGroups"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [FieldsGroup?] in value.map { (value: Snapshot?) -> FieldsGroup? in value.flatMap { (value: Snapshot) -> FieldsGroup in FieldsGroup(snapshot: value) } } }
+      }
+      set {
+        snapshot.updateValue(newValue.flatMap { (value: [FieldsGroup?]) -> [Snapshot?] in value.map { (value: FieldsGroup?) -> Snapshot? in value.flatMap { (value: FieldsGroup) -> Snapshot in value.snapshot } } }, forKey: "fieldsGroups")
+      }
+    }
+
+    public struct FieldsGroup: GraphQLSelectionSet {
+      public static let possibleTypes = ["FieldsGroup"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("_id", type: .nonNull(.scalar(String.self))),
+        GraphQLField("name", type: .scalar(String.self)),
+        GraphQLField("description", type: .scalar(String.self)),
+        GraphQLField("order", type: .scalar(Int.self)),
+        GraphQLField("isVisible", type: .scalar(Bool.self)),
+        GraphQLField("isDefinedByErxes", type: .scalar(Bool.self)),
+        GraphQLField("fields", type: .list(.object(Field.selections))),
+      ]
+
+      public var snapshot: Snapshot
+
+      public init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+      }
+
+      public init(id: String, name: String? = nil, description: String? = nil, order: Int? = nil, isVisible: Bool? = nil, isDefinedByErxes: Bool? = nil, fields: [Field?]? = nil) {
+        self.init(snapshot: ["__typename": "FieldsGroup", "_id": id, "name": name, "description": description, "order": order, "isVisible": isVisible, "isDefinedByErxes": isDefinedByErxes, "fields": fields.flatMap { (value: [Field?]) -> [Snapshot?] in value.map { (value: Field?) -> Snapshot? in value.flatMap { (value: Field) -> Snapshot in value.snapshot } } }])
+      }
+
+      public var __typename: String {
+        get {
+          return snapshot["__typename"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: String {
+        get {
+          return snapshot["_id"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "_id")
+        }
+      }
+
+      public var name: String? {
+        get {
+          return snapshot["name"] as? String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "name")
+        }
+      }
+
+      public var description: String? {
+        get {
+          return snapshot["description"] as? String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "description")
+        }
+      }
+
+      public var order: Int? {
+        get {
+          return snapshot["order"] as? Int
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "order")
+        }
+      }
+
+      public var isVisible: Bool? {
+        get {
+          return snapshot["isVisible"] as? Bool
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "isVisible")
+        }
+      }
+
+      public var isDefinedByErxes: Bool? {
+        get {
+          return snapshot["isDefinedByErxes"] as? Bool
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "isDefinedByErxes")
+        }
+      }
+
+      public var fields: [Field?]? {
+        get {
+          return (snapshot["fields"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Field?] in value.map { (value: Snapshot?) -> Field? in value.flatMap { (value: Snapshot) -> Field in Field(snapshot: value) } } }
+        }
+        set {
+          snapshot.updateValue(newValue.flatMap { (value: [Field?]) -> [Snapshot?] in value.map { (value: Field?) -> Snapshot? in value.flatMap { (value: Field) -> Snapshot in value.snapshot } } }, forKey: "fields")
+        }
+      }
+
+      public var fragments: Fragments {
+        get {
+          return Fragments(snapshot: snapshot)
+        }
+        set {
+          snapshot += newValue.snapshot
+        }
+      }
+
+      public struct Fragments {
+        public var snapshot: Snapshot
+
+        public var fieldGroup: FieldGroup {
+          get {
+            return FieldGroup(snapshot: snapshot)
+          }
+          set {
+            snapshot += newValue.snapshot
+          }
+        }
+      }
+
+      public struct Field: GraphQLSelectionSet {
+        public static let possibleTypes = ["Field"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("_id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("contentType", type: .nonNull(.scalar(String.self))),
+          GraphQLField("type", type: .scalar(String.self)),
+          GraphQLField("text", type: .scalar(String.self)),
+          GraphQLField("isVisible", type: .scalar(Bool.self)),
+          GraphQLField("validation", type: .scalar(String.self)),
+          GraphQLField("order", type: .scalar(Int.self)),
+          GraphQLField("options", type: .list(.scalar(String.self))),
+          GraphQLField("groupId", type: .scalar(String.self)),
+          GraphQLField("description", type: .scalar(String.self)),
+        ]
+
+        public var snapshot: Snapshot
+
+        public init(snapshot: Snapshot) {
+          self.snapshot = snapshot
+        }
+
+        public init(id: String, contentType: String, type: String? = nil, text: String? = nil, isVisible: Bool? = nil, validation: String? = nil, order: Int? = nil, options: [String?]? = nil, groupId: String? = nil, description: String? = nil) {
+          self.init(snapshot: ["__typename": "Field", "_id": id, "contentType": contentType, "type": type, "text": text, "isVisible": isVisible, "validation": validation, "order": order, "options": options, "groupId": groupId, "description": description])
+        }
+
+        public var __typename: String {
+          get {
+            return snapshot["__typename"]! as! String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var id: String {
+          get {
+            return snapshot["_id"]! as! String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "_id")
+          }
+        }
+
+        public var contentType: String {
+          get {
+            return snapshot["contentType"]! as! String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "contentType")
+          }
+        }
+
+        public var type: String? {
+          get {
+            return snapshot["type"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "type")
+          }
+        }
+
+        public var text: String? {
+          get {
+            return snapshot["text"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "text")
+          }
+        }
+
+        public var isVisible: Bool? {
+          get {
+            return snapshot["isVisible"] as? Bool
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "isVisible")
+          }
+        }
+
+        public var validation: String? {
+          get {
+            return snapshot["validation"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "validation")
+          }
+        }
+
+        public var order: Int? {
+          get {
+            return snapshot["order"] as? Int
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "order")
+          }
+        }
+
+        public var options: [String?]? {
+          get {
+            return snapshot["options"] as? [String?]
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "options")
+          }
+        }
+
+        public var groupId: String? {
+          get {
+            return snapshot["groupId"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "groupId")
+          }
+        }
+
+        public var description: String? {
+          get {
+            return snapshot["description"] as? String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "description")
           }
         }
       }
@@ -8954,6 +8999,233 @@ public struct CustomerInfo: GraphQLFragment {
       }
       set {
         snapshot.updateValue(newValue, forKey: "colorCode")
+      }
+    }
+  }
+}
+
+public struct FieldGroup: GraphQLFragment {
+  public static let fragmentString =
+    "fragment FieldGroup on FieldsGroup {\n  __typename\n  _id\n  name\n  description\n  order\n  isVisible\n  isDefinedByErxes\n  fields {\n    __typename\n    _id\n    contentType\n    type\n    text\n    isVisible\n    validation\n    order\n    options\n    groupId\n    description\n  }\n}"
+
+  public static let possibleTypes = ["FieldsGroup"]
+
+  public static let selections: [GraphQLSelection] = [
+    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+    GraphQLField("_id", type: .nonNull(.scalar(String.self))),
+    GraphQLField("name", type: .scalar(String.self)),
+    GraphQLField("description", type: .scalar(String.self)),
+    GraphQLField("order", type: .scalar(Int.self)),
+    GraphQLField("isVisible", type: .scalar(Bool.self)),
+    GraphQLField("isDefinedByErxes", type: .scalar(Bool.self)),
+    GraphQLField("fields", type: .list(.object(Field.selections))),
+  ]
+
+  public var snapshot: Snapshot
+
+  public init(snapshot: Snapshot) {
+    self.snapshot = snapshot
+  }
+
+  public init(id: String, name: String? = nil, description: String? = nil, order: Int? = nil, isVisible: Bool? = nil, isDefinedByErxes: Bool? = nil, fields: [Field?]? = nil) {
+    self.init(snapshot: ["__typename": "FieldsGroup", "_id": id, "name": name, "description": description, "order": order, "isVisible": isVisible, "isDefinedByErxes": isDefinedByErxes, "fields": fields.flatMap { (value: [Field?]) -> [Snapshot?] in value.map { (value: Field?) -> Snapshot? in value.flatMap { (value: Field) -> Snapshot in value.snapshot } } }])
+  }
+
+  public var __typename: String {
+    get {
+      return snapshot["__typename"]! as! String
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "__typename")
+    }
+  }
+
+  public var id: String {
+    get {
+      return snapshot["_id"]! as! String
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "_id")
+    }
+  }
+
+  public var name: String? {
+    get {
+      return snapshot["name"] as? String
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "name")
+    }
+  }
+
+  public var description: String? {
+    get {
+      return snapshot["description"] as? String
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "description")
+    }
+  }
+
+  public var order: Int? {
+    get {
+      return snapshot["order"] as? Int
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "order")
+    }
+  }
+
+  public var isVisible: Bool? {
+    get {
+      return snapshot["isVisible"] as? Bool
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "isVisible")
+    }
+  }
+
+  public var isDefinedByErxes: Bool? {
+    get {
+      return snapshot["isDefinedByErxes"] as? Bool
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "isDefinedByErxes")
+    }
+  }
+
+  public var fields: [Field?]? {
+    get {
+      return (snapshot["fields"] as? [Snapshot?]).flatMap { (value: [Snapshot?]) -> [Field?] in value.map { (value: Snapshot?) -> Field? in value.flatMap { (value: Snapshot) -> Field in Field(snapshot: value) } } }
+    }
+    set {
+      snapshot.updateValue(newValue.flatMap { (value: [Field?]) -> [Snapshot?] in value.map { (value: Field?) -> Snapshot? in value.flatMap { (value: Field) -> Snapshot in value.snapshot } } }, forKey: "fields")
+    }
+  }
+
+  public struct Field: GraphQLSelectionSet {
+    public static let possibleTypes = ["Field"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+      GraphQLField("_id", type: .nonNull(.scalar(String.self))),
+      GraphQLField("contentType", type: .nonNull(.scalar(String.self))),
+      GraphQLField("type", type: .scalar(String.self)),
+      GraphQLField("text", type: .scalar(String.self)),
+      GraphQLField("isVisible", type: .scalar(Bool.self)),
+      GraphQLField("validation", type: .scalar(String.self)),
+      GraphQLField("order", type: .scalar(Int.self)),
+      GraphQLField("options", type: .list(.scalar(String.self))),
+      GraphQLField("groupId", type: .scalar(String.self)),
+      GraphQLField("description", type: .scalar(String.self)),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(id: String, contentType: String, type: String? = nil, text: String? = nil, isVisible: Bool? = nil, validation: String? = nil, order: Int? = nil, options: [String?]? = nil, groupId: String? = nil, description: String? = nil) {
+      self.init(snapshot: ["__typename": "Field", "_id": id, "contentType": contentType, "type": type, "text": text, "isVisible": isVisible, "validation": validation, "order": order, "options": options, "groupId": groupId, "description": description])
+    }
+
+    public var __typename: String {
+      get {
+        return snapshot["__typename"]! as! String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "__typename")
+      }
+    }
+
+    public var id: String {
+      get {
+        return snapshot["_id"]! as! String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "_id")
+      }
+    }
+
+    public var contentType: String {
+      get {
+        return snapshot["contentType"]! as! String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "contentType")
+      }
+    }
+
+    public var type: String? {
+      get {
+        return snapshot["type"] as? String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "type")
+      }
+    }
+
+    public var text: String? {
+      get {
+        return snapshot["text"] as? String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "text")
+      }
+    }
+
+    public var isVisible: Bool? {
+      get {
+        return snapshot["isVisible"] as? Bool
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "isVisible")
+      }
+    }
+
+    public var validation: String? {
+      get {
+        return snapshot["validation"] as? String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "validation")
+      }
+    }
+
+    public var order: Int? {
+      get {
+        return snapshot["order"] as? Int
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "order")
+      }
+    }
+
+    public var options: [String?]? {
+      get {
+        return snapshot["options"] as? [String?]
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "options")
+      }
+    }
+
+    public var groupId: String? {
+      get {
+        return snapshot["groupId"] as? String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "groupId")
+      }
+    }
+
+    public var description: String? {
+      get {
+        return snapshot["description"] as? String
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "description")
       }
     }
   }

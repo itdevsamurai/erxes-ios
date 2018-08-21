@@ -8,7 +8,7 @@ fragment CustomerInfo on Customer {
     _id
     integration {
         kind
-        __typename
+        
         brand{
             name
         }
@@ -41,20 +41,20 @@ fragment CustomerInfo on Customer {
         github
         youtube
         website
-        __typename
+        
     }
     owner {
         details {
             fullName
-            __typename
+            
         }
-        __typename
+        
     }
     companies {
         _id
         name
         website
-        __typename
+        
         industry
     }
     messengerData
@@ -62,9 +62,9 @@ fragment CustomerInfo on Customer {
         _id
         name
         colorCode
-        __typename
+        
     }
-    __typename
+    
 }
 
 mutation customersEdit($_id: String!, $firstName: String, $lastName: String, $email: String, $phone: String, $ownerId: String, $position: String, $department: String, $leadStatus: String, $lifecycleState: String, $hasAuthority: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
@@ -88,10 +88,38 @@ customersEdit(_id: $_id, firstName: $firstName, lastName: $lastName, email: $ema
         github
         youtube
         website
-        __typename
+        
     }
-    __typename
+    
 }
 }
 
+query fieldsGroups($contentType: String!) {
+fieldsGroups(contentType: $contentType) {
+    ...FieldGroup
+    
+}
+}
+
+fragment FieldGroup on FieldsGroup {
+    _id
+    name
+    description
+    order
+    isVisible
+    isDefinedByErxes
+    fields {
+        _id
+        contentType
+        type
+        text
+        isVisible
+        validation
+        order
+        options
+        groupId
+        description
+        
+    }
+}
 

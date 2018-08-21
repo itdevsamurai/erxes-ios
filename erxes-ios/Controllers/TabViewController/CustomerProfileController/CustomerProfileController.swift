@@ -33,6 +33,8 @@ class CustomerProfileController: FormViewController {
 
         }
     }
+    
+    var fieldGroups = [FieldGroup]()
 
     var users = [UserData]() {
         didSet {
@@ -45,11 +47,46 @@ class CustomerProfileController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Customer"
+        
         self.configureViews()
+        self.getFields()
         self.getCustomerData()
+        self.getCompanies()
+        self.getUsers()
+        
         // Do any additional setup after loading the view.
     }
-
+    
+    
+    func getFields(){
+        loader.startAnimating()
+        let query = FieldsGroupsQuery(contentType: "customer")
+        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+            
+           
+                if result?.data != nil {
+                    if let resultData = result?.data?.fieldsGroups {
+                        self?.fieldGroups = resultData.map { ($0?.fragments.fieldGroup)! }
+                        self?.loader.stopAnimating()
+                    }
+                }
+            }
+        
+    }
+    
     func getCustomerData() {
         loader.startAnimating()
         let query = CustomerDetailQuery(_id: self.customerId!)
@@ -71,246 +108,283 @@ class CustomerProfileController: FormViewController {
             if result?.data != nil {
                 if let result = result?.data?.customerDetail?.fragments.customerInfo {
                     self?.buildForm(customer: result)
+                    
                     self?.loader.stopAnimating()
 
                 }
             }
         }
     }
-
-    func buildForm(customer: CustomerInfo) {
-
-        form +++ Section("PROFILE")
-        <<< NameRow("firstName") { row in
-            row.title = "First Name:"
-            row.placeholder = "-"
-            if (customer.firstName != nil) {
-                row.value = customer.firstName
-            }
-        }.cellSetup({ (cell, row) in
-            cell.textField.textColor = Constants.ERXES_COLOR
-            cell.textField.font = Constants.LIGHT
-        })
-        <<< NameRow("lastName") { row in
-            row.title = "Last Name:"
-            row.placeholder = "-"
-            if (customer.lastName != nil) {
-                row.value = customer.lastName
-            }
-        }
-        <<< EmailRow("email") { row in
-            row.title = "Email:"
-            row.placeholder = "-"
-            if (customer.email != nil) {
-                row.value = customer.email
-            }
-        }
-        <<< PhoneRow("phone") {
-            $0.title = "Phone:"
-            $0.placeholder = "-"
-            if (customer.phone != nil) {
-                $0.value = customer.phone
-            }
-        }
-        <<< PushRow<UserData>("owner") {
-            $0.title = "Owner:"
-
-            if customer.owner != nil {
-
-            }
-            }.onPresent { from, to in
-                to.title = "Users"
-                to.view.backgroundColor = Constants.INBOX_BG_COLOR
-                to.tableView.backgroundColor = .clear
-                to.tableView.snp.makeConstraints({ (make) in
-                    make.width.right.left.bottom.equalToSuperview()
-                    make.top.equalTo(to.topLayoutGuide.snp.bottom)
-                })
-                to.view.layoutSubviews()
-            }
-        <<< TextRow("position") {
-            $0.title = "Position:"
-            $0.placeholder = "-"
-            if customer.position != nil {
-                $0.value = customer.position
-            }
-        }
-        <<< TextRow("department") {
-            $0.title = "Department:"
-            $0.placeholder = "-"
-            if customer.department != nil {
-                $0.value = customer.department
-            }
-        }
-        <<< TextRow("leadStatus") {
-            $0.title = "Lead status:"
-            $0.placeholder = "-"
-            if customer.leadStatus != nil {
-                $0.value = customer.leadStatus
-            }
-        }
-        <<< TextRow("lifecycle") {
-            $0.title = "Lifecycle State:"
-            $0.placeholder = "-"
-            if customer.lifecycleState != nil {
-                $0.value = customer.lifecycleState
-            }
-        }
-        <<< SwitchRow("hasAuthority") {
-            $0.title = "Has Authority:"
-
-            if customer.hasAuthority == nil {
-                $0.value = false
-            } else if customer.hasAuthority == "true" {
-                $0.value = true
-            } else {
-                $0.value = false
-            }
-
-        }
-        <<< TextRow("description") {
-            $0.title = "Description:"
-            $0.placeholder = "-"
-            if customer.description != nil {
-                $0.value = customer.description
-            }
-        }
-        <<< SwitchRow("doNotDisturb") {
-            $0.title = "Do not disturb:"
-            if customer.doNotDisturb != nil {
-                if customer.doNotDisturb == "true" {
-                    $0.value = true
-                } else {
-                    $0.value = false
-                }
-            } else {
-                $0.value = false
-            }
-        }
-            +++ Section("CONVERSATION DETAILS")
-        <<< TextRow() {
-            $0.title = "Opened:"
-            $0.placeholder = "-"
-            let conversation = customer.conversations![0]
-            let date = conversation?.createdAt?.dateFromUnixTime()
-            $0.value = date?.stringFromDate()
-            $0.disabled = true
-        }
-        <<< TextRow() {
-            $0.title = "Channels:"
-            $0.disabled = true
-            $0.placeholder = "-"
-            let channels = customer.integration?.channels
-            if channels?.count != 0 {
-                if channels?.count == 1 {
-                    $0.value = channels![0]?.name
-                } else {
-                    var str = ""
-                    for ch in channels! {
-                        str.append((ch?.name)! + " ")
-                    }
-                    $0.value = str
-                }
-            }
-
-        }
-        <<< TextRow() {
-            $0.title = "Brand:"
-            $0.disabled = true
-            $0.placeholder = "-"
-            if customer.integration?.brand != nil {
-                $0.value = customer.integration?.brand?.name
-            }
-        }
-        <<< TextRow() {
-            $0.title = "Integration:"
-            $0.disabled = true
-            $0.placeholder = "-"
-            if customer.integration != nil {
-                $0.value = customer.integration?.kind
-            }
-        }
-        <<< IntRow() {
-            $0.title = "Conversations:"
-            $0.disabled = true
-            $0.placeholder = "-"
-            $0.value = self.messagesCount
+    
+    func buildForm(customer:CustomerInfo){
+       
+        for group in fieldGroups {
             
-        }
-            +++ Section("CONTACT INFORMATION")
-        <<< DateRow() {
-            $0.title = "Close Date"
-//                $0.value = Date(timeIntervalSinceReferenceDate: 0)
-
-        }
-        <<< TextRow() {
-            $0.title = "Industry:"
-            $0.placeholder = "-"
-            if customer.companies?.count != 0 {
-                $0.value = customer.companies![0]?.industry
+           form +++ Section(group.name!)
+            
+            let sorted = group.fields?.sorted { obj1, obj2 in
+                (obj1?.order)! < (obj2?.order)!
             }
-
-        }
-        <<< ActionSheetRow<String>() {
-            $0.title = "Persona:"
-            $0.selectorTitle = "Select a value"
-            $0.options = ["Trailblazer", "Leader", "Follower", "Laggard", "Astray"]
-            $0.value = "Trailblazer"
-
-        }
-            +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "COMPANIES", { (section) in
-                section.addButtonProvider = { s in
-                    return ButtonRow() { row in
-                        row.title = "Add a company"
-
+            for field in sorted! {
+                if field?.type == "firstName" {
+                    form.last!
+                        <<< NameRow (field?.text) { row in
+                            row.title = field?.text
+                            row.value = customer.firstName
+                    }
+                }else if field?.type == "lastName" {
+                    form.last!
+                        <<< NameRow (field?.text) { row in
+                            row.title = field?.text
+                            row.value = customer.lastName
+                    }
+                }else if field?.text == "Annual revenue" {
+                    form.last!
+                        <<< DecimalRow (field?.text) { row in
+                            row.title = field?.text
                     }
                 }
-                section.multivaluedRowToInsertAt = { index in
-                    return SuggestionTableRow<CompanyDetail>() { row in
-
-                    }
-                }
-
-            })
-
-
-//            +++ Section("DEALS")
-//            <<< TextRow() {
-//                $0.placeholder = "-"
-//            }
-        +++ Section("MESSENGER USAGE")
-        <<< TextRow() {
-            $0.title = "Status:"
-            if customer.conversations![0]?.status != nil {
-                $0.value = customer.conversations![0]?.status
-            }
-        }
-        <<< TextRow() {
-            $0.title = "Last online:"
-            $0.placeholder = "-"
-            if customer.conversations![0]?.updatedAt != nil {
-                $0.value = customer.conversations![0]?.updatedAt?.dateFromUnixTime().stringFromDate()
-            }
-        }
-
-            +++ Section("TAGS")
-        <<< TextRow() {
-            if customer.getTags != nil {
-                let tags = customer.getTags
-
-                for tag in tags! {
-                    $0.title?.append((tag?.name)! + " ")
-                }
+                print(field?.order)
+                print(field?.text , " = " ,field?.type!)
+                
 
             }
-        }
-        self.getCompanies()
-        self.getUsers()
-        for row in form.allRows {
-            row.baseCell.alpha = 0.7
-            row.baseCell.isUserInteractionEnabled = false
         }
     }
+
+//    func buildForm(customer: CustomerInfo) {
+//
+//        form +++ Section("PROFILE")
+//        <<< NameRow("firstName") { row in
+//            row.title = "First Name:"
+//            row.placeholder = "-"
+//            if (customer.firstName != nil) {
+//                row.value = customer.firstName
+//            }
+//        }.cellSetup({ (cell, row) in
+//            cell.textField.textColor = Constants.ERXES_COLOR
+//            cell.textField.font = Constants.LIGHT
+//        })
+//        <<< NameRow("lastName") { row in
+//            row.title = "Last Name:"
+//            row.placeholder = "-"
+//            if (customer.lastName != nil) {
+//                row.value = customer.lastName
+//            }
+//        }
+//        <<< EmailRow("email") { row in
+//            row.title = "Email:"
+//            row.placeholder = "-"
+//            if (customer.email != nil) {
+//                row.value = customer.email
+//            }
+//        }
+//        <<< PhoneRow("phone") {
+//            $0.title = "Phone:"
+//            $0.placeholder = "-"
+//            if (customer.phone != nil) {
+//                $0.value = customer.phone
+//            }
+//        }
+//        <<< PushRow<UserData>("owner") {
+//            $0.title = "Owner:"
+//
+//            if customer.owner != nil {
+//
+//            }
+//            }.onPresent { from, to in
+//                to.title = "Users"
+//                to.view.backgroundColor = Constants.INBOX_BG_COLOR
+//                to.tableView.backgroundColor = .clear
+//                to.tableView.snp.makeConstraints({ (make) in
+//                    make.width.right.left.bottom.equalToSuperview()
+//                    make.top.equalTo(to.topLayoutGuide.snp.bottom)
+//                })
+//                to.view.layoutSubviews()
+//            }
+//        <<< TextRow("position") {
+//            $0.title = "Position:"
+//            $0.placeholder = "-"
+//            if customer.position != nil {
+//                $0.value = customer.position
+//            }
+//        }
+//        <<< TextRow("department") {
+//            $0.title = "Department:"
+//            $0.placeholder = "-"
+//            if customer.department != nil {
+//                $0.value = customer.department
+//            }
+//        }
+//        <<< TextRow("leadStatus") {
+//            $0.title = "Lead status:"
+//            $0.placeholder = "-"
+//            if customer.leadStatus != nil {
+//                $0.value = customer.leadStatus
+//            }
+//        }
+//        <<< TextRow("lifecycle") {
+//            $0.title = "Lifecycle State:"
+//            $0.placeholder = "-"
+//            if customer.lifecycleState != nil {
+//                $0.value = customer.lifecycleState
+//            }
+//        }
+//        <<< SwitchRow("hasAuthority") {
+//            $0.title = "Has Authority:"
+//
+//            if customer.hasAuthority == nil {
+//                $0.value = false
+//            } else if customer.hasAuthority == "true" {
+//                $0.value = true
+//            } else {
+//                $0.value = false
+//            }
+//
+//        }
+//        <<< TextRow("description") {
+//            $0.title = "Description:"
+//            $0.placeholder = "-"
+//            if customer.description != nil {
+//                $0.value = customer.description
+//            }
+//        }
+//        <<< SwitchRow("doNotDisturb") {
+//            $0.title = "Do not disturb:"
+//            if customer.doNotDisturb != nil {
+//                if customer.doNotDisturb == "true" {
+//                    $0.value = true
+//                } else {
+//                    $0.value = false
+//                }
+//            } else {
+//                $0.value = false
+//            }
+//        }
+//            +++ Section("CONVERSATION DETAILS")
+//        <<< TextRow() {
+//            $0.title = "Opened:"
+//            $0.placeholder = "-"
+//            let conversation = customer.conversations![0]
+//            let date = conversation?.createdAt?.dateFromUnixTime()
+//            $0.value = date?.stringFromDate()
+//            $0.disabled = true
+//        }
+//        <<< TextRow() {
+//            $0.title = "Channels:"
+//            $0.disabled = true
+//            $0.placeholder = "-"
+//            let channels = customer.integration?.channels
+//            if channels?.count != 0 {
+//                if channels?.count == 1 {
+//                    $0.value = channels![0]?.name
+//                } else {
+//                    var str = ""
+//                    for ch in channels! {
+//                        str.append((ch?.name)! + " ")
+//                    }
+//                    $0.value = str
+//                }
+//            }
+//
+//        }
+//        <<< TextRow() {
+//            $0.title = "Brand:"
+//            $0.disabled = true
+//            $0.placeholder = "-"
+//            if customer.integration?.brand != nil {
+//                $0.value = customer.integration?.brand?.name
+//            }
+//        }
+//        <<< TextRow() {
+//            $0.title = "Integration:"
+//            $0.disabled = true
+//            $0.placeholder = "-"
+//            if customer.integration != nil {
+//                $0.value = customer.integration?.kind
+//            }
+//        }
+//        <<< IntRow() {
+//            $0.title = "Conversations:"
+//            $0.disabled = true
+//            $0.placeholder = "-"
+//            $0.value = self.messagesCount
+//
+//        }
+//            +++ Section("CONTACT INFORMATION")
+//        <<< DateRow() {
+//            $0.title = "Close Date"
+////                $0.value = Date(timeIntervalSinceReferenceDate: 0)
+//
+//        }
+//        <<< TextRow() {
+//            $0.title = "Industry:"
+//            $0.placeholder = "-"
+//            if customer.companies?.count != 0 {
+//                $0.value = customer.companies![0]?.industry
+//            }
+//
+//        }
+//        <<< ActionSheetRow<String>() {
+//            $0.title = "Persona:"
+//            $0.selectorTitle = "Select a value"
+//            $0.options = ["Trailblazer", "Leader", "Follower", "Laggard", "Astray"]
+//            $0.value = "Trailblazer"
+//
+//        }
+//            +++ MultivaluedSection(multivaluedOptions: [.Insert, .Delete], header: "COMPANIES", { (section) in
+//                section.addButtonProvider = { s in
+//                    return ButtonRow() { row in
+//                        row.title = "Add a company"
+//
+//                    }
+//                }
+//                section.multivaluedRowToInsertAt = { index in
+//                    return SuggestionTableRow<CompanyDetail>() { row in
+//
+//                    }
+//                }
+//
+//            })
+//
+//
+////            +++ Section("DEALS")
+////            <<< TextRow() {
+////                $0.placeholder = "-"
+////            }
+//        +++ Section("MESSENGER USAGE")
+//        <<< TextRow() {
+//            $0.title = "Status:"
+//            if customer.conversations![0]?.status != nil {
+//                $0.value = customer.conversations![0]?.status
+//            }
+//        }
+//        <<< TextRow() {
+//            $0.title = "Last online:"
+//            $0.placeholder = "-"
+//            if customer.conversations![0]?.updatedAt != nil {
+//                $0.value = customer.conversations![0]?.updatedAt?.dateFromUnixTime().stringFromDate()
+//            }
+//        }
+//
+//            +++ Section("TAGS")
+//        <<< TextRow() {
+//            if customer.getTags != nil {
+//                let tags = customer.getTags
+//
+//                for tag in tags! {
+//                    $0.title?.append((tag?.name)! + " ")
+//                }
+//
+//            }
+//        }
+//        self.getCompanies()
+//        self.getUsers()
+//        for row in form.allRows {
+//            row.baseCell.alpha = 0.7
+//            row.baseCell.isUserInteractionEnabled = false
+//        }
+//    }
 
 
     func getCompanies() {
@@ -518,6 +592,10 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.textColor = Constants.ERXES_COLOR
 
         }
+        
+        DecimalRow.defaultCellUpdate = { cell, row  in
+//            cell.textLabel?.font = UIFont.fontWith
+        }
 
         PushRow<UserData>.defaultCellUpdate = { cell, row in
             row.options = self.users
@@ -601,4 +679,6 @@ extension CompanyDetail: SuggestionValue {
         return name!
     }
 }
+
+
 

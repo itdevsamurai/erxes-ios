@@ -114,7 +114,6 @@
 		B842CC4C2123E3CC0052E5C9 /* LifecycleState.json in Resources */ = {isa = PBXBuildFile; fileRef = B842CC4B2123E3CC0052E5C9 /* LifecycleState.json */; };
 		B842CC4E2123E3E80052E5C9 /* BusinessType.json in Resources */ = {isa = PBXBuildFile; fileRef = B842CC4D2123E3E80052E5C9 /* BusinessType.json */; };
 		B842CC5021252ABB0052E5C9 /* CompanyController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B842CC4F21252ABB0052E5C9 /* CompanyController.graphql */; };
-		B88B6EAA2121625E00A9B7FF /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */; };
 		B88B6EB12122A2C700A9B7FF /* CompanyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88B6EB02122A2C700A9B7FF /* CompanyController.swift */; };
 		F55583A72077166E00413F6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583A62077166E00413F6A /* AppDelegate.swift */; };
 		F55583AE2077166E00413F6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F55583AD2077166E00413F6A /* Assets.xcassets */; };
@@ -820,7 +819,6 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Apollo/Apollo.framework",
 				"${BUILT_PRODUCTS_DIR}/BetterSegmentedControl/BetterSegmentedControl.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Daysquare/Daysquare.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/IoniconsKit/IoniconsKit.framework",
@@ -839,7 +837,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Apollo.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BetterSegmentedControl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Daysquare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IoniconsKit.framework",
