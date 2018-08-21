@@ -188,7 +188,8 @@ class ContactController: UIViewController {
         loader.startAnimating()
         let query = CompaniesQuery()
         query.perPage = limit
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
