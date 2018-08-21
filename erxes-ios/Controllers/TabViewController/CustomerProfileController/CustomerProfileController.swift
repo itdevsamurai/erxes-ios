@@ -126,26 +126,35 @@ class CustomerProfileController: FormViewController {
                 (obj1?.order)! < (obj2?.order)!
             }
             for field in sorted! {
-                if field?.type == "firstName" {
+                if field?.type == "firstName" || field?.type == "lastName"{
                     form.last!
                         <<< NameRow (field?.text) { row in
                             row.title = field?.text
                             row.value = customer.firstName
                     }
-                }else if field?.type == "lastName" {
+                }else if field?.type == "input" && (field?.validation?.isEmpty)! {
                     form.last!
-                        <<< NameRow (field?.text) { row in
+                        <<< TextRow (field?.text) { row in
                             row.title = field?.text
-                            row.value = customer.lastName
                     }
-                }else if field?.text == "Annual revenue" {
+                }else if field?.type == "input" && field?.validation == "number"{
                     form.last!
-                        <<< DecimalRow (field?.text) { row in
+                        <<< IntRow (field?.text) { row in
+                            row.title = field?.text
+                    }
+                }else if field?.type == "input" && field?.validation == "date" {
+                    form.last!
+                        <<< DateRow (field?.text) { row in
+                            row.title = field?.text
+                    }
+                }else if field?.type == "check" {
+                    form.last!
+                        <<< CheckRow (field?.text) { row in
                             row.title = field?.text
                     }
                 }
                 print(field?.order)
-                print(field?.text , " = " ,field?.type!)
+                print(field?.text , " = " ,field?.type!, " = ", field?.validation, " = ", field?.options)
                 
 
             }
@@ -594,7 +603,11 @@ class CustomerProfileController: FormViewController {
         }
         
         DecimalRow.defaultCellUpdate = { cell, row  in
-//            cell.textLabel?.font = UIFont.fontWith
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+            cell.tintColor = Constants.ERXES_COLOR
+            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+            
         }
 
         PushRow<UserData>.defaultCellUpdate = { cell, row in
