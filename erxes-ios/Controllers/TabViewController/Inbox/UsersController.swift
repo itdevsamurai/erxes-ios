@@ -43,7 +43,7 @@ class UsersController: UIViewController {
         tableView.register(UserCell.self, forCellReuseIdentifier: "UserCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR
+        tableView.separatorColor = Constants.ERXES_COLOR!
         tableView.backgroundColor = .clear
         return tableView
     }()

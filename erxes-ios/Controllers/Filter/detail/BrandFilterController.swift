@@ -48,7 +48,7 @@ class BrandFilterController: UIViewController {
         tableView.register(FilterCell.self, forCellReuseIdentifier: "FilterCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR
+        tableView.separatorColor = Constants.ERXES_COLOR!
         tableView.backgroundColor = .clear
         return tableView
     }()

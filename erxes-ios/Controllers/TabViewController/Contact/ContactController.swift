@@ -47,7 +47,7 @@ class ContactController: UIViewController {
         button.setTitle("Customers", for: .normal)
         button.setTitle("Customers", for: .selected)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = Constants.ERXES_COLOR
+        button.backgroundColor = Constants.ERXES_COLOR!
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button
     }()
@@ -58,7 +58,7 @@ class ContactController: UIViewController {
         button.setTitle("Companies", for: .normal)
         button.setTitle("Companies", for: .selected)
         button.backgroundColor = Constants.INBOX_BG_COLOR
-        button.setTitleColor(Constants.ERXES_COLOR, for: .normal)
+        button.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button
     }()
@@ -69,25 +69,26 @@ class ContactController: UIViewController {
         tableView.rowHeight = 50
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
-        tableView.separatorColor = Constants.ERXES_COLOR
+        tableView.separatorColor = Constants.ERXES_COLOR!
+//        tableView.allowsMultipleSelectionDuringEditing = true
         return tableView
     }()
     
     @objc func toggleButton(sender:UIButton){
-        if sender.backgroundColor == Constants.ERXES_COLOR {
+        if sender.backgroundColor == Constants.ERXES_COLOR! {
             return
         }
-        sender.backgroundColor = Constants.ERXES_COLOR
+        sender.backgroundColor = Constants.ERXES_COLOR!
         sender.setTitleColor(.white, for: .normal)
         switch sender {
         case self.customersButton:
             self.companiesButton.backgroundColor = Constants.INBOX_BG_COLOR
-            self.companiesButton.setTitleColor(Constants.ERXES_COLOR, for: .normal)
+            self.companiesButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
             self.getCustomers()
             isCustomer = true
         case self.companiesButton:
             self.customersButton.backgroundColor = Constants.INBOX_BG_COLOR
-            self.customersButton.setTitleColor(Constants.ERXES_COLOR, for: .normal)
+            self.customersButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
             isCustomer = false
             self.getCompanies()
         default:
@@ -96,12 +97,40 @@ class ContactController: UIViewController {
     }
     
     func configureViews(){
+        
+        let rightItem: UIBarButtonItem = {
+            var rightImage = #imageLiteral(resourceName: "ic_edit")
+   
+            rightImage = rightImage.withRenderingMode(.alwaysTemplate)
+            let barButtomItem = UIBarButtonItem()
+            let button = UIButton()
+            button.setBackgroundImage(rightImage, for: .normal)
+            button.tintColor = Constants.ERXES_COLOR
+            button.addTarget(self, action: #selector(changeEditMode(sender:)), for: .touchUpInside)
+            barButtomItem.customView = button
+            return barButtomItem
+        }()
+        self.navigationItem.rightBarButtonItem = rightItem
+        
         self.view.addSubview(customersButton)
         self.view.addSubview(companiesButton)
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
         self.view.addSubview(loader)
+    }
+    
+    func isEditing() {
+        
+    }
+    
+    @objc func changeEditMode(sender:UIButton) {
+        sender.isSelected = !sender.isSelected
+        tableView.isEditing = sender.isSelected
+    }
+    
+    @objc func addAction(sender:UIButton) {
+        navigate(.companyProfile(id:nil))
     }
     
     override func viewDidLoad() {
@@ -159,7 +188,8 @@ class ContactController: UIViewController {
         loader.startAnimating()
         let query = CompaniesQuery()
         query.perPage = limit
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -212,8 +242,19 @@ class ContactController: UIViewController {
             }
         }
     }
+    
+    func deleteCompany(index:Int) {
+        let company = companies[index]
+        mutateDeleteCompany(companyIds: [company.id])
+    }
 
-
+    func mutateDeleteCompany(companyIds:[String]) {
+        let mutation = CompaniesRemoveMutation(companyIds: companyIds)
+        
+        client.perform(mutation: mutation) { [weak self] result, error in
+            self?.getCompanies()
+        }
+    }
 }
 
 extension ContactController: UITableViewDelegate {
@@ -227,7 +268,7 @@ extension ContactController: UITableViewDelegate {
         cell?.icon.image = nil
         if isCustomer{
             let customer = customers[indexPath.row]
-            cell?.icon.image = #imageLiteral(resourceName: "ic_customer").tint(with: Constants.ERXES_COLOR)
+            cell?.icon.image = #imageLiteral(resourceName: "ic_customer").tint(with: Constants.ERXES_COLOR!)
     
             if customer.firstName != nil && customer.lastName != nil{
                 cell?.topLabel.text = customer.firstName! + " " + customer.lastName!
@@ -245,7 +286,7 @@ extension ContactController: UITableViewDelegate {
             }
             
         }else{
-            cell?.icon.image = #imageLiteral(resourceName: "ic_company").tint(with: Constants.ERXES_COLOR)
+            cell?.icon.image = #imageLiteral(resourceName: "ic_company").tint(with: Constants.ERXES_COLOR!)
             let company = companies[indexPath.row]
             if company.name != nil {
                 cell?.topLabel.text = company.name
@@ -256,6 +297,18 @@ extension ContactController: UITableViewDelegate {
         }
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print(indexPath)
+            deleteCompany(index: indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let company = companies[indexPath.row]
+        navigate(.companyProfile(id: company.id))
     }
 }
 

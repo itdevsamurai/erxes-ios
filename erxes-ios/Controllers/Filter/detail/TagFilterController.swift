@@ -44,7 +44,7 @@ class TagFilterController: UIViewController {
         tableView.register(TagCell.self, forCellReuseIdentifier: "TagCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR
+        tableView.separatorColor = Constants.ERXES_COLOR!
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -132,7 +132,7 @@ extension TagFilterController: UITableViewDataSource {
         
         cell?.desc.text = tag.name!
 //        cell?.value.text = "0"
-        cell?.tagView.image = #imageLiteral(resourceName: "ic_tag")
+        cell?.tagView.image = UIImage.erxes(with: .tag, textColor: .black, size: CGSize(width: 22, height: 22 ))
         cell?.tagView.image = cell?.tagView.image!.withRenderingMode(.alwaysTemplate)
         cell?.tagView.tintColor = UIColor(hexString: tag.colorCode!)
         return cell!

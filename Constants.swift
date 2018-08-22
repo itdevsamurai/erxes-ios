@@ -11,8 +11,9 @@ class Constants: NSObject {
 
  
     
-    static let API_ENDPOINT = "ENTER APP-API-URL HERE!!!"
-    static let SUBSCRITION_ENDPOINT = "ENTER SUBSCRIPTION URL HERE!!!"
+    static let API_ENDPOINT = "http://192.168.50.9:3300/graphql"
+    static let SUBSCRITION_ENDPOINT = "ws://192.168.50.9:3300/subscriptions"
+
     
     
     // MARK: List of Constants
@@ -26,7 +27,8 @@ class Constants: NSObject {
     // MARK: - colors
 
 
-    static let ERXES_COLOR = UIColor(red: 86 / 255, green: 41 / 255, blue: 182 / 255, alpha: 1.0)
+//    static let ERXES_COLOR = UIColor(red: 86 / 255, green: 41 / 255, blue: 182 / 255, alpha: 1.0)
+    static let ERXES_COLOR = UIColor.init(hexString: "5629B6")
     static let TEXT_COLOR = UIColor(red: 96 / 255, green: 96 / 255, blue: 96 / 255, alpha: 1.0)
     static let CELL_COLOR = UIColor(red: 248 / 255, green: 244 / 255, blue: 249 / 255, alpha: 1.0)
     static let KEYBOARD_COLOR = UIColor(red: 209 / 255, green: 213 / 255, blue: 218 / 255, alpha: 1.0)

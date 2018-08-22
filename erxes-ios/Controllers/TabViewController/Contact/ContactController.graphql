@@ -68,6 +68,33 @@ fragment CompanyDetail on Company{
     size
     industry
     website
+    email
+    phone
+    leadStatus
+    lifecycleState
+    businessType
+    description
+    employees
+    doNotDisturb
+    owner{
+        _id
+        username
+        details{
+            fullName
+        }
+    }
+    parentCompany {
+        _id
+        name
+    }
+    links {
+        linkedIn
+        twitter
+        facebook
+        github
+        youtube
+        website
+    }
     plan
     customFieldsData
     tagIds
@@ -78,4 +105,26 @@ fragment CompanyDetail on Company{
         __typename
     }
     __typename
+}
+
+query FieldsGroups($contentType:String)
+{
+fieldsGroups(contentType:$contentType){
+_id
+name
+contentType
+order
+description
+isVisible
+fields{
+type
+validation
+text
+description
+options
+isRequired
+order
+isVisible
+}
+}
 }

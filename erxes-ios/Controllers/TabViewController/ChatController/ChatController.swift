@@ -19,34 +19,110 @@ import MobileCoreServices
 
 class ChatController: UIViewController {
 
-    var player: AVAudioPlayer?
-    var isPickerActive = false
+    
+    // MARK: variables
+    let currentUser = ErxesUser.sharedUserInfo()
+    let client: ApolloClient = {
+        let configuration = URLSessionConfiguration.default
+        let currentUser = ErxesUser.sharedUserInfo()
+        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
+                                               "x-refresh-token": currentUser.refreshToken as Any]
+        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
+        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+    }()
     var loader: ErxesLoader = {
         let loader = ErxesLoader()
         loader.lineWidth = 3
         return loader
     }()
-    
-    var uploadUrl = ""
+    var player: AVAudioPlayer?
+    var isPickerActive = false
+    var messagesCount = 0
+    var selectedImageIndex = Int()
+    var pickerIsShown:Bool = false
+    var currentInputView: UIView?
+    var uploadUrl = "" {
+        didSet{
+            sendMessage(UIButton())
+        }
+    }
     var uploaded = JSON()
     var pickerContainer = UIView()
     var attachments = [JSON]()
-    
+    var imagePicker = ImagePickerController()
     var keyboardFrame = CGRect(){
         didSet{
-            if Constants.SCREEN_HEIGHT == 812 {
-                pickerContainer = UIView(frame: CGRect(x: 0, y: keyboardFrame.origin.y+34, width: Constants.SCREEN_WIDTH, height: keyboardFrame.size.height-34))
-            }else{
-                pickerContainer = UIView(frame: keyboardFrame)
-            }
-            
-            pickerContainer.backgroundColor = UIColor.init(hexString: "cccfd6")
-            self.view.addSubview(pickerContainer)
-
-           
+            moveTextField()
         }
     }
     
+    let gql = LiveGQL(socket: Constants.SUBSCRITION_ENDPOINT)
+    var conversationId:String?
+    var customerId:String?
+    
+    var inited = false
+    var bg = "#5629b6"
+    var css = ""
+    var container: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.init(hexString: "cccfd6")
+        //         view.backgroundColor = UIColor.groupTableViewBackground
+        return view
+    }()
+    
+    var inputContainer:UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.init(hexString: "cccfd6")
+        return view
+    }()
+    
+    var chatInputView: UITextField = {
+        let textfield = UITextField()
+        textfield.backgroundColor = UIColor.init(hexString: "f0ebf8")
+        textfield.layer.cornerRadius = 5.0
+        textfield.tintColor = Constants.ERXES_COLOR!
+        textfield.placeholder = "Write a reply..."
+        let sendButton = UIButton(type: .custom)
+        sendButton.titleLabel?.font = Constants.ULTRALIGHT
+//        sendButton.setTitle("Send", for: .normal)
+        sendButton.setImage(UIImage.erxes(with: .send, textColor: Constants.ERXES_COLOR!), for: .normal)
+        sendButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+        sendButton.frame = CGRect(x: 0, y: CGFloat(0), width: CGFloat(60), height: CGFloat(40))
+        sendButton.addTarget(self, action: #selector(sendMessage(_:)), for: .touchUpInside)
+        let line = UIView(frame: CGRect(x: 0, y: 10, width: 1, height: 20))
+        line.backgroundColor = Constants.ERXES_COLOR!
+        sendButton.addSubview(line)
+        
+        textfield.rightView = sendButton
+        textfield.rightViewMode = .always
+        
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
+        let attachmentButton = UIButton(type: .custom)
+        attachmentButton.setImage(UIImage.erxes(with: .attach, textColor: Constants.ERXES_COLOR!), for: .normal)
+        attachmentButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        attachmentButton.imageView?.contentMode = .scaleAspectFit
+        attachmentButton.addTarget(self, action: #selector(openImagePicker(sender:)), for: .touchUpInside)
+        leftView.addSubview(attachmentButton)
+        let cameraButton = UIButton(type: .custom)
+        cameraButton.setImage(UIImage.erxes(with: .photocamera, textColor: Constants.ERXES_COLOR!), for: .normal)
+        cameraButton.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
+        cameraButton.imageView?.contentMode = .scaleAspectFit
+        cameraButton.addTarget(self, action: #selector(launchCamera(sender:)), for: .touchUpInside)
+        leftView.addSubview(cameraButton)
+        textfield.leftView = leftView
+        textfield.leftViewMode = .always
+        
+        return textfield
+    }()
+    
+    var chatView: WKWebView = {
+        let chatView = WKWebView()
+        chatView.backgroundColor = .clear
+        chatView.scrollView.bounces = false
+        return chatView
+    }()
+    
+   // MARK: actions
     func playSound() {
         guard let url = Bundle.main.url(forResource: "facebook_messagetone", withExtension: "mp3") else { return }
         
@@ -61,19 +137,7 @@ class ChatController: UIViewController {
             print(error.localizedDescription)
         }
     }
-    
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
-    
-//    ws://\(host):3300/subscriptions
-    
-    let gql = LiveGQL(socket: Constants.SUBSCRITION_ENDPOINT)
+
     
     func configLive(){
         gql.delegate = self
@@ -83,134 +147,70 @@ class ChatController: UIViewController {
         gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){content,userId,createdAt,customerId,user{details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
     }
     
-    var conversationId:String?
-    var inited = false
-    var bg = "#5629b6"
-    var css = ""
-    var container: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.init(hexString: "cccfd6")
-        return view
-    }()
+
     
-    var inputContainer:UIView = {
-       let view = UIView()
-        view.backgroundColor = UIColor.init(hexString: "cccfd6")
-        return view
-    }()
-    
-    var chatInputView: UITextField = {
-       let textfield = UITextField()
-        textfield.backgroundColor = UIColor.init(hexString: "f0ebf8")
-        textfield.layer.cornerRadius = 5.0
-        textfield.tintColor = Constants.ERXES_COLOR
-        textfield.placeholder = "Write a reply..."
-        let sendButton = UIButton(type: .custom)
-        sendButton.titleLabel?.font = Constants.ULTRALIGHT
-        sendButton.setTitle("Send", for: .normal)
-        sendButton.setTitleColor(Constants.ERXES_COLOR, for: .normal)
-        sendButton.frame = CGRect(x: 0, y: CGFloat(0), width: CGFloat(60), height: CGFloat(40))
-        sendButton.addTarget(self, action: #selector(sendMessage(_:)), for: .touchUpInside)
-        let line = UIView(frame: CGRect(x: 0, y: 10, width: 1, height: 20))
-        line.backgroundColor = Constants.ERXES_COLOR
-        sendButton.addSubview(line)
-        
-        textfield.rightView = sendButton
-        textfield.rightViewMode = .always
-        
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
-        let attachmentButton = UIButton(type: .custom)
-        attachmentButton.setImage(#imageLiteral(resourceName: "ic_attachment"), for: .normal)
-        attachmentButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        attachmentButton.imageView?.contentMode = .scaleAspectFit
-        attachmentButton.addTarget(self, action: #selector(openImagePicker(sender:)), for: .touchUpInside)
-        leftView.addSubview(attachmentButton)
-        let cameraButton = UIButton(type: .custom)
-        cameraButton.setImage(#imageLiteral(resourceName: "ic_camera"), for: .normal)
-        cameraButton.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
-        cameraButton.imageView?.contentMode = .scaleAspectFit
-        leftView.addSubview(cameraButton)
-//        textfield.leftView = leftView
-//        textfield.leftViewMode = .always
-        
-        return textfield
-    }()
+    @objc func launchCamera(sender:UIButton){
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        {
+            let imagePicker:UIImagePickerController = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.allowsEditing = true
+            
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        else
+        {
+            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertControllerStyle.alert)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
     
     @objc func openImagePicker(sender:UIButton){
-        self.chatInputView.becomeFirstResponder()
-        self.view.endEditing(true)
-        let imagePicker = KCKeyboardImagePickerController.init(parentViewController: self)
-//        imagePicker.isForceTouchPreviewEnabled = true
-        imagePicker.forceTouchPreviewEnabled = true
-        let style1 = KCKeyboardImagePickerStyle.init(optionButtonTag: 1, titleColor: .white, backgroundColor: Constants.ERXES_COLOR)
        
-        let style2 = KCKeyboardImagePickerStyle.init(imagePickerControllerButtonBackgroundColor: Constants.ERXES_COLOR, image: #imageLiteral(resourceName: "ImagePickerControllerButtonIcon"))
-        
-        let action1 = KCKeyboardImagePickerAction.init(optionButtonTag: 1, title: "Send", forceTouchEnabled: true) { (selectedImage) in
-            print("image = ", selectedImage?.size)
-            self.uploadFile(image: selectedImage!)
-            self.attachments = [JSON]()
-            self.attachments.append(self.uploaded)
-            self.sendMessage(UIButton())
-        }
-        let action2 = KCKeyboardImagePickerAction.init { (selectedImage) in
+        if !pickerIsShown{
+            self.chatInputView.becomeFirstResponder()
+            self.view.endEditing(true)
+            imagePicker = ImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.dataSource = self
+            imagePicker.layoutConfiguration.showsFirstActionItem = false
+            imagePicker.layoutConfiguration.showsSecondActionItem = false
+            imagePicker.layoutConfiguration.showsCameraItem = false
+            imagePicker.layoutConfiguration.numberOfAssetItemsInRow = 1
+            imagePicker.imagePickerView.backgroundColor = .red
+            imagePicker.collectionView.backgroundColor = .clear
             
+            PHPhotoLibrary.requestAuthorization({ [unowned self] (_) in
+                DispatchQueue.main.async {
+                    
+                    self.imagePicker.layoutConfiguration.scrollDirection = .horizontal
+                    self.presentPickerAsInputView(self.imagePicker)
+                    
+                }
+            })
+             pickerIsShown = true
         }
-        style1.titleColor = .white
-        style1.tag = 1
-        style1.backgroundColor = Constants.ERXES_COLOR
-        style2.backgroundColor = Constants.ERXES_COLOR
-        style2.image = #imageLiteral(resourceName: "ImagePickerControllerButtonIcon")
-        
-        action1.tag = 1
-        action1.title = "Send"
-        action1.forceTouchEnabled = true
-        action1.handler = { (selectedImage) in
-            print("image = ", selectedImage?.size)
-            self.uploadFile(image: selectedImage!)
-            self.attachments = [JSON]()
-            self.attachments.append(self.uploaded)
-            self.sendMessage(UIButton())
-        }
-        action2.handler = { (selectedImage) in 
-            
-        }
-      
-        imagePicker.add(style1)
-        imagePicker.add(style2)
-        imagePicker.addAction(action1)
-        imagePicker.addAction(action2)
-        
-        
-        imagePicker.keyboardFrame = CGRect(x: 0, y: 0, width: pickerContainer.frame.size.width, height: pickerContainer.frame.size.height)
-        imagePicker.imagePickerView.backgroundColor  = UIColor.init(hexString: "cccfd6")
-        pickerContainer.addSubview(imagePicker.imagePickerView)
-        
-        imagePicker.imagePickerView.reload()
-        
-        imagePicker.showKeyboardImagePickerView(animated: true)
-        
+    }
+    
+    func presentPickerAsInputView(_ vc: ImagePickerController) {
+        vc.view.autoresizingMask = .flexibleHeight
+        vc.view.backgroundColor = UIColor.init(hexString: "cccfd6")
+        currentInputView = vc.view
+        currentInputView?.backgroundColor = UIColor.init(hexString: "cccfd6")
+        reloadInputViews()
     }
     
     func uploadFile(image:UIImage){
-        
-
-        
-        let url = "https://app-api.crm.nmma.co/upload-file"
+        let url = "http://192.168.50.9/upload-file"
         let imgData = UIImageJPEGRepresentation(image, 0.5)!
         let size = imgData.count
         let bcf = ByteCountFormatter()
         bcf.allowedUnits = [.useKB] // optional: restricts the units to MB only
         bcf.countStyle = .file
-       
-        
-        //        let parameters = ["name": rname] //Optional for extra parameter
-        
         Alamofire.upload(multipartFormData: { multipartFormData in
             multipartFormData.append(imgData, withName: "file",fileName: "file.jpg", mimeType: "image/jpg")
-            //            for (key, value) in parameters {
-            //                multipartFormData.append(value.data(using: String.Encoding.utf8)!, withName: key)
-            //            } //Optional for extra parameters
+
         },
                          to:url)
         { (result) in
@@ -235,38 +235,30 @@ class ChatController: UIViewController {
         
     }
     
-    var chatView: UIWebView = {
-        let webview = UIWebView()
-        webview.backgroundColor = .clear
-        return webview
-    }()
+    @objc func navigateProfile(sender:UIButton){
+        self.navigate(.customerProfile(_id: self.customerId!, count: self.messagesCount))
+    }
     
-  
-    
-    convenience init(chatId:String,title:String){
+
+    convenience init(chatId:String,title:String,customerId:String){
         self.init()
         self.conversationId = chatId
+        self.customerId = customerId
         self.title = title
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.automaticallyAdjustsScrollViewInsets = false
         configureViews()
-
         initChat()
-        
-
         let path = Bundle.main.bundlePath
         let url = URL.init(fileURLWithPath: path)
 
         self.isPickerActive = false
-        self.chatView.scrollView.bounces = false
-        self.chatView.loadHTMLString(self.css, baseURL: url)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         configLive()
-        
+        loadMessages()
         if conversationId != nil {
             subscribe()
         }
@@ -274,41 +266,33 @@ class ChatController: UIViewController {
     
     func configureViews(){
         self.view.backgroundColor = .white
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage.init(color: .white), for: .default)
+
         let rightItem: UIBarButtonItem = {
-            let rightImage = #imageLiteral(resourceName: "ic_profile")
+            var rightImage = UIImage.erxes(with: .user, textColor: Constants.ERXES_COLOR!)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
-            //            button.addTarget(self, action: #selector(toggleSideMenu(sender:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(navigateProfile(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
         }()
-//        self.navigationItem.rightBarButtonItem = rightItem
-        chatView.delegate = self
+        self.navigationItem.rightBarButtonItem = rightItem
+        chatView.navigationDelegate = self
         chatInputView.delegate = self
         self.view.addSubview(container)
         container.addSubview(chatView)
+              
         self.view.addSubview(inputContainer)
         inputContainer.addSubview(chatInputView)
         self.view.addSubview(loader)
-        
-
     }
     
-    let currentUser = ErxesUser.sharedUserInfo()
+   
     
     func initChat(){
    
+        css = "<meta name=\"viewport\" content=\"initial-scale=1.0\" /><style>.row,.row .text{overflow:hidden}body{background:url(bg-1.png);;padding:0;margin:0 20px}.row{position:relative;margin-bottom:10px;margin-top:15px;font-family:Roboto,Arial,sans-serif;font-weight:500}.row .text a{float:left;padding:12px 20px;background:#f6f4fb;border-radius:20px 20px 20px 2px;color:#444;margin-bottom:5px;margin-left:38px;margin-right:40px;font-size:14px;box-shadow:0 1px 1px 0 rgba(0,0,0,.2)}.me .text a{float:right;background:\(bg);color:#fff;border-radius:20px 2px 20px 20px;margin-left:50px;margin-right:38px;}.row .text img{max-width:100%;padding-top:3px}.row .date{color:#cbcbcb;font-size:11px;margin-left:36px}.me .date{text-align:right;margin-right:38px;}.row .img{float:left;position:absolute;bottom:17px;left:0;margin-right:8px}.row .img img{width:30px;height:30px;border-radius:15px;box-sizing:border-box;border:1px solid white;}.me .img{right:0;left:auto;right:0}.me .img img{margin-right:0;margin-left:8px}p{display:inline} table{border-collapse: collapse; color: #444; font-family:Roboto,Arial,sans-serif; font-size:12px;} table, th, td {border: 1px solid #eee; padding: 10px; } tr:nth-child(even) {background-color: #F7F8FC;font-weight:bold;}tr:first-child {text-align:center; font-size:11px; text-transform:uppercase; font-weight:bold;}</style>"
         
-        var str = ""
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let now = dateFormatter.string(from: Date())
-        
-        str = "<div class=\"row\"><div class=\"img\"><img src=\"\(currentUser.avatar!)\"/></div><div class=\"date\">\(now)</div></div>"
-
-        css = "<style>body{background:#ffffff;}.root{background:#ffffff}.row{overflow:hidden;margin-bottom:10px;font-family:'Helvetica Neue',Arial,sans-serif}.row .text a{float:left;padding:8px 10px;background:#f6f4fb;border-radius:5px;color:#444;margin-bottom:5px;font-size:14px;box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2)}.row .text{overflow:hidden}.me .text a{float:right;background:\(bg);color:#fff}.row .text img{max-width:100%; height:auto!; padding-top:3px;} .row .date{color:#686868;font-size:11px}.me .date{text-align:right}p{display:inline}.row .img{float:left;margin-right:8px}.row .img img{width:40px;height:40px;border-radius:20px;}.me .img{float:right}.me .img img{margin-right:0;margin-left:8px}</style>"
     }
     
 
@@ -318,8 +302,6 @@ class ChatController: UIViewController {
         if conversationId == nil{
             return
         }
-
-        print("loaded")
 
         let messagesQuery = ConversationDetailQuery(_id: self.conversationId!)
         client.fetch(query: messagesQuery, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
@@ -339,24 +321,37 @@ class ChatController: UIViewController {
                 let messagesArray = (allMessages.messages?.map {($0?.fragments.messageDetail)!})!
                 var me = ""
                 var str = ""
- 
+                str += (self?.css)!
+                self?.messagesCount = messagesArray.count
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
 
                 for item in messagesArray {
-//                    let created:String! = item.createdAt.hou
-//                    let tmp = Int64(created)
-//                    let date = Date(milliseconds:tmp!)
-//                    let now = item.createdAt!.hourMinutes!
+
                     let date = item.createdAt?.dateFromUnixTime()
                     let now = date?.hourMinutes!
                     
-         
+                    if let formData = item.formWidgetData {
+                    
+                        if let rows = formData["data"] as? [[String:Any]] {
+                            
+                            var form = "<table>"
+                            form += "<tr><td>\(item.content!)</td></tr>"
+                            for row in rows {
+                                form += "<tr><td>\(row["text"]!)</td></tr>"
+                                form += "<tr><td>\(row["value"]!)</td></tr>"
+                            }
+                            
+                            form += "</table>"
+                            str += form
+                            continue
+                        }
+                    }
 
                     var avatar = "avatar.png"
 
-                    if let user = item.user{
-                        if let userAvatar = self?.currentUser.avatar{
+                    if item.user != nil{
+                        if let userAvatar = item.user?.details?.avatar{
                             avatar = userAvatar
                         }
                     }
@@ -386,9 +381,11 @@ class ChatController: UIViewController {
              
 
                 self?.inited = true
-                str = "document.body.innerHTML += '\(str)';window.location.href = \"inapp://scroll\""
-                self?.chatView.stringByEvaluatingJavaScript(from: str)
+                str += "<script>window.location.href = \"inapp://scroll\"</script>"
+                self?.chatView.evaluateJavaScript(str, completionHandler: nil)
+                self?.chatView.loadHTMLString(str, baseURL: nil)
                 let scrollPoint = CGPoint(x: 0, y: (self?.chatView.scrollView.contentSize.height)! - (self?.chatView.frame.size.height)!)
+                print(str)
                 self?.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
                 self?.loader.stopAnimating()
             }
@@ -396,7 +393,24 @@ class ChatController: UIViewController {
     }
     
    @objc func sendMessage(_ sender:UIButton){
-        
+    if imagePicker.selectedAssets.count != 0 {
+        for asset in imagePicker.selectedAssets {
+            print("asset = ",asset)
+            
+
+            let requestOptions = PHImageRequestOptions()
+            requestOptions.resizeMode = .exact
+            requestOptions.deliveryMode = .highQualityFormat
+            requestOptions.isSynchronous = true
+            let manager = PHImageManager.default()
+            manager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: requestOptions) { (selectedImage, _) in
+                            self.uploadFile(image: selectedImage!)
+                            self.attachments = [JSON]()
+                            self.attachments.append(self.uploaded)
+            }
+        }
+        imagePicker = ImagePickerController()
+    }
     let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!, content: self.chatInputView.text!)
         client.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
@@ -452,8 +466,9 @@ class ChatController: UIViewController {
             str = "<div class=\"row \(me)\"><div class=\"img\"><img src=\"\(avatar)\"/></div><div class=\"text\"><a>\(str)<img src=\"\(image)\"/></a></div><div class=\"date\">\(now)</div></div>"
             str = "document.body.innerHTML += '\(str)';window.location.href = \"inapp://scroll\""
             
-            self.chatView.stringByEvaluatingJavaScript(from: str)
+            self.chatView.evaluateJavaScript(str, completionHandler: nil)
         }
+        self.messagesCount = self.messagesCount + 1
     }
 
     override func didReceiveMemoryWarning() {
@@ -461,12 +476,16 @@ class ChatController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+ 
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.container.snp.makeConstraints { (make) in
             make.bottom.left.right.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
 //            make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
+//            (0.0, 521.0, 375.0, 291.0)
+//            (0.0, 579.0, 375.0, 233.0)
         }
         
         self.inputContainer.snp.makeConstraints { (make) in
@@ -492,11 +511,29 @@ class ChatController: UIViewController {
             make.center.equalTo(self.view.snp.center)
         }
     }
+    
+    func moveTextField(){
+        print("height = ", keyboardFrame.height)
+        inputContainer.snp.remakeConstraints { (make) in
+            make.bottom.equalTo(self.view.snp.bottom).inset(keyboardFrame.height)
+        }
+        print("input = ",inputContainer.frame)
+        container.snp.remakeConstraints({ (update) in
+            update.bottom.equalTo(self.inputContainer.snp.top)
+        })
+        
+        chatView.snp.remakeConstraints { (make) in
+            make.bottom.equalTo(container.snp.bottom)
+        }
+        
+        self.view.layoutIfNeeded()
+    }
 }
 
+// MARK: extensions
 extension ChatController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        self.sendMessage(self.chatInputView.text!)
+
         self.sendMessage(UIButton())
         return true
     }
@@ -504,50 +541,52 @@ extension ChatController: UITextFieldDelegate{
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-           
+           print("will show")
             self.keyboardFrame = keyboardSize
-            inputContainer.snp.makeConstraints { (make) in
-                make.bottom.equalTo(self.view.snp.bottom).inset(keyboardSize.height)
+            moveTextField()
+        }
+        
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if Constants.SCREEN_HEIGHT == 812 {
+            inputContainer.snp.remakeConstraints { (make) in
+                make.bottom.equalTo(self.view.snp.bottom).inset(keyboardFrame.height+58)
             }
-            
-            container.snp.makeConstraints({ (update) in
+         
+            container.snp.remakeConstraints({ (update) in
                 update.bottom.equalTo(self.inputContainer.snp.top)
             })
             
-            chatView.snp.makeConstraints { (make) in
+            chatView.snp.remakeConstraints { (make) in
                 make.bottom.equalTo(container.snp.bottom)
             }
             
             self.view.layoutIfNeeded()
         }
+        pickerIsShown = false
+        chatInputView.becomeFirstResponder()
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
+        return true
     }
 }
 
-extension ChatController: UIWebViewDelegate{
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if request.url?.scheme == "inapp"{
-            if request.url?.host == "scroll"{
-                let scrollPoint = CGPoint(x: 0, y: self.chatView.scrollView.contentSize.height - self.chatView.frame.size.height)
-                self.chatView.scrollView.setContentOffset(scrollPoint, animated: true)
-                loader.stopAnimating()
-                return false
-            }
-        }
-        return true
-    }
-    
-    
-    
-    public func webViewDidFinishLoad(_ webView: UIWebView) {
-        
+extension ChatController:WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if(!inited){
-            loadMessages()
+//            loadMessages()
         }
-        
+        loader.stopAnimating()
     }
     
-    public func webViewDidStartLoad(_ webView: UIWebView) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        loader.stopAnimating()
+    }
+    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         loader.startAnimating()
     }
 }
@@ -570,4 +609,125 @@ extension ChatController:LiveGQLDelegate{
     }
 }
 
+extension ChatController : ImagePickerControllerDelegate {
+    
+    public func imagePicker(controller: ImagePickerController, didSelectActionItemAt index: Int) {
+        print("did select action \(index)")
+        
+        //before we present system image picker, we must update present button
+        //because first responder will be dismissed
+//        presentButton.isSelected = false
+        
+        if index == 0 && UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let vc = UIImagePickerController()
+            vc.sourceType = .camera
+            vc.allowsEditing = true
+            if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera) {
+                vc.mediaTypes = mediaTypes
+            }
+            navigationController?.visibleViewController?.present(vc, animated: true, completion: nil)
+        }
+        else if index == 1 && UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let vc = UIImagePickerController()
+            vc.sourceType = .photoLibrary
+            navigationController?.visibleViewController?.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    public func imagePicker(controller: ImagePickerController, didSelect asset: PHAsset) {
+        print("selected assets: \(controller.selectedAssets.count)")
+    
+//        updateNavigationItem(with: controller.selectedAssets.count)
+    }
+    
+    public func imagePicker(controller: ImagePickerController, didDeselect asset: PHAsset) {
+        print("selected assets: \(controller.selectedAssets.count)")
+//        updateNavigationItem(with: controller.selectedAssets.count)
+    }
+    
+    public func imagePicker(controller: ImagePickerController, didTake image: UIImage) {
+        print("did take image \(image.size)")
+    }
+    
+    func imagePicker(controller: ImagePickerController, willDisplayActionItem cell: UICollectionViewCell, at index: Int) {
+        switch cell {
+        case let iconWithTextCell as IconWithTextCell:
+            iconWithTextCell.titleLabel.textColor = UIColor.black
+            switch index {
+            case 0:
+                iconWithTextCell.titleLabel.text = "Camera"
+                iconWithTextCell.imageView.image = #imageLiteral(resourceName: "button-camera")
+            case 1:
+                iconWithTextCell.titleLabel.text = "Photos"
+                iconWithTextCell.imageView.image = #imageLiteral(resourceName: "button-photo-library")
+            default: break
+            }
+        default:
+            break
+        }
+    }
+    
+    func imagePicker(controller: ImagePickerController, willDisplayAssetItem cell: ImagePickerAssetCell, asset: PHAsset) {
+        switch cell {
+            
+        case let videoCell as CustomVideoCell:
+            videoCell.label.text = ChatController.durationFormatter.string(from: asset.duration)
+            
+            
+        case let imageCell as CustomImageCell:
+            if asset.mediaSubtypes.contains(.photoLive) {
+                imageCell.subtypeImageView.image = #imageLiteral(resourceName: "icon-live")
+            }
+            else if asset.mediaSubtypes.contains(.photoPanorama) {
+                imageCell.subtypeImageView.image = #imageLiteral(resourceName: "icon-pano")
+            }
+            else if #available(iOS 10.2, *), asset.mediaSubtypes.contains(.photoDepthEffect) {
+                imageCell.subtypeImageView.image = #imageLiteral(resourceName: "icon-depth")
+            }
+        default:
+            break
+        }
+    }
+    
+}
+
+extension ChatController: ImagePickerControllerDataSource {
+    
+    func imagePicker(controller: ImagePickerController, viewForAuthorizationStatus status: PHAuthorizationStatus) -> UIView {
+        let infoLabel = UILabel(frame: .zero)
+        infoLabel.backgroundColor = UIColor.green
+        infoLabel.textAlignment = .center
+        infoLabel.numberOfLines = 0
+        switch status {
+        case .restricted:
+            infoLabel.text = "Access is restricted\n\nPlease open Settings app and update privacy settings."
+        case .denied:
+            infoLabel.text = "Access is denied by user\n\nPlease open Settings app and update privacy settings."
+        default:
+            break
+        }
+        return infoLabel
+    }
+    
+}
+
+extension ChatController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let originalImg:UIImage? = info[UIImagePickerControllerOriginalImage] as? UIImage
+        self.dismiss(animated: true) {
+            self.uploadFile(image: originalImg!)
+            self.chatInputView.becomeFirstResponder()
+        }
+
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true , completion: nil)
+        chatInputView.becomeFirstResponder()
+    }
+}
+
+extension ChatController: UINavigationControllerDelegate {
+    
+}
 

@@ -43,7 +43,7 @@ class ErxesLoader: UIView {
 
     func startAnimating(){
         self.isHidden = false
-        let circle1 = CircleLayer.init(bounds: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width), position: CGPoint(x: self.frame.size.width/2, y: self.frame.size.width/2), fromColor: Constants.ERXES_COLOR, toColor: .white, linewidth: lineWidth, toValue: 0.32)
+        let circle1 = CircleLayer.init(bounds: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width), position: CGPoint(x: self.frame.size.width/2, y: self.frame.size.width/2), fromColor: Constants.ERXES_COLOR!, toColor: .white, linewidth: lineWidth, toValue: 0.32)
         let circle2 = CircleLayer.init(bounds: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width), position: CGPoint(x: self.frame.size.width/2, y: self.frame.size.width/2), fromColor: UIColor.init(hexString: "e6d2ac")!, toColor: .white, linewidth: lineWidth, toValue: 0.65)
         let circle3 = CircleLayer.init(bounds: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width), position: CGPoint(x: self.frame.size.width/2, y: self.frame.size.width/2), fromColor: .red, toColor: .white, linewidth: lineWidth, toValue: 0.99)
   

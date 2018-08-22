@@ -28,9 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
 //        UINavigationBar.appearance().barTintColor = nil
-        UINavigationBar.appearance().backIndicatorImage = #imageLiteral(resourceName: "ic_back")
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage = #imageLiteral(resourceName: "ic_back")
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-100, 0), for: .default)
+        var backImage = UIImage.erxes(with: .leftarrow, textColor: Constants.ERXES_COLOR!)
+        UINavigationBar.appearance().tintColor = Constants.ERXES_COLOR
+        UINavigationBar.appearance().backIndicatorImage = backImage
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-1000, 0), for: .default)
         Route.default.setupAppNavigation(appNavigation: MyAppNavigation())
         loginContoller.title = "Login"
         window = UIWindow(frame: UIScreen.main.bounds)

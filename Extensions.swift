@@ -47,6 +47,12 @@ extension Date {
     init(milliseconds:Int64) {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
     }
+    
+    func stringFromDate()->String{
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM dd, yyyy hh:mm"
+        return formatter.string(from: self)
+    }
 }
 
 extension UIView {
@@ -201,10 +207,20 @@ public extension UIImage {
     
 }
 
-public typealias JSON = [String: JSONDecodable & JSONEncodable]
+public typealias JSON = [String: Any]
 
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {
+        
+        if var array = value as? NSArray {
+            self.init()
+            if var dict = self as? [String: JSONDecodable & JSONEncodable] {
+                dict["data"] = array as! [[String:Any]]
+                self = dict as! Dictionary<Key, Value>
+                return
+            }
+        }
+        
         guard let dictionary = forceBridgeFromObjectiveC(value) as? Dictionary else {
             
             

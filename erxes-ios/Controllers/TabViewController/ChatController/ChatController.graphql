@@ -20,6 +20,7 @@ fragment MessageDetail on ConversationMessage {
     _id
     content
     attachments
+    formWidgetData
     conversationId
     customerId
     userId
@@ -29,5 +30,8 @@ fragment MessageDetail on ConversationMessage {
         email
         role
         getNotificationByEmail
+        details{
+            avatar
+        }
     }
 }
