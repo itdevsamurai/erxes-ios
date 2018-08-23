@@ -47,6 +47,10 @@
 		9B94F41820DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41720DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift */; };
 		9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41920DB5A7400313543 /* KCKeyboardImagePickerView.swift */; };
 		9B94F41C20DBB48400313543 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41B20DBB48400313543 /* API.swift */; };
+		9B9F5543212E83DA0081EC89 /* Appnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5542212E83D90081EC89 /* Appnet.swift */; };
+		9B9F5547212E9A450081EC89 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5546212E9A450081EC89 /* CustomCells.swift */; };
+		9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */; };
+		9B9F554D212EB4E60081EC89 /* Profile.json in Resources */ = {isa = PBXBuildFile; fileRef = 9B9F554C212EB4E60081EC89 /* Profile.json */; };
 		9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */; };
 		9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */; };
 		9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */; };
@@ -194,6 +198,10 @@
 		9B94F41720DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCKeyboardImagePickerPreviewViewController.swift; sourceTree = "<group>"; };
 		9B94F41920DB5A7400313543 /* KCKeyboardImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCKeyboardImagePickerView.swift; sourceTree = "<group>"; };
 		9B94F41B20DBB48400313543 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = "erxes-ios/API.swift"; sourceTree = "<group>"; };
+		9B9F5542212E83D90081EC89 /* Appnet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appnet.swift; sourceTree = "<group>"; };
+		9B9F5546212E9A450081EC89 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
+		9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
+		9B9F554C212EB4E60081EC89 /* Profile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Profile.json; sourceTree = "<group>"; };
 		9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterController.swift; sourceTree = "<group>"; };
 		9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxCell.swift; sourceTree = "<group>"; };
 		9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDCheckbox.swift; sourceTree = "<group>"; };
@@ -459,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */,
+				9B9F554C212EB4E60081EC89 /* Profile.json */,
 				9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */,
 				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
 				9B6202E820EC60820094A87D /* CustomRow.swift */,
@@ -469,9 +478,9 @@
 		9B94F41020DB305800313543 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				9B9F5545212E9A300081EC89 /* Eureka custom objects */,
 				9B567092212A84E00023B5AF /* ErxesFont */,
 				9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */,
-				9B6202EA20EC81670094A87D /* SuggestionRow */,
 				9BD9BDE320E3758600CCFEA6 /* Image Picker */,
 				9B35E99B20D78EF300733FAD /* UI Elements */,
 				9B94F41120DB309200313543 /* KCKeyboardImagePickerController.swift */,
@@ -480,6 +489,24 @@
 			);
 			name = Lib;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		9B9F5545212E9A300081EC89 /* Eureka custom objects */ = {
+			isa = PBXGroup;
+			children = (
+				9B9F5548212E9C170081EC89 /* helpers */,
+				9B9F5546212E9A450081EC89 /* CustomCells.swift */,
+				9B6202EA20EC81670094A87D /* SuggestionRow */,
+			);
+			path = "Eureka custom objects";
+			sourceTree = "<group>";
+		};
+		9B9F5548212E9C170081EC89 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */,
+			);
+			path = helpers;
 			sourceTree = "<group>";
 		};
 		9BC2D9BA20CE3EE9003ADEE7 /* Filter */ = {
@@ -573,6 +600,7 @@
 				F5BEE32420774ADE0042DFC2 /* Podfile */,
 				F55583BA207716BB00413F6A /* Constants.swift */,
 				9B94F41B20DBB48400313543 /* API.swift */,
+				9B9F5542212E83D90081EC89 /* Appnet.swift */,
 				F55583A62077166E00413F6A /* AppDelegate.swift */,
 				F55583A52077166E00413F6A /* erxes-ios */,
 				F55583A42077166E00413F6A /* Products */,
@@ -775,6 +803,7 @@
 				F5BEE32520774ADE0042DFC2 /* Podfile in Resources */,
 				F5BEE33820776BD40042DFC2 /* Montserrat-Black.otf in Resources */,
 				9BD9BE3E20E3786B00CCFEA6 /* CustomVideoCell.xib in Resources */,
+				9B9F554D212EB4E60081EC89 /* Profile.json in Resources */,
 				9BC2D9C720CE6D1C003ADEE7 /* BrandFilterController.graphql in Resources */,
 				F55583B12077166E00413F6A /* LaunchScreen.storyboard in Resources */,
 				9BD9BE0E20E375A400CCFEA6 /* ActionCell.xib in Resources */,
@@ -943,7 +972,7 @@
 				9B94F41220DB309200313543 /* KCKeyboardImagePickerController.swift in Sources */,
 				9BD9BE4220E38D1000CCFEA6 /* ComposeView.swift in Sources */,
 				9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */,
-				B8698336212BD4370068B1FA /* Appnet.swift in Sources */,
+				9B9F5543212E83DA0081EC89 /* Appnet.swift in Sources */,
 				9BD9BE2C20E375A400CCFEA6 /* Miscellaneous.swift in Sources */,
 				9BF5B468209989F6006CF2D3 /* TagView.swift in Sources */,
 				9BD9BE3220E375A400CCFEA6 /* VideoCameraCell.swift in Sources */,
@@ -959,6 +988,7 @@
 				9BD9BE2420E375A400CCFEA6 /* Appearance.swift in Sources */,
 				9BD9BE0D20E375A400CCFEA6 /* RecordButton.swift in Sources */,
 				9BD9BE2D20E375A400CCFEA6 /* AsynchronousOperation.swift in Sources */,
+				9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */,
 				9BD9BE1920E375A400CCFEA6 /* ActionCell.swift in Sources */,
 				9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */,
 				F58F205C207B4F2C00D8564D /* InboxController.swift in Sources */,
@@ -987,6 +1017,7 @@
 				9BD9BE2120E375A400CCFEA6 /* CollectionViewUpdatesCoordinator.swift in Sources */,
 				9B6202F620EC817A0094A87D /* SuggestionCell.swift in Sources */,
 				F58F205E207B4F4B00D8564D /* ErxesInboxCell.swift in Sources */,
+				9B9F5547212E9A450081EC89 /* CustomCells.swift in Sources */,
 				F55583BB207716BB00413F6A /* Constants.swift in Sources */,
 				9BD9BE3020E375A400CCFEA6 /* LayoutModel.swift in Sources */,
 				9BF5B466209989F6006CF2D3 /* CloseButton.swift in Sources */,

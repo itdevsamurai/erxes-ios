@@ -1,0 +1,12 @@
+ [{"id":"firstName","text":"First Name","type":"firstName","validation":"number","options":[]},
+  {"id":"lastName","text":"Last Name","type":"lastName","validation":"number","options":[]},
+  {"id":"email","text":"E-mail","type":"input","validation":"number","options":[]},
+  {"id":"phone","text":"Phone","type":"input","validation":"number","options":[]},
+  {"id":"ownerId","text":"Owner","type":"input","validation":"number","options":[]},
+  {"id":"position","text":"Position","type":"input","validation":"number","options":[]},
+  {"id":"department","text":"Department","type":"input","validation":"number","options":[]},
+  {"id":"leadStatus","text":"Lead Status","type":"input","validation":"number","options":[]},
+  {"id":"lifecycleState","text":"Lifecycle state","type":"input","validation":"number","options":[]},
+  {"id":"hasAuthority","text":"Has Authority","type":"input","validation":"number","options":[]},
+  {"id":"description","text":"Description","type":"input","validation":"number","options":[]},
+  {"id":"doNotDisturb","text":"Do not disturb","type":"input","validation":"number","options":[]}]
