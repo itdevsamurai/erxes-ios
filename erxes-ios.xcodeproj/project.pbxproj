@@ -263,6 +263,7 @@
 		B842CC4B2123E3CC0052E5C9 /* LifecycleState.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LifecycleState.json; sourceTree = "<group>"; };
 		B842CC4D2123E3E80052E5C9 /* BusinessType.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = BusinessType.json; sourceTree = "<group>"; };
 		B842CC4F21252ABB0052E5C9 /* CompanyController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CompanyController.graphql; sourceTree = "<group>"; };
+		B8698335212BD4370068B1FA /* Appnet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appnet.swift; sourceTree = "<group>"; };
 		B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		B88B6EB02122A2C700A9B7FF /* CompanyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyController.swift; sourceTree = "<group>"; };
 		F55583A32077166E00413F6A /* erxes-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "erxes-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -409,6 +410,7 @@
 				F58F203A207B372800D8564D /* ErxesUser.swift */,
 				9B1E93A220C94D2800AC4FED /* Message.swift */,
 				9B5CE65320D8DC6E003EDBF9 /* MyData.swift */,
+				B8698335212BD4370068B1FA /* Appnet.swift */,
 			);
 			name = Global;
 			path = ..;
@@ -941,6 +943,7 @@
 				9B94F41220DB309200313543 /* KCKeyboardImagePickerController.swift in Sources */,
 				9BD9BE4220E38D1000CCFEA6 /* ComposeView.swift in Sources */,
 				9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */,
+				B8698336212BD4370068B1FA /* Appnet.swift in Sources */,
 				9BD9BE2C20E375A400CCFEA6 /* Miscellaneous.swift in Sources */,
 				9BF5B468209989F6006CF2D3 /* TagView.swift in Sources */,
 				9BD9BE3220E375A400CCFEA6 /* VideoCameraCell.swift in Sources */,
