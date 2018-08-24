@@ -14,6 +14,7 @@ class CustomerProfileController: FormViewController {
 
 //    var profileFields = ["String"]()
     var profileField = FieldGroup(id: "profile")
+    
     var customerId: String?
     var messagesCount = 0
     let client: ApolloClient = {
@@ -90,6 +91,33 @@ class CustomerProfileController: FormViewController {
                     self?.profileField.name = "PROFILE"
                     self?.profileField.order = -1
 //                    self?.profileField.fields = [field]
+                    var fieldsArray = [FieldGroup.Field]()
+                    
+                    if let path = Bundle.main.path(forResource: "Profile", ofType: "json") {
+                        do {
+                            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                            let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                            if let jsonResult = jsonResult as? [[String:Any]] {
+                                for (index,json) in jsonResult.enumerated() {
+                                    var field = FieldGroup.Field(snapshot:["":""])
+                                    field.id = json["id"] as! String
+                                    field.text = json["text"] as? String
+                                    field.type = json["type"] as? String
+                                    field.validation = json["validation"] as? String
+                                    field.options = json["options"] as! [String]
+                                    field.order = index
+                                    field.isVisible = true
+                                    fieldsArray.append(field)
+                                }
+                            }
+                        } catch {
+                            // handle error
+                        }
+                    }
+                    self?.profileField.fields = fieldsArray
+                   
+                    self?.fieldGroups.insert((self?.profileField)!, at: 0)
+                    
                 }
             }
         }
@@ -126,7 +154,7 @@ class CustomerProfileController: FormViewController {
     }
 
     func buildForm(customer: CustomerInfo) {
-
+        
         for group in fieldGroups {
             if group.isVisible! {
                 form +++ Section(group.name!)
@@ -138,50 +166,63 @@ class CustomerProfileController: FormViewController {
                     if (field?.isVisible)! {
                         if field?.type == "firstName" || field?.type == "lastName" {
                             form.last!
-                            <<< NameRow (field?.text) { row in
+                            <<< NameRow (field?.id) { row in
                                 row.title = field?.text
                                 row.value = customer.firstName
                             }
                         } else if field?.type == "input" && (field?.validation?.isEmpty)! {
                             form.last!
-                            <<< TextRow (field?.text) { row in
+                            <<< TextRow (field?.id) { row in
                                 row.title = field?.text
                             }
                         } else if field?.type == "input" && field?.validation == "number" {
                             form.last!
-                            <<< IntRow (field?.text) { row in
+                            <<< IntRow (field?.id) { row in
                                 row.title = field?.text
                             }
                         } else if field?.type == "input" && field?.validation == "date" {
                             form.last!
-                            <<< DateRow (field?.text) { row in
+                            <<< DateRow (field?.id) { row in
                                 row.title = field?.text
-                            }
+                                }.cellSetup({ (cell, lrow) in
+                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                })
                         } else if field?.type == "select" {
                             form.last!
-                            <<< PushRow<String> (field?.text) { row in
+                            <<< PushRow<String> (field?.id) { row in
                                 row.title = field?.text
                                 row.options = field?.options as? [String]
 
-                            }
+                                }.cellSetup({ (cell, lrow) in
+                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                })
                         } else if field?.type == "check" && field?.options == ["on", "off"] {
                             form.last!
-                            <<< SwitchRow(field?.text) { row in
+                            <<< SwitchRow(field?.id) { row in
                                 row.title = field?.text
-                            }
+                                }.cellSetup({ (cell, lrow) in
+                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                })
                         } else if field?.type == "check" {
                             form.last!
-                            <<< MultipleSelectorRow<String>(field?.text) { row in
+                            <<< MultipleSelectorRow<String>(field?.id) { row in
                                 row.title = field?.text
                                 row.options = field?.options as? [String]
-                            }
+                                }.cellSetup({ (cell, lrow) in
+                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                })
                         }else if field?.validation == "email" {
                             form.last!
                                 <<< EmailRow(field?.id) { row in
                                     row.title = field?.text
                             }
                         }
-
+                        
+                    
 
                         for row in form.allRows {
                             row.baseCell.alpha = 0.7
@@ -284,44 +325,43 @@ class CustomerProfileController: FormViewController {
     func saveAction() {
         self.loader.startAnimating()
         let mutation = CustomersEditMutation(_id: customerId!)
-        let mirrored_object = Mirror(reflecting: mutation)
-        for (index,attribute) in mirrored_object.children.enumerated() {
-            print("index = ", index, " attribute = ", attribute)
+       
+
+        mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
+        mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
+        mutation.email = form.rowBy(tag: "email")?.baseValue as? String
+        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
+        mutation.ownerId = owner?.id
+        mutation.position = form.rowBy(tag: "position")?.baseValue as? String
+        mutation.department = form.rowBy(tag: "department")?.baseValue as? String
+        mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
+        mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
+        mutation.hasAuthority = (form.rowBy(tag: "hasAuthority")?.baseValue as? Bool)?.description
+        mutation.description = form.rowBy(tag: "description")?.baseValue as? String
+        mutation.doNotDisturb = (form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool)?.description
+        mutation.links = JSON()
+        var customFields = [JSON]()
+        print(form.allSections)
+        client.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+            if result?.data != nil {
+                print(result)
+                self?.loader.stopAnimating()
+
+            }
         }
-        loader.stopAnimating()
-//        mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
-//        mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
-//        mutation.email = form.rowBy(tag: "email")?.baseValue as? String
-//        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
-//        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
-//        mutation.ownerId = owner?.id
-//        mutation.position = form.rowBy(tag: "position")?.baseValue as? String
-//        mutation.department = form.rowBy(tag: "department")?.baseValue as? String
-//        mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
-//        mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
-//        mutation.hasAuthority = (form.rowBy(tag: "hasAuthority")?.baseValue as? Bool)?.description
-//        mutation.description = form.rowBy(tag: "description")?.baseValue as? String
-//        mutation.doNotDisturb = (form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool)?.description
-//        mutation.links = JSON()
-//        client.perform(mutation: mutation) { [weak self] result, error in
-//            if let error = error {
-//                print(error.localizedDescription)
-//                let alert = FailureAlert(message: error.localizedDescription)
-//                alert.show(animated: true)
-//                self?.loader.stopAnimating()
-//                return
-//            }
-//            if let err = result?.errors {
-//                let alert = FailureAlert(message: err[0].localizedDescription)
-//                alert.show(animated: true)
-//                self?.loader.stopAnimating()
-//            }
-//            if result?.data != nil {
-//                print(result)
-//                self?.loader.stopAnimating()
-//
-//            }
-//        }
     }
 
     func configureViews() {
@@ -376,6 +416,7 @@ class CustomerProfileController: FormViewController {
             cell.detailTextLabel?.font = Constants.LIGHT
             cell.textLabel?.textColor = Constants.ERXES_COLOR
             cell.detailTextLabel?.textColor = Constants.ERXES_COLOR
+            
         }
 
         SwitchRow.defaultCellUpdate = { cell, row in
@@ -407,7 +448,10 @@ class CustomerProfileController: FormViewController {
             row.options = self.companies
             cell.textLabel?.font = Constants.LIGHT
             cell.textLabel?.textColor = Constants.ERXES_COLOR
-
+            cell.textLabel?.font = Constants.LIGHT
+            cell.detailTextLabel?.font = Constants.LIGHT
+            cell.textLabel?.textColor = Constants.ERXES_COLOR
+            cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
         }
 
         DecimalRow.defaultCellUpdate = { cell, row in

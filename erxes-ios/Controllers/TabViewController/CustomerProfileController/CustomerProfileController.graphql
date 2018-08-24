@@ -109,19 +109,21 @@ fragment FieldGroup on FieldsGroup {
     isVisible
     isDefinedByErxes
     fields {
-        _id
-        contentType
-        type
-        text
-        isVisible
-        validation
-        order
-        options
-        groupId
-        description
+       ...FieldData
         
     }
 }
 
 
-
+fragment FieldData on Field {
+    _id
+    contentType
+    type
+    text
+    isVisible
+    validation
+    order
+    options
+    groupId
+    description
+}
