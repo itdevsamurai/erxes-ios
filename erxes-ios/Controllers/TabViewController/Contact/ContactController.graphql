@@ -110,3 +110,10 @@ mutation customersRemove($customerIds: [String]) {
     customersRemove(customerIds: $customerIds)
 }
 
+
+mutation customersMerge($customerIds: [String], $customerFields: JSON) {
+    customersMerge(customerIds: $customerIds, customerFields: $customerFields) {
+        _id
+        __typename
+    }
+}
