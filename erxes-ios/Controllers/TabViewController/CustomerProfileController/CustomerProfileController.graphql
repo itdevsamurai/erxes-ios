@@ -27,6 +27,7 @@ fragment CustomerInfo on Customer {
     phone
     isUser
     visitorContactInfo
+    customFieldsData
     position
     department
     leadStatus

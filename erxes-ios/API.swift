@@ -3221,6 +3221,48 @@ public final class CompaniesQuery: GraphQLQuery {
   }
 }
 
+public final class CustomersRemoveMutation: GraphQLMutation {
+  public static let operationString =
+    "mutation customersRemove($customerIds: [String]) {\n  customersRemove(customerIds: $customerIds)\n}"
+
+  public var customerIds: [String?]?
+
+  public init(customerIds: [String?]? = nil) {
+    self.customerIds = customerIds
+  }
+
+  public var variables: GraphQLMap? {
+    return ["customerIds": customerIds]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("customersRemove", arguments: ["customerIds": GraphQLVariable("customerIds")], type: .list(.scalar(String.self))),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(customersRemove: [String?]? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "customersRemove": customersRemove])
+    }
+
+    public var customersRemove: [String?]? {
+      get {
+        return snapshot["customersRemove"] as? [String?]
+      }
+      set {
+        snapshot.updateValue(newValue, forKey: "customersRemove")
+      }
+    }
+  }
+}
+
 public final class CustomerDetailQuery: GraphQLQuery {
   public static let operationString =
     "query customerDetail($_id: String!) {\n  customerDetail(_id: $_id) {\n    __typename\n    ...CustomerInfo\n  }\n}"
@@ -3278,6 +3320,7 @@ public final class CustomerDetailQuery: GraphQLQuery {
         GraphQLField("phone", type: .scalar(String.self)),
         GraphQLField("isUser", type: .scalar(Bool.self)),
         GraphQLField("visitorContactInfo", type: .scalar(JSON.self)),
+        GraphQLField("customFieldsData", type: .scalar(JSON.self)),
         GraphQLField("position", type: .scalar(String.self)),
         GraphQLField("department", type: .scalar(String.self)),
         GraphQLField("leadStatus", type: .scalar(String.self)),
@@ -3298,8 +3341,8 @@ public final class CustomerDetailQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, integration: Integration? = nil, conversations: [Conversation?]? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, companies: [Company?]? = nil, messengerData: JSON? = nil, getTags: [GetTag?]? = nil) {
-        self.init(snapshot: ["__typename": "Customer", "_id": id, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "conversations": conversations.flatMap { (value: [Conversation?]) -> [Snapshot?] in value.map { (value: Conversation?) -> Snapshot? in value.flatMap { (value: Conversation) -> Snapshot in value.snapshot } } }, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "visitorContactInfo": visitorContactInfo, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "companies": companies.flatMap { (value: [Company?]) -> [Snapshot?] in value.map { (value: Company?) -> Snapshot? in value.flatMap { (value: Company) -> Snapshot in value.snapshot } } }, "messengerData": messengerData, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
+      public init(id: String, integration: Integration? = nil, conversations: [Conversation?]? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, customFieldsData: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, companies: [Company?]? = nil, messengerData: JSON? = nil, getTags: [GetTag?]? = nil) {
+        self.init(snapshot: ["__typename": "Customer", "_id": id, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "conversations": conversations.flatMap { (value: [Conversation?]) -> [Snapshot?] in value.map { (value: Conversation?) -> Snapshot? in value.flatMap { (value: Conversation) -> Snapshot in value.snapshot } } }, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "visitorContactInfo": visitorContactInfo, "customFieldsData": customFieldsData, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "companies": companies.flatMap { (value: [Company?]) -> [Snapshot?] in value.map { (value: Company?) -> Snapshot? in value.flatMap { (value: Company) -> Snapshot in value.snapshot } } }, "messengerData": messengerData, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
       }
 
       public var __typename: String {
@@ -3389,6 +3432,15 @@ public final class CustomerDetailQuery: GraphQLQuery {
         }
         set {
           snapshot.updateValue(newValue, forKey: "visitorContactInfo")
+        }
+      }
+
+      public var customFieldsData: JSON? {
+        get {
+          return snapshot["customFieldsData"] as? JSON
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "customFieldsData")
         }
       }
 
@@ -8316,7 +8368,7 @@ public struct CompanyDetail: GraphQLFragment {
 
 public struct CustomerInfo: GraphQLFragment {
   public static let fragmentString =
-    "fragment CustomerInfo on Customer {\n  __typename\n  _id\n  integration {\n    __typename\n    kind\n    brand {\n      __typename\n      name\n    }\n    channels {\n      __typename\n      name\n    }\n  }\n  conversations {\n    __typename\n    createdAt\n    status\n    updatedAt\n  }\n  firstName\n  lastName\n  email\n  phone\n  isUser\n  visitorContactInfo\n  position\n  department\n  leadStatus\n  lifecycleState\n  hasAuthority\n  description\n  doNotDisturb\n  links {\n    __typename\n    linkedIn\n    twitter\n    facebook\n    github\n    youtube\n    website\n  }\n  owner {\n    __typename\n    details {\n      __typename\n      fullName\n    }\n  }\n  companies {\n    __typename\n    _id\n    name\n    website\n    industry\n  }\n  messengerData\n  getTags {\n    __typename\n    _id\n    name\n    colorCode\n  }\n}"
+    "fragment CustomerInfo on Customer {\n  __typename\n  _id\n  integration {\n    __typename\n    kind\n    brand {\n      __typename\n      name\n    }\n    channels {\n      __typename\n      name\n    }\n  }\n  conversations {\n    __typename\n    createdAt\n    status\n    updatedAt\n  }\n  firstName\n  lastName\n  email\n  phone\n  isUser\n  visitorContactInfo\n  customFieldsData\n  position\n  department\n  leadStatus\n  lifecycleState\n  hasAuthority\n  description\n  doNotDisturb\n  links {\n    __typename\n    linkedIn\n    twitter\n    facebook\n    github\n    youtube\n    website\n  }\n  owner {\n    __typename\n    details {\n      __typename\n      fullName\n    }\n  }\n  companies {\n    __typename\n    _id\n    name\n    website\n    industry\n  }\n  messengerData\n  getTags {\n    __typename\n    _id\n    name\n    colorCode\n  }\n}"
 
   public static let possibleTypes = ["Customer"]
 
@@ -8331,6 +8383,7 @@ public struct CustomerInfo: GraphQLFragment {
     GraphQLField("phone", type: .scalar(String.self)),
     GraphQLField("isUser", type: .scalar(Bool.self)),
     GraphQLField("visitorContactInfo", type: .scalar(JSON.self)),
+    GraphQLField("customFieldsData", type: .scalar(JSON.self)),
     GraphQLField("position", type: .scalar(String.self)),
     GraphQLField("department", type: .scalar(String.self)),
     GraphQLField("leadStatus", type: .scalar(String.self)),
@@ -8351,8 +8404,8 @@ public struct CustomerInfo: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, integration: Integration? = nil, conversations: [Conversation?]? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, companies: [Company?]? = nil, messengerData: JSON? = nil, getTags: [GetTag?]? = nil) {
-    self.init(snapshot: ["__typename": "Customer", "_id": id, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "conversations": conversations.flatMap { (value: [Conversation?]) -> [Snapshot?] in value.map { (value: Conversation?) -> Snapshot? in value.flatMap { (value: Conversation) -> Snapshot in value.snapshot } } }, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "visitorContactInfo": visitorContactInfo, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "companies": companies.flatMap { (value: [Company?]) -> [Snapshot?] in value.map { (value: Company?) -> Snapshot? in value.flatMap { (value: Company) -> Snapshot in value.snapshot } } }, "messengerData": messengerData, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
+  public init(id: String, integration: Integration? = nil, conversations: [Conversation?]? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, customFieldsData: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, companies: [Company?]? = nil, messengerData: JSON? = nil, getTags: [GetTag?]? = nil) {
+    self.init(snapshot: ["__typename": "Customer", "_id": id, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "conversations": conversations.flatMap { (value: [Conversation?]) -> [Snapshot?] in value.map { (value: Conversation?) -> Snapshot? in value.flatMap { (value: Conversation) -> Snapshot in value.snapshot } } }, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "visitorContactInfo": visitorContactInfo, "customFieldsData": customFieldsData, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "companies": companies.flatMap { (value: [Company?]) -> [Snapshot?] in value.map { (value: Company?) -> Snapshot? in value.flatMap { (value: Company) -> Snapshot in value.snapshot } } }, "messengerData": messengerData, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
   }
 
   public var __typename: String {
@@ -8442,6 +8495,15 @@ public struct CustomerInfo: GraphQLFragment {
     }
     set {
       snapshot.updateValue(newValue, forKey: "visitorContactInfo")
+    }
+  }
+
+  public var customFieldsData: JSON? {
+    get {
+      return snapshot["customFieldsData"] as? JSON
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "customFieldsData")
     }
   }
 

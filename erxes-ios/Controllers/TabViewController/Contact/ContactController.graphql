@@ -106,25 +106,7 @@ fragment CompanyDetail on Company{
     }
     __typename
 }
+mutation customersRemove($customerIds: [String]) {
+    customersRemove(customerIds: $customerIds)
+}
 
-#query FieldsGroups($contentType:String)
-#{
-#fieldsGroups(contentType:$contentType){
-#_id
-#name
-#contentType
-#order
-##description
-#isVisible
-#fields{
-#type
-#validation
-#text
-#description
-#options
-#isRequired
-#order
-#isVisible
-#}
-#}
-#}

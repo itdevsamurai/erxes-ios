@@ -37,6 +37,12 @@ extension String {
         
         return str
     }
+    
+    func dateFromString() -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        return formatter.date(from: self)!
+    }
 }
 
 extension Date {
@@ -53,6 +59,15 @@ extension Date {
         formatter.dateFormat = "MMM dd, yyyy hh:mm"
         return formatter.string(from: self)
     }
+    
+    func mainDateString()->String {
+//        2018-09-01
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        return formatter.string(from: self)
+    }
+    
+    
 }
 
 extension UIView {

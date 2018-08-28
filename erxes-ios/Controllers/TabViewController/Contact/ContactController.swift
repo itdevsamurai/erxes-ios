@@ -243,6 +243,19 @@ class ContactController: UIViewController {
         }
     }
     
+    func deleteCustomer(index:Int) {
+        let customer = customers[index]
+        mutateDeleteCustomer(customerIds: [customer.id])
+    }
+    
+    func mutateDeleteCustomer(customerIds:[String]) {
+        let mutation = CustomersRemoveMutation(customerIds: customerIds)
+        
+        client.perform(mutation: mutation) { [weak self] result, error in
+            self?.getCustomers()
+        }
+    }
+    
     func deleteCompany(index:Int) {
         let company = companies[index]
         mutateDeleteCompany(companyIds: [company.id])
@@ -301,14 +314,23 @@ extension ContactController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            print(indexPath)
-            deleteCompany(index: indexPath.row)
+            if isCustomer{
+                deleteCustomer(index: indexPath.row)
+            }else{
+                deleteCompany(index: indexPath.row)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let company = companies[indexPath.row]
-        navigate(.companyProfile(id: company.id))
+        if isCustomer{
+            let customer = customers[indexPath.row]
+            navigate(.customerProfile(_id: customer.id, count: 0))
+        }else{
+            let company = companies[indexPath.row]
+            navigate(.companyProfile(id: company.id))
+        }
+       
     }
 }
 
