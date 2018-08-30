@@ -23,7 +23,7 @@ class CompanyController: FormViewController {
         let currentUser = ErxesUser.sharedUserInfo()
         configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
                                                "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
+        let url = URL(string: Constants.API_ENDPOINT)!
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
     
@@ -219,7 +219,7 @@ class CompanyController: FormViewController {
             cell.detailTextLabel?.font = Constants.LIGHT
             cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
             row.filterFunction = { [unowned self] text in
-                self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
+                self.companies.filter({ ($0.primaryName?.lowercased().contains(text.lowercased()))! })
             }
 
         }
@@ -237,7 +237,7 @@ class CompanyController: FormViewController {
             <<< NameRow("name") { row in
                 row.title = "Name:"
                 row.placeholder = "-"
-                if let item = company?.name {
+                if let item = company?.primaryName {
                     row.value = item
                 }
             }
@@ -349,16 +349,16 @@ class CompanyController: FormViewController {
                 $0.footer?.height = { 0 }
             }
             
-            <<< SuggestionTableRow<CompanyDetail>("parentCompany") {
-                $0.filterFunction = { [unowned self] text in
-                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
-                }
-                $0.placeholder = "Search for a company"
-                if let item = company?.parentCompany {
-                    let parent = CompanyDetail(id: item.id, name: item.name)
-                    $0.value = parent
-                }
-            }
+//            <<< SuggestionTableRow<CompanyDetail>("parentCompany") {
+//                $0.filterFunction = { [unowned self] text in
+//                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
+//                }
+//                $0.placeholder = "Search for a company"
+//                if let item = company?.parentCompany {
+//                    let parent = CompanyDetail(id: item.id, name: item.name)
+//                    $0.value = parent
+//                }
+//            }
         
             +++ Section("Links"){
                 $0.footer = HeaderFooterView(title: "")
@@ -592,12 +592,12 @@ class CompanyController: FormViewController {
         }
         
         let mutation = CompaniesAddMutation()
-        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
+//        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
         mutation.email = form.rowBy(tag: "email")?.baseValue as? String
         mutation.size = form.rowBy(tag: "size")?.baseValue as? Int
-        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
+//        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
         mutation.industry = form.rowBy(tag: "industry")?.baseValue as? String ?? ""
-        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
+//        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
         let parent = form.rowBy(tag: "parentCompany")?.baseValue as? CompanyDetail
         mutation.parentCompanyId = parent?.id
         let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
@@ -607,7 +607,7 @@ class CompanyController: FormViewController {
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String ?? ""
         mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String ?? ""
         mutation.description = form.rowBy(tag: "description")?.baseValue as? String
-        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
+//        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
         mutation.doNotDisturb = form.rowBy(tag: "doNotDisturb")?.baseValue as? String
         
         //        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String
@@ -652,13 +652,13 @@ class CompanyController: FormViewController {
             return
         }
         
-        let mutation = CompaniesEditMutation(id: comId)
-        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
+        let mutation = CompaniesEditMutation(_id: comId)
+        mutation.primaryName = form.rowBy(tag: "name")?.baseValue as? String
         mutation.email = form.rowBy(tag: "email")?.baseValue as? String
         mutation.size = form.rowBy(tag: "size")?.baseValue as? Int
-        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
+//        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
         mutation.industry = form.rowBy(tag: "industry")?.baseValue as? String
-        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
+//        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
         let parent = form.rowBy(tag: "parentCompany")?.baseValue as? CompanyDetail
         mutation.parentCompanyId = parent?.id
         let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
@@ -668,7 +668,7 @@ class CompanyController: FormViewController {
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
         mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String
         mutation.description = form.rowBy(tag: "description")?.baseValue as? String
-        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
+//        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
         mutation.doNotDisturb = form.rowBy(tag: "doNotDisturb")?.baseValue as? String
 
 //        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String

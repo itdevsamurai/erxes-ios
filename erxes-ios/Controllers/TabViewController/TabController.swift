@@ -28,6 +28,7 @@ class TabController: UITabBarController {
 //        
         let inboxVC = InboxController()
         let contactVC = ContactController()
+        let settingsVC = SettingsController()
         tabBar.itemPositioning = .fill
         self.tabBar.itemSpacing = 0
         self.tabBar.itemWidth = self.view.bounds.size.width/3
@@ -38,13 +39,17 @@ class TabController: UITabBarController {
         self.tabBar.backgroundColor = Constants.INBOX_BG_COLOR
         let imageInbox = UIImage.erxes(with: .chat, textColor: Constants.ERXES_COLOR!, size: CGSize(width: 22, height: 22))
         let imageCustomer = UIImage.erxes(with: .users, textColor: Constants.ERXES_COLOR!, size: CGSize(width: 22, height: 22))
+        let imageSettings = UIImage.erxes(with: .settings, textColor: Constants.ERXES_COLOR!)
         inboxVC.tabBarItem = UITabBarItem.init(title: "INBOX", image: imageInbox, selectedImage: imageInbox)
-        
         contactVC.tabBarItem = UITabBarItem.init(title: "CONTACTS", image: imageCustomer, selectedImage: imageCustomer)
-        self.tabBarController?.viewControllers = [inboxVC,contactVC]
-        let nav1 = NavigationController.init(rootViewController:inboxVC)
+        settingsVC.tabBarItem = UITabBarItem.init(title: "SETTINGS", image: imageSettings, selectedImage: imageSettings)
+        
+        self.tabBarController?.viewControllers = [inboxVC,contactVC,settingsVC]
+        let nav1 = NavigationController.init(rootViewController: inboxVC)
         let nav2 = NavigationController.init(rootViewController: contactVC)
-        self.viewControllers = [nav1,nav2]
+        let nav3 = NavigationController.init(rootViewController: settingsVC)
+
+        self.viewControllers = [nav1,nav2,nav3]
     }
 
     override func didReceiveMemoryWarning() {

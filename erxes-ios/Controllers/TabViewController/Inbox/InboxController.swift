@@ -58,7 +58,7 @@ class InboxController: UIViewController {
         let currentUser = ErxesUser.sharedUserInfo()
         configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
             "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
+        let url = URL(string: Constants.API_ENDPOINT)!
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
 

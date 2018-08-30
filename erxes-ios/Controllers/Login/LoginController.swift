@@ -275,7 +275,7 @@ class LoginController: UIViewController {
                 
                 let currentUser = ErxesUser.sharedUserInfo()
                 currentUser.token = (result?.data?.login.token)!
-                currentUser.refreshToken = (result?.data?.login.token)!
+                currentUser.refreshToken = (result?.data?.login.refreshToken)!
                 
                 self?.mutateCurrrentUser()
             }
@@ -288,8 +288,10 @@ class LoginController: UIViewController {
         let client: ApolloClient = {
             let configuration = URLSessionConfiguration.default
             let currentUser = ErxesUser.sharedUserInfo()
-            configuration.httpAdditionalHeaders = ["Authorization": "Bearer <\(currentUser.token!)>"]
-            let url = URL(string: Constants.API_ENDPOINT +  "/graphql")!
+            
+            configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
+                                                   "x-refresh-token": currentUser.refreshToken as Any]
+            let url = URL(string: Constants.API_ENDPOINT)!
             
             return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         }()
@@ -309,13 +311,13 @@ class LoginController: UIViewController {
             }
             
             if result?.data != nil {
-                
+                print(result)
                 let user = result?.data?.currentUser
+                print("user = ", user)
                 let currentUser  = ErxesUser.sharedUserInfo()
                 currentUser._id = user?.id
                 currentUser.username = user?.username
                 currentUser.email = user?.email
-                currentUser.role = user?.role
                 currentUser.avatar = user?.details?.avatar
                 currentUser.fullName = user?.details?.fullName
                 currentUser.position = user?.details?.position

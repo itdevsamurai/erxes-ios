@@ -19,6 +19,9 @@
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
 		9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */; };
 		9B441AB020DBCB0A008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AAF20DBCB0A008B29AF /* screenshot.png */; };
+		9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8A2137B9CB0074346B /* SettingsController.swift */; };
+		9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8C2137BDB20074346B /* SettingsCell.swift */; };
+		9B475C8F2137CBA70074346B /* CustomProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8E2137CBA70074346B /* CustomProfileView.swift */; };
 		9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */; };
 		9B567094212A84FA0023B5AF /* erxes.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B567093212A84FA0023B5AF /* erxes.ttf */; };
 		9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567095212A856E0023B5AF /* ErxesFont.swift */; };
@@ -170,6 +173,9 @@
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
 		9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		9B441AAF20DBCB0A008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
+		9B475C8A2137B9CB0074346B /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		9B475C8C2137BDB20074346B /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		9B475C8E2137CBA70074346B /* CustomProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProfileView.swift; sourceTree = "<group>"; };
 		9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		9B567093212A84FA0023B5AF /* erxes.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = erxes.ttf; sourceTree = "<group>"; };
 		9B567095212A856E0023B5AF /* ErxesFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesFont.swift; sourceTree = "<group>"; };
@@ -674,6 +680,9 @@
 		F58F204A207B4DB000D8564D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				9B475C8A2137B9CB0074346B /* SettingsController.swift */,
+				9B475C8E2137CBA70074346B /* CustomProfileView.swift */,
+				9B475C8C2137BDB20074346B /* SettingsCell.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -939,6 +948,7 @@
 				F5BEE329207761730042DFC2 /* MyTextField.swift in Sources */,
 				9B6202F520EC817A0094A87D /* SuggestionCollectionViewCell.swift in Sources */,
 				9BD9BE1F20E375A400CCFEA6 /* ImagePickerController.swift in Sources */,
+				9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */,
 				9B5CE65620D90846003EDBF9 /* UsersController.swift in Sources */,
 				9BD9BE1120E375A400CCFEA6 /* ShutterButton.swift in Sources */,
 				9B1E939D20C8E34B00AC4FED /* MyAppNavigation.swift in Sources */,
@@ -952,6 +962,7 @@
 				9BD9BE2720E375A400CCFEA6 /* VideoCaptureDelegate.swift in Sources */,
 				9B1E939720C8D45800AC4FED /* ChatController.swift in Sources */,
 				B88B6EB12122A2C700A9B7FF /* CompanyController.swift in Sources */,
+				9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */,
 				9BD9BE3120E375A400CCFEA6 /* CollectionViewBatchAnimation.swift in Sources */,
 				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
@@ -974,6 +985,7 @@
 				9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */,
 				9B9F5543212E83DA0081EC89 /* Appnet.swift in Sources */,
 				9BD9BE2C20E375A400CCFEA6 /* Miscellaneous.swift in Sources */,
+				9B475C8F2137CBA70074346B /* CustomProfileView.swift in Sources */,
 				9BF5B468209989F6006CF2D3 /* TagView.swift in Sources */,
 				9BD9BE3220E375A400CCFEA6 /* VideoCameraCell.swift in Sources */,
 				9B6D056120AAED3F00F5D77C /* ChannelFilterController.swift in Sources */,

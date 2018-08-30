@@ -22,7 +22,7 @@ class CustomerProfileController: FormViewController {
         let currentUser = ErxesUser.sharedUserInfo()
         configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
             "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
+        let url = URL(string: Constants.API_ENDPOINT)!
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
     var loader: ErxesLoader = {
@@ -154,6 +154,7 @@ class CustomerProfileController: FormViewController {
     }
 
     func buildForm(customer: CustomerInfo) {
+        
         let obj = Mirror(reflecting: customer)
         var profile = [String: Any]()
         var customFields = [String: Any]()
@@ -264,6 +265,9 @@ class CustomerProfileController: FormViewController {
                                     row.value = profile[(field?.id)!] as? String
                                 }
                             }
+                            
+                           
+                           
                         }
                     }
                 } else {
@@ -458,8 +462,8 @@ class CustomerProfileController: FormViewController {
 
             mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
             mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
-            mutation.email = form.rowBy(tag: "email")?.baseValue as? String
-            mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+            mutation.primaryEmail = form.rowBy(tag: "primaryEmail")?.baseValue as? String
+            mutation.primaryPhone = form.rowBy(tag: "primaryPhone")?.baseValue as? String
             let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
             mutation.ownerId = owner?.id
             mutation.position = form.rowBy(tag: "position")?.baseValue as? String
@@ -671,19 +675,19 @@ class CustomerProfileController: FormViewController {
                 }
             }
 
-            SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
-                row.cell.textLabel?.font = Constants.LIGHT
-                row.cell.textLabel?.textColor = Constants.ERXES_COLOR
-                row.placeholder = "Type to search companies"
-                cell.textField.textColor = Constants.ERXES_COLOR
-                cell.textField.font = Constants.LIGHT
-                cell.detailTextLabel?.font = Constants.LIGHT
-                cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
-                row.filterFunction = { [unowned self] text in
-                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
-                }
-
-            }
+//            SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
+//                row.cell.textLabel?.font = Constants.LIGHT
+//                row.cell.textLabel?.textColor = Constants.ERXES_COLOR
+//                row.placeholder = "Type to search companies"
+//                cell.textField.textColor = Constants.ERXES_COLOR
+//                cell.textField.font = Constants.LIGHT
+//                cell.detailTextLabel?.font = Constants.LIGHT
+//                cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
+//                row.filterFunction = { [unowned self] text in
+//                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
+//                }
+//
+//            }
             self.view.addSubview(loader)
 
         }
@@ -737,7 +741,7 @@ class CustomerProfileController: FormViewController {
 
         // Text that is displayed as a completion suggestion.
         public var suggestionString: String {
-            return name!
+            return names![0]!
         }
     }
 

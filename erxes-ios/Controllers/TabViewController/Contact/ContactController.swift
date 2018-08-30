@@ -17,7 +17,7 @@ class ContactController: UIViewController {
         let currentUser = ErxesUser.sharedUserInfo()
         configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
                                                "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string:Constants.API_ENDPOINT +  "/graphql")!
+        let url = URL(string:Constants.API_ENDPOINT)!
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
     
@@ -301,11 +301,11 @@ extension ContactController: UITableViewDelegate {
         }else{
             cell?.icon.image = #imageLiteral(resourceName: "ic_company").tint(with: Constants.ERXES_COLOR!)
             let company = companies[indexPath.row]
-            if company.name != nil {
-                cell?.topLabel.text = company.name
+            if company.primaryName != nil {
+                cell?.topLabel.text = company.primaryName
             }
-            if company.website != nil {
-                cell?.bottomLabel.text = company.website
+            if company.plan != nil {
+                cell?.bottomLabel.text = company.plan
             }
         }
         

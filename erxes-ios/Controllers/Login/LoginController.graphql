@@ -6,19 +6,31 @@ mutation Login($email: String!, $password: String!) {
 }
 
 
-query CurrentUser{
-    currentUser{
+query currentUser {
+    currentUser {
         _id
         username
         email
-        role
         details {
             avatar
             fullName
             position
-            
+            location
+            description
+            __typename
         }
+        links {
+            linkedIn
+            twitter
+            facebook
+            youtube
+            github
+            website
+            __typename
+        }
+        emailSignatures
         getNotificationByEmail
+        __typename
     }
 }
 
