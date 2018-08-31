@@ -7219,6 +7219,87 @@ public final class GetUsersQuery: GraphQLQuery {
   }
 }
 
+public final class UsersChangePasswordMutation: GraphQLMutation {
+  public static let operationString =
+    "mutation usersChangePassword($currentPassword: String!, $newPassword: String!) {\n  usersChangePassword(currentPassword: $currentPassword, newPassword: $newPassword) {\n    __typename\n    _id\n  }\n}"
+
+  public var currentPassword: String
+  public var newPassword: String
+
+  public init(currentPassword: String, newPassword: String) {
+    self.currentPassword = currentPassword
+    self.newPassword = newPassword
+  }
+
+  public var variables: GraphQLMap? {
+    return ["currentPassword": currentPassword, "newPassword": newPassword]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("usersChangePassword", arguments: ["currentPassword": GraphQLVariable("currentPassword"), "newPassword": GraphQLVariable("newPassword")], type: .object(UsersChangePassword.selections)),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(usersChangePassword: UsersChangePassword? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "usersChangePassword": usersChangePassword.flatMap { (value: UsersChangePassword) -> Snapshot in value.snapshot }])
+    }
+
+    public var usersChangePassword: UsersChangePassword? {
+      get {
+        return (snapshot["usersChangePassword"] as? Snapshot).flatMap { UsersChangePassword(snapshot: $0) }
+      }
+      set {
+        snapshot.updateValue(newValue?.snapshot, forKey: "usersChangePassword")
+      }
+    }
+
+    public struct UsersChangePassword: GraphQLSelectionSet {
+      public static let possibleTypes = ["User"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("_id", type: .nonNull(.scalar(String.self))),
+      ]
+
+      public var snapshot: Snapshot
+
+      public init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+      }
+
+      public init(id: String) {
+        self.init(snapshot: ["__typename": "User", "_id": id])
+      }
+
+      public var __typename: String {
+        get {
+          return snapshot["__typename"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var id: String {
+        get {
+          return snapshot["_id"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "_id")
+        }
+      }
+    }
+  }
+}
+
 public struct BrandDetail: GraphQLFragment {
   public static let fragmentString =
     "fragment BrandDetail on Brand {\n  __typename\n  _id\n  name\n}"

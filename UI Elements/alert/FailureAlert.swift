@@ -32,9 +32,7 @@ class FailureAlert: UIView, Modal {
 
     func initialize(message: String) {
 
-        if message == "Login Required" {
-            
-        } else {
+    
 
             dialogView.clipsToBounds = true
             backgroundView.frame = frame
@@ -77,7 +75,7 @@ class FailureAlert: UIView, Modal {
             closeButton.isHidden = false
             closeButton.addTarget(self, action: #selector(closeAction(sender:)), for: .touchUpInside)
             dialogView.addSubview(closeButton)
-        }
+        
     }
 
     @objc func closeAction(sender: UIButton) {

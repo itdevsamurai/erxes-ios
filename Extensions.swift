@@ -15,6 +15,45 @@ extension UIViewController {
         navigate(navigation as Navigation)
     }
     
+    func showResult(isSuccess:Bool,message:String){
+        let bannerView = UIView(frame: CGRect(x:0, y:0, width:view.frame.width, height:(UINavigationController().navigationBar.frame.height)))
+        if isSuccess{
+            bannerView.backgroundColor=UIColor.init(hexString: "37ce49")
+        }else{
+            bannerView.backgroundColor=UIColor.red
+        }
+        navigationController?.navigationBar.addSubview(bannerView)
+        let notifyLabel = UILabel()
+        notifyLabel.frame = CGRect(x:0, y:0, width:view.frame.width, height:(UINavigationController().navigationBar.frame.height))
+        notifyLabel.backgroundColor=UIColor.clear
+        notifyLabel.text = message
+        notifyLabel.textAlignment = .center
+        notifyLabel.textColor = .white
+        notifyLabel.font = UIFont.fontWith(type: .light, size: 14)
+        bannerView.addSubview(notifyLabel)
+        
+        bannerView.center.y -= (navigationController?.navigationBar.bounds.height)!
+        
+        
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.6, options: UIViewAnimationOptions.curveEaseIn, animations:{
+            bannerView.center.y += (self.navigationController?.navigationBar.frame.height)!
+            
+            
+        }, completion:{ finished in
+            
+            
+            
+            UIView.animate(withDuration: 1, delay: 1.5, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.9, options: UIViewAnimationOptions.curveEaseOut, animations:{
+                
+                bannerView.center.y -= ((self.navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height)
+                
+            }, completion: { completed in
+                bannerView.removeFromSuperview()
+            })
+            
+        })
+    }
+    
 }
 
 extension String {
@@ -312,4 +351,5 @@ public extension UIColor {
     static let SHIMMER_COLOR = UIColor(red: 202 / 255, green: 202 / 255, blue: 202 / 255, alpha: 1.0)
     static let INBOX_BG_COLOR = UIColor(red: 245 / 255, green: 244 / 255, blue: 250 / 255, alpha: 1.0)
     static let FB_COLOR = UIColor(red: 59 / 255, green: 89 / 255, blue: 152 / 255, alpha: 1.0)
+    static let GREEN = UIColor.init(hexString: "37ce49")
 }
