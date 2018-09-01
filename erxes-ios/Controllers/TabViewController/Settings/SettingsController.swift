@@ -15,7 +15,8 @@ class SettingsController: UIViewController {
     var timer = Timer()
     var brands = [BrandDetail]()
     let signatureView = EmailSignaturesModalView()
-    var profileView:CustomProfileView?
+    let notificationView = NotificationSettingsModalView()
+    var profileView:ProfileView?
     let client: ApolloClient = {
         let configuration = URLSessionConfiguration.default
         let currentUser = ErxesUser.sharedUserInfo()
@@ -42,12 +43,12 @@ class SettingsController: UIViewController {
     }()
     
     func configureViews(){
-        signatureView.brandField.textField.delegate = self
+        notificationView.delegate = self
         self.view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         let currentUser = ErxesUser.sharedUserInfo()
-        profileView = CustomProfileView(user: currentUser)
+        profileView = ProfileView(user: currentUser)
         profileView?.backgroundColor = Constants.INBOX_BG_COLOR
         self.view.addSubview(profileView!)
         self.view.addSubview(loader)
@@ -57,8 +58,10 @@ class SettingsController: UIViewController {
         super.viewDidLoad()
         title = "SETTINGS"
          self.view.backgroundColor = Constants.INBOX_BG_COLOR
+        
         configureViews()
         getBrands()
+        getNotificationsData()
         // Do any additional setup after loading the view.
     }
 
@@ -104,7 +107,66 @@ class SettingsController: UIViewController {
             if result?.data != nil {
                 if let allBrands = result?.data?.brands {
                     self?.brands = allBrands.map { ($0?.fragments.brandDetail)! }
+                    self?.signatureView.brands = (self?.brands)!
+                    self?.loader.stopAnimating()
                     
+                }
+                
+            }
+        }
+    }
+    
+    func getNotificationsData(){
+        loader.startAnimating()
+        let query = NotificationsModulesQuery()
+        let query1 = NotificationsGetConfigurationsQuery()
+        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+            
+            if result?.data != nil {
+                if let modules = result?.data?.notificationsModules {
+                    self?.notificationView.modules = modules as! [JSON]
+                    
+                    let firstItem: JSON = ["description": "NOTIFICATIONS ", "name": "notifications ","types": [["name":"usersConfigGetNotificationByEmail", "text": "Get notification by email"]]]
+                    self?.notificationView.modules.insert(firstItem, at: 0)
+                  
+                    self?.loader.stopAnimating()
+                    
+                }
+                
+            }
+        }
+        
+        client.fetch(query: query1, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.loader.stopAnimating()
+            }
+            
+            if result?.data != nil {
+                if let configs = result?.data?.notificationsGetConfigurations {
+                    self?.notificationView.configs = configs.map { ($0?.fragments.notificationConf)! }
                     self?.loader.stopAnimating()
                     
                 }
@@ -140,6 +202,81 @@ class SettingsController: UIViewController {
         }
     }
     
+    func insertSignature(signature:EmailSignature){
+        self.loader.startAnimating()
+        let mutation = UsersConfigEmailSignaturesMutation()
+        mutation.signatures = [signature]
+        client.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                
+                self?.showResult(isSuccess: false, message: error.localizedDescription)
+                self?.loader.stopAnimating()
+                return
+            }
+            if let err = result?.errors {
+                
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
+                
+                self?.loader.stopAnimating()
+            }
+            if result?.data != nil {
+                if (result?.data?.usersConfigEmailSignatures) != nil {
+                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+                }
+                self?.loader.stopAnimating()
+                
+            }
+        }
+    }
+    
+    
+    func getNotificationByEmailMutation(isAllowed:Bool){
+        let mutation = UsersConfigGetNotificationByEmailMutation(isAllowed: isAllowed)
+        client.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                
+                self?.showResult(isSuccess: false, message: error.localizedDescription)
+                self?.loader.stopAnimating()
+                return
+            }
+            if let err = result?.errors {
+                
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
+                
+                self?.loader.stopAnimating()
+            }
+            if result?.data != nil {
+                if (result?.data?.usersConfigGetNotificationByEmail) != nil {
+                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+                }
+                self?.loader.stopAnimating()
+            }
+        }
+    }
+    
+    func notificationsSaveConfigMutation(notifType:String,isAllowed:Bool){
+        let mutation = NotificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
+        client.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                
+                self?.showResult(isSuccess: false, message: error.localizedDescription)
+                self?.loader.stopAnimating()
+                return
+            }
+            if let err = result?.errors {
+                
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
+                
+                self?.loader.stopAnimating()
+            }
+            if result?.data != nil {
+                if (result?.data?.notificationsSaveConfig) != nil {
+                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+                }
+                self?.loader.stopAnimating()
+            }
+        }
+    }
 }
 
 extension SettingsController: UITableViewDelegate {
@@ -155,6 +292,19 @@ extension SettingsController: UITableViewDelegate {
         }else if indexPath.row == 1 {
             
             signatureView.show(animated: true)
+            signatureView.handler = {
+                let brandId = self.signatureView.selectedBrandId
+                let signature = self.signatureView.signatureView.textView.text
+                let signatureObj = EmailSignature(brandId: brandId, signature: signature)
+                self.insertSignature(signature: signatureObj)
+            }
+        }else if indexPath.row == 2{
+            notificationView.show(animated: true)
+            notificationView.handler = {
+                self.getNotificationsData()
+            }
+        }else if indexPath.row == 3{
+            self.parent?.navigationController?.popToRootViewController(animated: true)
         }
     }
 }
@@ -243,7 +393,7 @@ extension SettingsController: UITextFieldDelegate {
                 possibleMatches.append(item)
             }
         }
-        print(possibleMatches )
+        
         return possibleMatches
     }
     
@@ -265,4 +415,14 @@ extension SettingsController: UITextFieldDelegate {
         autoCompleteCharacterCount = autoCompleteResult.count
         return autoCompleteResult
     }
+}
+
+extension SettingsController: NotificationsDelegate {
+    func getNotificationsByEmail(isAllowed: Bool) {
+        self.getNotificationByEmailMutation(isAllowed: isAllowed)
+    }
+    func notificationsSaveConfig(notifType: String, isAllowed: Bool) {
+        self.notificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
+    }
+
 }

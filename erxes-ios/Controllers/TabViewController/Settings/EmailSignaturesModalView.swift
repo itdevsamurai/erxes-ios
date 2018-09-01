@@ -16,8 +16,9 @@ class EmailSignaturesModalView: UIView ,Modal{
     var saveButton = UIButton()
     var brandField = ErxesField()
     var signatureView = ErxesTextView()
- 
-    
+    var tableView = UITableView()
+    var brands = [BrandDetail]()
+    var selectedBrandId = String()
     var handler: (() -> Void)?
     
     convenience init() {
@@ -72,6 +73,8 @@ class EmailSignaturesModalView: UIView ,Modal{
         brandField = ErxesField()
         brandField.titleLabel.text = "Brand".uppercased()
         brandField.textField.placeholder = "Brand"
+        brandField.textField.delegate = self
+        brandField.textField.addTarget(self, action: #selector(dropDownAction(textField:)), for: .touchDown)
         dialogView.addSubview(brandField)
         
         signatureView = ErxesTextView()
@@ -99,7 +102,15 @@ class EmailSignaturesModalView: UIView ,Modal{
         closeButton.addTarget(self, action: #selector(closeAction(sender:)), for: .touchUpInside)
         dialogView.addSubview(closeButton)
         
-
+        tableView = UITableView()
+        tableView.register(FilterCell.self, forCellReuseIdentifier: "FilterCell")
+        tableView.rowHeight = 30
+        tableView.tableFooterView = UIView()
+        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.backgroundColor = .white
+        tableView.delegate = self
+        tableView.dataSource = self
+        dialogView.addSubview(tableView)
         
         addSubview(dialogView)
         
@@ -133,6 +144,13 @@ class EmailSignaturesModalView: UIView ,Modal{
             make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
         }
         
+        tableView.snp.makeConstraints { (make) in
+            make.left.equalTo(dialogView.snp.left).offset(20)
+            make.right.equalTo(dialogView.snp.right).inset(20)
+            make.height.equalTo(0)
+            make.top.equalTo(brandField.snp.bottom)
+        }
+        
         signatureView.snp.makeConstraints { (make) in
             make.left.equalTo(dialogView.snp.left).offset(20)
             make.right.equalTo(dialogView.snp.right).inset(20)
@@ -158,33 +176,127 @@ class EmailSignaturesModalView: UIView ,Modal{
     }
     
 
+    func expandTable(){
+        UIView.animate(withDuration: 0.3, animations: {
+            self.tableView.snp.remakeConstraints({ (make) in
+                make.left.equalTo(self.dialogView.snp.left).offset(20)
+                make.right.equalTo(self.dialogView.snp.right).inset(20)
+                make.top.equalTo(self.brandField.snp.bottom)
+                make.bottom.equalTo(self.dialogView.snp.bottom)
+            })
+            self.layoutIfNeeded()
+        })
+    }
     
-  
+    func collapseTable(){
+        UIView.animate(withDuration: 0.3, animations: {
+            self.tableView.snp.remakeConstraints({ (make) in
+                make.left.equalTo(self.dialogView.snp.left).offset(20)
+                make.right.equalTo(self.dialogView.snp.right).inset(20)
+                make.height.equalTo(0)
+                make.top.equalTo(self.brandField.snp.bottom)
+            })
+            self.layoutIfNeeded()
+        })
+    }
+    
+    func validate()->Bool{
+        let line1 = brandField.viewWithTag(1)
+        let line2 = signatureView.viewWithTag(1)
+       
+        var results = [Bool]()
+        var isValid = false
+   
+        
+        if (brandField.textField.text?.isEmpty)! {
+            line1?.backgroundColor = .red
+            results.append(false)
+        }else {
+            line1?.backgroundColor = .TEXT_COLOR
+            results.append(true)
+        }
+        
+        if (signatureView.textView.text?.isEmpty)!{
+            line2?.backgroundColor = .red
+            results.append(false)
+        }else{
+            line2?.backgroundColor = .TEXT_COLOR
+            results.append(true)
+        }
+        
+        if results.contains(where: {$0 == false}) {
+            isValid = false
+        }else{
+            isValid = true
+        }
+        
+        return isValid
+    }
     
     @objc func closeAction(sender: UIButton) {
         dismiss(animated: true)
-        closeButton.isHidden = true
-        if let handle = handler {
-            handle()
-        }
+        brandField.textField.text = ""
+        signatureView.textView.text = ""
+       
     }
     
     @objc func didTappedOnBackgroundView() {
-        closeButton.isHidden = true
+        brandField.textField.text = ""
+        signatureView.textView.text = ""
         dismiss(animated: true)
-        if let handle = handler {
-            handle()
-        }
+      
     }
     
     @objc func saveAction(sender:UIButton){
-        
+        brandField.textField.text = ""
+        signatureView.textView.text = ""
+        if validate(){
             if let handle = handler{
                 handle()
             }
             dismiss(animated: true)
-        
+        }
         
     }
 
+}
+
+extension EmailSignaturesModalView: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.brandField.textField.text = brands[indexPath.row].name
+        self.brandField.textField.resignFirstResponder()
+        selectedBrandId = brands[indexPath.row].id
+        self.collapseTable()
+    }
+}
+
+extension EmailSignaturesModalView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return brands.count
+    }
+    
+    
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell
+            let brand = brands[indexPath.row]
+            cell?.desc.text = brand.name
+            cell?.arrow.isHidden = true
+            return cell!
+        }
+    
+}
+
+extension EmailSignaturesModalView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.expandTable()
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return false
+    }
+    
+    @objc func dropDownAction(textField:UITextField){
+        self.expandTable()
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  CustomProfileView.swift
+//  ProfileView.swift
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/30/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomProfileView: UIView {
+class ProfileView: UIView {
 
    
     
@@ -38,6 +38,8 @@ class CustomProfileView: UIView {
         nameLabel.font = UIFont.fontWith(type: .light, size: 16)
         nameLabel.text = user.fullName
         nameLabel.textAlignment = .left
+        
+        
         self.addSubview(nameLabel)
         
         let positionLabel = UILabel()
@@ -45,6 +47,8 @@ class CustomProfileView: UIView {
         positionLabel.font = UIFont.fontWith(type: .light, size: 16)
         positionLabel.text = user.position
         positionLabel.textAlignment = .left
+        positionLabel.numberOfLines = 2
+        positionLabel.lineBreakMode = .byWordWrapping
         self.addSubview(positionLabel)
         
         
@@ -58,12 +62,14 @@ class CustomProfileView: UIView {
             make.top.equalTo(imageView.snp.top)
             make.right.equalTo(self.snp.right).inset(10)
             make.left.equalTo(imageView.snp.right).offset(10)
+            
         }
         
         positionLabel.snp.makeConstraints { (make) in
             make.bottom.equalTo(imageView.snp.bottom)
             make.right.equalTo(self.snp.right).inset(10)
             make.left.equalTo(imageView.snp.right).offset(10)
+            make.top.equalTo(nameLabel.snp.bottom)
         }
         
     }

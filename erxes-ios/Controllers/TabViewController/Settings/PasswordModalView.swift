@@ -193,18 +193,14 @@ class PasswordModalView: UIView, Modal {
     
     @objc func closeAction(sender: UIButton) {
         dismiss(animated: true)
-        closeButton.isHidden = true
-        if let handle = handler {
-            handle()
-        }
+        
+      
     }
     
     @objc func didTappedOnBackgroundView() {
-        closeButton.isHidden = true
+        
         dismiss(animated: true)
-        if let handle = handler {
-            handle()
-        }
+ 
     }
     
     @objc func saveAction(sender:UIButton){

@@ -3,3 +3,43 @@ mutation usersChangePassword($currentPassword: String!, $newPassword: String!) {
         _id
     }
 }
+
+
+mutation usersConfigEmailSignatures($signatures: [EmailSignature]) {
+    usersConfigEmailSignatures(signatures: $signatures) {
+        _id
+       
+    }
+}
+
+
+query notificationsGetConfigurations {
+    notificationsGetConfigurations {
+       ...NotificationConf
+        
+    }
+}
+
+fragment NotificationConf on NotificationConfiguration{
+    _id
+    notifType
+    isAllowed
+}
+
+query notificationsModules {
+    notificationsModules
+}
+
+
+mutation usersConfigGetNotificationByEmail($isAllowed: Boolean) {
+    usersConfigGetNotificationByEmail(isAllowed: $isAllowed) {
+        _id
+    }
+}
+
+mutation notificationsSaveConfig($notifType: String!, $isAllowed: Boolean) {
+    notificationsSaveConfig(notifType: $notifType, isAllowed: $isAllowed) {
+        _id
+        
+    }
+}
