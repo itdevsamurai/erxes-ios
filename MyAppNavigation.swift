@@ -21,8 +21,8 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
                 return CustomerProfileController(_id: id, count: count)
             case .companyProfile(let id):
                 return CompanyController(id: id)
-            case .logout:
-                return LoginController()
+            case .userProfile(let id):
+                return UserProfileController(_id: id)
             }
         }
         return UIViewController()
@@ -42,5 +42,5 @@ enum MyNavigation: Navigation {
     case chat(withId:String,title:String,customerId:String)
     case customerProfile(_id:String, count:Int)
     case companyProfile(id:String?)
-    case logout
+    case userProfile(id:String)
 }

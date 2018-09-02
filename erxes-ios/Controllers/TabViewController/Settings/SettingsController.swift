@@ -50,8 +50,15 @@ class SettingsController: UIViewController {
         let currentUser = ErxesUser.sharedUserInfo()
         profileView = ProfileView(user: currentUser)
         profileView?.backgroundColor = Constants.INBOX_BG_COLOR
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        profileView?.addGestureRecognizer(tap)
         self.view.addSubview(profileView!)
         self.view.addSubview(loader)
+    }
+    
+    @objc func handleTap(sender:UITapGestureRecognizer){
+        let currentUser = ErxesUser.sharedUserInfo()
+        self.navigate(.userProfile(id: currentUser._id!))
     }
     
     override func viewDidLoad() {
@@ -63,6 +70,13 @@ class SettingsController: UIViewController {
         getBrands()
         getNotificationsData()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let currentUser = ErxesUser.sharedUserInfo()
+        profileView?.user = currentUser
+        
     }
 
     override func didReceiveMemoryWarning() {

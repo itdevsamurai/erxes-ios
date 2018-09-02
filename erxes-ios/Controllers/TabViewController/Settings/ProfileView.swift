@@ -10,7 +10,14 @@ import UIKit
 
 class ProfileView: UIView {
 
-   
+    var user = ErxesUser() {
+        didSet{
+            for v in self.subviews{
+                v.removeFromSuperview()
+            }
+            self.initialize(user: user)
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,6 +26,7 @@ class ProfileView: UIView {
     
     convenience init(user:ErxesUser) {
         self.init(frame: CGRect.zero)
+        
         self.initialize(user: user)
     }
     
@@ -28,7 +36,10 @@ class ProfileView: UIView {
     
     func initialize(user: ErxesUser) {
         let imageView = UIImageView()
-        imageView.sd_setImage(with: URL(string: user.avatar!), placeholderImage: UIImage(named: "avatar.png"))
+        imageView.image = #imageLiteral(resourceName: "avatar.png")
+        if let url = user.avatar {
+            imageView.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "avatar.png"))
+        }
         imageView.layer.cornerRadius = 40
         imageView.clipsToBounds = true
         self.addSubview(imageView)

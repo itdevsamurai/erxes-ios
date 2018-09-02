@@ -1,0 +1,47 @@
+
+query channelsOfMember($memberIds: [String]) {
+    channels(memberIds: $memberIds) {
+        ...ChannelObject
+    }
+}
+
+fragment ChannelObject on Channel {
+    _id
+    name
+    description
+    memberIds
+}
+
+query userDetail($_id: String) {
+    userDetail(_id: $_id) {
+        _id
+        username
+        email
+        role
+        details {
+            avatar
+            fullName
+            position
+            location
+            description
+           
+        }
+        links {
+            linkedIn
+            twitter
+            facebook
+            github
+            youtube
+            website
+            
+        }
+       
+    }
+}
+
+mutation usersEditProfile($username: String!, $email: String!, $details: UserDetails, $links: UserLinks, $password: String!) {
+    usersEditProfile(username: $username, email: $email, details: $details, links: $links, password: $password) {
+        _id
+        
+    }
+}

@@ -17,6 +17,7 @@
 		9B1E939F20C8FD1D00AC4FED /* ChatController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */; };
 		9B1E93A320C94D2800AC4FED /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E93A220C94D2800AC4FED /* Message.swift */; };
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
+		9B3FC3D2213B83B00032526E /* PasswordConfirmModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3FC3D1213B83B00032526E /* PasswordConfirmModalView.swift */; };
 		9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */; };
 		9B441AB020DBCB0A008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AAF20DBCB0A008B29AF /* screenshot.png */; };
 		9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8A2137B9CB0074346B /* SettingsController.swift */; };
@@ -61,6 +62,8 @@
 		9B9F554D212EB4E60081EC89 /* Profile.json in Resources */ = {isa = PBXBuildFile; fileRef = 9B9F554C212EB4E60081EC89 /* Profile.json */; };
 		9BB71604213A775900E2ACD0 /* NotificationSettingsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71603213A775900E2ACD0 /* NotificationSettingsModalView.swift */; };
 		9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */; };
+		9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */; };
+		9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */; };
 		9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */; };
 		9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */; };
 		9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */; };
@@ -178,6 +181,7 @@
 		9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChatController.graphql; sourceTree = "<group>"; };
 		9B1E93A220C94D2800AC4FED /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
+		9B3FC3D1213B83B00032526E /* PasswordConfirmModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordConfirmModalView.swift; sourceTree = "<group>"; };
 		9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		9B441AAF20DBCB0A008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		9B475C8A2137B9CB0074346B /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
@@ -222,6 +226,8 @@
 		9B9F554C212EB4E60081EC89 /* Profile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Profile.json; sourceTree = "<group>"; };
 		9BB71603213A775900E2ACD0 /* NotificationSettingsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsModalView.swift; sourceTree = "<group>"; };
 		9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsCell.swift; sourceTree = "<group>"; };
+		9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
+		9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserProfileController.graphql; sourceTree = "<group>"; };
 		9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterController.swift; sourceTree = "<group>"; };
 		9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxCell.swift; sourceTree = "<group>"; };
 		9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDCheckbox.swift; sourceTree = "<group>"; };
@@ -698,12 +704,15 @@
 			children = (
 				9B475C8A2137B9CB0074346B /* SettingsController.swift */,
 				9B5E455B21393DCF00DDD687 /* SettingsController.graphql */,
+				9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */,
+				9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */,
 				9B475C8E2137CBA70074346B /* ProfileView.swift */,
 				9B475C8C2137BDB20074346B /* SettingsCell.swift */,
 				9B5E4557213914B200DDD687 /* PasswordModalView.swift */,
 				9B5E455D21396A7400DDD687 /* EmailSignaturesModalView.swift */,
 				9BB71603213A775900E2ACD0 /* NotificationSettingsModalView.swift */,
 				9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */,
+				9B3FC3D1213B83B00032526E /* PasswordConfirmModalView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -828,6 +837,7 @@
 				F5BEE33720776BD40042DFC2 /* Montserrat-UltraLight.otf in Resources */,
 				9B5E455C21393DCF00DDD687 /* SettingsController.graphql in Resources */,
 				B842CC4C2123E3CC0052E5C9 /* LifecycleState.json in Resources */,
+				9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */,
 				B842CC4E2123E3E80052E5C9 /* BusinessType.json in Resources */,
 				9BD9BE1520E375A400CCFEA6 /* LivePhotoCameraCell.xib in Resources */,
 				9BD9BE1820E375A400CCFEA6 /* VideoCameraCell.xib in Resources */,
@@ -962,6 +972,7 @@
 				9BD9BE3C20E3786B00CCFEA6 /* CustomVideoCell.swift in Sources */,
 				9BD9BE1020E375A400CCFEA6 /* CarvedLabel.swift in Sources */,
 				F58F2040207B381400D8564D /* FailureAlert.swift in Sources */,
+				9B3FC3D2213B83B00032526E /* PasswordConfirmModalView.swift in Sources */,
 				9BD9BE1B20E375A400CCFEA6 /* AVPreviewView.swift in Sources */,
 				F5BEE31620772C0D0042DFC2 /* LoginController.swift in Sources */,
 				9B94F41820DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift in Sources */,
@@ -982,6 +993,7 @@
 				9B567098212A89480023B5AF /* ErxesFontKit.swift in Sources */,
 				F58F2063207B4FE900D8564D /* ErxesLabel.swift in Sources */,
 				9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */,
+				9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */,
 				9BD9BE2720E375A400CCFEA6 /* VideoCaptureDelegate.swift in Sources */,
 				9B1E939720C8D45800AC4FED /* ChatController.swift in Sources */,
 				B88B6EB12122A2C700A9B7FF /* CompanyController.swift in Sources */,
