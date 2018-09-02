@@ -16,6 +16,38 @@ import Apollo
 class LoginController: UIViewController {
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var checkBox:UIButton =  {
+        let checkButton = UIButton()
+//        checkButton.checkColor = .white
+//        checkButton.checkWidth = 2.0
+//        checkButton.containerColor = .white
+//        checkButton.containerWidth = 2.0
+//        checkButton.isCircular = false
+//        checkButton.isOn = false
+//        checkButton.isRadiobox = false
+//        checkButton.isSquare = false
+//        checkButton.shouldAnimate = true
+//        checkButton.shouldFillContainer = false
+//        checkButton.isEnabled = false
+        checkButton.backgroundColor = .white
+        checkButton.alpha = 0.0
+        checkButton.addTarget(self, action: #selector(onCheckBoxPress(_:)), for: .touchUpInside)
+        return checkButton
+    }()
+    
+    let rememberMe: UILabel = {
+        let rememberMe = UILabel()
+        rememberMe.text = "remember me"
+        rememberMe.textColor = .white
+        rememberMe.font = UIFont.fontWith(type: .light, size: 12)
+        rememberMe.tag = 200
+        rememberMe.alpha = 0.0
+        rememberMe.textAlignment = .right
+        return rememberMe
+    }()
+
+    
+    
     
     var loader: ErxesLoader = {
        let loader = ErxesLoader()
@@ -100,6 +132,24 @@ class LoginController: UIViewController {
         self.view.addSubview(touchIDButtonState)
         self.view.addSubview(signInButton)
         self.view.addSubview(loader)
+        self.view.addSubview(rememberMe)
+        self.view.addSubview(checkBox)
+        
+    }
+    
+    @objc func onCheckBoxPress(_ sender: UIButton) {
+        print("click")
+//        if sender.isOn {
+//            UserDefaults.standard.set(true, forKey: "rememberme")
+//            print("true")
+//        }else{
+//            UserDefaults.standard.set(false, forKey: "rememberme")
+//            print("false")
+//        }
+//
+        UserDefaults.standard.synchronize()
+        
+        
     }
     
     func animateViews(){
@@ -118,6 +168,8 @@ class LoginController: UIViewController {
                 self.touchIDButton.alpha = 1.0
                 self.touchIDButtonState.alpha = 1.0
                 self.signInButton.alpha = 1.0
+                self.checkBox.alpha = 1.0
+                self.rememberMe.alpha = 1.0
                 self.view.layoutIfNeeded()
             })
         }
@@ -146,6 +198,17 @@ class LoginController: UIViewController {
             make.left.equalTo(self.view.snp.left).offset(30)
             make.right.equalTo(self.view.snp.right).inset(30)
             make.height.equalTo(40)
+        }
+        
+        rememberMe.snp.makeConstraints({ (make) in
+            make.right.equalTo(passwordField.snp.right)
+            make.top.equalTo(passwordField.snp.bottom).offset(20)
+        })
+        
+        checkBox.snp.makeConstraints { (make) in
+            make.width.height.equalTo(20)
+            make.centerY.equalTo(rememberMe.snp.centerY)
+            make.right.equalTo(rememberMe.snp.left).inset(-20)
         }
         
         touchIDButton.snp.makeConstraints { (make) in
@@ -203,11 +266,18 @@ class LoginController: UIViewController {
     
     @objc func loginAction(sender:UIButton){
 
-        loader.startAnimating()
+        
         if touchIDButtonState.isSelected{
+            loader.startAnimating()
             authenticateUser()
         }else{
-            mutateLogin(email: emailField.text!, password: passwordField.text!)
+            if (emailField.text?.isEmpty)! || (passwordField.text?.isEmpty)! {
+                let alert = FailureAlert(message: "Please fill out fields")
+                alert.show(animated: true)
+            }else{
+                loader.startAnimating()
+                mutateLogin(email: emailField.text!, password: passwordField.text!)
+            }
         }
     }
 

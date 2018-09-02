@@ -318,6 +318,10 @@ extension SettingsController: UITableViewDelegate {
                 self.getNotificationsData()
             }
         }else if indexPath.row == 3{
+            let emptyUser = ErxesUser()
+            var currentUser = ErxesUser.sharedUserInfo()
+            currentUser = emptyUser
+            
             self.parent?.navigationController?.popToRootViewController(animated: true)
         }
     }
