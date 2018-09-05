@@ -18,24 +18,17 @@ class LoginController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var checkBox:UIButton =  {
         let checkButton = UIButton()
-//        checkButton.checkColor = .white
-//        checkButton.checkWidth = 2.0
-//        checkButton.containerColor = .white
-//        checkButton.containerWidth = 2.0
-//        checkButton.isCircular = false
-//        checkButton.isOn = false
-//        checkButton.isRadiobox = false
-//        checkButton.isSquare = false
-//        checkButton.shouldAnimate = true
-//        checkButton.shouldFillContainer = false
-//        checkButton.isEnabled = false
-        checkButton.backgroundColor = .white
+
+        checkButton.setImage(UIImage.erxes(with: .check, textColor: .white), for: .selected)
+        checkButton.setImage(UIImage(), for: .normal)
         checkButton.alpha = 0.0
         checkButton.addTarget(self, action: #selector(onCheckBoxPress(_:)), for: .touchUpInside)
+        checkButton.layer.borderColor = UIColor.white.cgColor
+        checkButton.layer.borderWidth = 1.0
         return checkButton
     }()
     
-    let rememberMe: UILabel = {
+    let rememberMeLabel: UILabel = {
         let rememberMe = UILabel()
         rememberMe.text = "remember me"
         rememberMe.textColor = .white
@@ -132,20 +125,28 @@ class LoginController: UIViewController {
         self.view.addSubview(touchIDButtonState)
         self.view.addSubview(signInButton)
         self.view.addSubview(loader)
-        self.view.addSubview(rememberMe)
+        self.view.addSubview(rememberMeLabel)
         self.view.addSubview(checkBox)
+        let rememberMe = UserDefaults.standard.bool(forKey: "rememberme")
+        if rememberMe {
+            emailField.text = UserDefaults.standard.string(forKey: "email")?.lowercased()
+            checkBox.isSelected = true
+        }
+        
         
     }
     
     @objc func onCheckBoxPress(_ sender: UIButton) {
         print("click")
-//        if sender.isOn {
-//            UserDefaults.standard.set(true, forKey: "rememberme")
-//            print("true")
-//        }else{
-//            UserDefaults.standard.set(false, forKey: "rememberme")
-//            print("false")
-//        }
+        if sender.isSelected{
+            UserDefaults.standard.set(false, forKey: "rememberme")
+            sender.isSelected = false
+            print("true")
+        }else{
+            UserDefaults.standard.set(true, forKey: "rememberme")
+            sender.isSelected = true
+            print("false")
+        }
 //
         UserDefaults.standard.synchronize()
         
@@ -169,7 +170,7 @@ class LoginController: UIViewController {
                 self.touchIDButtonState.alpha = 1.0
                 self.signInButton.alpha = 1.0
                 self.checkBox.alpha = 1.0
-                self.rememberMe.alpha = 1.0
+                self.rememberMeLabel.alpha = 1.0
                 self.view.layoutIfNeeded()
             })
         }
@@ -200,15 +201,15 @@ class LoginController: UIViewController {
             make.height.equalTo(40)
         }
         
-        rememberMe.snp.makeConstraints({ (make) in
+        rememberMeLabel.snp.makeConstraints({ (make) in
             make.right.equalTo(passwordField.snp.right)
             make.top.equalTo(passwordField.snp.bottom).offset(20)
         })
         
         checkBox.snp.makeConstraints { (make) in
             make.width.height.equalTo(20)
-            make.centerY.equalTo(rememberMe.snp.centerY)
-            make.right.equalTo(rememberMe.snp.left).inset(-20)
+            make.centerY.equalTo(rememberMeLabel.snp.centerY)
+            make.right.equalTo(rememberMeLabel.snp.left).inset(-20)
         }
         
         touchIDButton.snp.makeConstraints { (make) in
