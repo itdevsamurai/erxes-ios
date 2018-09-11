@@ -27,7 +27,7 @@ class SettingsCell: UITableViewCell {
         
         desc = UILabel()
         desc.textAlignment = .left
-        desc.textColor = Constants.ERXES_COLOR
+        desc.textColor = UIColor.ERXES_COLOR
         desc.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(desc)
 

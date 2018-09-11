@@ -17,8 +17,8 @@ class TabController: UITabBarController {
         self.view.backgroundColor = UIColor.clear
         self.tabBar.shadowImage = UIImage()
         self.tabBar.backgroundImage = UIImage()
-        self.tabBar.barTintColor = Constants.INBOX_BG_COLOR
-        UITabBar.appearance().barTintColor = Constants.INBOX_BG_COLOR
+        self.tabBar.barTintColor = UIColor.INBOX_BG_COLOR
+        UITabBar.appearance().barTintColor = UIColor.INBOX_BG_COLOR
         // Do any additional setup after loading the view.
         setupTabs()
     }
@@ -33,13 +33,13 @@ class TabController: UITabBarController {
         self.tabBar.itemSpacing = 0
         self.tabBar.itemWidth = self.view.bounds.size.width/3
         self.tabBar.barTintColor = .clear
-        self.tabBar.backgroundImage = UIImage.colorForNavBar(color: Constants.INBOX_BG_COLOR)
-        UITabBar.appearance().tintColor = Constants.ERXES_COLOR!
-        UITabBar.appearance().unselectedItemTintColor = Constants.ERXES_COLOR!.withAlphaComponent(0.6)
-        self.tabBar.backgroundColor = Constants.INBOX_BG_COLOR
-        let imageInbox = UIImage.erxes(with: .chat, textColor: Constants.ERXES_COLOR!, size: CGSize(width: 22, height: 22))
-        let imageCustomer = UIImage.erxes(with: .users, textColor: Constants.ERXES_COLOR!, size: CGSize(width: 22, height: 22))
-        let imageSettings = UIImage.erxes(with: .settings, textColor: Constants.ERXES_COLOR!)
+        self.tabBar.backgroundImage = UIImage.colorForNavBar(color: UIColor.INBOX_BG_COLOR)
+        UITabBar.appearance().tintColor = UIColor.ERXES_COLOR
+        UITabBar.appearance().unselectedItemTintColor = UIColor.ERXES_COLOR.withAlphaComponent(0.6)
+        self.tabBar.backgroundColor = UIColor.INBOX_BG_COLOR
+        let imageInbox = UIImage.erxes(with: .chat, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
+        let imageCustomer = UIImage.erxes(with: .users, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
+        let imageSettings = UIImage.erxes(with: .settings, textColor: UIColor.ERXES_COLOR)
         inboxVC.tabBarItem = UITabBarItem.init(title: "INBOX", image: imageInbox, selectedImage: imageInbox)
         contactVC.tabBarItem = UITabBarItem.init(title: "CONTACTS", image: imageCustomer, selectedImage: imageCustomer)
         settingsVC.tabBarItem = UITabBarItem.init(title: "SETTINGS", image: imageSettings, selectedImage: imageSettings)

@@ -43,7 +43,7 @@ class UsersController: UIViewController {
         tableView.register(UserCell.self, forCellReuseIdentifier: "UserCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -53,10 +53,8 @@ class UsersController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-//        loader.backgroundColor = .red
         self.view.addSubview(loader)
         self.view.backgroundColor = .clear
-        // Do any additional setup after loading the view.
         self.getUsers()
     }
 
@@ -98,12 +96,7 @@ class UsersController: UIViewController {
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-//        loader.snp.makeConstraints { (make) in
-//            
-//            make.width.height.equalTo(50)
-//            make.centerX.equalTo((Constants.SCREEN_WIDTH-20)/2)
-//            make.centerY.equalTo(150)
-//        }
+
 
     }
     

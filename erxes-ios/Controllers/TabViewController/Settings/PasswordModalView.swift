@@ -40,7 +40,7 @@ class PasswordModalView: UIView, Modal {
         dialogView.clipsToBounds = true
         dialogView.backgroundColor = UIColor.white
         dialogView.layer.cornerRadius = 8
-        dialogView.dropShadow(color: Constants.ERXES_COLOR!, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        dialogView.dropShadow(color: UIColor.ERXES_COLOR, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
         
         
         backgroundView.frame = frame

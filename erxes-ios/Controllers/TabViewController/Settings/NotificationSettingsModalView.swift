@@ -43,7 +43,7 @@ class NotificationSettingsModalView: UIView, Modal {
         dialogView.clipsToBounds = true
         dialogView.backgroundColor = UIColor.white
         dialogView.layer.cornerRadius = 8
-        dialogView.dropShadow(color: Constants.ERXES_COLOR!, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
+        dialogView.dropShadow(color: UIColor.ERXES_COLOR, opacity: 1, offSet: CGSize(width: -1, height: 1), radius: 3, scale: true)
         
         
         backgroundView.frame = frame
@@ -76,7 +76,7 @@ class NotificationSettingsModalView: UIView, Modal {
         tableView.rowHeight = 40
         tableView.sectionHeaderHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
@@ -160,11 +160,11 @@ extension NotificationSettingsModalView: UITableViewDataSource {
     
      func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width-20, height: 40))
-        headerView.backgroundColor = Constants.INBOX_BG_COLOR
+        headerView.backgroundColor = UIColor.INBOX_BG_COLOR
         let titleLabel = UILabel()
         titleLabel.frame = headerView.frame
         
-        titleLabel.textColor = Constants.ERXES_COLOR!
+        titleLabel.textColor = UIColor.ERXES_COLOR
         titleLabel.font = UIFont.fontWith(type: .light, size: 14)
         headerView.addSubview(titleLabel)
         let text = self.modules[section]["description"] as? String

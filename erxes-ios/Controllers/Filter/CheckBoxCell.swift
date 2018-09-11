@@ -23,9 +23,9 @@ class CheckBoxCell: UITableViewCell {
         
         
             checkButton = GDCheckbox()
-            checkButton.checkColor = Constants.ERXES_COLOR!
+            checkButton.checkColor = UIColor.ERXES_COLOR
             checkButton.checkWidth = 2.0
-            checkButton.containerColor = Constants.ERXES_COLOR!
+            checkButton.containerColor = UIColor.ERXES_COLOR
             checkButton.containerWidth = 2.0
             checkButton.isCircular = false
             checkButton.isOn = false
@@ -41,8 +41,8 @@ class CheckBoxCell: UITableViewCell {
         
         desc = UILabel()
         desc.textAlignment = .left
-        desc.textColor = Constants.TEXT_COLOR
-        desc.font = Constants.LIGHT
+        desc.textColor = UIColor.TEXT_COLOR
+        desc.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(desc)
         
         

@@ -206,7 +206,7 @@ class CustomerProfileController: FormViewController {
                                     row.title = field?.text
                                     row.value = profile[(field?.id)!] as? Date
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 })
 
@@ -217,13 +217,13 @@ class CustomerProfileController: FormViewController {
                                     row.options = field?.options as? [String]
                                     row.value = profile[(field?.id)!] as? String
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 }).onPresent { from, to in
                                     to.selectableRowCellUpdate = { cell, row in
                                         
                                         cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14   )
-                                        cell.textLabel!.textColor = Constants.ERXES_COLOR
+                                        cell.textLabel!.textColor = UIColor.TEXT_COLOR
                                     }
                                 }
                             } else if field?.type == "check" && field?.options == ["on", "off"] {
@@ -239,7 +239,7 @@ class CustomerProfileController: FormViewController {
                                     }
 
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 })
                             } else if field?.type == "check" {
@@ -249,13 +249,13 @@ class CustomerProfileController: FormViewController {
                                     row.options = field?.options as? [String]
 //                                        row.value = profile[(field?.id)!] as? Set<String>
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 }).onPresent { from, to in
                                     to.selectableRowCellUpdate = { cell, row in
                                         
                                         cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14   )
-                                        cell.textLabel!.textColor = Constants.ERXES_COLOR
+                                        cell.textLabel!.textColor = UIColor.TEXT_COLOR
                                     }
                                 }
                             } else if field?.validation == "email" {
@@ -306,7 +306,7 @@ class CustomerProfileController: FormViewController {
                                     }
 
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 })
                             } else if field?.type == "select" {
@@ -316,7 +316,7 @@ class CustomerProfileController: FormViewController {
                                     row.options = field?.options as? [String]
                                     row.value = customFields[(field?.id)!] as? String
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 })
                             } else if field?.type == "check" && field?.options == ["on", "off"] {
@@ -331,7 +331,7 @@ class CustomerProfileController: FormViewController {
                                         row.value = false
                                     }
                                 }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                 })
                             } else if field?.type == "check" {
@@ -347,7 +347,7 @@ class CustomerProfileController: FormViewController {
                                         }
                                     }
                                     }.cellSetup({ (cell, lrow) in
-                                        cell.textLabel?.textColor = Constants.ERXES_COLOR
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                         cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                                     })
                                 } else if field?.validation == "email" {
@@ -545,8 +545,8 @@ class CustomerProfileController: FormViewController {
             self.view.backgroundColor = .white
             self.tableView.backgroundColor = .clear
             let rightItem: UIBarButtonItem = {
-                var rightImage = UIImage.erxes(with: .edit, textColor: Constants.ERXES_COLOR!)
-                var saveImage = UIImage.erxes(with: .user2, textColor: Constants.ERXES_COLOR!)
+                var rightImage = UIImage.erxes(with: .edit, textColor: UIColor.TEXT_COLOR)
+                var saveImage = UIImage.erxes(with: .user2, textColor: UIColor.TEXT_COLOR)
                 rightImage = rightImage.withRenderingMode(.alwaysTemplate)
                 saveImage = saveImage.withRenderingMode(.alwaysTemplate)
                 let barButtomItem = UIBarButtonItem()
@@ -557,91 +557,91 @@ class CustomerProfileController: FormViewController {
                 barButtomItem.customView = button
                 return barButtomItem
             }()
-            rightItem.tintColor = Constants.ERXES_COLOR
+            rightItem.tintColor = UIColor.TEXT_COLOR
             self.navigationItem.rightBarButtonItem = rightItem
 
 
             NameRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textField.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.textField.textColor = Constants.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.textField.textColor = UIColor.TEXT_COLOR
             }
             TextRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textField.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.textField.textColor = Constants.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.textField.textColor = UIColor.TEXT_COLOR
             }
             PhoneRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textField.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.textField.textColor = Constants.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.textField.textColor = UIColor.TEXT_COLOR
             }
 
             EmailRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textField.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.textField.textColor = Constants.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.textField.textColor = UIColor.TEXT_COLOR
             }
 
             DateRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.detailTextLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
 
             }
 
             SwitchRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.switchControl.tintColor = Constants.ERXES_COLOR
-                cell.switchControl.onTintColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.switchControl.tintColor = UIColor.TEXT_COLOR
+                cell.switchControl.onTintColor = UIColor.TEXT_COLOR
             }
             IntRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.detailTextLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.detailTextLabel?.textColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             }
             ActionSheetRow<String>.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.detailTextLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.detailTextLabel?.textColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             }
             ButtonRow.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.tintColor = Constants.ERXES_COLOR
-                cell.accessoryView?.tintColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.tintColor = UIColor.TEXT_COLOR
+                cell.accessoryView?.tintColor = UIColor.TEXT_COLOR
 
             }
             PushRow<CompanyDetail>.defaultCellUpdate = { cell, row in
                 row.options = self.companies
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.textLabel?.font = Constants.LIGHT
-                cell.detailTextLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             }
 
             DecimalRow.defaultCellUpdate = { cell, row in
                 cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
-                cell.tintColor = Constants.ERXES_COLOR
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                cell.tintColor = UIColor.TEXT_COLOR
                 cell.textField.font = UIFont.fontWith(type: .light, size: 14)
 
             }
 
             PushRow<UserData>.defaultCellUpdate = { cell, row in
                 row.options = self.users
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
                 row.displayValueFor = {
                     if let t = $0 {
                         print("owner = ", t)
@@ -652,8 +652,8 @@ class CustomerProfileController: FormViewController {
             }
 
             PushRow<String>.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
                 row.displayValueFor = {
                     if let str = $0 {
                         return str
@@ -663,8 +663,8 @@ class CustomerProfileController: FormViewController {
             }
 
             MultipleSelectorRow<String>.defaultCellUpdate = { cell, row in
-                cell.textLabel?.font = Constants.LIGHT
-                cell.textLabel?.textColor = Constants.ERXES_COLOR
+                cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                cell.textLabel?.textColor = UIColor.TEXT_COLOR
                 row.displayValueFor = {
 //                var values = Set<String>()
                     if let str = $0 {
@@ -676,13 +676,13 @@ class CustomerProfileController: FormViewController {
             }
 
 //            SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
-//                row.cell.textLabel?.font = Constants.LIGHT
-//                row.cell.textLabel?.textColor = Constants.ERXES_COLOR
+//                row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+//                row.cell.textLabel?.textColor = UIColor.TEXT_COLOR
 //                row.placeholder = "Type to search companies"
-//                cell.textField.textColor = Constants.ERXES_COLOR
-//                cell.textField.font = Constants.LIGHT
-//                cell.detailTextLabel?.font = Constants.LIGHT
-//                cell.detailTextLabel?.textColor = Constants.TEXT_COLOR
+//                cell.textField.textColor = UIColor.TEXT_COLOR
+//                cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+//                cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+//                cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
 //                row.filterFunction = { [unowned self] text in
 //                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
 //                }

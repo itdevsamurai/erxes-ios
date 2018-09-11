@@ -28,10 +28,10 @@ open class SuggestionTableViewCell<T: SuggestionValue>: UITableViewCell, EurekaS
     }
     
     func initialize() {
-        textLabel?.font = Constants.LIGHT
+        textLabel?.font = UIFont.fontWith(type: .light, size: 14)
         textLabel?.minimumScaleFactor = 0.8
         textLabel?.adjustsFontSizeToFitWidth = true
-        textLabel?.textColor = Constants.ERXES_COLOR
+        textLabel?.textColor = UIColor.ERXES_COLOR
         contentView.backgroundColor = .white
     }
     

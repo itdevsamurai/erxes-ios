@@ -47,7 +47,7 @@ class ContactController: UIViewController {
         button.setTitle("Customers", for: .normal)
         button.setTitle("Customers", for: .selected)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = Constants.ERXES_COLOR!
+        button.backgroundColor = UIColor.ERXES_COLOR
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button
     }()
@@ -57,8 +57,8 @@ class ContactController: UIViewController {
         let button = ErxesButton()
         button.setTitle("Companies", for: .normal)
         button.setTitle("Companies", for: .selected)
-        button.backgroundColor = Constants.INBOX_BG_COLOR
-        button.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+        button.backgroundColor = UIColor.INBOX_BG_COLOR
+        button.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button
     }()
@@ -69,26 +69,26 @@ class ContactController: UIViewController {
         tableView.rowHeight = 50
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
 //        tableView.allowsMultipleSelectionDuringEditing = true
         return tableView
     }()
     
     @objc func toggleButton(sender:UIButton){
-        if sender.backgroundColor == Constants.ERXES_COLOR! {
+        if sender.backgroundColor == UIColor.ERXES_COLOR {
             return
         }
-        sender.backgroundColor = Constants.ERXES_COLOR!
+        sender.backgroundColor = UIColor.ERXES_COLOR
         sender.setTitleColor(.white, for: .normal)
         switch sender {
         case self.customersButton:
-            self.companiesButton.backgroundColor = Constants.INBOX_BG_COLOR
-            self.companiesButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+            self.companiesButton.backgroundColor = UIColor.INBOX_BG_COLOR
+            self.companiesButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
             self.getCustomers()
             isCustomer = true
         case self.companiesButton:
-            self.customersButton.backgroundColor = Constants.INBOX_BG_COLOR
-            self.customersButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+            self.customersButton.backgroundColor = UIColor.INBOX_BG_COLOR
+            self.customersButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
             isCustomer = false
             self.getCompanies()
         default:
@@ -105,7 +105,7 @@ class ContactController: UIViewController {
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
-            button.tintColor = Constants.ERXES_COLOR
+            button.tintColor = UIColor.ERXES_COLOR
             button.addTarget(self, action: #selector(changeEditMode(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
@@ -136,7 +136,7 @@ class ContactController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "CONTACTS"
-        self.view.backgroundColor = Constants.INBOX_BG_COLOR
+        self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         self.configureViews()
 //        self.getCustomers()
     }
@@ -281,7 +281,7 @@ extension ContactController: UITableViewDelegate {
         cell?.icon.image = nil
         if isCustomer{
             let customer = customers[indexPath.row]
-            cell?.icon.image = #imageLiteral(resourceName: "ic_customer").tint(with: Constants.ERXES_COLOR!)
+            cell?.icon.image = #imageLiteral(resourceName: "ic_customer").tint(with: UIColor.ERXES_COLOR)
     
             if customer.firstName != nil && customer.lastName != nil{
                 cell?.topLabel.text = customer.firstName! + " " + customer.lastName!
@@ -299,7 +299,7 @@ extension ContactController: UITableViewDelegate {
             }
             
         }else{
-            cell?.icon.image = #imageLiteral(resourceName: "ic_company").tint(with: Constants.ERXES_COLOR!)
+            cell?.icon.image = #imageLiteral(resourceName: "ic_company").tint(with: UIColor.ERXES_COLOR)
             let company = companies[indexPath.row]
             if company.primaryName != nil {
                 cell?.topLabel.text = company.primaryName

@@ -80,17 +80,17 @@ class ChatController: UIViewController {
         let textfield = UITextField()
         textfield.backgroundColor = UIColor.init(hexString: "f0ebf8")
         textfield.layer.cornerRadius = 5.0
-        textfield.tintColor = Constants.ERXES_COLOR!
+        textfield.tintColor = UIColor.ERXES_COLOR
         textfield.placeholder = "Write a reply..."
         let sendButton = UIButton(type: .custom)
-        sendButton.titleLabel?.font = Constants.ULTRALIGHT
+        sendButton.titleLabel?.font = UIFont.fontWith(type: .ultralight, size: 14)
 //        sendButton.setTitle("Send", for: .normal)
-        sendButton.setImage(UIImage.erxes(with: .send, textColor: Constants.ERXES_COLOR!), for: .normal)
-        sendButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+        sendButton.setImage(UIImage.erxes(with: .send, textColor: UIColor.ERXES_COLOR), for: .normal)
+        sendButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
         sendButton.frame = CGRect(x: 0, y: CGFloat(0), width: CGFloat(60), height: CGFloat(40))
         sendButton.addTarget(self, action: #selector(sendMessage(_:)), for: .touchUpInside)
         let line = UIView(frame: CGRect(x: 0, y: 10, width: 1, height: 20))
-        line.backgroundColor = Constants.ERXES_COLOR!
+        line.backgroundColor = UIColor.ERXES_COLOR
         sendButton.addSubview(line)
         
         textfield.rightView = sendButton
@@ -98,13 +98,13 @@ class ChatController: UIViewController {
         
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
         let attachmentButton = UIButton(type: .custom)
-        attachmentButton.setImage(UIImage.erxes(with: .attach, textColor: Constants.ERXES_COLOR!), for: .normal)
+        attachmentButton.setImage(UIImage.erxes(with: .attach, textColor: UIColor.ERXES_COLOR), for: .normal)
         attachmentButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         attachmentButton.imageView?.contentMode = .scaleAspectFit
         attachmentButton.addTarget(self, action: #selector(openImagePicker(sender:)), for: .touchUpInside)
         leftView.addSubview(attachmentButton)
         let cameraButton = UIButton(type: .custom)
-        cameraButton.setImage(UIImage.erxes(with: .photocamera, textColor: Constants.ERXES_COLOR!), for: .normal)
+        cameraButton.setImage(UIImage.erxes(with: .photocamera, textColor: UIColor.ERXES_COLOR), for: .normal)
         cameraButton.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
         cameraButton.imageView?.contentMode = .scaleAspectFit
         cameraButton.addTarget(self, action: #selector(launchCamera(sender:)), for: .touchUpInside)
@@ -268,7 +268,7 @@ class ChatController: UIViewController {
         self.view.backgroundColor = .white
 
         let rightItem: UIBarButtonItem = {
-            var rightImage = UIImage.erxes(with: .user, textColor: Constants.ERXES_COLOR!)
+            var rightImage = UIImage.erxes(with: .user, textColor: UIColor.ERXES_COLOR)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)

@@ -27,14 +27,14 @@ class ContactCell: UITableViewCell {
         
         topLabel = UILabel()
         topLabel.textAlignment = .right
-        topLabel.textColor = Constants.ERXES_COLOR!
-        topLabel.font = Constants.LIGHT
+        topLabel.textColor = UIColor.ERXES_COLOR
+        topLabel.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(topLabel)
         
         bottomLabel = UILabel()
         bottomLabel.textAlignment = .right
-        bottomLabel.textColor = Constants.TEXT_COLOR
-        bottomLabel.font = Constants.LIGHT
+        bottomLabel.textColor = UIColor.TEXT_COLOR
+        bottomLabel.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(bottomLabel)
         
     
@@ -42,7 +42,7 @@ class ContactCell: UITableViewCell {
         icon = UIImageView()
         
 //        icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
-        icon.tintColor = Constants.ERXES_COLOR!
+        icon.tintColor = UIColor.ERXES_COLOR
         contentView.addSubview(icon)
         self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }

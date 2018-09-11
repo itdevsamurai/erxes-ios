@@ -49,7 +49,7 @@ class SettingsController: UIViewController {
         tableView.dataSource = self
         let currentUser = ErxesUser.sharedUserInfo()
         profileView = ProfileView(user: currentUser)
-        profileView?.backgroundColor = Constants.INBOX_BG_COLOR
+        profileView?.backgroundColor = UIColor.INBOX_BG_COLOR
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         profileView?.addGestureRecognizer(tap)
         self.view.addSubview(profileView!)
@@ -64,7 +64,7 @@ class SettingsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "SETTINGS"
-         self.view.backgroundColor = Constants.INBOX_BG_COLOR
+         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         
         configureViews()
         getBrands()
@@ -326,9 +326,11 @@ extension SettingsController: UITableViewDelegate {
                 let emptyUser = ErxesUser()
                 var currentUser = ErxesUser.sharedUserInfo()
                 currentUser = emptyUser
+                UserDefaults.standard.removeObject(forKey: "email")
+                UserDefaults.standard.synchronize()
                 self.parent?.navigationController?.popToRootViewController(animated: true)
             } catch {
-                print("sign out fialure")
+                print("sign out failure")
             }
             
         }
@@ -356,7 +358,7 @@ extension SettingsController: UITableViewDataSource {
         cell.contentView.backgroundColor = .clear
         
         cell.desc.text = titles[indexPath.row]
-        cell.tintColor = Constants.ERXES_COLOR!
+        cell.tintColor = UIColor.ERXES_COLOR
 
         return cell
     }

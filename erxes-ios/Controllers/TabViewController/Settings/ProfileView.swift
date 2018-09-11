@@ -45,7 +45,7 @@ class ProfileView: UIView {
         self.addSubview(imageView)
       
         let nameLabel = UILabel()
-        nameLabel.textColor = Constants.TEXT_COLOR
+        nameLabel.textColor = UIColor.TEXT_COLOR
         nameLabel.font = UIFont.fontWith(type: .light, size: 16)
         nameLabel.text = user.fullName
         nameLabel.textAlignment = .left

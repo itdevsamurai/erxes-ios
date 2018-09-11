@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import IoniconsKit
+
 
 class ErxesField: UIView {
 
