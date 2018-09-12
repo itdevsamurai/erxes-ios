@@ -16,7 +16,7 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
             case .tab:
                 return TabController()
             case .chat(let chatId, let title, let customerId):
-                return ChatController(chatId: chatId,title:title,customerId:customerId)
+                return ColChatController(chatId: chatId,title:title,customerId:customerId)
             case .customerProfile(let id, let count):
                 return CustomerProfileController(_id: id, count: count)
             case .companyProfile(let id):

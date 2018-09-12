@@ -10,10 +10,10 @@ import UIKit
 class Constants: NSObject {
 
  
-    
-    static let API_ENDPOINT = "http://192.168.50.15:3300/graphql"
-    static let SUBSCRITION_ENDPOINT = "ws://192.168.50.15:3300/subscriptions"
-
+    static let URL_API = "http://localhost:3300/"
+    static let API_ENDPOINT = URL_API + "graphql"
+    static let SUBSCRITION_ENDPOINT = "ws://localhost:3300/subscriptions"
+    static let URL_UPLOAD = URL_API + "upload-file"
     
     
     // MARK: List of Constants
