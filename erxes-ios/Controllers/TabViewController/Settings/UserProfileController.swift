@@ -12,14 +12,7 @@ import Eureka
 class UserProfileController: FormViewController {
 
     var userId: String?
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-            "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
 
     var loader: ErxesLoader = {
         let loader = ErxesLoader()
@@ -192,7 +185,7 @@ class UserProfileController: FormViewController {
     func getUserData(id: String) {
         loader.startAnimating()
         let query = UserDetailQuery(_id: id)
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -349,7 +342,7 @@ class UserProfileController: FormViewController {
             let mutation = UsersEditProfileMutation(username: userName!, email: email!, password: password!)
             mutation.details = UserDetails(fullName: self.form.rowBy(tag: "fullName")?.baseValue as? String, position: self.form.rowBy(tag: "position")?.baseValue as? String, location: self.form.rowBy(tag: "location")?.baseValue as? String, description: self.form.rowBy(tag: "description")?.baseValue as? String)
             mutation.links = UserLinks(linkedIn: linkedIn, twitter: twitter, facebook: facebook, youtube: youtube, github: github, website: website)
-            self.client.perform(mutation: mutation) { [weak self] result, error in
+            appnet.perform(mutation: mutation) { [weak self] result, error in
                 if let error = error {
 
                     self?.showResult(isSuccess: false, message: error.localizedDescription)
@@ -377,7 +370,7 @@ class UserProfileController: FormViewController {
     
     func getCurrentUser(){
         let query = CurrentUserQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message:error.localizedDescription)

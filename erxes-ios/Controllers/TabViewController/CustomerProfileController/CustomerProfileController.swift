@@ -17,21 +17,14 @@ class CustomerProfileController: FormViewController {
 
     var customerId: String?
     var messagesCount = 0
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-            "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
     var loader: ErxesLoader = {
         let loader = ErxesLoader()
         loader.lineWidth = 3
         return loader
     }()
 
-    var companies = [CompanyDetail]() {
+    var companies = [CompanyList]() {
         didSet {
 
         }
@@ -67,7 +60,7 @@ class CustomerProfileController: FormViewController {
 
 
         let query = FieldsGroupsQuery(contentType: "customer")
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -127,7 +120,7 @@ class CustomerProfileController: FormViewController {
     func getCustomerData() {
         loader.startAnimating()
         let query = CustomerDetailQuery(_id: self.customerId!)
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -376,7 +369,7 @@ class CustomerProfileController: FormViewController {
             loader.startAnimating()
 
             let query = CompaniesQuery()
-            client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+            appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
                 if let error = error {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)
@@ -394,7 +387,7 @@ class CustomerProfileController: FormViewController {
                 if result?.data != nil {
                     if let allCompanies = result?.data?.companies {
 
-                        self?.companies = allCompanies.map { ($0?.fragments.companyDetail)! }
+                        self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
 
                         self?.loader.stopAnimating()
 
@@ -408,7 +401,7 @@ class CustomerProfileController: FormViewController {
         func getUsers() {
             loader.startAnimating()
             let query = GetUsersQuery()
-            client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+            appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
                 if let error = error {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)
@@ -520,7 +513,7 @@ class CustomerProfileController: FormViewController {
             }
 
             mutation.customFieldsData =  customFields
-            client.perform(mutation: mutation) { [weak self] result, error in
+            appnet.perform(mutation: mutation) { [weak self] result, error in
                 if let error = error {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)
@@ -620,7 +613,7 @@ class CustomerProfileController: FormViewController {
                 cell.accessoryView?.tintColor = UIColor.TEXT_COLOR
 
             }
-            PushRow<CompanyDetail>.defaultCellUpdate = { cell, row in
+            PushRow<CompanyList>.defaultCellUpdate = { cell, row in
                 row.options = self.companies
                 cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
                 cell.textLabel?.textColor = UIColor.TEXT_COLOR
@@ -718,8 +711,8 @@ class CustomerProfileController: FormViewController {
 
     }
 
-    extension CompanyDetail: Equatable {
-        public static func == (lhs: CompanyDetail, rhs: CompanyDetail) -> Bool {
+    extension CompanyList: Equatable {
+        public static func == (lhs: CompanyList, rhs: CompanyList) -> Bool {
             let isEqual = lhs.id == rhs.id
             return isEqual
         }
@@ -734,14 +727,14 @@ class CustomerProfileController: FormViewController {
 
 
 
-    extension CompanyDetail: SuggestionValue {
+    extension CompanyList: SuggestionValue {
         public init?(string stringValue: String) {
             return nil
         }
 
         // Text that is displayed as a completion suggestion.
         public var suggestionString: String {
-            return names![0]!
+            return primaryName!
         }
     }
 

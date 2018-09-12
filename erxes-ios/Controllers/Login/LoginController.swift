@@ -320,6 +320,11 @@ class LoginController: UIViewController {
     }
     
     func mutateLogin(email:String, password:String) {
+        let apollo: ApolloClient = {
+            let configuration = URLSessionConfiguration.default
+            let url = URL(string: Constants.API_ENDPOINT)!
+            return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+        }()
         loader.startAnimating()
         let loginMutation = LoginMutation(email:email ,password:password)
         apollo.perform(mutation: loginMutation) { [weak self] result, error in

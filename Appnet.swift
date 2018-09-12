@@ -17,14 +17,24 @@ class Appnet: NSObject {
     
     func refreshClient() {
         tokenChanged = false
+       
         client = Appnet.newClient(token: token)
     }
     
+    
     var client: ApolloClient?
+    
+    
+    let apollo: ApolloClient = {
+        let configuration = URLSessionConfiguration.default
+        let url = URL(string: Constants.API_ENDPOINT)!
+        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+    }()
     
     var tokenChanged = true
     
     class func newClient(token:String?) -> ApolloClient{
+        
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["x-token": token as Any]
         let url = URL(string: Constants.API_ENDPOINT)!
@@ -46,7 +56,7 @@ class Appnet: NSObject {
                 if err?.description == "Login required" {
                     print("login required")
                     let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
-                    apollo.perform(mutation: loginMutation) { [weak self] result, error in
+                    self.apollo.perform(mutation: loginMutation) { [weak self] result, error in
                         if let error = error {
                             return
                         }
@@ -88,7 +98,7 @@ class Appnet: NSObject {
                 let err = errors.first
                 if err?.description == "Login required" {
                     let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
-                    apollo.perform(mutation: loginMutation) { [weak self] result, error in
+                    self?.apollo.perform(mutation: loginMutation) { [weak self] result, error in
                         if let error = error {
                             return
                         }
