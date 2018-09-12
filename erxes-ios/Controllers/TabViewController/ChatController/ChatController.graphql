@@ -24,6 +24,7 @@ fragment MessageDetail on ConversationMessage {
     conversationId
     customerId
     userId
+    internal
     createdAt
     user {
         _id

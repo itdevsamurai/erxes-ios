@@ -19,8 +19,19 @@ class SentCell: ChatBaseCell {
         lblDate.textAlignment = .right
         
         if let str = viewModel?.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .regular, size: 14), range: NSMakeRange(0, str.length))
-            str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSMakeRange(0, str.length))
+            
+            if viewModel?.internal ?? false {
+                tvText.backgroundColor = UIColor(hexString: "#fffccc")
+                edgeView.backgroundColor = UIColor(hexString: "#fffccc")
+                str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .light, size: 14), range: NSMakeRange(0, str.length))
+                str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, str.length))
+                
+            } else {
+                tvText.backgroundColor = .ERXES_COLOR
+                edgeView.backgroundColor = .ERXES_COLOR
+                str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .regular, size: 14), range: NSMakeRange(0, str.length))
+                str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSMakeRange(0, str.length))
+            }
             tvText.attributedText = str
         }
     }
@@ -48,7 +59,5 @@ class SentCell: ChatBaseCell {
             make.right.equalTo(tvText.snp.right)
             make.width.height.equalTo(10)
         }
-        tvText.backgroundColor = .ERXES_COLOR
-        edgeView.backgroundColor = .ERXES_COLOR
     }
 }

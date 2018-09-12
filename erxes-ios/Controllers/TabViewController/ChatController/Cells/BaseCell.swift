@@ -101,6 +101,7 @@ class ChatBaseCell: UICollectionViewCell {
         self.contentView.addSubview(ivAvatar)
         self.contentView.addSubview(lblDate)
         self.contentView.addSubview(tvText)
+        tvText.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 3, height: 3), radius: 5, scale: false)
     }
     
     open func layoutView() {

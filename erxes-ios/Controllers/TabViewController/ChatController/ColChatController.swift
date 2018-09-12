@@ -316,7 +316,7 @@ extension ColChatController:UICollectionViewDataSource {
         if let files = item.attachments, files.count > 0 {
             cell = chatView.dequeueReusableCell(withReuseIdentifier: ImageCell.ID, for: indexPath) as! ImageCell
         } else
-        if item.userId == ErxesUser.sharedUserInfo()._id {
+        if let customerId = item.customerId {
             cell = chatView.dequeueReusableCell(withReuseIdentifier: IncomingCell.ID, for: indexPath) as! IncomingCell
         } else {
             cell = chatView.dequeueReusableCell(withReuseIdentifier: SentCell.ID, for: indexPath) as! SentCell
