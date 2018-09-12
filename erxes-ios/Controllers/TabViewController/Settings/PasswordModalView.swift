@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class PasswordModalView: UIView, Modal {
     var backgroundView = UIView()

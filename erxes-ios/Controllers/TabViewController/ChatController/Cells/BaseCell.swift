@@ -45,7 +45,7 @@ class ChatBaseCell: UICollectionViewCell {
         let view = UITextView()
         view.isEditable = false
         view.isScrollEnabled = false
-        view.backgroundColor = Constants.ERXES_COLOR
+        view.backgroundColor = .ERXES_COLOR
         view.textColor = .white
         view.layer.cornerRadius = 5
         view.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -92,7 +92,7 @@ class ChatBaseCell: UICollectionViewCell {
     
     var edgeView:UIView = {
         let view = UIView()
-        view.backgroundColor = Constants.ERXES_COLOR
+        view.backgroundColor = .ERXES_COLOR
         return view
     }()
     
@@ -110,7 +110,7 @@ class ChatBaseCell: UICollectionViewCell {
         let tv = UITextView()
         
         if let str = item.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: Constants.REGULAR, range: NSMakeRange(0, str.length))
+            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .regular, size: 14), range: NSMakeRange(0, str.length))
             tv.attributedText = str
         }
         

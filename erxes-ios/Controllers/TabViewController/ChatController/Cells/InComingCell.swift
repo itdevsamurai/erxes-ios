@@ -19,7 +19,7 @@ class IncomingCell: ChatBaseCell {
         ivAvatar.image = #imageLiteral(resourceName: "avatar.png")
         
         if let str = viewModel?.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: Constants.REGULAR, range: NSMakeRange(0, str.length))
+            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .regular, size: 14), range: NSMakeRange(0, str.length))
             str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, str.length))
             tvText.attributedText = str
         }
@@ -48,7 +48,7 @@ class IncomingCell: ChatBaseCell {
             make.left.equalTo(tvText.snp.left)
             make.width.height.equalTo(10)
         }
-        tvText.backgroundColor = Constants.LIGHT_GRAY_COLOR
-        edgeView.backgroundColor = Constants.LIGHT_GRAY_COLOR
+        tvText.backgroundColor = .LIGHT_GRAY_COLOR
+        edgeView.backgroundColor = .LIGHT_GRAY_COLOR
     }
 }

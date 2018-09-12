@@ -19,7 +19,7 @@ class SentCell: ChatBaseCell {
         lblDate.textAlignment = .right
         
         if let str = viewModel?.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: Constants.REGULAR, range: NSMakeRange(0, str.length))
+            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .regular, size: 14), range: NSMakeRange(0, str.length))
             str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSMakeRange(0, str.length))
             tvText.attributedText = str
         }
@@ -48,7 +48,7 @@ class SentCell: ChatBaseCell {
             make.right.equalTo(tvText.snp.right)
             make.width.height.equalTo(10)
         }
-        tvText.backgroundColor = Constants.ERXES_COLOR
-        edgeView.backgroundColor = Constants.ERXES_COLOR
+        tvText.backgroundColor = .ERXES_COLOR
+        edgeView.backgroundColor = .ERXES_COLOR
     }
 }
