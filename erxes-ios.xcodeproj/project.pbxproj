@@ -82,6 +82,7 @@
 		B8127C91214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */; };
 		B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794CF2143DC1500C5991D /* ColChatDataSource.swift */; };
 		B83794D22147A87E00C5991D /* InComingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794D12147A87D00C5991D /* InComingCell.swift */; };
+		B83794D421490C5500C5991D /* FormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794D321490C5500C5991D /* FormCell.swift */; };
 		B83E217F21130CA8005AD39E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B83E217E21130CA8005AD39E /* WebKit.framework */; };
 		B842CC482123E3420052E5C9 /* Industry.json in Resources */ = {isa = PBXBuildFile; fileRef = B842CC472123E3420052E5C9 /* Industry.json */; };
 		B842CC4A2123E3870052E5C9 /* LeadStatus.json in Resources */ = {isa = PBXBuildFile; fileRef = B842CC492123E3870052E5C9 /* LeadStatus.json */; };
@@ -207,6 +208,7 @@
 		B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColChatController+KeyboardHandler.swift"; sourceTree = "<group>"; };
 		B83794CF2143DC1500C5991D /* ColChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColChatDataSource.swift; sourceTree = "<group>"; };
 		B83794D12147A87D00C5991D /* InComingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingCell.swift; sourceTree = "<group>"; };
+		B83794D321490C5500C5991D /* FormCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCell.swift; sourceTree = "<group>"; };
 		B83E217E21130CA8005AD39E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B842CC472123E3420052E5C9 /* Industry.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Industry.json; sourceTree = "<group>"; };
 		B842CC492123E3870052E5C9 /* LeadStatus.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = LeadStatus.json; sourceTree = "<group>"; };
@@ -488,6 +490,7 @@
 				B86FE584213EDC8100124BD3 /* SentCell.swift */,
 				B83794D12147A87D00C5991D /* InComingCell.swift */,
 				B86FE586213F837700124BD3 /* ImageCell.swift */,
+				B83794D321490C5500C5991D /* FormCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -885,6 +888,7 @@
 				F58F205C207B4F2C00D8564D /* InboxController.swift in Sources */,
 				9B576F4F20D39B7C00E70269 /* CircleLayer.swift in Sources */,
 				F55583A72077166E00413F6A /* AppDelegate.swift in Sources */,
+				B83794D421490C5500C5991D /* FormCell.swift in Sources */,
 				9B6202F220EC817A0094A87D /* SuggestionTableViewCell.swift in Sources */,
 				9B6202E920EC60820094A87D /* CustomRow.swift in Sources */,
 				9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */,

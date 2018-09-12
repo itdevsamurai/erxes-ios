@@ -60,6 +60,7 @@ class ColChatController:UIViewController {
         view.register(SentCell.self, forCellWithReuseIdentifier: SentCell.ID)
         view.register(IncomingCell.self, forCellWithReuseIdentifier: IncomingCell.ID)
         view.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.ID)
+        view.register(FormCell.self, forCellWithReuseIdentifier: FormCell.ID)
         view.backgroundColor = .white
         return view
     }()
@@ -188,11 +189,6 @@ class ColChatController:UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loader.startAnimating()
-    }
-    
     func updateView() {
         chatView.reloadData()
 //        chatView.performBatchUpdates(nil, completion: {
@@ -314,9 +310,11 @@ extension ColChatController:UICollectionViewDataSource {
         let item = messages[indexPath.row]
         var cell:ChatBaseCell
         
+        if let form = item.formWidgetData {
+            cell = chatView.dequeueReusableCell(withReuseIdentifier: FormCell.ID, for: indexPath) as! FormCell
+        } else
         if let files = item.attachments, files.count > 0 {
             cell = chatView.dequeueReusableCell(withReuseIdentifier: ImageCell.ID, for: indexPath) as! ImageCell
-            print("Image Cell")
         } else
         if item.userId == ErxesUser.sharedUserInfo()._id {
             cell = chatView.dequeueReusableCell(withReuseIdentifier: IncomingCell.ID, for: indexPath) as! IncomingCell
@@ -331,7 +329,12 @@ extension ColChatController:UICollectionViewDataSource {
 extension ColChatController:UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = messages[indexPath.row]
+        
         var height:CGFloat = 0
+        
+        if let form = item.formWidgetData {
+            height = FormCell.calculateFormHeight(item)
+        } else
         if let files = item.attachments, files.count > 0 {
             height = 150
         } else {
