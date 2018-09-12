@@ -30,6 +30,7 @@ class ColChatController:UIViewController {
                     
                 }
                 inited = true
+                loader.startAnimating()
             }
         }
     }
@@ -37,6 +38,7 @@ class ColChatController:UIViewController {
     
     var container:UIView = {
         let view = UIView()
+        view.clipsToBounds = true
         return view
     }()
     
@@ -101,6 +103,12 @@ class ColChatController:UIViewController {
         return textfield
     }()
     
+    var loader: ErxesLoader = {
+        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-25, y: Constants.SCREEN_HEIGHT/2-25, width: 50, height: 50))
+        loader.lineWidth = 3
+        return loader
+    }()
+    
     var inputContainer:UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.init(hexString: "cccfd6")
@@ -136,40 +144,53 @@ class ColChatController:UIViewController {
         manager.conversationId = conversationId
         manager.queryMessages()
         manager.subscribe()
+        self.container.addSubview(loader)
+        self.view.backgroundColor = .white
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.container.frame = self.view.frame
+//        container.frame = self.view.frame
         
-//        self.container.snp.makeConstraints { (make) in
-//            make.top.right.left.equalToSuperview()
-//            make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
-//        }
+        container.snp.makeConstraints { (make) in
+            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+            make.right.left.equalToSuperview()
+            make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
+        }
         
-        self.chatView.snp.makeConstraints { (make) in
+        chatView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(inputContainer.snp.top)
         }
         
-        self.inputContainer.snp.makeConstraints { (make) in
+        inputContainer.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             make.height.equalTo(47)
             make.bottom.equalToSuperview()
         }
 
-        self.chatInputView.snp.makeConstraints { (make) in
+        chatInputView.snp.makeConstraints { (make) in
             make.left.equalTo(self.view.snp.left).offset(10)
             make.right.equalTo(self.view.snp.right).inset(10)
             make.height.equalTo(40)
             make.bottom.equalToSuperview().inset(3)
         }
 
-        self.chatView.snp.makeConstraints { (make) in
+        chatView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(self.inputContainer.snp.top)
         }
+        
+        loader.snp.makeConstraints { (make) in
+            make.width.height.equalTo(50)
+            make.center.equalTo(self.view.snp.center)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loader.startAnimating()
     }
     
     func updateView() {
@@ -312,7 +333,7 @@ extension ColChatController:UICollectionViewDelegateFlowLayout {
         let item = messages[indexPath.row]
         var height:CGFloat = 0
         if let files = item.attachments, files.count > 0 {
-            height = 100
+            height = 150
         } else {
             height = ChatBaseCell.calculateHeight(item)
         }

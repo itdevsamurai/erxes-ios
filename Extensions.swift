@@ -86,7 +86,8 @@ extension String {
     func convertHtml() -> NSMutableAttributedString {
         guard let data = data(using: .utf8) else { return NSMutableAttributedString() }
         do{
-            return try NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+            return try NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html,
+                                                                       .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
         }catch{
             return NSMutableAttributedString()
         }
