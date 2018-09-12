@@ -21,7 +21,7 @@ class TagFilterController: UIViewController {
         let currentUser = ErxesUser.sharedUserInfo()
         configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
                                                "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
+        let url = URL(string: Constants.API_ENDPOINT)!
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
     var filterOptions = FilterOptions()
@@ -44,7 +44,7 @@ class TagFilterController: UIViewController {
         tableView.register(TagCell.self, forCellReuseIdentifier: "TagCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .clear
         return tableView
     }()

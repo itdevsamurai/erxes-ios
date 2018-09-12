@@ -27,7 +27,7 @@ class Appnet: NSObject {
     class func newClient(token:String?) -> ApolloClient{
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["x-token": token as Any]
-        let url = URL(string: Constants.API_ENDPOINT +  "/graphql")!
+        let url = URL(string: Constants.API_ENDPOINT)!
         let client = ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         return client
     }

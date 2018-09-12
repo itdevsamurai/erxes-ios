@@ -31,15 +31,15 @@ class TagCell: UITableViewCell {
         
         value = UILabel()
         value.textAlignment = .right
-        value.textColor = Constants.TEXT_COLOR
-        value.font = Constants.LIGHT
+        value.textColor = UIColor.TEXT_COLOR
+        value.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(value)
         
         
         desc = UILabel()
         desc.textAlignment = .left
-        desc.textColor = Constants.TEXT_COLOR
-        desc.font = Constants.LIGHT
+        desc.textColor = UIColor.TEXT_COLOR
+        desc.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(desc)
         
         

@@ -28,7 +28,7 @@ class MyTextField: UITextField, UITextFieldDelegate {
         self.layer.cornerRadius = 5
         self.backgroundColor = UIColor(red: 103/255, green: 63/255, blue: 189/255, alpha: 1.0)
         self.textColor = .white
-        self.font = Constants.LIGHT
+        self.font = UIFont.fontWith(type: .light, size: 14)
     }
     
 
