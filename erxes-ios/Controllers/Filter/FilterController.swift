@@ -11,6 +11,8 @@ import SnapKit
 protocol FilterDelegate: class  {
     func passFilterOptions(options:FilterOptions)
 }
+
+
 class FilterController: UIViewController {
     
     weak var delegate: FilterDelegate?

@@ -15,14 +15,7 @@ protocol UserControllerDelegate: class  {
 }
 class UsersController: UIViewController {
 
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
     
     var conversationId = String()
     var loader: ErxesLoader = {
@@ -66,7 +59,7 @@ class UsersController: UIViewController {
     func getUsers(){
         loader.startAnimating()
         let query = GetUsersQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)

@@ -47,14 +47,7 @@ class InboxController: UIViewController {
     var topOffset: CGFloat = 0.0
     var shimmer: FBShimmeringView!
     var conversationLimit = 10
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-            "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
 
 
     var robotView: UIImageView = {
@@ -313,7 +306,7 @@ class InboxController: UIViewController {
     func getLast() {
 
         let query = GetLastQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
               
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -375,7 +368,7 @@ class InboxController: UIViewController {
         }
         query.limit = limit
 
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
 
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -421,7 +414,7 @@ class InboxController: UIViewController {
 
     func getUnreadCount() {
         let query = UnreadCountQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
     
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -1069,7 +1062,7 @@ extension InboxController: UserControllerDelegate {
     func assignUser(userId:String, conversationId:String){
         let mutation = ConversationsAssignMutation(conversationIds: [conversationId])
         mutation.assignedUserId = userId
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -1092,7 +1085,7 @@ extension InboxController: UserControllerDelegate {
 extension InboxController {
     func changeStatus(id:String, status:String){
         let mutation = ConversationsChangeStatusMutation(_ids: [id], status: status)
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)

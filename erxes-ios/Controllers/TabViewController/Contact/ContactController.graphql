@@ -1,8 +1,25 @@
 query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String) {
     customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue) {
-        ...CustomerDetail
+        ...CustomerList
     }
 }
+
+fragment CustomerList on Customer {
+
+_id
+firstName
+lastName
+email
+phone
+getTags {
+_id
+name
+colorCode
+
+}
+
+}
+
 
 
 
@@ -59,12 +76,29 @@ fragment CustomerDetail on Customer {
 query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String, $leadStatus: String, $lifecycleState: String, $brand: String, $sortField: String, $sortDirection: Int) {
     companies(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue, leadStatus: $leadStatus, lifecycleState: $lifecycleState, brand: $brand, sortField: $sortField, sortDirection: $sortDirection) {
      
-        ...CompanyDetail
+        ...CompanyList
         
         
         
     }
 }
+
+fragment CompanyList on Company{
+_id
+avatar
+primaryName
+plan
+email
+phone
+getTags {
+_id
+name
+colorCode
+
+}
+
+}
+
 
 fragment CompanyDetail on Company{
     _id

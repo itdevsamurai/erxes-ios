@@ -9,14 +9,7 @@
 import UIKit
 import Apollo
 
-let apollo: ApolloClient = {
-    let configuration = URLSessionConfiguration.default
-    let currentUser = ErxesUser.sharedUserInfo()
-    configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                           "x-refresh-token": currentUser.refreshToken as Any]
-    let url = URL(string: Constants.API_ENDPOINT)!
-    return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-}()
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

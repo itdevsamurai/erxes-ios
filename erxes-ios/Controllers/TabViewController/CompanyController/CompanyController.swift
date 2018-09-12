@@ -18,14 +18,7 @@ class CompanyController: FormViewController {
             buildForm()
         }
     }
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+  
     
     var loader: ErxesLoader = {
         let loader = ErxesLoader()
@@ -177,7 +170,7 @@ class CompanyController: FormViewController {
             cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
         }
         
-        PushRow<CompanyDetail>.defaultCellUpdate = { cell, row in
+        PushRow<CompanyList>.defaultCellUpdate = { cell, row in
             row.options = self.companies
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
@@ -210,7 +203,7 @@ class CompanyController: FormViewController {
             }
         }
 //
-        SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
+        SuggestionTableRow<CompanyList>.defaultCellUpdate = { cell, row in
             row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             row.cell.textLabel?.textColor = UIColor.ERXES_COLOR
             row.placeholder = "Type to search companies"
@@ -446,7 +439,7 @@ class CompanyController: FormViewController {
         
         let query = CompanyDetailQuery(id: comId)
         
-        client.fetch(query: query) { [weak self] result,error in
+        appnet.fetch(query: query) { [weak self] result,error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -522,14 +515,14 @@ class CompanyController: FormViewController {
         }
     }
     
-    var companies = [CompanyDetail]()
+    var companies = [CompanyList]()
     var users = [UserData]()
     
     func getCompanies() {
         loader.startAnimating()
         
         let query = CompaniesQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -547,7 +540,7 @@ class CompanyController: FormViewController {
             if result?.data != nil {
                 if let allCompanies = result?.data?.companies {
                     
-                    self?.companies = allCompanies.map { ($0?.fragments.companyDetail)! }
+                    self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
                     
                     self?.loader.stopAnimating()
                     
@@ -561,7 +554,7 @@ class CompanyController: FormViewController {
     func getUsers() {
         loader.startAnimating()
         let query = GetUsersQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -628,7 +621,7 @@ class CompanyController: FormViewController {
         
         mutation.links = links
         
-        client.perform(mutation: mutation){ [weak self] result, error in
+        appnet.perform(mutation: mutation){ [weak self] result, error in
             if let err = error {
                 print(err)
             }
@@ -689,7 +682,7 @@ class CompanyController: FormViewController {
         
         mutation.links = links
         
-        client.perform(mutation: mutation){ [weak self] result, error in
+        appnet.perform(mutation: mutation){ [weak self] result, error in
             if let err = error {
                 print(err)
             }

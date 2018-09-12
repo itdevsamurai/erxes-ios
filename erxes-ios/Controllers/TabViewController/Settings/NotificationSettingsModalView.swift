@@ -52,7 +52,7 @@ class NotificationSettingsModalView: UIView, Modal {
         
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center
-        titleLabel.text = "Email signatures"
+        titleLabel.text = "Notification settings"
         titleLabel.textColor = .white
         titleLabel.font = UIFont.fontWith(type: .light, size: 15)
         titleLabel.backgroundColor = .ERXES_COLOR
@@ -107,8 +107,8 @@ class NotificationSettingsModalView: UIView, Modal {
         }
         
         tableView.snp.makeConstraints { (make) in
-            make.left.equalTo(dialogView.snp.left).offset(20)
-            make.right.equalTo(dialogView.snp.right).inset(20)
+            make.left.equalTo(dialogView.snp.left)
+            make.right.equalTo(dialogView.snp.right)
             make.top.equalTo(titleLabel.snp.bottom)
             make.bottom.equalTo(closeButton.snp.top).inset(-10)
         }

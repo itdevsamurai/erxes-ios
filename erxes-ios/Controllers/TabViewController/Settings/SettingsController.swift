@@ -17,14 +17,7 @@ class SettingsController: UIViewController {
     let signatureView = EmailSignaturesModalView()
     let notificationView = NotificationSettingsModalView()
     var profileView:ProfileView?
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
     
     var loader: ErxesLoader = {
         let loader = ErxesLoader()
@@ -103,7 +96,7 @@ class SettingsController: UIViewController {
     func getBrands(){
         loader.startAnimating()
         let query = BrandsQuery()
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -134,7 +127,7 @@ class SettingsController: UIViewController {
         loader.startAnimating()
         let query = NotificationsModulesQuery()
         let query1 = NotificationsGetConfigurationsQuery()
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -163,7 +156,7 @@ class SettingsController: UIViewController {
             }
         }
         
-        client.fetch(query: query1, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query1, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -193,7 +186,7 @@ class SettingsController: UIViewController {
         self.loader.startAnimating()
         let mutation = UsersChangePasswordMutation(currentPassword: current, newPassword: new)
 
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                
                 self?.showResult(isSuccess: false, message: error.localizedDescription)
@@ -220,7 +213,7 @@ class SettingsController: UIViewController {
         self.loader.startAnimating()
         let mutation = UsersConfigEmailSignaturesMutation()
         mutation.signatures = [signature]
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 
                 self?.showResult(isSuccess: false, message: error.localizedDescription)
@@ -246,7 +239,7 @@ class SettingsController: UIViewController {
     
     func getNotificationByEmailMutation(isAllowed:Bool){
         let mutation = UsersConfigGetNotificationByEmailMutation(isAllowed: isAllowed)
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 
                 self?.showResult(isSuccess: false, message: error.localizedDescription)
@@ -270,7 +263,7 @@ class SettingsController: UIViewController {
     
     func notificationsSaveConfigMutation(notifType:String,isAllowed:Bool){
         let mutation = NotificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 
                 self?.showResult(isSuccess: false, message: error.localizedDescription)

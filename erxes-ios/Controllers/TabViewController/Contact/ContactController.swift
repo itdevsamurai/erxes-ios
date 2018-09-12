@@ -12,14 +12,7 @@ import Apollo
 
 class ContactController: UIViewController {
 
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string:Constants.API_ENDPOINT)!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+
     
     let arr = ["Customers","Companies"]
     var loader: ErxesLoader = {
@@ -30,13 +23,13 @@ class ContactController: UIViewController {
     var isCustomer:Bool = true
     var customersLimit = 20
     var companiesLimit = 20
-    var customers = [CustomerDetail]() {
+    var customers = [CustomerList]() {
         didSet {
             tableView.reloadData()
         }
     }
     
-    var companies = [CompanyDetail]() {
+    var companies = [CompanyList]() {
         didSet {
             tableView.reloadData()
         }
@@ -206,7 +199,7 @@ class ContactController: UIViewController {
             
             if result?.data != nil {
                 if let allCompanies = result?.data?.companies {
-                    self?.companies = allCompanies.map { ($0?.fragments.companyDetail)! }
+                    self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
                 self?.loader.stopAnimating()
                 }
             }
@@ -217,7 +210,7 @@ class ContactController: UIViewController {
         loader.startAnimating()
         let query = CustomersQuery()
         query.perPage = limit
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -234,7 +227,7 @@ class ContactController: UIViewController {
             
             if result?.data != nil {
                 if let allCustomers = result?.data?.customers {
-                    self?.customers = allCustomers.map { ($0!.fragments.customerDetail) }
+                    self?.customers = allCustomers.map { ($0!.fragments.customerList) }
 //                    self?.customers = allCustomers.list.map {($0.fra)}
                 self?.loader.stopAnimating()
                     
@@ -251,7 +244,7 @@ class ContactController: UIViewController {
     func mutateDeleteCustomer(customerIds:[String]) {
         let mutation = CustomersRemoveMutation(customerIds: customerIds)
         
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             self?.getCustomers()
         }
     }
@@ -264,7 +257,7 @@ class ContactController: UIViewController {
     func mutateDeleteCompany(companyIds:[String]) {
         let mutation = CompaniesRemoveMutation(companyIds: companyIds)
         
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             self?.getCompanies()
         }
     }
