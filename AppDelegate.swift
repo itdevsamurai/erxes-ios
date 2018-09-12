@@ -37,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loginContoller.title = "Login"
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        let vc = ColChatController()
+//        window?.rootViewController = vc
         window?.makeKeyAndVisible()
         return true
         

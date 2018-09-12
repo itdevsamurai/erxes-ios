@@ -23,6 +23,7 @@ struct Message: Codable {
     var customerId:String?
     var user:User?
     var content:String?
+    var userId:String?
     var createdAt:Int?
     var attachments:[Attachment?]
 }

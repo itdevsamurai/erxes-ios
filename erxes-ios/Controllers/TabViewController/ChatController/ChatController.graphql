@@ -1,6 +1,6 @@
 
-mutation ConversationMessageAdd($conversationId:String!, $content:String!){
-    conversationMessageAdd(conversationId:$conversationId,content:$content){
+mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[JSON]){
+    conversationMessageAdd(conversationId:$conversationId,content:$content, attachments:$attachments){
         _id
         
     }
@@ -26,6 +26,7 @@ fragment MessageDetail on ConversationMessage {
     userId
     createdAt
     user {
+        _id
         username
         email
         role

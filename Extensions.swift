@@ -43,6 +43,15 @@ extension String {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         return formatter.date(from: self)!
     }
+    
+    func convertHtml() -> NSMutableAttributedString {
+        guard let data = data(using: .utf8) else { return NSMutableAttributedString() }
+        do{
+            return try NSMutableAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+        }catch{
+            return NSMutableAttributedString()
+        }
+    }
 }
 
 extension Date {
@@ -107,6 +116,13 @@ extension UIView {
     func addBorder(with color:UIColor){
         self.layer.borderWidth = 1
         self.layer.borderColor = color.cgColor
+    }
+    
+    func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
     }
 }
 
@@ -183,6 +199,7 @@ extension UIImageView {
 }
 
 public extension UIImage {
+    
     public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
@@ -195,30 +212,64 @@ public extension UIImage {
         self.init(cgImage: cgImage)
     }
   
+    func tint(with color: UIColor) -> UIImage
+    {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, UIScreen.main.scale)
+        guard let context = UIGraphicsGetCurrentContext() else { return self }
         
-        func tint(with color: UIColor) -> UIImage
-        {
-            UIGraphicsBeginImageContextWithOptions(self.size, false, UIScreen.main.scale)
-            guard let context = UIGraphicsGetCurrentContext() else { return self }
-            
-            // flip the image
-            context.scaleBy(x: 1.0, y: -1.0)
-            context.translateBy(x: 0.0, y: -self.size.height)
-            
-            // multiply blend mode
-            context.setBlendMode(.multiply)
-            
-            let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
-            context.clip(to: rect, mask: self.cgImage!)
-            color.setFill()
-            context.fill(rect)
-            
-            // create UIImage
-            guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return self }
-            UIGraphicsEndImageContext()
-            
-            return newImage
+        // flip the image
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.translateBy(x: 0.0, y: -self.size.height)
+        
+        // multiply blend mode
+        context.setBlendMode(.multiply)
+        
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        context.clip(to: rect, mask: self.cgImage!)
+        color.setFill()
+        context.fill(rect)
+        
+        // create UIImage
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return self }
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    class func resize(_ image: UIImage) -> Data! {
+        var actualHeight = Float(image.size.height)
+        var actualWidth = Float(image.size.width)
+        let maxHeight: Float = 1000.0
+        let maxWidth: Float = 1000.0
+        var imgRatio: Float = actualWidth / actualHeight
+        let maxRatio: Float = maxWidth / maxHeight
+        let compressionQuality: Float = 0.5
+        //50 percent compression
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+            if imgRatio < maxRatio {
+                //adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            }
+            else if imgRatio > maxRatio {
+                //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            }
+            else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
         }
+        let rect = CGRect(x: 0.0, y: 0.0, width: CGFloat(actualWidth), height: CGFloat(actualHeight))
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = UIImageJPEGRepresentation(img!, CGFloat(compressionQuality))
+        return imageData!
+    }
     
 }
 
