@@ -642,6 +642,8 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                 }
             } else if conversation.integration?.kind != nil && conversation.integration?.kind == "form" {
                 cell?.setIcon(type: .form)
+            } else if conversation.integration?.kind != nil && conversation.integration?.kind == "twitter" {
+                cell?.setIcon(type: .twitter)
             }
 
             if conversation.assignedUser != nil && conversation.assignedUser?.details?.avatar != nil {

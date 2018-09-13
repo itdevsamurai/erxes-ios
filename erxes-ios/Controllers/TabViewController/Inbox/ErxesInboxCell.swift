@@ -201,8 +201,8 @@ class ErxesInboxCell: UITableViewCell {
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
             
         case .form:
-            iconView.image = UIImage.erxes(with: .file, textColor: UIColor.FB_COLOR)
-            circleView.backgroundColor =   UIColor.init(hexString: "60d2d6")
+            iconView.image = UIImage.erxes(with: .file, textColor: UIColor.white)
+            circleView.backgroundColor =   UIColor.init(hexString: "f8cf5f")
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
         case .feed:
             iconView.image = UIImage.erxes(with: .facebooklogo, textColor: UIColor.FB_COLOR)
@@ -220,6 +220,10 @@ class ErxesInboxCell: UITableViewCell {
             circleView.backgroundColor = UIColor.ERXES_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
            
+        case .twitter:
+            iconView.image = UIImage.erxes(with: .twitterlogo, textColor: UIColor.ERXES_COLOR)
+            circleView.backgroundColor = UIColor.init(hexString: "139fef")
+            iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
         }
         iconView.tintColor = .white
     }
@@ -232,4 +236,5 @@ enum integrationKind {
     case feed
     case user
     case notuser
+    case twitter
 }
