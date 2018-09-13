@@ -26,7 +26,7 @@ class ErxesInboxCell: UITableViewCell {
 
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
-
+        self.selectionStyle = .none
         avatar = UIImageView()
         avatar.layer.cornerRadius = 6
         avatar.clipsToBounds = true
@@ -87,7 +87,7 @@ class ErxesInboxCell: UITableViewCell {
 
 
         circleView = UIView()
-        circleView.layer.cornerRadius = 10
+        circleView.layer.cornerRadius = 13
         circleView.clipsToBounds = true
         circleView.layer.borderColor = UIColor.white.cgColor
         circleView.layer.borderWidth = 0.7
@@ -156,12 +156,12 @@ class ErxesInboxCell: UITableViewCell {
         circleView.snp.makeConstraints { (make) in
             make.left.equalTo(avatar.snp.right).inset(15)
             make.top.equalTo(avatar.snp.bottom).inset(15)
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(26)
         }
         
         iconView.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(20)
         }
         
         userAvatar.snp.makeConstraints { (make) in
