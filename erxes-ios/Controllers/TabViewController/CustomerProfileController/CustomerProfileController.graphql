@@ -33,12 +33,7 @@ fragment CustomerInfo on Customer {
     }
     ownerId
     owner {
-        _id
-        details {
-            fullName
-            
-        }
-        
+        ...UserData
     }
     integrationId
     createdAt

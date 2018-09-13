@@ -18,7 +18,7 @@ class ColChatController:UIViewController {
     let MARGIN_RIGHT:CGFloat = 16
     let MARGIN_LEFT:CGFloat = 16
     var conversationId:String?
-    
+    var customerId:String?
     var inited = false
     
 //    public typealias ModelT = TextCell.ViewModel
@@ -125,7 +125,7 @@ class ColChatController:UIViewController {
     convenience init(chatId:String,title:String,customerId:String){
         self.init()
         self.conversationId = chatId
-//        self.customerId = customerId
+        self.customerId = customerId
         self.title = title
     }
     
@@ -147,6 +147,17 @@ class ColChatController:UIViewController {
         manager.subscribe()
         self.container.addSubview(loader)
         self.view.backgroundColor = .white
+        
+        let rightItem: UIBarButtonItem = {
+           let button = UIButton()
+            let barButtomItem = UIBarButtonItem()
+            button.setBackgroundImage(UIImage.erxes(with: .user, textColor: .ERXES_COLOR), for: .normal)
+            button.tintColor = UIColor.ERXES_COLOR
+            button.addTarget(self, action: #selector(gotoUser(sender:)), for: .touchUpInside)
+            barButtomItem.customView = button
+            return barButtomItem
+        }()
+        self.navigationItem.rightBarButtonItem = rightItem
     }
     
     override func viewDidLayoutSubviews() {
@@ -187,6 +198,11 @@ class ColChatController:UIViewController {
             make.width.height.equalTo(50)
             make.center.equalTo(self.view.snp.center)
         }
+    }
+    
+    @objc func gotoUser(sender:UIButton){
+        self.navigate(.customerProfile(_id: self.customerId!, count: 0))
+        
     }
     
     func updateView() {
