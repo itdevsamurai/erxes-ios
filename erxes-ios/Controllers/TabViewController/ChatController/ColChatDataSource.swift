@@ -68,6 +68,16 @@ class ChatManager:NSObject {
         }
     }
     
+    func markAsRead(id:String){
+        let mutation = ConversationMarkAsReadMutation(id: id)
+        appnet.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+        }
+    }
+    
     func mutateAddMessage(msg:String){
         let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!)
         

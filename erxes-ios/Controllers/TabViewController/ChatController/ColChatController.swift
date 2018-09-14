@@ -127,7 +127,10 @@ class ColChatController:UIViewController {
         self.conversationId = chatId
         self.customerId = customerId
         self.title = title
+        
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -145,6 +148,7 @@ class ColChatController:UIViewController {
         manager.conversationId = conversationId
         manager.queryMessages()
         manager.subscribe()
+        manager.markAsRead(id: conversationId!)
         self.container.addSubview(loader)
         self.view.backgroundColor = .white
         
