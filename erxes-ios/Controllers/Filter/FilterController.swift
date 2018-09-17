@@ -11,6 +11,8 @@ import SnapKit
 protocol FilterDelegate: class  {
     func passFilterOptions(options:FilterOptions)
 }
+
+
 class FilterController: UIViewController {
     
     weak var delegate: FilterDelegate?
@@ -53,8 +55,8 @@ class FilterController: UIViewController {
         leftButton.setTitle("Clear", for: .normal)
 //        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
         let leftItem = UIBarButtonItem()
-        leftItem.tintColor = Constants.ERXES_COLOR!
-        leftButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+        leftItem.tintColor = UIColor.ERXES_COLOR
+        leftButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
         leftButton.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         leftItem.customView = leftButton
         self.navigationItem.leftBarButtonItem = leftItem
@@ -62,14 +64,14 @@ class FilterController: UIViewController {
 
         let rightButton = UIButton()
         rightButton.setTitle("Done", for: .normal)
-        rightButton.setTitleColor(Constants.ERXES_COLOR!, for: .normal)
+        rightButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
         rightButton.addTarget(self, action: #selector(close(sender:)), for: .touchUpInside)
         let rightItem = UIBarButtonItem()
-        rightItem.tintColor = Constants.ERXES_COLOR!
+        rightItem.tintColor = UIColor.ERXES_COLOR
         rightItem.customView = rightButton
         self.navigationItem.rightBarButtonItem = rightItem
 
-        self.view.backgroundColor = Constants.INBOX_BG_COLOR
+        self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         
         self.view.addSubview(tableView)
     }
@@ -232,13 +234,12 @@ extension FilterController:UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width-20, height: 40))
-        headerView.backgroundColor = Constants.INBOX_BG_COLOR
+        headerView.backgroundColor = UIColor.INBOX_BG_COLOR
         let titleLabel = UILabel()
         titleLabel.frame = headerView.frame
         
-        titleLabel.textColor = Constants.ERXES_COLOR!
-        titleLabel.font = Constants.LIGHT
-//        titleLabel.text = "asd"
+        titleLabel.textColor = UIColor.ERXES_COLOR
+        titleLabel.font = UIFont.fontWith(type: .light, size: 14)
         headerView.addSubview(titleLabel)
         titleLabel.text = self.sections[section]
         return headerView
@@ -275,7 +276,7 @@ extension FilterController:UITableViewDataSource {
            cell.contentView.backgroundColor = .clear
            cell.value.text = ""
            cell.desc.text = "Channel:"
-           cell.tintColor = Constants.ERXES_COLOR!
+           cell.tintColor = UIColor.ERXES_COLOR
            if self.filterOptions.channel != nil && self.filterOptions.channel?.name.count != 0 {
                 cell.value.text = self.filterOptions.channel?.name
            }
@@ -316,7 +317,7 @@ extension FilterController:UITableViewDataSource {
             cell.contentView.backgroundColor = .clear
             cell.value.text = ""
             cell.desc.text = "Brand:"
-            cell.tintColor = Constants.ERXES_COLOR!
+            cell.tintColor = UIColor.ERXES_COLOR
             if self.filterOptions.brand != nil && self.filterOptions.brand?.name?.count != 0 {
                 cell.value.text = self.filterOptions.brand?.name
             }
@@ -349,7 +350,7 @@ extension FilterController:UITableViewDataSource {
             cell.contentView.backgroundColor = .clear
             cell.value.text = ""
             cell.desc.text = "Tag:"
-            cell.tintColor = Constants.ERXES_COLOR!
+            cell.tintColor = UIColor.ERXES_COLOR
             if self.filterOptions.tag != nil && self.filterOptions.tag?.name?.count != 0 {
                 cell.value.text = self.filterOptions.tag?.name
             }

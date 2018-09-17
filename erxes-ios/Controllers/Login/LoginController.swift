@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import IoniconsKit
+
 import LocalAuthentication
 import Apollo
 //import KCKeyboardImagePicker
@@ -16,6 +16,31 @@ import Apollo
 class LoginController: UIViewController {
 
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var checkBox:UIButton =  {
+        let checkButton = UIButton()
+
+        checkButton.setImage(UIImage.erxes(with: .check, textColor: .white), for: .selected)
+        checkButton.setImage(UIImage(), for: .normal)
+        checkButton.alpha = 0.0
+        checkButton.addTarget(self, action: #selector(onCheckBoxPress(_:)), for: .touchUpInside)
+        checkButton.layer.borderColor = UIColor.white.cgColor
+        checkButton.layer.borderWidth = 1.0
+        return checkButton
+    }()
+    
+    let rememberMeLabel: UILabel = {
+        let rememberMe = UILabel()
+        rememberMe.text = "remember me"
+        rememberMe.textColor = .white
+        rememberMe.font = UIFont.fontWith(type: .light, size: 12)
+        rememberMe.tag = 200
+        rememberMe.alpha = 0.0
+        rememberMe.textAlignment = .right
+        return rememberMe
+    }()
+
+    
+    
     
     var loader: ErxesLoader = {
        let loader = ErxesLoader()
@@ -55,9 +80,8 @@ class LoginController: UIViewController {
     
     var touchIDButtonState: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage.ionicon(with: .close, textColor: .white, size: CGSize(width:16, height:16)), for: .normal)
-        button.setImage(UIImage.ionicon(with: .checkmark, textColor: .white, size: CGSize(width:16, height:16)), for: .selected)
-        
+            button.setImage(UIImage.erxes(with: .cancel, textColor: .white), for: .normal)
+            button.setImage(UIImage.erxes(with: .check, textColor: .white), for: .selected)
         if UserDefaults.standard.value(forKey: "touchEnabled") != nil {
             let isEnabled:Bool = UserDefaults.standard.bool(forKey: "touchEnabled")
             if isEnabled{
@@ -75,7 +99,8 @@ class LoginController: UIViewController {
     
     var signInButton: UIButton = {
        let button = UIButton()
-        button.titleLabel?.font = Constants.LIGHT
+        
+        button.titleLabel?.font = UIFont.fontWith(type: .light, size: 14)
         button.titleLabel?.textColor = .white
         button.setTitle("SIGN IN", for: .normal)
         button.alpha = 0.0
@@ -100,6 +125,26 @@ class LoginController: UIViewController {
         self.view.addSubview(touchIDButtonState)
         self.view.addSubview(signInButton)
         self.view.addSubview(loader)
+        self.view.addSubview(rememberMeLabel)
+        self.view.addSubview(checkBox)
+
+        if let cachedEmail = UserDefaults.standard.string(forKey: "cachedEmail") {
+            print(cachedEmail)
+            emailField.text = cachedEmail
+            checkBox.isSelected = true
+        }else {
+            print ("not cached")
+        }
+        
+    }
+    
+    @objc func onCheckBoxPress(_ sender: UIButton) {
+       
+        if sender.isSelected{
+            sender.isSelected = false
+        }else{
+            sender.isSelected = true
+        }
     }
     
     func animateViews(){
@@ -118,6 +163,8 @@ class LoginController: UIViewController {
                 self.touchIDButton.alpha = 1.0
                 self.touchIDButtonState.alpha = 1.0
                 self.signInButton.alpha = 1.0
+                self.checkBox.alpha = 1.0
+                self.rememberMeLabel.alpha = 1.0
                 self.view.layoutIfNeeded()
             })
         }
@@ -148,6 +195,17 @@ class LoginController: UIViewController {
             make.height.equalTo(40)
         }
         
+        rememberMeLabel.snp.makeConstraints({ (make) in
+            make.right.equalTo(passwordField.snp.right)
+            make.top.equalTo(passwordField.snp.bottom).offset(20)
+        })
+        
+        checkBox.snp.makeConstraints { (make) in
+            make.width.height.equalTo(20)
+            make.centerY.equalTo(rememberMeLabel.snp.centerY)
+            make.right.equalTo(rememberMeLabel.snp.left).inset(-20)
+        }
+        
         touchIDButton.snp.makeConstraints { (make) in
             make.centerX.equalTo(self.view.snp.centerX)
             make.bottom.equalTo(self.view.snp.bottom).inset(Constants.SCREEN_WIDTH/2-50)
@@ -175,7 +233,7 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = Constants.ERXES_COLOR!
+        self.view.backgroundColor = UIColor.ERXES_COLOR
         self.navigationController?.isNavigationBarHidden = true
         configureViews()
         checkAuthentication()
@@ -203,16 +261,24 @@ class LoginController: UIViewController {
     
     @objc func loginAction(sender:UIButton){
 
-        loader.startAnimating()
+        
         if touchIDButtonState.isSelected{
+            
             authenticateUser()
         }else{
-            mutateLogin(email: emailField.text!, password: passwordField.text!)
+            if (emailField.text?.isEmpty)! || (passwordField.text?.isEmpty)! {
+                let alert = FailureAlert(message: "Please fill out fields")
+                alert.show(animated: true)
+            }else{
+                
+                mutateLogin(email: emailField.text!, password: passwordField.text!)
+            }
         }
     }
 
     
     func authenticateUser() {
+        loader.startAnimating()
         let context = LAContext()
         var error: NSError?
         
@@ -227,17 +293,20 @@ class LoginController: UIViewController {
                         if UserDefaults.standard.value(forKey: "email") == nil {
                             
                             self.mutateLogin(email: self.emailField.text!, password: self.passwordField.text!)
+                            self.loader.stopAnimating()
                         }else{
                             
                             let email:String = UserDefaults.standard.value(forKey: "email") as! String
                             let password:String = UserDefaults.standard.value(forKey: "password") as! String
                           
                             self.mutateLogin(email: email, password: password)
+                            self.loader.stopAnimating()
                         }
                     } else {
                         
                         let alert = FailureAlert(message:"Authentication failed\r please try again")
                         alert.show(animated: true)
+                        self.loader.stopAnimating()
                     }
                 }
             }
@@ -246,11 +315,17 @@ class LoginController: UIViewController {
             
             let alert = FailureAlert(message:"Your device is not configured for Touch ID.")
             alert.show(animated: true)
+            loader.stopAnimating()
         }
     }
     
     func mutateLogin(email:String, password:String) {
-    
+        let apollo: ApolloClient = {
+            let configuration = URLSessionConfiguration.default
+            let url = URL(string: Constants.API_ENDPOINT)!
+            return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+        }()
+        loader.startAnimating()
         let loginMutation = LoginMutation(email:email ,password:password)
         apollo.perform(mutation: loginMutation) { [weak self] result, error in
             if let error = error {
@@ -275,21 +350,24 @@ class LoginController: UIViewController {
                 
                 let currentUser = ErxesUser.sharedUserInfo()
                 currentUser.token = (result?.data?.login.token)!
-                currentUser.refreshToken = (result?.data?.login.token)!
+                currentUser.refreshToken = (result?.data?.login.refreshToken)!
                 
                 self?.mutateCurrrentUser()
+                self?.loader.stopAnimating()
             }
 
         }
     }
     
     func mutateCurrrentUser() {
-        
+        loader.startAnimating()
         let client: ApolloClient = {
             let configuration = URLSessionConfiguration.default
             let currentUser = ErxesUser.sharedUserInfo()
-            configuration.httpAdditionalHeaders = ["Authorization": "Bearer <\(currentUser.token!)>"]
-            let url = URL(string: Constants.API_ENDPOINT +  "/graphql")!
+            
+            configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
+                                                   "x-refresh-token": currentUser.refreshToken as Any]
+            let url = URL(string: Constants.API_ENDPOINT)!
             
             return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         }()
@@ -300,35 +378,41 @@ class LoginController: UIViewController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message:error.localizedDescription)
                 alert.show(animated: true)
+                self?.loader.startAnimating()
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message:err[0].localizedDescription)
                 alert.show(animated: true)
+                self?.loader.startAnimating()
             }
             
             if result?.data != nil {
-                
+
                 let user = result?.data?.currentUser
+                
                 let currentUser  = ErxesUser.sharedUserInfo()
                 currentUser._id = user?.id
                 currentUser.username = user?.username
                 currentUser.email = user?.email
-                currentUser.role = user?.role
                 currentUser.avatar = user?.details?.avatar
                 currentUser.fullName = user?.details?.fullName
                 currentUser.position = user?.details?.position
-                //                        currentUser.twitterUsername = user?.details?.twitterUsername
-                //                        currentUser.emailSignatures = user?.emailSignatures
                 currentUser.getNotificationByEmail = user?.getNotificationByEmail
                 
+                if (self?.checkBox.isSelected)! {
+                    UserDefaults.standard.set(self?.emailField.text, forKey: "cachedEmail")
+                }else{
+                    UserDefaults.standard.removeObject(forKey: "cachedEmail")
+                }
                 if (self?.touchIDButtonState.isSelected)! {
                     UserDefaults.standard.set(self?.emailField.text, forKey: "email")
                     UserDefaults.standard.set(self?.passwordField.text, forKey: "password")
                     UserDefaults.standard.synchronize()
                 }
                 self?.loader.stopAnimating()
+                self?.passwordField.text = ""
                 self?.navigate(.tab)
             }
         }

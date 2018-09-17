@@ -12,11 +12,11 @@ class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: Constants.BOLD!]
-        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: Constants.ERXES_COLOR!]
+        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont.fontWith(type: .bold, size: 14)]
+        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.ERXES_COLOR]
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.setBackgroundImage(UIImage(), for: .default)
-//        self.navigationBar.barTintColor = Constants.INBOX_BG_COLOR
+//        self.navigationBar.barTintColor = UIColor.INBOX_BG_COLOR
         self.navigationBar.barTintColor = .white
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }

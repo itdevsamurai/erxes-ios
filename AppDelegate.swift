@@ -9,14 +9,7 @@
 import UIKit
 import Apollo
 
-let apollo: ApolloClient = {
-    let configuration = URLSessionConfiguration.default
-    let currentUser = ErxesUser.sharedUserInfo()
-    configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                           "x-refresh-token": currentUser.refreshToken as Any]
-    let url = URL(string: Constants.API_ENDPOINT +  "/graphql")!
-    return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-}()
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,9 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
-//        UINavigationBar.appearance().barTintColor = nil
-        var backImage = UIImage.erxes(with: .leftarrow, textColor: Constants.ERXES_COLOR!)
-        UINavigationBar.appearance().tintColor = Constants.ERXES_COLOR
+        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.ERXES_COLOR)
+        UINavigationBar.appearance().tintColor = UIColor.ERXES_COLOR
         UINavigationBar.appearance().backIndicatorImage = backImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-1000, 0), for: .default)
@@ -37,6 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loginContoller.title = "Login"
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
+//        window = UIWindow(frame: UIScreen.main.bounds)
+//        let vc = ColChatController()
+//        window?.rootViewController = vc
         window?.makeKeyAndVisible()
         return true
         

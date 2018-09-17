@@ -35,21 +35,14 @@ class ChannelFilterController: UIViewController {
     var filterOptions = FilterOptions()
 
     
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
     
     var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(FilterCell.self, forCellReuseIdentifier: "FilterCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -61,7 +54,7 @@ class ChannelFilterController: UIViewController {
         self.view.addSubview(tableView)
         self.view.addSubview(loader)
         self.view.backgroundColor = .clear
-        client.cacheKeyForObject = {$0["_id"]}
+
         getChannels()
     }
     
@@ -75,7 +68,7 @@ class ChannelFilterController: UIViewController {
         
 //
         
-            channelWatcher =  client.watch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
+             appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
                 if let error = error {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)

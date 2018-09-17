@@ -123,6 +123,11 @@ mutation conversationsAssign($conversationIds: [String]!, $assignedUserId: Strin
     }
 }
 
+mutation ConversationMarkAsRead ($id:String){
+conversationMarkAsRead (_id:$id) {
+_id
+}
+}
 
 
 

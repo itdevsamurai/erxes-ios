@@ -7,71 +7,74 @@
 //
 
 import UIKit
-import IoniconsKit
 
-class ErxesField: UITextField,UITextFieldDelegate {
+
+class ErxesField: UIView {
 
     
-    let iconView = UIImageView()
-    var paddingSize = CGFloat()
+    var titleLabel = UILabel()
+    var textField = UITextField()
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        delegate = self
-        
-        
-        createBorder()
-    }
-    required override init(frame: CGRect) {
-        super.init(frame: frame)
-        delegate = self
-        paddingSize = frame.size.height
-        self.font = UIFont.ionicon(of: 14)
-        let paddingView = UIView(frame: CGRect(x:0, y:0, width:paddingSize+5, height:paddingSize))
-        
-        let line = UIView(frame:CGRect(x:paddingSize-1,y:0,width:1,height:paddingSize))
-        line.backgroundColor = .gray
-        paddingView.addSubview(line)
-        
-        iconView.contentMode = .scaleAspectFit
-        paddingView.addSubview(iconView)
-        
-        self.leftView = paddingView
-        self.leftViewMode = .always
-       
-        
-        createBorder()
-    }
-    
-    func createBorder(){
-        let border = CALayer()
-        let width = CGFloat(2.0)
-        border.borderColor = UIColor.gray.cgColor
-        border.frame = CGRect(x: 0, y: self.frame.size.height-width, width: self.frame.size.width, height: self.frame.size.height)
-        self.layer.borderWidth = 1.0
-        self.layer.addSublayer(border)
-        self.layer.masksToBounds = true
-        self.layer.cornerRadius = 5
-    }
-    
-    func setIcon(image: UIImage) {
-        let imageW = image.size.width
-        let imageH = image.size.height
-        let w = 20 * imageW / imageH
-        iconView.frame = CGRect(x: paddingSize/2-w/2, y: paddingSize/2-10, width: w, height: 20)
-        iconView.image = image
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("editing")
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        print("end editing")
-    }
 
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        
+        
+        titleLabel = UILabel ()
+        titleLabel.font = UIFont.fontWith(type: .light, size: 14    )
+        titleLabel.textColor = .TEXT_COLOR
+        
+        self.addSubview(titleLabel)
+        
+        textField = UITextField ()
+        textField.delegate = self
+        textField.font = UIFont.fontWith(type: .light, size: 14    )
+        textField.borderStyle = .none
+        textField.textColor = .TEXT_COLOR
+        let lineView = UIView()
+        lineView.tag = 1
+        lineView.backgroundColor = .TEXT_COLOR
+        self.addSubview(lineView)
+        
+        let leftView = UIView(frame: CGRect(x:0, y:0, width:20, height:30))
+        textField.leftView = leftView
+        textField.leftViewMode = .always
+        self.addSubview(textField)
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.left.top.right.equalToSuperview()
+            make.height.equalTo(20)
+        }
+        
+        textField.snp.makeConstraints { (make) in
+            make.left.bottom.right.equalToSuperview()
+            make.height.equalTo(30)
+
+        }
+        
+        lineView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(0.5)
+        }
+    }
+    
+}
+
+extension ErxesField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+    
+    
+    
+    //    func textfieldte
 }

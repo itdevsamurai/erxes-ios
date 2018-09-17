@@ -30,8 +30,8 @@ class UserCell: UITableViewCell {
         
         fullName = UILabel()
         fullName.textAlignment = .right
-        fullName.textColor = Constants.TEXT_COLOR
-        fullName.font = Constants.LIGHT
+        fullName.textColor = UIColor.TEXT_COLOR
+        fullName.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(fullName)
         
 

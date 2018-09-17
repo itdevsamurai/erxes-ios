@@ -26,35 +26,34 @@ class ErxesInboxCell: UITableViewCell {
 
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
-
+        self.selectionStyle = .none
         avatar = UIImageView()
         avatar.layer.cornerRadius = 6
         avatar.clipsToBounds = true
-        avatar.backgroundColor = Constants.SHIMMER_COLOR
+        avatar.backgroundColor = UIColor.SHIMMER_COLOR
         contentView.addSubview(avatar)
 
 
         fullName = ErxesLabel()
         fullName.textAlignment = .left
-        fullName.textColor = Constants.ERXES_COLOR!
-//        fullName.textColor = UIColor.init(hexString: "#ff0000")
-        fullName.font = Constants.MEDIUM
-        fullName.backgroundColor = Constants.SHIMMER_COLOR
+        fullName.textColor = UIColor.ERXES_COLOR
+        fullName.font = UIFont.fontWith(type: .medium, size: 14)
+        fullName.backgroundColor = UIColor.SHIMMER_COLOR
         contentView.addSubview(fullName)
 
 
         desc = ErxesLabel()
         desc.textAlignment = .right
         desc.textColor = .gray
-        desc.font = Constants.THIN
-        desc.backgroundColor = Constants.SHIMMER_COLOR
+        desc.font = UIFont.fontWith(type: .thin, size: 14)
+        desc.backgroundColor = UIColor.SHIMMER_COLOR
         desc.minimumScaleFactor = 0.5
         desc.adjustsFontSizeToFitWidth = true
         contentView.addSubview(desc)
 
 
         date = ErxesLabel()
-        date.font = Constants.THIN
+        date.font = UIFont.fontWith(type: .thin, size: 14)
         date.textAlignment = .right
         date.textColor = .gray
         date.numberOfLines = 0
@@ -66,19 +65,19 @@ class ErxesInboxCell: UITableViewCell {
 
         message = ErxesLabel()
         message.textAlignment = .left
-        message.textColor = Constants.TEXT_COLOR
+        message.textColor = UIColor.TEXT_COLOR
 //        message.textColor = UIColor(hexString: "#60d2d6")
-        message.font = Constants.LIGHT
+        message.font = UIFont.fontWith(type: .light, size: 14)
         message.numberOfLines = 2
         message.minimumScaleFactor = 0.5
         message.backgroundColor = .red
         message.lineBreakMode = .byWordWrapping
-        message.backgroundColor = Constants.SHIMMER_COLOR
+        message.backgroundColor = UIColor.SHIMMER_COLOR
         contentView.addSubview(message)
 
 
         tagListView = TagListView()
-        tagListView.tagBackgroundColor = Constants.ERXES_COLOR!
+        tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 5.0
         tagListView.textFont = UIFont(name: "Montserrat-Light", size: 8)!
         tagListView.textColor = .white
@@ -88,7 +87,7 @@ class ErxesInboxCell: UITableViewCell {
 
 
         circleView = UIView()
-        circleView.layer.cornerRadius = 10
+        circleView.layer.cornerRadius = 13
         circleView.clipsToBounds = true
         circleView.layer.borderColor = UIColor.white.cgColor
         circleView.layer.borderWidth = 0.7
@@ -110,7 +109,7 @@ class ErxesInboxCell: UITableViewCell {
         date.backgroundColor = .clear
         desc.backgroundColor = .clear
         fullName.backgroundColor = .clear
-        avatar.backgroundColor = Constants.ERXES_COLOR!
+        avatar.backgroundColor = UIColor.ERXES_COLOR
 
     }
 
@@ -157,12 +156,12 @@ class ErxesInboxCell: UITableViewCell {
         circleView.snp.makeConstraints { (make) in
             make.left.equalTo(avatar.snp.right).inset(15)
             make.top.equalTo(avatar.snp.bottom).inset(15)
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(26)
         }
         
         iconView.snp.makeConstraints { (make) in
             make.center.equalToSuperview()
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(20)
         }
         
         userAvatar.snp.makeConstraints { (make) in
@@ -197,30 +196,34 @@ class ErxesInboxCell: UITableViewCell {
         switch type {
         case .messenger:
 //            iconView.image = #imageLiteral(resourceName: "messenger")
-            iconView.image = UIImage.erxes(with: .facebookmessengerlogo, textColor: Constants.FB_COLOR)
-            circleView.backgroundColor = Constants.FB_COLOR
+            iconView.image = UIImage.erxes(with: .facebookmessengerlogo, textColor: UIColor.FB_COLOR)
+            circleView.backgroundColor = UIColor.FB_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
             
         case .form:
-            iconView.image = UIImage.erxes(with: .file, textColor: Constants.FB_COLOR)
-            circleView.backgroundColor =   UIColor.init(hexString: "60d2d6")
+            iconView.image = UIImage.erxes(with: .file, textColor: UIColor.white)
+            circleView.backgroundColor =   UIColor.init(hexString: "f8cf5f")
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
         case .feed:
-            iconView.image = UIImage.erxes(with: .facebooklogo, textColor: Constants.FB_COLOR)
-            circleView.backgroundColor = Constants.FB_COLOR
+            iconView.image = UIImage.erxes(with: .facebooklogo, textColor: UIColor.FB_COLOR)
+            circleView.backgroundColor = UIColor.FB_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
         case .user:
-            iconView.image = UIImage.erxes(with: .chat, textColor: Constants.ERXES_COLOR!)
-            circleView.backgroundColor = Constants.ERXES_COLOR!
+            iconView.image = UIImage.erxes(with: .chat, textColor: UIColor.ERXES_COLOR)
+            circleView.backgroundColor = UIColor.ERXES_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
             avatar.backgroundColor =  UIColor.init(hexString: "60d2d6")
             
         case .notuser:
 //            iconView.image = #imageLiteral(resourceName: "user")
-            iconView.image = UIImage.erxes(with: .speechbubble2, textColor: Constants.ERXES_COLOR!)
-            circleView.backgroundColor = Constants.ERXES_COLOR!
+            iconView.image = UIImage.erxes(with: .speechbubble2, textColor: UIColor.ERXES_COLOR)
+            circleView.backgroundColor = UIColor.ERXES_COLOR
             iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
            
+        case .twitter:
+            iconView.image = UIImage.erxes(with: .twitterlogo, textColor: UIColor.ERXES_COLOR)
+            circleView.backgroundColor = UIColor.init(hexString: "139fef")
+            iconView.image = iconView.image!.withRenderingMode(.alwaysTemplate)
         }
         iconView.tintColor = .white
     }
@@ -233,4 +236,5 @@ enum integrationKind {
     case feed
     case user
     case notuser
+    case twitter
 }

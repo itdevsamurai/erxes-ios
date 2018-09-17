@@ -8,9 +8,7 @@
 
 import UIKit
 import Apollo
-import Popover
 import SDWebImage
-import SWRevealViewController
 import Shimmer
 import LiveGQL
 
@@ -36,11 +34,7 @@ public struct FilterOptions {
 class InboxController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-    fileprivate var popover: Popover!
-    fileprivate var popoverOptions: [PopoverOption] = [
-            .type(.down),
-            .blackOverlayColor(UIColor(white: 0.0, alpha: 0.6))
-    ]
+
 
     var total = Int()
     var loader: ErxesLoader = {
@@ -53,14 +47,7 @@ class InboxController: UIViewController {
     var topOffset: CGFloat = 0.0
     var shimmer: FBShimmeringView!
     var conversationLimit = 10
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-            "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
 
 
     var robotView: UIImageView = {
@@ -69,7 +56,7 @@ class InboxController: UIViewController {
         imageview.contentMode = .scaleAspectFit
         let label = UILabel()
         label.textColor = .gray
-        label.font = Constants.LIGHT
+        label.font = UIFont.fontWith(type: .light, size: 14)
         label.text = "There is no message."
         label.textAlignment = .center
         imageview.addSubview(label)
@@ -80,7 +67,7 @@ class InboxController: UIViewController {
 
     var filterListView: TagListView = {
         let tagListView = TagListView()
-        tagListView.tagBackgroundColor = Constants.ERXES_COLOR!
+        tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 6
         tagListView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
         tagListView.textColor = .white
@@ -155,7 +142,7 @@ class InboxController: UIViewController {
         tableView.rowHeight = 120
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .white
         tableView.layer.cornerRadius = 6.0
         return tableView
@@ -167,14 +154,14 @@ class InboxController: UIViewController {
 
     func configureViews() {
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        var leftImage = UIImage.erxes(with: .filter, textColor: Constants.ERXES_COLOR!, size: CGSize(width: 22, height: 22))
+        let leftImage = UIImage.erxes(with: .filter, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
 //        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
         let leftButton = UIButton()
         leftButton.setImage(leftImage, for: .normal)
         leftButton.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
-//        leftButton.tintColor = Constants.ERXES_COLOR!
+//        leftButton.tintColor = UIColor.ERXES_COLOR
         let leftItem = UIBarButtonItem()
-//        leftItem.tintColor = Constants.ERXES_COLOR!
+//        leftItem.tintColor = UIColor.ERXES_COLOR
         leftItem.customView = leftButton
 //        leftItem.image = leftImage
 
@@ -183,7 +170,7 @@ class InboxController: UIViewController {
         var rightImage = #imageLiteral(resourceName: "ic_search")
         rightImage = rightImage.withRenderingMode(.alwaysTemplate)
         let rightItem = UIBarButtonItem()
-        rightItem.tintColor = Constants.ERXES_COLOR!
+        rightItem.tintColor = UIColor.ERXES_COLOR
         rightItem.image = rightImage
 //        self.navigationItem.rightBarButtonItem = rightItem
         self.view.addSubview(robotView)
@@ -215,7 +202,7 @@ class InboxController: UIViewController {
         topOffset = UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.size.height)! + 3
 
         self.title = "INBOX"
-        self.view.backgroundColor = Constants.INBOX_BG_COLOR
+        self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         self.configureViews()
         configLive()
         self.view.bringSubview(toFront: loader)
@@ -276,7 +263,7 @@ class InboxController: UIViewController {
 //            make.center.equalTo(self.view.snp.center)
 //        }
 
-        shadovView.dropShadow(color: Constants.ERXES_COLOR!, opacity: 0.2, offSet: CGSize(width: 1.0, height: 1.0), radius: 4, scale: true)
+        shadovView.dropShadow(color: UIColor.ERXES_COLOR, opacity: 0.2, offSet: CGSize(width: 1.0, height: 1.0), radius: 4, scale: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -319,7 +306,7 @@ class InboxController: UIViewController {
     func getLast() {
 
         let query = GetLastQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
               
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -381,7 +368,7 @@ class InboxController: UIViewController {
         }
         query.limit = limit
 
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
 
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -427,7 +414,7 @@ class InboxController: UIViewController {
 
     func getUnreadCount() {
         let query = UnreadCountQuery()
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
     
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -535,12 +522,12 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                 if userName.count > 1 {
                     if (conversation.customer?.isUser != nil) {
                         if (conversation.customer?.isUser)! {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                         } else {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                         }
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                     }
                 } else {
                     if conversation.customer?.email != nil {
@@ -582,23 +569,23 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                 userName = (conversation.customer?.firstName!)!
                 if (conversation.customer?.isUser != nil) {
                     if (conversation.customer?.isUser)! {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                     }
                 } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                 }
             } else if conversation.customer?.lastName != nil {
                 userName = (conversation.customer?.lastName!)!
                 if (conversation.customer?.isUser != nil) {
                     if (conversation.customer?.isUser)! {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                     }
                 } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: Constants.ERXES_COLOR!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Constants.LIGHT])
+                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
                 }
             }
 
@@ -618,11 +605,11 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             cell?.desc.text = desc
             
             if conversation.readUserIds?.count == 0 {
-                cell?.message.font = Constants.BOLD
+                cell?.message.font = UIFont.fontWith(type: .bold, size: 14)
                 cell?.message.textColor = .black
             } else {
-                cell?.message.textColor = Constants.TEXT_COLOR
-                cell?.message.font = Constants.LIGHT
+                cell?.message.textColor = UIColor.TEXT_COLOR
+                cell?.message.font = UIFont.fontWith(type: .light, size: 14)
             }
             cell?.message.text = conversation.content?.html2String
 
@@ -655,6 +642,8 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                 }
             } else if conversation.integration?.kind != nil && conversation.integration?.kind == "form" {
                 cell?.setIcon(type: .form)
+            } else if conversation.integration?.kind != nil && conversation.integration?.kind == "twitter" {
+                cell?.setIcon(type: .twitter)
             }
 
             if conversation.assignedUser != nil && conversation.assignedUser?.details?.avatar != nil {
@@ -692,7 +681,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             controller.conversationId = conversation.id
             self.presentViewControllerAsPopover(viewController: controller, from: currentCell.userAvatar)
         }
-        assignAction.backgroundColor = Constants.ERXES_COLOR!
+        assignAction.backgroundColor = UIColor.ERXES_COLOR
         arr.append(assignAction)
 
 
@@ -919,7 +908,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 101
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -933,7 +922,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 102
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -948,7 +937,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 103
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -963,7 +952,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 104
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -977,7 +966,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 105
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -991,7 +980,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 106
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -1006,7 +995,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 107
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -1020,7 +1009,7 @@ extension InboxController: FilterDelegate {
             tagView.tag = 108
             tagView.addTarget(self, action: #selector(removeTag(sender:)), for: .touchUpInside)
 //
-            tagView.backgroundColor = Constants.ERXES_COLOR!
+            tagView.backgroundColor = UIColor.ERXES_COLOR
             tagView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
             tagView.clipsToBounds = false
             self.filterListView.addTagView(tagView)
@@ -1075,7 +1064,7 @@ extension InboxController: UserControllerDelegate {
     func assignUser(userId:String, conversationId:String){
         let mutation = ConversationsAssignMutation(conversationIds: [conversationId])
         mutation.assignedUserId = userId
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
@@ -1098,7 +1087,7 @@ extension InboxController: UserControllerDelegate {
 extension InboxController {
     func changeStatus(id:String, status:String){
         let mutation = ConversationsChangeStatusMutation(_ids: [id], status: status)
-        client.perform(mutation: mutation) { [weak self] result, error in
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)

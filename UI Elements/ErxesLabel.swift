@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import IoniconsKit
 
 class ErxesLabel : UILabel {
     
@@ -24,7 +23,7 @@ class ErxesLabel : UILabel {
     
     func setup() {
         
-        self.font = UIFont.ionicon(of: 14)
+        self.font = UIFont.fontWith(type: .light, size: 14)
    
         self.layer.display()
     }

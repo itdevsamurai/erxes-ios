@@ -16,14 +16,7 @@ protocol TagDelegate: class  {
 class TagFilterController: UIViewController {
 
     weak var delegate: TagDelegate?
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
     var filterOptions = FilterOptions()
     
     var tags = [TagDetail]() {
@@ -44,7 +37,7 @@ class TagFilterController: UIViewController {
         tableView.register(TagCell.self, forCellReuseIdentifier: "TagCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -77,7 +70,7 @@ class TagFilterController: UIViewController {
         
         loader.startAnimating()
         let query = TagsQuery(type: "conversation")
-        client.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)

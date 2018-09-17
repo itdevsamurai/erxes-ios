@@ -76,8 +76,10 @@ class ErxesUser{
         guard let email = ErxesUser.sharedUserInfo().email else {
             return
         }
-
-        try KeychainPasswordItem(service: serviceName, account: email).deleteItem()
+ 
+       try KeychainPasswordItem(service: serviceName, account: email).deleteItem()
+        
+      
     }
     
 }

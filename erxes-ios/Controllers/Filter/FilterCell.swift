@@ -26,27 +26,27 @@ class FilterCell: UITableViewCell {
         
         value = UILabel()
         value.textAlignment = .right
-        value.textColor = Constants.TEXT_COLOR
-        value.font = Constants.LIGHT
+        value.textColor = UIColor.TEXT_COLOR
+        value.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(value)
         
         countLabel = UILabel()
         countLabel.textAlignment = .right
-        countLabel.textColor = Constants.TEXT_COLOR
-        countLabel.font = Constants.LIGHT
+        countLabel.textColor = UIColor.TEXT_COLOR
+        countLabel.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(countLabel)
         
         
         desc = UILabel()
         desc.textAlignment = .left
-        desc.textColor = Constants.TEXT_COLOR
-        desc.font = Constants.LIGHT
+        desc.textColor = UIColor.TEXT_COLOR
+        desc.font = UIFont.fontWith(type: .light, size: 14)
         contentView.addSubview(desc)
         
         arrow = UIImageView()
         arrow.image = #imageLiteral(resourceName: "ic_rightArrow")
         arrow.image = arrow.image!.withRenderingMode(.alwaysTemplate)
-        arrow.tintColor = Constants.TEXT_COLOR
+        arrow.tintColor = UIColor.TEXT_COLOR
         contentView.addSubview(arrow)
         self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }

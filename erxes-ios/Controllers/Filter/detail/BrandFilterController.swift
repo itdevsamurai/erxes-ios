@@ -17,14 +17,7 @@ protocol BrandDelegate: class  {
 
 class BrandFilterController: UIViewController {
 
-    let client: ApolloClient = {
-        let configuration = URLSessionConfiguration.default
-        let currentUser = ErxesUser.sharedUserInfo()
-        configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                               "x-refresh-token": currentUser.refreshToken as Any]
-        let url = URL(string: Constants.API_ENDPOINT + "/graphql")!
-        return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
-    }()
+    
     
     weak var delegate: BrandDelegate?
     
@@ -48,7 +41,7 @@ class BrandFilterController: UIViewController {
         tableView.register(FilterCell.self, forCellReuseIdentifier: "FilterCell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
-        tableView.separatorColor = Constants.ERXES_COLOR!
+        tableView.separatorColor = UIColor.ERXES_COLOR
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -80,7 +73,7 @@ class BrandFilterController: UIViewController {
     func getBrands(){
         loader.startAnimating()
         let query = BrandsQuery()
-        client.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)

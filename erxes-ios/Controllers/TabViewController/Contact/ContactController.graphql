@@ -1,8 +1,25 @@
 query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String) {
     customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue) {
-        ...CustomerDetail
+        ...CustomerList
     }
 }
+
+fragment CustomerList on Customer {
+
+_id
+firstName
+lastName
+email
+phone
+getTags {
+_id
+name
+colorCode
+
+}
+
+}
+
 
 
 
@@ -37,56 +54,71 @@ fragment CustomerDetail on Customer {
         github
         youtube
         website
-        __typename
+        
     }
     owner {
         details {
             fullName
-            __typename
+            
         }
-        __typename
+        
     }
     tagIds
     getTags {
         _id
         name
         colorCode
-        __typename
+        
     }
-    __typename
+    
 }
 
-query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String) {
-    companies(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue) {
-        ...CompanyDetail
+query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String, $leadStatus: String, $lifecycleState: String, $brand: String, $sortField: String, $sortDirection: Int) {
+    companies(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue, leadStatus: $leadStatus, lifecycleState: $lifecycleState, brand: $brand, sortField: $sortField, sortDirection: $sortDirection) {
+     
+        ...CompanyList
+        
+        
+        
     }
 }
+
+fragment CompanyList on Company{
+_id
+avatar
+primaryName
+plan
+email
+phone
+getTags {
+_id
+name
+colorCode
+
+}
+
+}
+
 
 fragment CompanyDetail on Company{
     _id
-    name
+    createdAt
+    modifiedAt
+    avatar
+    primaryName
+    names
     size
     industry
-    website
+    plan
+    parentCompanyId
     email
+    ownerId
     phone
     leadStatus
     lifecycleState
     businessType
     description
-    employees
     doNotDisturb
-    owner{
-        _id
-        username
-        details{
-            fullName
-        }
-    }
-    parentCompany {
-        _id
-        name
-    }
     links {
         linkedIn
         twitter
@@ -94,37 +126,39 @@ fragment CompanyDetail on Company{
         github
         youtube
         website
+        
     }
-    plan
+    owner {
+        _id
+        details {
+            fullName
+            
+        }
+        
+    }
+    parentCompany {
+        _id
+        primaryName
+        
+    }
     customFieldsData
     tagIds
     getTags {
         _id
         name
         colorCode
-        __typename
+        
     }
-    __typename
+   
+}
+mutation customersRemove($customerIds: [String]) {
+    customersRemove(customerIds: $customerIds)
 }
 
-query FieldsGroups($contentType:String)
-{
-fieldsGroups(contentType:$contentType){
-_id
-name
-contentType
-order
-description
-isVisible
-fields{
-type
-validation
-text
-description
-options
-isRequired
-order
-isVisible
-}
-}
+
+mutation customersMerge($customerIds: [String], $customerFields: JSON) {
+    customersMerge(customerIds: $customerIds, customerFields: $customerFields) {
+        _id
+        
+    }
 }
