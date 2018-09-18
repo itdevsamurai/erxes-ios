@@ -28,7 +28,7 @@ class ErxesInboxCell: UITableViewCell {
         self.contentView.backgroundColor = .clear
         self.selectionStyle = .none
         avatar = UIImageView()
-        avatar.layer.cornerRadius = 6
+        avatar.layer.cornerRadius = 25
         avatar.clipsToBounds = true
         avatar.backgroundColor = UIColor.SHIMMER_COLOR
         contentView.addSubview(avatar)
@@ -36,24 +36,22 @@ class ErxesInboxCell: UITableViewCell {
 
         fullName = ErxesLabel()
         fullName.textAlignment = .left
-        fullName.textColor = UIColor.ERXES_COLOR
-        fullName.font = UIFont.fontWith(type: .medium, size: 14)
-        fullName.backgroundColor = UIColor.SHIMMER_COLOR
+        fullName.font = UIFont.fontWith(type: .medium, size: 12)
+        fullName.textColor = UIColor(hexString: "#232323")
         contentView.addSubview(fullName)
 
 
         desc = ErxesLabel()
-        desc.textAlignment = .right
-        desc.textColor = .gray
-        desc.font = UIFont.fontWith(type: .thin, size: 14)
-        desc.backgroundColor = UIColor.SHIMMER_COLOR
+//        desc.textAlignment = .right
+        desc.font = UIFont.fontWith(type: .thin, size: 10)
+        desc.textColor = UIColor(hexString: "#a9a9a9")
         desc.minimumScaleFactor = 0.5
         desc.adjustsFontSizeToFitWidth = true
         contentView.addSubview(desc)
 
 
         date = ErxesLabel()
-        date.font = UIFont.fontWith(type: .thin, size: 14)
+        date.font = UIFont.fontWith(type: .thin, size: 12)
         date.textAlignment = .right
         date.textColor = .gray
         date.numberOfLines = 0
@@ -65,14 +63,12 @@ class ErxesInboxCell: UITableViewCell {
 
         message = ErxesLabel()
         message.textAlignment = .left
-        message.textColor = UIColor.TEXT_COLOR
-//        message.textColor = UIColor(hexString: "#60d2d6")
-        message.font = UIFont.fontWith(type: .light, size: 14)
-        message.numberOfLines = 2
+        message.textColor = UIColor(hexString: "#a9a9a9")
+        message.font = UIFont.fontWith(type: .light, size: 12)
+        message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
         message.backgroundColor = .red
         message.lineBreakMode = .byWordWrapping
-        message.backgroundColor = UIColor.SHIMMER_COLOR
         contentView.addSubview(message)
 
 
@@ -116,43 +112,42 @@ class ErxesInboxCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         avatar.snp.makeConstraints { (make) in
-
             make.left.equalTo(contentView.snp.left).offset(10)
-            make.top.equalTo(contentView.snp.top).offset(10)
-            make.width.height.equalTo(46)
+            make.top.equalTo(contentView.snp.top).offset(20)
+            make.width.height.equalTo(50)
         }
         fullName.snp.makeConstraints { (make) in
-            make.left.equalTo(avatar.snp.right).offset(10)
-            make.top.equalTo(contentView.snp.top).offset(10)
-            make.height.equalTo(16)
+            make.left.equalTo(avatar.snp.right).offset(15)
+            make.top.equalTo(contentView.snp.top).offset(20)
+            make.height.equalTo(12)
 
         }
         desc.snp.makeConstraints { (make) in
-            make.left.equalTo(avatar.snp.right).offset(10)
+            make.left.equalTo(avatar.snp.right).offset(15)
             make.right.equalTo(contentView.snp.right).inset(10)
-            make.bottom.equalTo(avatar.snp.bottom)
+            make.top.equalTo(fullName.snp.bottom).offset(7)
+            make.height.equalTo(10)
+        }
+        message.snp.makeConstraints { (make) in
+            make.left.equalTo(avatar.snp.right).offset(15)
+            make.right.equalTo(contentView.snp.right).inset(35)
+            make.top.equalTo(desc.snp.bottom).offset(7)
+            make.height.equalTo(12)
         }
         date.snp.makeConstraints { (make) in
             make.right.equalTo(contentView.snp.right).inset(10)
-            make.top.equalTo(contentView.snp.top).inset(10)
+            make.top.equalTo(contentView.snp.top).inset(32)
             make.height.equalTo(16)
             make.left.equalTo(fullName.snp.left).offset(10)
         }
 
         tagListView.snp.makeConstraints { (make) in
-            make.left.equalTo(contentView.snp.left).offset(10)
+            make.left.equalTo(avatar.snp.right).offset(15)
             make.right.equalTo(contentView.snp.right).inset(10)
             make.bottom.equalTo(contentView.snp.bottom).inset(6)
             make.height.equalTo(20)
         }
-
-        message.snp.makeConstraints { (make) in
-            make.left.equalTo(contentView.snp.left).offset(10)
-            make.right.equalTo(contentView.snp.right).inset(35)
-            make.top.equalTo(avatar.snp.bottom).offset(5)
-            make.bottom.equalTo(tagListView.snp.top).inset(-5)
-        }
-
+        
         circleView.snp.makeConstraints { (make) in
             make.left.equalTo(avatar.snp.right).inset(15)
             make.top.equalTo(avatar.snp.bottom).inset(15)
@@ -171,7 +166,7 @@ class ErxesInboxCell: UITableViewCell {
             
         }
 
-        self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        self.separatorInset = UIEdgeInsets(top: 0, left: 3, bottom: 0, right: 3)
     }
 
 
