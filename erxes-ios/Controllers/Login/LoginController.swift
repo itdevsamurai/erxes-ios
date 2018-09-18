@@ -112,7 +112,7 @@ class LoginController: UIViewController {
     
     var logoView: UIImageView = {
         let logoView = UIImageView()
-        logoView.image = #imageLiteral(resourceName: "Logo")
+        logoView.image = #imageLiteral(resourceName: "ic_avatar")
         return logoView
     }()
     

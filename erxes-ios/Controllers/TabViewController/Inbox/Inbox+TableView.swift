@@ -124,7 +124,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             if conversation.readUserIds?.count == 0 {
                 cell?.message.textColor = .black
             } else {
-                cell?.message.textColor = UIColor(hexString: "#a9a9a9")
+                cell?.message.textColor = UIColor(hexString: "#232323", alpha:0.5)
             }
             cell?.message.text = conversation.content?.html2String
             

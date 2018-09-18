@@ -45,7 +45,7 @@ class FailureAlert: UIView, Modal {
         headerView.contentMode = .scaleAspectFill
 
 
-        let img = #imageLiteral(resourceName: "Logo")
+        let img = #imageLiteral(resourceName: "ic_avatar")
         headerView.image = img.withRenderingMode(.alwaysTemplate)
         headerView.tintColor = UIColor.ERXES_COLOR
         dialogView.addSubview(headerView)

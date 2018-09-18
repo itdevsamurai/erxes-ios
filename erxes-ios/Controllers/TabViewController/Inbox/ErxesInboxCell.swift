@@ -36,22 +36,22 @@ class ErxesInboxCell: UITableViewCell {
 
         fullName = ErxesLabel()
         fullName.textAlignment = .left
-        fullName.font = UIFont.fontWith(type: .medium, size: 12)
+        fullName.font = UIFont.fontWith(type: .comfortaa, size: 13)
         fullName.textColor = UIColor(hexString: "#232323")
         contentView.addSubview(fullName)
 
 
         desc = ErxesLabel()
 //        desc.textAlignment = .right
-        desc.font = UIFont.fontWith(type: .thin, size: 10)
-        desc.textColor = UIColor(hexString: "#a9a9a9")
+        desc.font = UIFont.fontWith(type: .comfortaa, size: 10)
+        desc.textColor = UIColor(hexString: "#232323", alpha:0.5)
         desc.minimumScaleFactor = 0.5
         desc.adjustsFontSizeToFitWidth = true
         contentView.addSubview(desc)
 
 
         date = ErxesLabel()
-        date.font = UIFont.fontWith(type: .thin, size: 12)
+        date.font = UIFont.fontWith(type: .comfortaa, size: 8)
         date.textAlignment = .right
         date.textColor = .gray
         date.numberOfLines = 0
@@ -63,8 +63,8 @@ class ErxesInboxCell: UITableViewCell {
 
         message = ErxesLabel()
         message.textAlignment = .left
-        message.textColor = UIColor(hexString: "#a9a9a9")
-        message.font = UIFont.fontWith(type: .light, size: 12)
+        message.textColor = UIColor(hexString: "#232323", alpha:0.5)
+        message.font = UIFont.fontWith(type: .comfortaa, size: 13)
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
         message.backgroundColor = .red
@@ -119,7 +119,7 @@ class ErxesInboxCell: UITableViewCell {
         fullName.snp.makeConstraints { (make) in
             make.left.equalTo(avatar.snp.right).offset(15)
             make.top.equalTo(contentView.snp.top).offset(20)
-            make.height.equalTo(12)
+            make.height.equalTo(13)
 
         }
         desc.snp.makeConstraints { (make) in
@@ -132,7 +132,7 @@ class ErxesInboxCell: UITableViewCell {
             make.left.equalTo(avatar.snp.right).offset(15)
             make.right.equalTo(contentView.snp.right).inset(35)
             make.top.equalTo(desc.snp.bottom).offset(7)
-            make.height.equalTo(12)
+            make.height.equalTo(13)
         }
         date.snp.makeConstraints { (make) in
             make.right.equalTo(contentView.snp.right).inset(10)

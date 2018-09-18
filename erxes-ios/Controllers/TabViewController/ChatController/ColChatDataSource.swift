@@ -145,8 +145,13 @@ extension ChatManager: LiveGQLDelegate{
                 guard let item = result.payload?.data?.conversationMessageInserted else {
                     return
                 }
-    
+                
                 var message = MessageDetail(id:(item._id)!, content:item.content, userId:item.userId, createdAt: item.createdAt)
+                
+                if let details = item.user?.details {
+                    let user = MessageDetail.User(id: (item.user?._id)!, details: MessageDetail.User.Detail(avatar: details.avatar))
+                    message.user = user
+                }
                 
                 if item.attachments.count > 0, let attachment = item.attachments.first {
                     var attachments = [JSON]()

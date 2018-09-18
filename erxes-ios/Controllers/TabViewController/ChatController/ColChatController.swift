@@ -352,13 +352,18 @@ extension ColChatController:UICollectionViewDelegateFlowLayout {
         
         var height:CGFloat = 0
         
-        if let form = item.formWidgetData {
-            height = FormCell.calculateFormHeight(item)
-        } else
-        if let files = item.attachments, files.count > 0 {
-            height = 150
+        if indexPath.row < calculatedHeights.count{
+            height = calculatedHeights[indexPath.row]
         } else {
-            height = ChatBaseCell.calculateHeight(item)
+            if let form = item.formWidgetData {
+                height = FormCell.calculateFormHeight(item)
+            } else
+                if let files = item.attachments, files.count > 0 {
+                    height = 150
+                } else {
+                    height = ChatBaseCell.calculateHeight(item)
+            }
+            calculatedHeights.append(height)
         }
         
         return CGSize(width: self.view.frame.size.width, height: height)

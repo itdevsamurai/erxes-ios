@@ -36,7 +36,7 @@ class ChatBaseCell: UICollectionViewCell {
     
     var lblDate:UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont(name: "Montserrat-Regular", size: 11)
+        lbl.font = UIFont.fontWith(type: .comfortaa, size: 10)
         lbl.textColor = .gray
         return lbl
     }()
@@ -47,7 +47,7 @@ class ChatBaseCell: UICollectionViewCell {
         view.isScrollEnabled = false
         view.backgroundColor = .ERXES_COLOR
         view.textColor = .white
-        view.layer.cornerRadius = 5
+        view.layer.cornerRadius = 10
         view.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return view
     }()
@@ -110,7 +110,7 @@ class ChatBaseCell: UICollectionViewCell {
         let tv = UITextView()
         
         if let str = item.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .regular, size: 14), range: NSMakeRange(0, str.length))
+            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .comfortaa, size: 13), range: NSMakeRange(0, str.length))
             tv.attributedText = str
         }
         
