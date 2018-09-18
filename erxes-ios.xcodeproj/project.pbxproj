@@ -63,6 +63,11 @@
 		9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */; };
 		9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */; };
 		9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */; };
+		9BC09125214F75EF0099BDE7 /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09123214F75EF0099BDE7 /* Comfortaa-Regular.ttf */; };
+		9BC09126214F75EF0099BDE7 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09124214F75EF0099BDE7 /* Comfortaa-Bold.ttf */; };
+		9BC09128214F76310099BDE7 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09127214F76310099BDE7 /* Rubik-Regular.ttf */; };
+		9BC0912A214F7EDD0099BDE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09129214F7EDC0099BDE7 /* Assets.xcassets */; };
+		9BC0912C214F94330099BDE7 /* Gotham-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC0912B214F94330099BDE7 /* Gotham-Bold.otf */; };
 		9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */; };
 		9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */; };
 		9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */; };
@@ -98,7 +103,6 @@
 		B8FDDE9B213E48FF00286DE0 /* ColChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FDDE9A213E48FF00286DE0 /* ColChatController.swift */; };
 		F5431E202148F09800DB1304 /* CompanyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5431E1F2148F09800DB1304 /* CompanyController.swift */; };
 		F55583A72077166E00413F6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583A62077166E00413F6A /* AppDelegate.swift */; };
-		F55583AE2077166E00413F6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F55583AD2077166E00413F6A /* Assets.xcassets */; };
 		F55583B12077166E00413F6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F55583AF2077166E00413F6A /* LaunchScreen.storyboard */; };
 		F55583BB207716BB00413F6A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583BA207716BB00413F6A /* Constants.swift */; };
 		F55583BD207716F800413F6A /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583BC207716F800413F6A /* TabController.swift */; };
@@ -192,6 +196,11 @@
 		9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsCell.swift; sourceTree = "<group>"; };
 		9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserProfileController.graphql; sourceTree = "<group>"; };
+		9BC09123214F75EF0099BDE7 /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Regular.ttf"; sourceTree = "<group>"; };
+		9BC09124214F75EF0099BDE7 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
+		9BC09127214F76310099BDE7 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
+		9BC09129214F7EDC0099BDE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9BC0912B214F94330099BDE7 /* Gotham-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Bold.otf"; sourceTree = "<group>"; };
 		9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterController.swift; sourceTree = "<group>"; };
 		9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxCell.swift; sourceTree = "<group>"; };
 		9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDCheckbox.swift; sourceTree = "<group>"; };
@@ -229,7 +238,6 @@
 		F5431E1F2148F09800DB1304 /* CompanyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyController.swift; sourceTree = "<group>"; };
 		F55583A32077166E00413F6A /* erxes-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "erxes-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F55583A62077166E00413F6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F55583AD2077166E00413F6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F55583B02077166E00413F6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F55583B22077166E00413F6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F55583BA207716BB00413F6A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -541,8 +549,8 @@
 				9B35E9A020D7903C00733FAD /* Abstract */,
 				9B35E99F20D7902800733FAD /* Routing */,
 				F55583D02077192000413F6A /* Resources */,
-				F55583AD2077166E00413F6A /* Assets.xcassets */,
 				F55583AF2077166E00413F6A /* LaunchScreen.storyboard */,
+				9BC09129214F7EDC0099BDE7 /* Assets.xcassets */,
 				F55583B22077166E00413F6A /* Info.plist */,
 			);
 			path = "erxes-ios";
@@ -643,6 +651,10 @@
 		F5BEE32A20776BC30042DFC2 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				9BC0912B214F94330099BDE7 /* Gotham-Bold.otf */,
+				9BC09127214F76310099BDE7 /* Rubik-Regular.ttf */,
+				9BC09124214F75EF0099BDE7 /* Comfortaa-Bold.ttf */,
+				9BC09123214F75EF0099BDE7 /* Comfortaa-Regular.ttf */,
 				F5BEE32F20776BD30042DFC2 /* Montserrat-Black.otf */,
 				F5BEE33220776BD40042DFC2 /* Montserrat-Bold.otf */,
 				F5BEE32D20776BD30042DFC2 /* Montserrat-ExtraBold.otf */,
@@ -730,16 +742,19 @@
 				F5BEE32520774ADE0042DFC2 /* Podfile in Resources */,
 				F5BEE33820776BD40042DFC2 /* Montserrat-Black.otf in Resources */,
 				9B9F554D212EB4E60081EC89 /* Profile.json in Resources */,
+				9BC09128214F76310099BDE7 /* Rubik-Regular.ttf in Resources */,
 				9BC2D9C720CE6D1C003ADEE7 /* BrandFilterController.graphql in Resources */,
 				F55583B12077166E00413F6A /* LaunchScreen.storyboard in Resources */,
+				9BC09126214F75EF0099BDE7 /* Comfortaa-Bold.ttf in Resources */,
 				9B1E939F20C8FD1D00AC4FED /* ChatController.graphql in Resources */,
 				F5BEE33920776BD40042DFC2 /* Montserrat-Hairline.otf in Resources */,
 				B842CC482123E3420052E5C9 /* Industry.json in Resources */,
 				9BC2D9C520CE6CFF003ADEE7 /* ChannelFilterController.graphql in Resources */,
 				9B089B3F20CA7A67003EC255 /* avatar.png in Resources */,
+				9BC0912A214F7EDD0099BDE7 /* Assets.xcassets in Resources */,
+				9BC0912C214F94330099BDE7 /* Gotham-Bold.otf in Resources */,
 				9BC2D9C920CE6D34003ADEE7 /* TagFilterController.graphql in Resources */,
 				F5BEE33420776BD40042DFC2 /* Montserrat-Thin.ttf in Resources */,
-				F55583AE2077166E00413F6A /* Assets.xcassets in Resources */,
 				9BDF360220D12EEA004E3F44 /* ContactController.graphql in Resources */,
 				9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */,
 				B842CC4A2123E3870052E5C9 /* LeadStatus.json in Resources */,
@@ -750,6 +765,7 @@
 				9B089B4120CA7EA6003EC255 /* facebook_messagetone.mp3 in Resources */,
 				B842CC5021252ABB0052E5C9 /* CompanyController.graphql in Resources */,
 				F58F2054207B4F2C00D8564D /* InboxController.graphql in Resources */,
+				9BC09125214F75EF0099BDE7 /* Comfortaa-Regular.ttf in Resources */,
 				F5BEE33C20776BD40042DFC2 /* Montserrat-Regular.otf in Resources */,
 				F58F2038207B313200D8564D /* LoginController.graphql in Resources */,
 				9B567094212A84FA0023B5AF /* erxes.ttf in Resources */,

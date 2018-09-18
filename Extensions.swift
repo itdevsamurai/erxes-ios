@@ -385,6 +385,10 @@ public extension UIFont {
         case thin = "Montserrat-Thin"
         case ultralight = "Montserrat-UltraLight"
         case medium = "Montserrat-Medium"
+        case rubik = "Rubik-Regular"
+        case comfortaa = "Comfortaa"
+        case comfortaaBold = "Comfortaa-Bold"
+        case gotham = "Gotham-Bold"
     }
     
     public class func fontWith(type:FontType, size:CGFloat)->UIFont{
