@@ -36,12 +36,6 @@ class ImageCell: ChatBaseCell {
     override func updateView() {
         super.updateView()
         
-        if let avatar = viewModel?.user?.details?.avatar {
-            ivAvatar.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "avatar.png"))
-        } else {
-            ivAvatar.image = #imageLiteral(resourceName: "avatar.png")
-        }
-        
         lblDate.textAlignment = .center
         
         if let attachments = viewModel?.attachments, attachments.count > 0 {
