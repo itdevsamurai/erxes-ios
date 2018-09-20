@@ -617,9 +617,9 @@
 		F5BEE31120772BCB0042DFC2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F5BEE31420772BF90042DFC2 /* Login */,
 				9BC2D9BA20CE3EE9003ADEE7 /* Filter */,
 				F5BEE31D20772E900042DFC2 /* TabViewController */,
-				F5BEE31420772BF90042DFC2 /* Login */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

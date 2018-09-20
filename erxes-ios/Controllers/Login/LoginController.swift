@@ -8,391 +8,448 @@
 
 import UIKit
 import SnapKit
-
+import SpriteKit
 import LocalAuthentication
 import Apollo
 //import KCKeyboardImagePicker
 
 class LoginController: UIViewController {
 
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    var checkBox:UIButton =  {
+
+    var containerView: UIView = {
+        let view = UIView()
+//        view.backgroundColor = .gray
+        return view
+    }()
+
+    var innerCircle = CAShapeLayer()
+    var outerCircle = CAShapeLayer()
+
+    var checkBox: UIButton = {
         let checkButton = UIButton()
 
         checkButton.setImage(UIImage.erxes(with: .check, textColor: .white), for: .selected)
         checkButton.setImage(UIImage(), for: .normal)
-        checkButton.alpha = 0.0
+        checkButton.alpha = 1.0
         checkButton.addTarget(self, action: #selector(onCheckBoxPress(_:)), for: .touchUpInside)
         checkButton.layer.borderColor = UIColor.white.cgColor
         checkButton.layer.borderWidth = 1.0
         return checkButton
     }()
-    
+
     let rememberMeLabel: UILabel = {
         let rememberMe = UILabel()
         rememberMe.text = "remember me"
         rememberMe.textColor = .white
         rememberMe.font = UIFont.fontWith(type: .light, size: 12)
         rememberMe.tag = 200
-        rememberMe.alpha = 0.0
+        rememberMe.alpha = 1.0
         rememberMe.textAlignment = .right
         return rememberMe
     }()
 
-    
-    
-    
+
+    var mailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = #imageLiteral(resourceName: "ic_mail")
+        imageView.alpha = 1.0
+        return imageView
+    }()
+
+    var welcomeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .GRAY_COLOR
+        label.font = UIFont.fontWith(type: .comfortaaBold, size: 28)
+        label.text = "Welcome !"
+        label.alpha = 0.0
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+
+    var blueOrb: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "blueOrb"))
+        return imageView
+    }()
+
+    var orangeOrb: UIImageView = {
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "orangeOrb"))
+        return imageView
+    }()
+
     var loader: ErxesLoader = {
-       let loader = ErxesLoader()
+        let loader = ErxesLoader()
         loader.lineWidth = 3
         return loader
     }()
-    
+
     var emailField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Email"
         field.attributedPlaceholder = NSAttributedString(string: "Email",
-                                                         attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                         attributes: [NSAttributedStringKey.foregroundColor: UIColor.LIGHT_GRAY_COLOR])
         field.alpha = 0.0
         field.keyboardType = .emailAddress
 
         return field
     }()
-    
+
     var passwordField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Password"
 
         field.attributedPlaceholder = NSAttributedString(string: "Password",
-                                                               attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+                                                         attributes: [NSAttributedStringKey.foregroundColor: UIColor.LIGHT_GRAY_COLOR])
         field.isSecureTextEntry = true
         field.alpha = 0.0
         return field
     }()
-    
-    var touchIDButton: UIButton = {
-        let button = UIButton()
-        button.setImage(#imageLiteral(resourceName: "ic_touchid"), for: .normal)
-        button.addTarget(self, action: #selector(toggleTouchId(sender:)), for: .touchUpInside)
-        button.alpha = 0.0
-        return button
-    }()
-    
-    var touchIDButtonState: UIButton = {
-        let button = UIButton()
-            button.setImage(UIImage.erxes(with: .cancel, textColor: .white), for: .normal)
-            button.setImage(UIImage.erxes(with: .check, textColor: .white), for: .selected)
-        if UserDefaults.standard.value(forKey: "touchEnabled") != nil {
-            let isEnabled:Bool = UserDefaults.standard.bool(forKey: "touchEnabled")
-            if isEnabled{
-                button.isSelected = true
-            }else{
-                button.isSelected = false
-            }
-        }else{
-            button.isSelected = false
-        }
-        button.alpha = 0.0
-        button.isUserInteractionEnabled = false
-        return button
-    }()
-    
-    var signInButton: UIButton = {
-       let button = UIButton()
-        
-        button.titleLabel?.font = UIFont.fontWith(type: .light, size: 14)
-        button.titleLabel?.textColor = .white
-        button.setTitle("SIGN IN", for: .normal)
+
+    var signInButton: MyButton = {
+        let button = MyButton()
+
+        button.setTitle("Login", for: .normal)
         button.alpha = 0.0
         button.addTarget(self, action: #selector(loginAction(sender:)), for: .touchUpInside)
+
         return button
     }()
-    
 
-    
-    var logoView: UIImageView = {
-        let logoView = UIImageView()
-        logoView.image = #imageLiteral(resourceName: "ic_avatar")
-        return logoView
-    }()
-    
-    
-    func configureViews(){
-        self.view.addSubview(logoView)
-        self.view.addSubview(emailField)
-        self.view.addSubview(passwordField)
-        self.view.addSubview(touchIDButton)
-        self.view.addSubview(touchIDButtonState)
-        self.view.addSubview(signInButton)
-        self.view.addSubview(loader)
-        self.view.addSubview(rememberMeLabel)
-        self.view.addSubview(checkBox)
+    var innerCircleCenter = UIView()
+    var outerCircleCenter = UIView()
 
+    func configureViews() {
+        self.view.addSubview(containerView)
+
+        containerView.addSubview(mailImageView)
+        containerView.addSubview(welcomeLabel)
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore {
+            welcomeLabel.text = "Welcome back !"
+        } else {
+            welcomeLabel.text = "Welcome !"
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+        }
+
+        containerView.addSubview(emailField)
+        containerView.addSubview(passwordField)
+        emailField.delegate = self
+        passwordField.delegate = self
+        containerView.addSubview(signInButton)
+        containerView.addSubview(blueOrb)
+        containerView.addSubview(orangeOrb)
         if let cachedEmail = UserDefaults.standard.string(forKey: "cachedEmail") {
             print(cachedEmail)
             emailField.text = cachedEmail
             checkBox.isSelected = true
-        }else {
+        } else {
             print ("not cached")
         }
-        
+
     }
-    
+
     @objc func onCheckBoxPress(_ sender: UIButton) {
-       
-        if sender.isSelected{
+
+        if sender.isSelected {
             sender.isSelected = false
-        }else{
+        } else {
             sender.isSelected = true
         }
     }
-    
-    func animateViews(){
 
-     
-        UIView.animate(withDuration: 0.3, animations: {
-            self.logoView.snp.remakeConstraints({ (make) in
 
-                make.top.equalTo(self.view.snp.top).offset(Constants.SCREEN_HEIGHT/4-75/2)
-            })
-            self.view.layoutIfNeeded()
-        }) { (completion) in
-            UIView.animate(withDuration: 0.5, animations: {
-                self.emailField.alpha = 1.0
-                self.passwordField.alpha = 1.0
-                self.touchIDButton.alpha = 1.0
-                self.touchIDButtonState.alpha = 1.0
-                self.signInButton.alpha = 1.0
-                self.checkBox.alpha = 1.0
-                self.rememberMeLabel.alpha = 1.0
-                self.view.layoutIfNeeded()
-            })
-        }
-    }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        logoView.snp.makeConstraints { (make) in
-            make.width.equalTo(150)
-            make.height.equalTo(75)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(self.view.snp.top).offset(Int(Constants.SCREEN_HEIGHT/2-75/2))
-            
+
+        containerView.snp.makeConstraints { (make) in
+            make.left.equalTo(self.view.snp.left).offset(64)
+            make.right.equalTo(self.view.snp.right).inset(64)
+            make.height.equalTo(480)
+            make.top.equalTo(view.snp.top).offset(98)
+            if Constants.SCREEN_WIDTH == 320 {
+                make.top.equalTo(view.snp.top).offset(40)
+            }
+
         }
-        
-        emailField.snp.makeConstraints { (make) in
-            make.top.equalTo(logoView.snp.bottom).offset(40)
-            make.left.equalTo(self.view.snp.left).offset(30)
-            make.right.equalTo(self.view.snp.right).inset(30)
-            make.height.equalTo(40)
-        }
-        
-        passwordField.snp.makeConstraints { (make) in
-            make.top.equalTo(self.emailField.snp.bottom).offset(20)
-            make.left.equalTo(self.view.snp.left).offset(30)
-            make.right.equalTo(self.view.snp.right).inset(30)
-            make.height.equalTo(40)
-        }
-        
-        rememberMeLabel.snp.makeConstraints({ (make) in
-            make.right.equalTo(passwordField.snp.right)
-            make.top.equalTo(passwordField.snp.bottom).offset(20)
-        })
-        
-        checkBox.snp.makeConstraints { (make) in
-            make.width.height.equalTo(20)
-            make.centerY.equalTo(rememberMeLabel.snp.centerY)
-            make.right.equalTo(rememberMeLabel.snp.left).inset(-20)
-        }
-        
-        touchIDButton.snp.makeConstraints { (make) in
-            make.centerX.equalTo(self.view.snp.centerX)
-            make.bottom.equalTo(self.view.snp.bottom).inset(Constants.SCREEN_WIDTH/2-50)
-            make.width.height.equalTo(40)
-        }
-        
-        touchIDButtonState.snp.makeConstraints { (make) in
-            make.width.height.equalTo(16)
-            make.right.equalTo(touchIDButton.snp.right).offset(5)
-            make.bottom.equalTo(touchIDButton.snp.bottom).offset(5)
-        }
-        
+
         signInButton.snp.makeConstraints { (make) in
-            make.height.equalTo(44)
-            make.left.equalTo(self.view.snp.left).offset(30)
-            make.right.equalTo(self.view.snp.right).inset(30)
-            make.bottom.equalTo(self.view.snp.bottom).inset(Constants.SCREEN_HEIGHT/8-22)
+            make.height.equalTo(36)
+            make.left.right.bottom.equalToSuperview()
+
         }
-        loader.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.center.equalTo(self.view.snp.center)
+
+        passwordField.snp.makeConstraints { (make) in
+            make.bottom.equalTo(self.signInButton.snp.top).offset(-20)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(40)
         }
+
+        emailField.snp.makeConstraints { (make) in
+            make.bottom.equalTo(passwordField.snp.top).offset(-20)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(40)
+        }
+
+        welcomeLabel.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.bottom.equalTo(emailField.snp.top).offset(-40)
+        }
+
+        mailImageView.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.width.height.equalTo(74)
+            make.bottom.equalTo(welcomeLabel.snp.top).offset(-98)
+        }
+
+
+        blueOrb.snp.makeConstraints { (make) in
+            make.center.equalTo(mailImageView.snp.center).offset(-91)
+        }
+
+        orangeOrb.snp.makeConstraints { (make) in
+            make.center.equalTo(mailImageView.snp.center).offset(58)
+        }
+
+
+//        rememberMeLabel.snp.makeConstraints({ (make) in
+//            make.right.equalTo(passwordField.snp.right)
+//            make.top.equalTo(passwordField.snp.bottom).offset(20)
+//        })
+//
+//        checkBox.snp.makeConstraints { (make) in
+//            make.width.height.equalTo(20)
+//            make.centerY.equalTo(rememberMeLabel.snp.centerY)
+//            make.right.equalTo(rememberMeLabel.snp.left).inset(-20)
+//        }
+
+
+
+
+
     }
 
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.ERXES_COLOR
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleKeyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleKeyboardDidHide(notification:)), name: .UIKeyboardDidHide, object: nil)
+        self.view.backgroundColor = UIColor.white
         self.navigationController?.isNavigationBarHidden = true
         configureViews()
         checkAuthentication()
+
+        self.perform(#selector(drawCircleOfDots), with: nil, afterDelay: 1)
     }
-    
- 
-    
+
+
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animateViews()
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: Functions
-    
+
     func checkAuthentication() {
         if ErxesUser.isSignedIn {
             mutateLogin(email: ErxesUser.storedEmail(), password: ErxesUser.storedPassword())
         }
     }
-    
-    @objc func loginAction(sender:UIButton){
 
-        
-        if touchIDButtonState.isSelected{
-            
-            authenticateUser()
-        }else{
-            if (emailField.text?.isEmpty)! || (passwordField.text?.isEmpty)! {
-                let alert = FailureAlert(message: "Please fill out fields")
-                alert.show(animated: true)
-            }else{
-                
-                mutateLogin(email: emailField.text!, password: passwordField.text!)
-            }
-        }
+    @objc func drawCircleOfDots() {
+        let frame = mailImageView.bounds
+        let centerView = UIView()
+        let centerView2 = UIView()
+        centerView.frame = mailImageView.bounds
+        centerView2.frame = mailImageView.bounds
+
+        mailImageView.insertSubview(centerView, at: 0)
+        mailImageView.insertSubview(centerView2, at: 1)
+        innerCircle = CAShapeLayer()
+        innerCircle.path = UIBezierPath.init(roundedRect: CGRect(x: frame.origin.x - 45, y: frame.origin.y - 45, width: frame.width + 90, height: frame.height + 90), cornerRadius: (frame.width + 90) / 2).cgPath
+        innerCircle.fillColor = UIColor.clear.cgColor
+        innerCircle.strokeColor = UIColor.init(hexString: "e9e9e9")?.cgColor
+        innerCircle.lineWidth = 1
+        innerCircle.lineDashPattern = [5, 5]
+        innerCircle.strokeEnd = 0
+        centerView2.transform = CGAffineTransform(rotationAngle: 135 * CGFloat.pi / 180)
+        centerView2.layer.addSublayer(innerCircle)
+
+        outerCircle = CAShapeLayer()
+        let outerFrame = CGRect(x: frame.origin.x - 90, y: frame.origin.y - 90, width: frame.width + 180, height: frame.height + 180)
+        let path = UIBezierPath.init(roundedRect: outerFrame, cornerRadius: (frame.width + 180) / 2)
+
+
+        outerCircle.path = path.cgPath
+        outerCircle.fillColor = UIColor.clear.cgColor
+        outerCircle.strokeColor = UIColor.init(hexString: "e9e9e9")?.cgColor
+        outerCircle.lineWidth = 1
+        outerCircle.lineDashPattern = [5, 5]
+        outerCircle.strokeEnd = 0
+        centerView.transform = CGAffineTransform(rotationAngle: -45 * CGFloat.pi / 180)
+
+        centerView.layer.addSublayer(outerCircle)
+
+
+        animateAlongCircle(repeatCount: 1)
+        animateCircle()
     }
 
-    
-    func authenticateUser() {
-        loader.startAnimating()
-        let context = LAContext()
-        var error: NSError?
-        
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Identify yourself!"
-            
-            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
-                [unowned self] success, authenticationError in
-                
-                DispatchQueue.main.async {
-                    if success {
-                        if UserDefaults.standard.value(forKey: "email") == nil {
-                            
-                            self.mutateLogin(email: self.emailField.text!, password: self.passwordField.text!)
-                            self.loader.stopAnimating()
-                        }else{
-                            
-                            let email:String = UserDefaults.standard.value(forKey: "email") as! String
-                            let password:String = UserDefaults.standard.value(forKey: "password") as! String
-                          
-                            self.mutateLogin(email: email, password: password)
-                            self.loader.stopAnimating()
-                        }
-                    } else {
-                        
-                        let alert = FailureAlert(message:"Authentication failed\r please try again")
-                        alert.show(animated: true)
-                        self.loader.stopAnimating()
-                    }
+    func animateCircle() {
+        let startAngle: CGFloat = 0
+        let endAngle: CGFloat = 1
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.delegate = self
+        animation.duration = 2
+        animation.fromValue = startAngle
+        animation.toValue = endAngle
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        outerCircle.strokeEnd = endAngle
+        outerCircle.add(animation, forKey: "animateCircle")
+        innerCircle.strokeEnd = endAngle
+        innerCircle.add(animation, forKey: "animateCircle")
+    }
+
+    func animateAlongCircle(repeatCount: Float) {
+        let innerCirclePath = UIBezierPath(arcCenter: mailImageView.center, radius: mailImageView.frame.width / 2 + 45, startAngle: .pi / 4, endAngle: .pi / 4 - 0.0174532925, clockwise: true)
+
+        let innerAnimation = CAKeyframeAnimation(keyPath: #keyPath(CALayer.position))
+        innerAnimation.duration = 2
+        innerAnimation.repeatCount = repeatCount
+        innerAnimation.path = innerCirclePath.cgPath
+
+        let outerCirclePath = UIBezierPath(arcCenter: mailImageView.center, radius: mailImageView.frame.width / 2 + 90, startAngle: 5 * .pi / 4, endAngle: 5 * .pi / 4 - 0.0174532925, clockwise: true)
+
+        let outerAnimation = CAKeyframeAnimation(keyPath: #keyPath(CALayer.position))
+        outerAnimation.duration = 2
+        outerAnimation.repeatCount = repeatCount
+        outerAnimation.path = outerCirclePath.cgPath
+
+        if repeatCount == 1.0 {
+            innerAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            outerAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        }
+
+        orangeOrb.layer.add(innerAnimation, forKey: nil)
+        blueOrb.layer.add(outerAnimation, forKey: nil)
+    }
+
+    func stopAnimation() {
+        orangeOrb.layer.removeAllAnimations()
+        blueOrb.layer.removeAllAnimations()
+    }
+
+    func revealSubViews() {
+        UIView.animate(withDuration: 0.5, animations: {
+            for subView in self.containerView.subviews {
+
+                if subView.alpha == 0.0 {
+                    subView.alpha = 1.0
                 }
             }
-        } else {
-            
-            
-            let alert = FailureAlert(message:"Your device is not configured for Touch ID.")
-            alert.show(animated: true)
-            loader.stopAnimating()
-        }
+            self.view.layoutIfNeeded()
+        })
     }
-    
-    func mutateLogin(email:String, password:String) {
+
+    @objc func loginAction(sender: UIButton) {
+
+        if emailField.validate(type: .email) && passwordField.validate(type: .password) {
+            
+            mutateLogin(email: emailField.text!, password: passwordField.text!)
+
+        } else if !passwordField.validate(type: .password){
+            passwordField.becomeFirstResponder()
+        }else if  !emailField.validate(type: .email) {
+            emailField.becomeFirstResponder()
+        }else {
+            emailField.becomeFirstResponder()
+        }
+
+
+    }
+
+
+    func mutateLogin(email: String, password: String) {
+        animateAlongCircle(repeatCount: Float.infinity)
         let apollo: ApolloClient = {
             let configuration = URLSessionConfiguration.default
             let url = URL(string: Constants.API_ENDPOINT)!
             return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         }()
-        loader.startAnimating()
-        let loginMutation = LoginMutation(email:email ,password:password)
+
+        let loginMutation = LoginMutation(email: email, password: password)
         apollo.perform(mutation: loginMutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
-                let alert = FailureAlert(message:error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                self?.stopAnimation()
                 return
             }
             if let err = result?.errors {
-                let alert = FailureAlert(message:err[0].localizedDescription)
+                let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-               self?.loader.stopAnimating()
+                self?.stopAnimation()
             }
             if result?.data != nil {
-                
+
                 do {
                     try ErxesUser.signIn(email, password: password)
                 } catch {
                     print("Could't save user credential")
                 }
-                
+
                 let currentUser = ErxesUser.sharedUserInfo()
                 currentUser.token = (result?.data?.login.token)!
                 currentUser.refreshToken = (result?.data?.login.refreshToken)!
-                
+
                 self?.mutateCurrrentUser()
-                self?.loader.stopAnimating()
+
             }
 
         }
     }
-    
+
     func mutateCurrrentUser() {
-        loader.startAnimating()
+
         let client: ApolloClient = {
             let configuration = URLSessionConfiguration.default
             let currentUser = ErxesUser.sharedUserInfo()
-            
+
             configuration.httpAdditionalHeaders = ["x-token": currentUser.token as Any,
-                                                   "x-refresh-token": currentUser.refreshToken as Any]
+                "x-refresh-token": currentUser.refreshToken as Any]
             let url = URL(string: Constants.API_ENDPOINT)!
-            
+
             return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         }()
-        
+
         let query = CurrentUserQuery()
         client.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
-                let alert = FailureAlert(message:error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.startAnimating()
+                self?.stopAnimation()
                 return
             }
-            
+
             if let err = result?.errors {
-                let alert = FailureAlert(message:err[0].localizedDescription)
+                let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.startAnimating()
+                self?.stopAnimation()
             }
-            
+
             if result?.data != nil {
 
                 let user = result?.data?.currentUser
-                
-                let currentUser  = ErxesUser.sharedUserInfo()
+
+                let currentUser = ErxesUser.sharedUserInfo()
                 currentUser._id = user?.id
                 currentUser.username = user?.username
                 currentUser.email = user?.email
@@ -400,39 +457,110 @@ class LoginController: UIViewController {
                 currentUser.fullName = user?.details?.fullName
                 currentUser.position = user?.details?.position
                 currentUser.getNotificationByEmail = user?.getNotificationByEmail
-                
+
                 if (self?.checkBox.isSelected)! {
                     UserDefaults.standard.set(self?.emailField.text, forKey: "cachedEmail")
-                }else{
+                } else {
                     UserDefaults.standard.removeObject(forKey: "cachedEmail")
                 }
-                if (self?.touchIDButtonState.isSelected)! {
-                    UserDefaults.standard.set(self?.emailField.text, forKey: "email")
-                    UserDefaults.standard.set(self?.passwordField.text, forKey: "password")
-                    UserDefaults.standard.synchronize()
-                }
-                self?.loader.stopAnimating()
+
+
                 self?.passwordField.text = ""
+                self?.stopAnimation()
                 self?.navigate(.tab)
             }
         }
     }
-    
-    
-   
 
-    
-    @objc func toggleTouchId(sender: UIButton){
-        if touchIDButtonState.isSelected {
-            touchIDButtonState.isSelected = false
-            UserDefaults.standard.set(false, forKey: "touchEnabled")
-        }else{
-            touchIDButtonState.isSelected = true
-            UserDefaults.standard.set(true, forKey: "touchEnabled")
+    @objc func handleKeyboardWillShow(notification: Notification) {
+        if let userInfo = notification.userInfo as? Dictionary<String, Any> {
+            if let keyboardFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardFrame = keyboardFrameValue.cgRectValue
+
+
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.containerView.snp.remakeConstraints { (make) in
+
+                        make.bottom.equalTo(self.view.snp.bottom).inset(keyboardFrame.size.height)
+
+
+                    }
+                    self.view.layoutIfNeeded()
+                })
+
+            }
         }
-        UserDefaults.standard.synchronize()
     }
+
+    @objc func handleKeyboardDidHide(notification: Notification) {
+
+        UIView.animate(withDuration: 0.3, animations: {
+            self.containerView.snp.remakeConstraints { (make) in
+                make.left.equalTo(self.view.snp.left).offset(64)
+                make.right.equalTo(self.view.snp.right).inset(64)
+                make.height.equalTo(480)
+                make.top.equalTo(self.view.snp.top).offset(98)
+            }
+            self.view.layoutIfNeeded()
+        })
+    }
+
 
 }
 
+extension UIView {
+    func setAnchorPoint(_ point: CGPoint) {
+        var newPoint = CGPoint(x: bounds.size.width * point.x, y: bounds.size.height * point.y)
+        var oldPoint = CGPoint(x: bounds.size.width * layer.anchorPoint.x, y: bounds.size.height * layer.anchorPoint.y);
+
+        newPoint = newPoint.applying(transform)
+        oldPoint = oldPoint.applying(transform)
+
+        var position = layer.position
+
+        position.x -= oldPoint.x
+        position.x += newPoint.x
+
+        position.y -= oldPoint.y
+        position.y += newPoint.y
+
+        layer.position = position
+        layer.anchorPoint = point
+    }
+}
+
+extension LoginController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailField && emailField.validate(type: .email){
+            passwordField.becomeFirstResponder()
+        } else if textField == passwordField && passwordField.validate(type: .password){
+            passwordField.resignFirstResponder()
+        }
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        if textField == emailField {
+//            emailField.validate(type: .email)
+//        } else if textField == passwordField {
+//            passwordField.validate(type: .password)
+//        }
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+//            if textField == emailField {
+//                emailField.validate(type: .email)
+//            } else if textField == passwordField {
+//                passwordField.validate(type: .password)
+//            }
+        }
+    
+}
+
+extension LoginController: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        revealSubViews()
+    }
+}
 
