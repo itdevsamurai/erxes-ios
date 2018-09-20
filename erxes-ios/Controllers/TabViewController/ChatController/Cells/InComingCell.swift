@@ -16,7 +16,7 @@ class IncomingCell: ChatBaseCell {
         
         super.updateView()
         
-        ivAvatar.image = #imageLiteral(resourceName: "avatar.png")
+        ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         lblDate.textAlignment = .right
         if let str = viewModel?.content?.convertHtml(){
             str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .comfortaa, size: 13), range: NSMakeRange(0, str.length))

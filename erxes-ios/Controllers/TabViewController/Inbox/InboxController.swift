@@ -353,7 +353,7 @@ class InboxController: UIViewController {
         }
         query.limit = limit
 
-        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
 
                 let alert = FailureAlert(message: error.localizedDescription)

@@ -14,5 +14,7 @@ pod 'Shimmer'
 pod 'Daysquare'
 pod 'Alamofire', '~> 4.7'
 pod 'Eureka'
+pod 'NYTPhotoViewer'
+pod 'Hakawai'
 
 end
