@@ -52,6 +52,15 @@ extension String {
     
 }
 
+extension Int64 {
+    func dateFromUnixTime() -> Date {
+        //        let date = NSDate(timeIntervalSince1970: TimeInterval(self))
+        let timeInterval = Double(self / 1000)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        return date
+    }
+}
+
 extension Int {
     func dateFromUnixTime() -> Date {
         //        let date = NSDate(timeIntervalSince1970: TimeInterval(self))
@@ -59,11 +68,7 @@ extension Int {
         let date = Date(timeIntervalSince1970: timeInterval)
         return date
     }
-    
-    
 }
-
-
 
 extension Date {
     struct Formatter {

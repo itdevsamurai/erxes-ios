@@ -20,7 +20,7 @@ class ColChatController:UIViewController {
     var conversationId:String?
     var customerId:String?
     var inited = false
-    
+    var isInternal = false
 //    public typealias ModelT = TextCell.ViewModel
     var messages:[MessageDetail]! {
         didSet {
@@ -106,13 +106,14 @@ class ColChatController:UIViewController {
         btnCamera.setImage(UIImage.erxes(with: .photocamera, textColor: UIColor(hexString: "#999999")!), for: .normal)
         btnCamera.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
         btnCamera.imageView?.contentMode = .scaleAspectFit
-//        btnCamera.addTarget(self, action: #selector(launchCamera(sender:)), for: .touchUpInside)
+        btnCamera.addTarget(self, action: #selector(launchCamera), for: .touchUpInside)
         
         btnInternalNote = UIButton(type: .custom)
         btnInternalNote.setImage(#imageLiteral(resourceName: "tick"), for: .normal)
         btnInternalNote.setImage(#imageLiteral(resourceName: "ticked"), for: .selected)
         btnAttachment.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         btnInternalNote.imageView?.contentMode = .scaleAspectFit
+        btnInternalNote.addTarget(self, action: #selector(btnInternalNoteClick), for: .touchUpInside)
         
         label.text = "Internal note"
         label.textColor = UIColor(hexString: "#a9a9a9", alpha: 0.57)
@@ -158,6 +159,11 @@ class ColChatController:UIViewController {
             make.height.equalTo(40)
             make.width.equalTo(80)
         }
+    }
+    
+    @objc func btnInternalNoteClick() {
+        isInternal = !isInternal
+        btnInternalNote.isSelected = isInternal
     }
     
     var loader: ErxesLoader = {
@@ -260,7 +266,7 @@ class ColChatController:UIViewController {
         initChatInput()
     }
     
-    @objc func gotoUser(sender:UIButton){
+    @objc func gotoUser(sender:UIButton) {
         self.navigate(.customerProfile(_id: self.customerId!, count: 0))
         
     }
@@ -306,7 +312,7 @@ class ColChatController:UIViewController {
         self.manager.queryMessages()
     }
     
-    @objc func launchCamera(){
+    @objc func launchCamera() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         {
             let imagePicker:UIImagePickerController = UIImagePickerController()
@@ -323,7 +329,7 @@ class ColChatController:UIViewController {
         }
     }
     
-    @objc func openImagePicker(){
+    @objc func openImagePicker() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = manager
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -355,8 +361,10 @@ extension ColChatController {
         guard let message = chatInputView.text, message.count > 0 else {
             return
         }
+        manager.mutateAddMessage(msg: message, isInternal: isInternal)
         chatInputView.text = ""
-        manager.mutateAddMessage(msg: message)
+        btnInternalNote.isSelected = false
+        isInternal = false
     }
     
     @objc func btnPhotoLibraryClick() {
