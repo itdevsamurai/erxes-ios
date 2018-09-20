@@ -237,7 +237,7 @@ class LoginController: UIViewController {
         self.view.backgroundColor = UIColor.white
         self.navigationController?.isNavigationBarHidden = true
         configureViews()
-        checkAuthentication()
+        
 
         self.perform(#selector(drawCircleOfDots), with: nil, afterDelay: 1)
     }
@@ -304,16 +304,24 @@ class LoginController: UIViewController {
     func animateCircle() {
         let startAngle: CGFloat = 0
         let endAngle: CGFloat = 1
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.delegate = self
-        animation.duration = 2
-        animation.fromValue = startAngle
-        animation.toValue = endAngle
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        let animation1 = CABasicAnimation(keyPath: "strokeEnd")
+        animation1.setValue("anim1", forKey: "id")
+        animation1.delegate = self
+        animation1.duration = 2
+        animation1.fromValue = startAngle
+        animation1.toValue = endAngle
+        animation1.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        let animation2 = CABasicAnimation(keyPath: "strokeEnd")
+        animation2.setValue("anim2", forKey: "id")
+        animation2.delegate = self
+        animation2.duration = 2
+        animation2.fromValue = startAngle
+        animation2.toValue = endAngle
+        animation2.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         outerCircle.strokeEnd = endAngle
-        outerCircle.add(animation, forKey: "animateCircle")
+        outerCircle.add(animation1, forKey: nil)
         innerCircle.strokeEnd = endAngle
-        innerCircle.add(animation, forKey: "animateCircle")
+        innerCircle.add(animation2, forKey: nil)
     }
 
     func animateAlongCircle(repeatCount: Float) {
@@ -346,6 +354,7 @@ class LoginController: UIViewController {
     }
 
     func revealSubViews() {
+        
         UIView.animate(withDuration: 0.5, animations: {
             for subView in self.containerView.subviews {
 
@@ -354,7 +363,9 @@ class LoginController: UIViewController {
                 }
             }
             self.view.layoutIfNeeded()
-        })
+        }) { finished in
+            self.checkAuthentication()
+        }
     }
 
     @objc func loginAction(sender: UIButton) {
@@ -560,7 +571,10 @@ extension LoginController: UITextFieldDelegate {
 
 extension LoginController: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        revealSubViews()
+        if anim.value(forKey: "id") as! String == "anim1" {
+            revealSubViews()
+        }
+   
     }
 }
 
