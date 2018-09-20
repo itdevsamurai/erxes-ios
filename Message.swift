@@ -24,7 +24,8 @@ struct Message: Codable {
     var user:User?
     var content:String?
     var userId:String?
-    var createdAt:Int?
+    var createdAt:Int64?
+    var `internal`:Bool?
     var attachments:[Attachment?]
 }
 

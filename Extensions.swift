@@ -314,6 +314,23 @@ public extension UIImage {
 }
 
 public typealias JSON = [String: Any]
+public typealias SDate = Int64
+
+extension Int64: JSONDecodable, JSONEncodable {
+    public init(jsonValue value: JSONValue) throws {
+        
+        let string = String(describing: value)
+        guard let number = Int64(string) else {
+            throw JSONDecodingError.couldNotConvert(value: value, to: Int64.self)
+        }
+        
+        self = number
+    }
+    
+    public var jsonValue: JSONValue {
+        return String(self)
+    }
+}
 
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {
@@ -356,6 +373,8 @@ private func forceBridgeFromObjectiveC(_ value: Any) -> Any {
         return value as! Bool
     case is Int:
         return value as! Int
+    case is Int64:
+        return value as! Int64
     case is Double:
         return value as! Double
     case is NSDictionary:
