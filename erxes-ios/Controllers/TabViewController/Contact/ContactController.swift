@@ -34,26 +34,46 @@ class ContactController: UIViewController {
             tableView.reloadData()
         }
     }
-    
-    var customersButton: ErxesButton = {
-       let button = ErxesButton()
-        button.setTitle("Customers", for: .normal)
-        button.setTitle("Customers", for: .selected)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.ERXES_COLOR
-        button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
+   
+
+    var customerAddButton:UIButton = {
+       let button = UIButton()
+        let image = UIImage.erxes(with: .adduser, textColor: .white)
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = UIColor.white
+        button.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
         return button
     }()
+    
+    var companyAddButton:UIButton = {
+        let button = UIButton()
+        let image = #imageLiteral(resourceName: "ic_addCompany")
+        button.setBackgroundImage(image, for: .normal)
+        button.tintColor = UIColor.white
+        button.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+        return button
+    }()
+    
 
     
-    var companiesButton: ErxesButton = {
-        let button = ErxesButton()
-        button.setTitle("Companies", for: .normal)
-        button.setTitle("Companies", for: .selected)
-        button.backgroundColor = UIColor.INBOX_BG_COLOR
-        button.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
-        button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
-        return button
+    var segmentedControl: UISegmentedControl = {
+        let items = ["Customer","Company"]
+        let control = UISegmentedControl(items: items)
+        control.frame = CGRect(x: 0, y: 0, width: 200, height: 23)
+        control.layer.cornerRadius = 5.0
+        control.tintColor = UIColor.init(hexString: "4e25a5")
+        control.backgroundColor = UIColor.init(hexString: "421f8b")
+        let attributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+        ]
+
+        control.setTitleTextAttributes(attributes, for: .normal)
+        control.setTitleTextAttributes(attributes, for: .selected)
+        control.selectedSegmentIndex = 0
+       
+        
+        return control
     }()
     
     var tableView: UITableView = {
@@ -63,50 +83,59 @@ class ContactController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
         tableView.separatorColor = UIColor.ERXES_COLOR
-//        tableView.allowsMultipleSelectionDuringEditing = true
+
         return tableView
     }()
     
-    @objc func toggleButton(sender:UIButton){
-        if sender.backgroundColor == UIColor.ERXES_COLOR {
-            return
-        }
-        sender.backgroundColor = UIColor.ERXES_COLOR
-        sender.setTitleColor(.white, for: .normal)
-        switch sender {
-        case self.customersButton:
-            self.companiesButton.backgroundColor = UIColor.INBOX_BG_COLOR
-            self.companiesButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
-            self.getCustomers()
+    @objc func toggleSegmentedControl(sender:UISegmentedControl){
+        
+        let leftItem: UIBarButtonItem = {
+            let barButtonItem = UIBarButtonItem()
+            return barButtonItem
+        }()
+        
+        if sender.selectedSegmentIndex == 0 {
             isCustomer = true
-        case self.companiesButton:
-            self.customersButton.backgroundColor = UIColor.INBOX_BG_COLOR
-            self.customersButton.setTitleColor(UIColor.ERXES_COLOR, for: .normal)
+            customerAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+            leftItem.customView = customerAddButton
+            self.getCustomers()
+        }else{
+            companyAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+            leftItem.customView = companyAddButton
             isCustomer = false
             self.getCompanies()
-        default:
-            return
         }
+        self.navigationItem.leftBarButtonItem? = leftItem
     }
     
+
     func configureViews(){
         
         let rightItem: UIBarButtonItem = {
-            var rightImage = #imageLiteral(resourceName: "ic_edit")
+            var rightImage = #imageLiteral(resourceName: "ic_filter")
    
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
-            button.tintColor = UIColor.ERXES_COLOR
+            button.tintColor = UIColor.white
             button.addTarget(self, action: #selector(changeEditMode(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
         }()
+        let leftItem: UIBarButtonItem = {
+            let barButtonItem = UIBarButtonItem()
+            customerAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+            barButtonItem.customView = self.customerAddButton
+            return barButtonItem
+        }()
+
+       
+        self.navigationItem.leftBarButtonItem = leftItem
         self.navigationItem.rightBarButtonItem = rightItem
-        
-        self.view.addSubview(customersButton)
-        self.view.addSubview(companiesButton)
+        segmentedControl.addTarget(self, action: #selector(toggleSegmentedControl(sender:)), for: .valueChanged)
+        self.navigationItem.titleView = segmentedControl
+    
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
@@ -117,27 +146,39 @@ class ContactController: UIViewController {
         
     }
     
+   
+    
     @objc func changeEditMode(sender:UIButton) {
         sender.isSelected = !sender.isSelected
         tableView.isEditing = sender.isSelected
     }
     
     @objc func addAction(sender:UIButton) {
-        navigate(.companyProfile(id:nil))
+        print("add click")
+        if isCustomer{
+            navigate(.customerProfile(_id: nil))
+        }else{
+            navigate(.companyProfile(id:nil))
+        }
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "CONTACTS"
-        self.view.backgroundColor = UIColor.INBOX_BG_COLOR
+        self.title = "Contacts"
+        self.view.backgroundColor = UIColor.white
         self.configureViews()
 //        self.getCustomers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+     
         if isCustomer{
+            
             getCustomers()
         }else{
+         
+           
             getCompanies()
         }
     }
@@ -149,24 +190,12 @@ class ContactController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        customersButton.snp.makeConstraints { (make) in
-            make.height.equalTo(35)
-            make.left.equalTo(self.view.snp.left).offset(30)
-            make.top.equalTo(self.topLayoutGuide.snp.bottom).offset(16)
-            make.right.equalTo(self.view.snp.left).offset(Constants.SCREEN_WIDTH/2-20)
-        }
 
-        companiesButton.snp.makeConstraints { (make) in
-            make.height.equalTo(35)
-            make.left.equalTo(self.customersButton.snp.right).offset(40)
-            make.top.equalTo(self.topLayoutGuide.snp.bottom).offset(16)
-            make.right.equalTo(self.view.snp.right).inset(30)
-        }
         
         tableView.snp.makeConstraints { (make) in
             make.left.equalTo(self.view.snp.left).offset(16)
             make.right.equalTo(self.view.snp.right).inset(16)
-            make.top.equalTo(customersButton.snp.bottom).offset(10)
+            make.top.equalTo(self.topLayoutGuide.snp.bottom)
             make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
         }
         
@@ -318,7 +347,7 @@ extension ContactController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isCustomer{
             let customer = customers[indexPath.row]
-            navigate(.customerProfile(_id: customer.id, count: 0))
+            navigate(.customerProfile(_id: customer.id))
         }else{
             let company = companies[indexPath.row]
             navigate(.companyProfile(id: company.id))

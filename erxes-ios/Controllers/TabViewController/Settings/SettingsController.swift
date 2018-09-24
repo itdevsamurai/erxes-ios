@@ -56,7 +56,7 @@ class SettingsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "SETTINGS"
+        title = "Settings"
          self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         
         configureViews()

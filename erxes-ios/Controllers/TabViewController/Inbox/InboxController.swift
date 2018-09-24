@@ -152,7 +152,9 @@ class InboxController: UIViewController {
 
     func configureViews() {
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        let leftImage = UIImage.erxes(with: .filter, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
+//        let leftImage = UIImage.erxes(with: .filter, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
+        
+        let leftImage = #imageLiteral(resourceName: "ic_filter")
 //        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
         let leftButton = UIButton()
         leftButton.setImage(leftImage, for: .normal)
@@ -195,7 +197,7 @@ class InboxController: UIViewController {
 
         topOffset = UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.size.height)! + 3
 
-        self.title = "INBOX"
+        self.title = "Inbox"
         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         self.configureViews()
         configLive()

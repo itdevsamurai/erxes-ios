@@ -12,10 +12,10 @@ class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 14)]
-        self.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+
         self.navigationBar.barTintColor = .ERXES_COLOR
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationBar.isTranslucent = false 
     }
 
     override func didReceiveMemoryWarning() {

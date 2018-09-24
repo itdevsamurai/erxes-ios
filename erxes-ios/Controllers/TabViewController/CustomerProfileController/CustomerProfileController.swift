@@ -12,7 +12,7 @@ import Eureka
 
 class CustomerProfileController: FormViewController {
 
-//    var profileFields = ["String"]()
+
     var profileField = FieldGroup(id: "profile")
 
     var customerId: String?
@@ -38,7 +38,9 @@ class CustomerProfileController: FormViewController {
         }
     }
 
-
+    func isEdit() -> Bool {
+        return self.customerId != nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,9 +48,14 @@ class CustomerProfileController: FormViewController {
 
         self.configureViews()
         self.getFields()
-        self.getCustomerData()
         self.getCompanies()
         self.getUsers()
+        if isEdit(){
+            self.getCustomerData()
+        }
+        
+        
+        
 
         // Do any additional setup after loading the view.
     }
@@ -56,8 +63,6 @@ class CustomerProfileController: FormViewController {
 
     func getFields() {
         loader.startAnimating()
-
-
 
         let query = FieldsGroupsQuery(contentType: "customer")
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
@@ -110,7 +115,9 @@ class CustomerProfileController: FormViewController {
                     self?.profileField.fields = fieldsArray
 
                     self?.fieldGroups.insert((self?.profileField)!, at: 0)
-
+                    if !(self?.isEdit())!{
+                        self?.buildForm(customer: nil)
+                    }
                 }
             }
         }
@@ -146,23 +153,27 @@ class CustomerProfileController: FormViewController {
         }
     }
 
-    func buildForm(customer: CustomerInfo) {
-
-        let obj = Mirror(reflecting: customer)
+    func buildForm(customer: CustomerInfo?) {
         var profile = [String: Any]()
         var customFields = [String: Any]()
-
-        for case let (label?, value) in obj.children {
-            let c = value as! [String: Any]
-            profile = c
-
-            if let tmp = profile["customFieldsData"] as? [String: Any] {
-                customFields = tmp
+        if customer != nil {
+            let obj = Mirror(reflecting: customer!)
+            
+            
+            for case let (label?, value) in obj.children {
+                let c = value as! [String: Any]
+                profile = c
+                
+                if let tmp = profile["customFieldsData"] as? [String: Any] {
+                    customFields = tmp
+                }
+                
             }
-
         }
-
+        
+        print("build form", fieldGroups.count)
         for group in fieldGroups {
+            print(group.name)
             if group.isVisible! {
                 form +++ Section(group.name!)
                 let sorted = group.fields?.sorted { obj1, obj2 in
@@ -263,7 +274,7 @@ class CustomerProfileController: FormViewController {
                                 <<< PushRow<UserData>(field?.id) { row in
                                     row.title = field?.text
                                     row.options = self.users
-                                    row.value = customer.owner?.fragments.userData
+                                    row.value = customer?.owner?.fragments.userData
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -719,10 +730,10 @@ class CustomerProfileController: FormViewController {
         }
     }
 
-    convenience init(_id: String, count: Int) {
+    convenience init(_id: String?) {
         self.init()
         self.customerId = _id
-        self.messagesCount = count
+       
     }
 
     override func didReceiveMemoryWarning() {

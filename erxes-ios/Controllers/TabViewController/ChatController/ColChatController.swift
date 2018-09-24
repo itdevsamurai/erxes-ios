@@ -267,7 +267,7 @@ class ColChatController:UIViewController {
     }
     
     @objc func gotoUser(sender:UIButton) {
-        self.navigate(.customerProfile(_id: self.customerId!, count: 0))
+        self.navigate(.customerProfile(_id: self.customerId!))
         
     }
     

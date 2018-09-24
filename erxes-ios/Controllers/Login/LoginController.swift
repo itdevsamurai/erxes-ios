@@ -18,7 +18,6 @@ class LoginController: UIViewController {
 
     var containerView: UIView = {
         let view = UIView()
-//        view.backgroundColor = .gray
         return view
     }()
 
@@ -141,8 +140,6 @@ class LoginController: UIViewController {
             print(cachedEmail)
             emailField.text = cachedEmail
             checkBox.isSelected = true
-        } else {
-            print ("not cached")
         }
 
     }
@@ -209,19 +206,6 @@ class LoginController: UIViewController {
         orangeOrb.snp.makeConstraints { (make) in
             make.center.equalTo(mailImageView.snp.center).offset(58)
         }
-
-
-//        rememberMeLabel.snp.makeConstraints({ (make) in
-//            make.right.equalTo(passwordField.snp.right)
-//            make.top.equalTo(passwordField.snp.bottom).offset(20)
-//        })
-//
-//        checkBox.snp.makeConstraints { (make) in
-//            make.width.height.equalTo(20)
-//            make.centerY.equalTo(rememberMeLabel.snp.centerY)
-//            make.right.equalTo(rememberMeLabel.snp.left).inset(-20)
-//        }
-
 
 
 
@@ -519,26 +503,7 @@ class LoginController: UIViewController {
 
 }
 
-extension UIView {
-    func setAnchorPoint(_ point: CGPoint) {
-        var newPoint = CGPoint(x: bounds.size.width * point.x, y: bounds.size.height * point.y)
-        var oldPoint = CGPoint(x: bounds.size.width * layer.anchorPoint.x, y: bounds.size.height * layer.anchorPoint.y);
 
-        newPoint = newPoint.applying(transform)
-        oldPoint = oldPoint.applying(transform)
-
-        var position = layer.position
-
-        position.x -= oldPoint.x
-        position.x += newPoint.x
-
-        position.y -= oldPoint.y
-        position.y += newPoint.y
-
-        layer.position = position
-        layer.anchorPoint = point
-    }
-}
 
 extension LoginController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -551,20 +516,12 @@ extension LoginController: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        if textField == emailField {
-//            emailField.validate(type: .email)
-//        } else if textField == passwordField {
-//            passwordField.validate(type: .password)
-//        }
+
         return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-//            if textField == emailField {
-//                emailField.validate(type: .email)
-//            } else if textField == passwordField {
-//                passwordField.validate(type: .password)
-//            }
+
         }
     
 }
