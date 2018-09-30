@@ -123,14 +123,15 @@ class InboxController: UIViewController {
 
 
     @objc func navigateFilter() {
-        let nav = NavigationController()
+//        let nav = NavigationController()
         let controller = FilterController()
         controller.delegate = self
         if self.options != nil {
             controller.filterOptions = self.options!
         }
-        nav.viewControllers = [controller]
-        self.present(nav, animated: true) {
+        controller.modalPresentationStyle = .overFullScreen
+//        nav.viewControllers = [controller]
+        self.present(controller, animated: true) {
 
         }
     }
