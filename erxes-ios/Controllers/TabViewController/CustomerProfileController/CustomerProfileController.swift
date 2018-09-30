@@ -561,7 +561,7 @@ class CustomerProfileController: FormViewController {
             if result?.data != nil {
 
                 self?.loader.stopAnimating()
-                self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+//                self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
             }
         }
     }

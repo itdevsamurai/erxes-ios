@@ -15,7 +15,6 @@ class MyButton: UIButton {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     
-        
     }
     required override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,18 +22,11 @@ class MyButton: UIButton {
         self.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 15)
       
         self.setTitleColor(.white, for: .normal)
+        print("BUTTON INIT")
         
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-   
-        
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+    func setup(){
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
             shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 6).cgPath
@@ -45,10 +37,23 @@ class MyButton: UIButton {
             shadowLayer.shadowOffset = CGSize(width: 0.0, height: 2.0)
             shadowLayer.shadowOpacity = 0.8
             shadowLayer.shadowRadius = 2
-            
+            print("SHADOWWW")
+            print(bounds)
             layer.insertSublayer(shadowLayer, at: 0)
-          
+            
         }
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+   
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        print("button layout")
+        self.setup()
     }
 
 }

@@ -174,7 +174,8 @@ class LoginController: UIViewController {
             make.left.right.bottom.equalToSuperview()
 
         }
-
+       
+        
         passwordField.snp.makeConstraints { (make) in
             make.bottom.equalTo(self.signInButton.snp.top).offset(-20)
             make.left.right.equalToSuperview()

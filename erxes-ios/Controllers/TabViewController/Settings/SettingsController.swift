@@ -11,6 +11,7 @@ import Apollo
 class SettingsController: UIViewController {
 
     var titles = ["Change Password","Email signatures","Notification settings","Sign Out"]
+    var icons:[ErxesFont] = [.openlock, .email1, .switch3, .logout2]
     var autoCompleteCharacterCount = 0
     var timer = Timer()
     var brands = [BrandDetail]()
@@ -28,25 +29,31 @@ class SettingsController: UIViewController {
         let tableview = UITableView()
         tableview.backgroundColor = .clear
         tableview.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
-        tableview.estimatedRowHeight = 40
-        tableview.contentInset = UIEdgeInsetsMake(100, 0, 0, 0 )
-        tableview.tableFooterView = UIView()
-//        tableview.backgroundColor = .blue
+        
+        tableview.rowHeight = 40
+        tableview.tableFooterView = UIView()         
         return tableview
     }()
     
     func configureViews(){
-        notificationView.delegate = self
+        
         self.view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         let currentUser = ErxesUser.sharedUserInfo()
         profileView = ProfileView(user: currentUser)
-        profileView?.backgroundColor = UIColor.INBOX_BG_COLOR
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         profileView?.addGestureRecognizer(tap)
+       
+//        tableView.tableHeaderView = profileView
         self.view.addSubview(profileView!)
         self.view.addSubview(loader)
+        let backGroundImage = UIImage(named: "profileBackground")
+        let ratio = CGFloat((backGroundImage!.size.width)) / CGFloat((backGroundImage!.size.height))
+        let imageHeight = (Constants.SCREEN_WIDTH)/ratio
+        tableView.contentInset = UIEdgeInsets(top: imageHeight, left: 0, bottom: 0, right: 0)
+        tableView.reloadData()
     }
     
     @objc func handleTap(sender:UITapGestureRecognizer){
@@ -57,11 +64,11 @@ class SettingsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
-         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
+         self.view.backgroundColor = UIColor.white
         
         configureViews()
         getBrands()
-        getNotificationsData()
+      
         // Do any additional setup after loading the view.
     }
     
@@ -79,18 +86,16 @@ class SettingsController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        profileView?.snp.makeConstraints({ (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+        })
         tableView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
             make.bottom.equalTo(bottomLayoutGuide.snp.top)
         }
-        
-        profileView?.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
-            make.height.equalTo(100)
-        }
-        
+ 
     }
     
     func getBrands(){
@@ -114,7 +119,6 @@ class SettingsController: UIViewController {
             if result?.data != nil {
                 if let allBrands = result?.data?.brands {
                     self?.brands = allBrands.map { ($0?.fragments.brandDetail)! }
-                    self?.signatureView.brands = (self?.brands)!
                     self?.loader.stopAnimating()
                     
                 }
@@ -123,64 +127,7 @@ class SettingsController: UIViewController {
         }
     }
     
-    func getNotificationsData(){
-        loader.startAnimating()
-        let query = NotificationsModulesQuery()
-        let query1 = NotificationsGetConfigurationsQuery()
-        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-                return
-            }
-            
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-            }
-            
-            if result?.data != nil {
-                if let modules = result?.data?.notificationsModules {
-                    self?.notificationView.modules = modules as! [JSON]
-                    
-                    let firstItem: JSON = ["description": "NOTIFICATIONS ", "name": "notifications ","types": [["name":"usersConfigGetNotificationByEmail", "text": "Get notification by email"]]]
-                    self?.notificationView.modules.insert(firstItem, at: 0)
-                  
-                    self?.loader.stopAnimating()
-                    
-                }
-                
-            }
-        }
-        
-        appnet.fetch(query: query1, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-                return
-            }
-            
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-            }
-            
-            if result?.data != nil {
-                if let configs = result?.data?.notificationsGetConfigurations {
-                    self?.notificationView.configs = configs.map { ($0?.fragments.notificationConf)! }
-                    self?.loader.stopAnimating()
-                    
-                }
-                
-            }
-        }
-    }
+ 
 
     func changePassword(new:String,current:String){
         self.loader.startAnimating()
@@ -188,22 +135,21 @@ class SettingsController: UIViewController {
 
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
-               
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
+
+                    self?.showResult(isSuccess: false, message: error.localizedDescription, resultCompletion: nil)
                 return
             }
             if let err = result?.errors {
                 
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription, resultCompletion: nil)
                
-                self?.loader.stopAnimating()
             }
             if result?.data != nil {
                 if (result?.data?.usersChangePassword) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+//                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully", resultCompletion:nil)
                 }
-                self?.loader.stopAnimating()
+                
                 
             }
         }
@@ -216,114 +162,47 @@ class SettingsController: UIViewController {
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
+                self?.showResult(isSuccess: false, message: error.localizedDescription, resultCompletion: nil)
                 return
             }
             if let err = result?.errors {
                 
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-                
-                self?.loader.stopAnimating()
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription, resultCompletion:nil)
             }
             if result?.data != nil {
                 if (result?.data?.usersConfigEmailSignatures) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully", resultCompletion:nil)
                 }
-                self?.loader.stopAnimating()
-                
             }
         }
     }
     
     
-    func getNotificationByEmailMutation(isAllowed:Bool){
-        let mutation = UsersConfigGetNotificationByEmailMutation(isAllowed: isAllowed)
-        appnet.perform(mutation: mutation) { [weak self] result, error in
-            if let error = error {
-                
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
-                return
-            }
-            if let err = result?.errors {
-                
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-                
-                self?.loader.stopAnimating()
-            }
-            if result?.data != nil {
-                if (result?.data?.usersConfigGetNotificationByEmail) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                }
-                self?.loader.stopAnimating()
-            }
-        }
-    }
-    
-    func notificationsSaveConfigMutation(notifType:String,isAllowed:Bool){
-        let mutation = NotificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
-        appnet.perform(mutation: mutation) { [weak self] result, error in
-            if let error = error {
-                
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
-                return
-            }
-            if let err = result?.errors {
-                
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-                
-                self?.loader.stopAnimating()
-            }
-            if result?.data != nil {
-                if (result?.data?.notificationsSaveConfig) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                }
-                self?.loader.stopAnimating()
-            }
-        }
-    }
 }
 
 extension SettingsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let passwordModalView = PasswordModalView()
-            passwordModalView.show(animated: true)
-            passwordModalView.handler = {
-                let current = passwordModalView.currentField.textField.text
-                let new = passwordModalView.newField.textField.text
-                self.changePassword(new: new!, current: current!)
-            }
+            self.navigate(.passwordSettings())
         }else if indexPath.row == 1 {
-            
-            signatureView.show(animated: true)
-            signatureView.handler = {
-                let brandId = self.signatureView.selectedBrandId
-                let signature = self.signatureView.signatureView.textView.text
-                let signatureObj = EmailSignature(brandId: brandId, signature: signature)
-                self.insertSignature(signature: signatureObj)
-            }
+            self.navigate(.emailSignature(brands:self.brands))
         }else if indexPath.row == 2{
-            notificationView.show(animated: true)
-            notificationView.handler = {
-                self.getNotificationsData()
-            }
+            self.navigate(.notificationSettings())
         }else if indexPath.row == 3{
-           
-           
-            
-            do {
-                try ErxesUser.signOut()
-                let emptyUser = ErxesUser()
-                var currentUser = ErxesUser.sharedUserInfo()
-                currentUser = emptyUser
-                UserDefaults.standard.removeObject(forKey: "email")
-                UserDefaults.standard.synchronize()
-                self.parent?.navigationController?.popToRootViewController(animated: true)
-            } catch {
-                print("sign out failure")
+
+            self.presentAlert(title: "Sign out", msg: "Are you sure you want to sign out ?") {
+                do {
+                    try ErxesUser.signOut()
+                    let emptyUser = ErxesUser()
+                    var currentUser = ErxesUser.sharedUserInfo()
+                    currentUser = emptyUser
+                    UserDefaults.standard.removeObject(forKey: "email")
+                    UserDefaults.standard.synchronize()
+                    self.parent?.navigationController?.popToRootViewController(animated: true)
+                } catch {
+                    print("sign out failure")
+                }
+
             }
             
         }
@@ -333,14 +212,21 @@ extension SettingsController: UITableViewDelegate {
 extension SettingsController: UITableViewDataSource {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.profileView?.scrollViewDidScroll(scrollView: scrollView)
 
-        
     }
     
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
+//
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        return self.profileView
+//    }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
@@ -349,9 +235,11 @@ extension SettingsController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as? SettingsCell)!
         cell.contentView.backgroundColor = .clear
-        
+        cell.iconType = icons[indexPath.row]
+        cell.accessoryType = .disclosureIndicator
+        cell.accessoryView = UIImageView(image: UIImage.erxes(with: .chevron, textColor: .black, size: CGSize(width: 10, height: 10)))
         cell.desc.text = titles[indexPath.row]
-        cell.tintColor = UIColor.ERXES_COLOR
+       
 
         return cell
     }
@@ -438,12 +326,4 @@ extension SettingsController: UITextFieldDelegate {
     }
 }
 
-extension SettingsController: NotificationsDelegate {
-    func getNotificationsByEmail(isAllowed: Bool) {
-        self.getNotificationByEmailMutation(isAllowed: isAllowed)
-    }
-    func notificationsSaveConfig(notifType: String, isAllowed: Bool) {
-        self.notificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
-    }
 
-}

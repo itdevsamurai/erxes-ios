@@ -9,8 +9,10 @@ fragment CustomerList on Customer {
 _id
 firstName
 lastName
-email
-phone
+primaryEmail
+primaryPhone
+    facebookData
+    twitterData
 getTags {
 _id
 name

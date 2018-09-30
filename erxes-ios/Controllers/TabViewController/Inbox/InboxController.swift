@@ -153,7 +153,6 @@ class InboxController: UIViewController {
     func configureViews() {
 //        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 //        let leftImage = UIImage.erxes(with: .filter, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
-        
         let leftImage = #imageLiteral(resourceName: "ic_filter")
 //        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
         let leftButton = UIButton()
@@ -188,7 +187,7 @@ class InboxController: UIViewController {
 //        shimmer.contentView = tableView
 //        self.view.addSubview(shimmer)
 //        shimmer.isShimmering = true
-        self.view.addSubview(loader)
+//        self.view.addSubview(loader)
     }
 
     override func viewDidLoad() {
@@ -201,7 +200,7 @@ class InboxController: UIViewController {
         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         self.configureViews()
         configLive()
-        self.view.bringSubview(toFront: loader)
+        
         self.getInbox()
 //        getInbox()
 //        getUnreadCount()
@@ -247,10 +246,6 @@ class InboxController: UIViewController {
             make.top.equalTo(robotView.snp.bottom)
         }
 
-//        loader.snp.makeConstraints { (make) in
-//            make.width.height.equalTo(50)
-//            make.center.equalTo(self.view.snp.center)
-//        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -298,13 +293,13 @@ class InboxController: UIViewController {
               
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                //self?.hideLoader()
                 return
             }
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                //self?.hideLoader()
             }
 
             if result?.data != nil {
@@ -329,7 +324,7 @@ class InboxController: UIViewController {
         if self.timer != nil {
             self.timer.invalidate()
         }
-        loader.startAnimating()
+//        self.showLoader()
         let query = ObjectsQuery()
 
         if options != nil {
@@ -360,13 +355,13 @@ class InboxController: UIViewController {
 
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                //self?.hideLoader()
                 return
             }
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                //self?.hideLoader()
             }
             if result?.data != nil {
                 if let allConversations = result?.data?.conversations {
@@ -389,7 +384,7 @@ class InboxController: UIViewController {
                         }
                     }
 
-                    self?.loader.stopAnimating()
+                    //self?.hideLoader()
                     self?.tableView.reloadData()
 
                 }
@@ -485,13 +480,13 @@ extension InboxController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                //self?.hideLoader()
                 return
             }
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                //self?.hideLoader()
             }
             if result?.data != nil {
                 self?.getInbox(limit: (self?.conversationLimit)!)

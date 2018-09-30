@@ -312,7 +312,14 @@ class UserProfileController: FormViewController {
                 row.baseCell.isUserInteractionEnabled = false
 
             }
-            saveAction()
+//            saveAction()
+//            self.presentTextFieldAlert(title: "Confirm", msg: "Enter your password to confirm!", style: .alert, confirmKey: "OK") {
+//                
+//            }
+            self.presentTextFieldAlert(title: "Confirm", msg: "Enter your password to confirm") { (textValue) in
+                print(textValue)
+                self.saveAction(userPassword: textValue!)
+            }
         } else {
             sender.isSelected = true
             for row in form.allRows {
@@ -325,11 +332,9 @@ class UserProfileController: FormViewController {
         }
     }
 
-    func saveAction() {
-        let modalView = PasswordConfirmModalView()
-        modalView.show(animated: true)
-        modalView.handler = {
-            let password = modalView.passwordField.textField.text
+    func saveAction(userPassword:String) {
+    
+            
             let userName = self.form.rowBy(tag: "username")?.baseValue as? String
             let email = self.form.rowBy(tag: "email")?.baseValue as? String
             let facebook = self.form.rowBy(tag: "facebook")?.baseValue as? String
@@ -339,33 +344,34 @@ class UserProfileController: FormViewController {
             let website = self.form.rowBy(tag: "website")?.baseValue as? String
             let youtube = self.form.rowBy(tag: "youtube")?.baseValue as? String
 
-            let mutation = UsersEditProfileMutation(username: userName!, email: email!, password: password!)
+            let mutation = UsersEditProfileMutation(username: userName!, email: email!, password: userPassword)
             mutation.details = UserDetails(fullName: self.form.rowBy(tag: "fullName")?.baseValue as? String, position: self.form.rowBy(tag: "position")?.baseValue as? String, location: self.form.rowBy(tag: "location")?.baseValue as? String, description: self.form.rowBy(tag: "description")?.baseValue as? String)
             mutation.links = UserLinks(linkedIn: linkedIn, twitter: twitter, facebook: facebook, youtube: youtube, github: github, website: website)
             appnet.perform(mutation: mutation) { [weak self] result, error in
                 if let error = error {
 
-                    self?.showResult(isSuccess: false, message: error.localizedDescription)
-                    self?.loader.stopAnimating()
+                    self?.showResult(isSuccess: false, message: error.localizedDescription,resultCompletion: nil)
+                    
                     return
                 }
                 if let err = result?.errors {
 
-                    self?.showResult(isSuccess: false, message: err[0].localizedDescription)
+                    self?.showResult(isSuccess: false, message: err[0].localizedDescription,resultCompletion: nil)
 
-                    self?.loader.stopAnimating()
                 }
                 if result?.data != nil {
                     if (result?.data?.usersEditProfile) != nil {
-                        self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                        self?.getCurrentUser()
+                        self?.showResult(isSuccess: true, message: "Changes Saved Successfully",resultCompletion: {
+                            self?.navigationController?.popViewController(animated: true)
+                        })
+                       
                     }
-                    self?.loader.stopAnimating()
+      
 
                 }
             }
 
-        }
+        
     }
     
     func getCurrentUser(){

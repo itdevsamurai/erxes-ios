@@ -10,7 +10,11 @@ import UIKit
 
 class SettingsCell: UITableViewCell {
 
-   
+    var iconType:ErxesFont! {
+        didSet{
+            self.imageView?.image = UIImage.erxes(with: iconType, textColor: .black,size: CGSize(width: 20, height: 20))
+        }
+    }
     var desc: UILabel!
     
     
@@ -27,8 +31,8 @@ class SettingsCell: UITableViewCell {
         
         desc = UILabel()
         desc.textAlignment = .left
-        desc.textColor = UIColor.ERXES_COLOR
-        desc.font = UIFont.fontWith(type: .light, size: 14)
+        desc.textColor = UIColor.black
+        desc.font = UIFont.fontWith(type: .comfortaa, size: 15)
         contentView.addSubview(desc)
 
     }
@@ -38,7 +42,7 @@ class SettingsCell: UITableViewCell {
         
         
         desc.snp.makeConstraints { (make) in
-            make.left.equalTo(contentView.snp.left).offset(10)
+            make.left.equalTo(50)
             make.centerY.equalToSuperview()
         }
         

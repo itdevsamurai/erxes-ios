@@ -233,6 +233,8 @@ class EmailSignaturesModalView: UIView ,Modal{
         return isValid
     }
     
+    
+    
     @objc func closeAction(sender: UIButton) {
         dismiss(animated: true)
         brandField.textField.text = ""

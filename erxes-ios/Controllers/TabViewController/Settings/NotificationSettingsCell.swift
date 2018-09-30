@@ -21,7 +21,7 @@ class NotificationSettingsCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let switchc = UISwitch()
         switchControl = switchc
-        switchControl.onTintColor = .ERXES_COLOR
+//        switchControl.onTintColor = UIColor.LIGHT_GRAY_COLOR
         switchControl.addTarget(self, action: #selector(switchChanged(sender:)), for: .valueChanged)
         switchControl.tag = self.tag
         accessoryView = switchControl
@@ -29,8 +29,8 @@ class NotificationSettingsCell: UITableViewCell {
         selectionStyle = .none
         desc = UILabel()
         desc.textAlignment = .left
-        desc.textColor = UIColor.ERXES_COLOR
-        desc.font = UIFont.fontWith(type: .light, size: 14)
+        desc.textColor = UIColor.black
+        desc.font = UIFont.fontWith(type: .comfortaa, size: 15)
         contentView.addSubview(desc)
        
     }
@@ -47,7 +47,7 @@ class NotificationSettingsCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         desc.snp.makeConstraints { (make) in
-            make.left.equalTo(contentView.snp.left).offset(10)
+            make.left.equalTo(50)
             make.centerY.equalToSuperview()
         }
     }

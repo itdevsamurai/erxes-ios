@@ -8,10 +8,7 @@
 
 import UIKit
 
-protocol NotificationsDelegate: class  {
-    func notificationsSaveConfig(notifType:String,isAllowed:Bool)
-    func getNotificationsByEmail(isAllowed:Bool)
-}
+
 
 class NotificationSettingsModalView: UIView, Modal {
     var backgroundView = UIView()
@@ -175,7 +172,7 @@ extension NotificationSettingsModalView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationSettingsCell", for: indexPath) as? NotificationSettingsCell
         let types = modules[indexPath.section]["types"] as! [JSON]
-        cell?.cellDelegate = self
+//        cell?.cellDelegate = self
         cell?.desc.text = types[indexPath.row]["text"] as? String
         cell?.indexPath = indexPath
         
@@ -194,15 +191,4 @@ extension NotificationSettingsModalView: UITableViewDataSource {
     
 }
 
-extension NotificationSettingsModalView: CellDelegate {
-    func didSwitchChanged(_ indexPath: IndexPath, isON: Bool) {
-        let types = modules[indexPath.section]["types"] as! [JSON]
-        if indexPath.section == 0 {
-            delegate?.getNotificationsByEmail(isAllowed: isON)
-        }else{
-            let notifType = types[indexPath.row]["name"] as? String
-            delegate?.notificationsSaveConfig(notifType: notifType!, isAllowed: isON)
-        }
-        
-    }
-}
+
