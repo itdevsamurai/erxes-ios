@@ -97,6 +97,8 @@
 		B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE582213EDC3B00124BD3 /* BaseCell.swift */; };
 		B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE584213EDC8100124BD3 /* SentCell.swift */; };
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
+		B8BE67C4215B4FFD00E8A0A6 /* InputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */; };
+		B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */; };
 		B8C669E72140E6A400097B4F /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C669E62140E6A400097B4F /* ViewConstants.swift */; };
 		B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */; };
 		B8E8CB142150BE7300AE492D /* Inbox+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */; };
@@ -231,6 +233,8 @@
 		B86FE584213EDC8100124BD3 /* SentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCell.swift; sourceTree = "<group>"; };
 		B86FE586213F837700124BD3 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
+		B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCell.swift; sourceTree = "<group>"; };
+		B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Network.swift"; sourceTree = "<group>"; };
 		B8C669E62140E6A400097B4F /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+TableView.swift"; sourceTree = "<group>"; };
 		B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+Additions.swift"; sourceTree = "<group>"; };
@@ -478,6 +482,8 @@
 			isa = PBXGroup;
 			children = (
 				9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */,
+				B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */,
+				B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */,
 				9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */,
 				9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */,
 				9B410FAA20B29DAB00AA4A19 /* detail */,
@@ -882,6 +888,7 @@
 				9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */,
 				9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */,
 				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
+				B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */,
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
 				9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */,
 				9B5E455A21391BE300DDD687 /* MyButton.swift in Sources */,
@@ -892,6 +899,7 @@
 				9B1E939B20C8D8F700AC4FED /* Route.swift in Sources */,
 				F58F2041207B381400D8564D /* Modal.swift in Sources */,
 				F58F2062207B4FE900D8564D /* ErxesButton.swift in Sources */,
+				B8BE67C4215B4FFD00E8A0A6 /* InputCell.swift in Sources */,
 				F55583BD207716F800413F6A /* TabController.swift in Sources */,
 				9B94F41220DB309200313543 /* KCKeyboardImagePickerController.swift in Sources */,
 				9BD9BE4220E38D1000CCFEA6 /* ComposeView.swift in Sources */,
