@@ -1047,27 +1047,29 @@ public final class CurrentUserQuery: GraphQLQuery {
 
 public final class ConversationMessageAddMutation: GraphQLMutation {
   public static let operationString =
-    "mutation ConversationMessageAdd($conversationId: String!, $content: String, $attachments: [JSON]) {\n  conversationMessageAdd(conversationId: $conversationId, content: $content, attachments: $attachments) {\n    __typename\n    _id\n  }\n}"
+    "mutation ConversationMessageAdd($conversationId: String!, $content: String, $attachments: [JSON], $internal: Boolean) {\n  conversationMessageAdd(conversationId: $conversationId, content: $content, attachments: $attachments, internal: $internal) {\n    __typename\n    _id\n  }\n}"
 
   public var conversationId: String
   public var content: String?
   public var attachments: [JSON?]?
+  public var `internal`: Bool?
 
-  public init(conversationId: String, content: String? = nil, attachments: [JSON?]? = nil) {
+  public init(conversationId: String, content: String? = nil, attachments: [JSON?]? = nil, `internal`: Bool? = nil) {
     self.conversationId = conversationId
     self.content = content
     self.attachments = attachments
+    self.internal = `internal`
   }
 
   public var variables: GraphQLMap? {
-    return ["conversationId": conversationId, "content": content, "attachments": attachments]
+    return ["conversationId": conversationId, "content": content, "attachments": attachments, "internal": `internal`]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("conversationMessageAdd", arguments: ["conversationId": GraphQLVariable("conversationId"), "content": GraphQLVariable("content"), "attachments": GraphQLVariable("attachments")], type: .object(ConversationMessageAdd.selections)),
+      GraphQLField("conversationMessageAdd", arguments: ["conversationId": GraphQLVariable("conversationId"), "content": GraphQLVariable("content"), "attachments": GraphQLVariable("attachments"), "internal": GraphQLVariable("internal")], type: .object(ConversationMessageAdd.selections)),
     ]
 
     public var snapshot: Snapshot
@@ -1220,7 +1222,7 @@ public final class ConversationDetailQuery: GraphQLQuery {
           GraphQLField("customerId", type: .scalar(String.self)),
           GraphQLField("userId", type: .scalar(String.self)),
           GraphQLField("internal", type: .scalar(Bool.self)),
-          GraphQLField("createdAt", type: .scalar(Int.self)),
+          GraphQLField("createdAt", type: .scalar(SDate.self)),
           GraphQLField("user", type: .object(User.selections)),
         ]
 
@@ -1230,7 +1232,7 @@ public final class ConversationDetailQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, formWidgetData: JSON? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, `internal`: Bool? = nil, createdAt: Int? = nil, user: User? = nil) {
+        public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, formWidgetData: JSON? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, `internal`: Bool? = nil, createdAt: SDate? = nil, user: User? = nil) {
           self.init(snapshot: ["__typename": "ConversationMessage", "_id": id, "content": content, "attachments": attachments, "formWidgetData": formWidgetData, "conversationId": conversationId, "customerId": customerId, "userId": userId, "internal": `internal`, "createdAt": createdAt, "user": user.flatMap { (value: User) -> Snapshot in value.snapshot }])
         }
 
@@ -1315,9 +1317,9 @@ public final class ConversationDetailQuery: GraphQLQuery {
           }
         }
 
-        public var createdAt: Int? {
+        public var createdAt: SDate? {
           get {
-            return snapshot["createdAt"] as? Int
+            return snapshot["createdAt"] as? SDate
           }
           set {
             snapshot.updateValue(newValue, forKey: "createdAt")
@@ -1752,7 +1754,7 @@ public final class CompanyDetailQuery: GraphQLQuery {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("_id", type: .nonNull(.scalar(String.self))),
-        GraphQLField("createdAt", type: .scalar(Int.self)),
+        GraphQLField("createdAt", type: .scalar(SDate.self)),
         GraphQLField("modifiedAt", type: .scalar(Int.self)),
         GraphQLField("avatar", type: .scalar(String.self)),
         GraphQLField("primaryName", type: .scalar(String.self)),
@@ -1783,7 +1785,7 @@ public final class CompanyDetailQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, createdAt: Int? = nil, modifiedAt: Int? = nil, avatar: String? = nil, primaryName: String? = nil, names: [String?]? = nil, size: Int? = nil, industry: String? = nil, plan: String? = nil, parentCompanyId: String? = nil, email: String? = nil, ownerId: String? = nil, phone: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, businessType: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, parentCompany: ParentCompany? = nil, customFieldsData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil) {
+      public init(id: String, createdAt: SDate? = nil, modifiedAt: Int? = nil, avatar: String? = nil, primaryName: String? = nil, names: [String?]? = nil, size: Int? = nil, industry: String? = nil, plan: String? = nil, parentCompanyId: String? = nil, email: String? = nil, ownerId: String? = nil, phone: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, businessType: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, parentCompany: ParentCompany? = nil, customFieldsData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil) {
         self.init(snapshot: ["__typename": "Company", "_id": id, "createdAt": createdAt, "modifiedAt": modifiedAt, "avatar": avatar, "primaryName": primaryName, "names": names, "size": size, "industry": industry, "plan": plan, "parentCompanyId": parentCompanyId, "email": email, "ownerId": ownerId, "phone": phone, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "businessType": businessType, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "parentCompany": parentCompany.flatMap { (value: ParentCompany) -> Snapshot in value.snapshot }, "customFieldsData": customFieldsData, "tagIds": tagIds, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
       }
 
@@ -1805,9 +1807,9 @@ public final class CompanyDetailQuery: GraphQLQuery {
         }
       }
 
-      public var createdAt: Int? {
+      public var createdAt: SDate? {
         get {
-          return snapshot["createdAt"] as? Int
+          return snapshot["createdAt"] as? SDate
         }
         set {
           snapshot.updateValue(newValue, forKey: "createdAt")
@@ -2415,8 +2417,10 @@ public final class CustomersQuery: GraphQLQuery {
         GraphQLField("_id", type: .nonNull(.scalar(String.self))),
         GraphQLField("firstName", type: .scalar(String.self)),
         GraphQLField("lastName", type: .scalar(String.self)),
-        GraphQLField("email", type: .scalar(String.self)),
-        GraphQLField("phone", type: .scalar(String.self)),
+        GraphQLField("primaryEmail", type: .scalar(String.self)),
+        GraphQLField("primaryPhone", type: .scalar(String.self)),
+        GraphQLField("facebookData", type: .scalar(JSON.self)),
+        GraphQLField("twitterData", type: .scalar(JSON.self)),
         GraphQLField("getTags", type: .list(.object(GetTag.selections))),
       ]
 
@@ -2426,8 +2430,8 @@ public final class CustomersQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, getTags: [GetTag?]? = nil) {
-        self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
+      public init(id: String, firstName: String? = nil, lastName: String? = nil, primaryEmail: String? = nil, primaryPhone: String? = nil, facebookData: JSON? = nil, twitterData: JSON? = nil, getTags: [GetTag?]? = nil) {
+        self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "primaryEmail": primaryEmail, "primaryPhone": primaryPhone, "facebookData": facebookData, "twitterData": twitterData, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
       }
 
       public var __typename: String {
@@ -2466,21 +2470,39 @@ public final class CustomersQuery: GraphQLQuery {
         }
       }
 
-      public var email: String? {
+      public var primaryEmail: String? {
         get {
-          return snapshot["email"] as? String
+          return snapshot["primaryEmail"] as? String
         }
         set {
-          snapshot.updateValue(newValue, forKey: "email")
+          snapshot.updateValue(newValue, forKey: "primaryEmail")
         }
       }
 
-      public var phone: String? {
+      public var primaryPhone: String? {
         get {
-          return snapshot["phone"] as? String
+          return snapshot["primaryPhone"] as? String
         }
         set {
-          snapshot.updateValue(newValue, forKey: "phone")
+          snapshot.updateValue(newValue, forKey: "primaryPhone")
+        }
+      }
+
+      public var facebookData: JSON? {
+        get {
+          return snapshot["facebookData"] as? JSON
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "facebookData")
+        }
+      }
+
+      public var twitterData: JSON? {
+        get {
+          return snapshot["twitterData"] as? JSON
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "twitterData")
         }
       }
 
@@ -3008,7 +3030,7 @@ public final class CustomerDetailQuery: GraphQLQuery {
         GraphQLField("ownerId", type: .scalar(String.self)),
         GraphQLField("owner", type: .object(Owner.selections)),
         GraphQLField("integrationId", type: .scalar(String.self)),
-        GraphQLField("createdAt", type: .scalar(Int.self)),
+        GraphQLField("createdAt", type: .scalar(SDate.self)),
         GraphQLField("remoteAddress", type: .scalar(String.self)),
         GraphQLField("location", type: .scalar(JSON.self)),
         GraphQLField("customFieldsData", type: .scalar(JSON.self)),
@@ -3029,7 +3051,7 @@ public final class CustomerDetailQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, firstName: String? = nil, lastName: String? = nil, avatar: String? = nil, primaryEmail: String? = nil, emails: [String?]? = nil, primaryPhone: String? = nil, phones: [String?]? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, ownerId: String? = nil, owner: Owner? = nil, integrationId: String? = nil, createdAt: Int? = nil, remoteAddress: String? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil, integration: Integration? = nil, getMessengerCustomData: JSON? = nil, companies: [Company?]? = nil, conversations: [Conversation?]? = nil) {
+      public init(id: String, firstName: String? = nil, lastName: String? = nil, avatar: String? = nil, primaryEmail: String? = nil, emails: [String?]? = nil, primaryPhone: String? = nil, phones: [String?]? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, ownerId: String? = nil, owner: Owner? = nil, integrationId: String? = nil, createdAt: SDate? = nil, remoteAddress: String? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil, integration: Integration? = nil, getMessengerCustomData: JSON? = nil, companies: [Company?]? = nil, conversations: [Conversation?]? = nil) {
         self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "avatar": avatar, "primaryEmail": primaryEmail, "emails": emails, "primaryPhone": primaryPhone, "phones": phones, "isUser": isUser, "visitorContactInfo": visitorContactInfo, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "ownerId": ownerId, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "integrationId": integrationId, "createdAt": createdAt, "remoteAddress": remoteAddress, "location": location, "customFieldsData": customFieldsData, "messengerData": messengerData, "twitterData": twitterData, "facebookData": facebookData, "tagIds": tagIds, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "getMessengerCustomData": getMessengerCustomData, "companies": companies.flatMap { (value: [Company?]) -> [Snapshot?] in value.map { (value: Company?) -> Snapshot? in value.flatMap { (value: Company) -> Snapshot in value.snapshot } } }, "conversations": conversations.flatMap { (value: [Conversation?]) -> [Snapshot?] in value.map { (value: Conversation?) -> Snapshot? in value.flatMap { (value: Conversation) -> Snapshot in value.snapshot } } }])
       }
 
@@ -3231,9 +3253,9 @@ public final class CustomerDetailQuery: GraphQLQuery {
         }
       }
 
-      public var createdAt: Int? {
+      public var createdAt: SDate? {
         get {
-          return snapshot["createdAt"] as? Int
+          return snapshot["createdAt"] as? SDate
         }
         set {
           snapshot.updateValue(newValue, forKey: "createdAt")
@@ -3742,7 +3764,7 @@ public final class CustomerDetailQuery: GraphQLQuery {
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
           GraphQLField("_id", type: .nonNull(.scalar(String.self))),
           GraphQLField("content", type: .scalar(String.self)),
-          GraphQLField("createdAt", type: .scalar(Int.self)),
+          GraphQLField("createdAt", type: .scalar(SDate.self)),
           GraphQLField("assignedUser", type: .object(AssignedUser.selections)),
           GraphQLField("integration", type: .object(Integration.selections)),
           GraphQLField("tags", type: .list(.object(Tag.selections))),
@@ -3755,7 +3777,7 @@ public final class CustomerDetailQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(id: String, content: String? = nil, createdAt: Int? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil) {
+        public init(id: String, content: String? = nil, createdAt: SDate? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil) {
           self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "createdAt": createdAt, "assignedUser": assignedUser.flatMap { (value: AssignedUser) -> Snapshot in value.snapshot }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "tags": tags.flatMap { (value: [Tag?]) -> [Snapshot?] in value.map { (value: Tag?) -> Snapshot? in value.flatMap { (value: Tag) -> Snapshot in value.snapshot } } }, "readUserIds": readUserIds])
         }
 
@@ -3786,9 +3808,9 @@ public final class CustomerDetailQuery: GraphQLQuery {
           }
         }
 
-        public var createdAt: Int? {
+        public var createdAt: SDate? {
           get {
-            return snapshot["createdAt"] as? Int
+            return snapshot["createdAt"] as? SDate
           }
           set {
             snapshot.updateValue(newValue, forKey: "createdAt")
@@ -4615,7 +4637,7 @@ public final class ConversationsQuery: GraphQLQuery {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("_id", type: .nonNull(.scalar(String.self))),
         GraphQLField("content", type: .scalar(String.self)),
-        GraphQLField("createdAt", type: .scalar(Int.self)),
+        GraphQLField("createdAt", type: .scalar(SDate.self)),
         GraphQLField("customerId", type: .scalar(String.self)),
         GraphQLField("customer", type: .object(Customer.selections)),
       ]
@@ -4626,7 +4648,7 @@ public final class ConversationsQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, content: String? = nil, createdAt: Int? = nil, customerId: String? = nil, customer: Customer? = nil) {
+      public init(id: String, content: String? = nil, createdAt: SDate? = nil, customerId: String? = nil, customer: Customer? = nil) {
         self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "createdAt": createdAt, "customerId": customerId, "customer": customer.flatMap { (value: Customer) -> Snapshot in value.snapshot }])
       }
 
@@ -4657,9 +4679,9 @@ public final class ConversationsQuery: GraphQLQuery {
         }
       }
 
-      public var createdAt: Int? {
+      public var createdAt: SDate? {
         get {
-          return snapshot["createdAt"] as? Int
+          return snapshot["createdAt"] as? SDate
         }
         set {
           snapshot.updateValue(newValue, forKey: "createdAt")
@@ -4717,7 +4739,7 @@ public final class ConversationsQuery: GraphQLQuery {
           GraphQLField("email", type: .scalar(String.self)),
           GraphQLField("phone", type: .scalar(String.self)),
           GraphQLField("isUser", type: .scalar(Bool.self)),
-          GraphQLField("createdAt", type: .scalar(Int.self)),
+          GraphQLField("createdAt", type: .scalar(SDate.self)),
           GraphQLField("remoteAddress", type: .scalar(String.self)),
           GraphQLField("internalNotes", type: .scalar(JSON.self)),
           GraphQLField("location", type: .scalar(JSON.self)),
@@ -4734,7 +4756,7 @@ public final class ConversationsQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(integrationId: String? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, createdAt: Int? = nil, remoteAddress: String? = nil, internalNotes: JSON? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, getIntegrationData: JSON? = nil) {
+        public init(integrationId: String? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, createdAt: SDate? = nil, remoteAddress: String? = nil, internalNotes: JSON? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, getIntegrationData: JSON? = nil) {
           self.init(snapshot: ["__typename": "Customer", "integrationId": integrationId, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "createdAt": createdAt, "remoteAddress": remoteAddress, "internalNotes": internalNotes, "location": location, "customFieldsData": customFieldsData, "messengerData": messengerData, "twitterData": twitterData, "facebookData": facebookData, "getIntegrationData": getIntegrationData])
         }
 
@@ -4801,9 +4823,9 @@ public final class ConversationsQuery: GraphQLQuery {
           }
         }
 
-        public var createdAt: Int? {
+        public var createdAt: SDate? {
           get {
-            return snapshot["createdAt"] as? Int
+            return snapshot["createdAt"] as? SDate
           }
           set {
             snapshot.updateValue(newValue, forKey: "createdAt")
@@ -4958,7 +4980,7 @@ public final class ObjectsQuery: GraphQLQuery {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("_id", type: .nonNull(.scalar(String.self))),
         GraphQLField("content", type: .scalar(String.self)),
-        GraphQLField("updatedAt", type: .scalar(Int.self)),
+        GraphQLField("updatedAt", type: .scalar(SDate.self)),
         GraphQLField("status", type: .scalar(String.self)),
         GraphQLField("assignedUser", type: .object(AssignedUser.selections)),
         GraphQLField("integration", type: .object(Integration.selections)),
@@ -4976,7 +4998,7 @@ public final class ObjectsQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, content: String? = nil, updatedAt: Int? = nil, status: String? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, customer: Customer? = nil, tagIds: [String?]? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil, twitterData: TwitterDatum? = nil, facebookData: FacebookDatum? = nil) {
+      public init(id: String, content: String? = nil, updatedAt: SDate? = nil, status: String? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, customer: Customer? = nil, tagIds: [String?]? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil, twitterData: TwitterDatum? = nil, facebookData: FacebookDatum? = nil) {
         self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "updatedAt": updatedAt, "status": status, "assignedUser": assignedUser.flatMap { (value: AssignedUser) -> Snapshot in value.snapshot }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "customer": customer.flatMap { (value: Customer) -> Snapshot in value.snapshot }, "tagIds": tagIds, "tags": tags.flatMap { (value: [Tag?]) -> [Snapshot?] in value.map { (value: Tag?) -> Snapshot? in value.flatMap { (value: Tag) -> Snapshot in value.snapshot } } }, "readUserIds": readUserIds, "twitterData": twitterData.flatMap { (value: TwitterDatum) -> Snapshot in value.snapshot }, "facebookData": facebookData.flatMap { (value: FacebookDatum) -> Snapshot in value.snapshot }])
       }
 
@@ -5007,9 +5029,9 @@ public final class ObjectsQuery: GraphQLQuery {
         }
       }
 
-      public var updatedAt: Int? {
+      public var updatedAt: SDate? {
         get {
-          return snapshot["updatedAt"] as? Int
+          return snapshot["updatedAt"] as? SDate
         }
         set {
           snapshot.updateValue(newValue, forKey: "updatedAt")
@@ -5723,7 +5745,7 @@ public final class GetLastQuery: GraphQLQuery {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("_id", type: .nonNull(.scalar(String.self))),
         GraphQLField("content", type: .scalar(String.self)),
-        GraphQLField("updatedAt", type: .scalar(Int.self)),
+        GraphQLField("updatedAt", type: .scalar(SDate.self)),
         GraphQLField("status", type: .scalar(String.self)),
         GraphQLField("assignedUser", type: .object(AssignedUser.selections)),
         GraphQLField("integration", type: .object(Integration.selections)),
@@ -5741,7 +5763,7 @@ public final class GetLastQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(id: String, content: String? = nil, updatedAt: Int? = nil, status: String? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, customer: Customer? = nil, tagIds: [String?]? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil, twitterData: TwitterDatum? = nil, facebookData: FacebookDatum? = nil) {
+      public init(id: String, content: String? = nil, updatedAt: SDate? = nil, status: String? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, customer: Customer? = nil, tagIds: [String?]? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil, twitterData: TwitterDatum? = nil, facebookData: FacebookDatum? = nil) {
         self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "updatedAt": updatedAt, "status": status, "assignedUser": assignedUser.flatMap { (value: AssignedUser) -> Snapshot in value.snapshot }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "customer": customer.flatMap { (value: Customer) -> Snapshot in value.snapshot }, "tagIds": tagIds, "tags": tags.flatMap { (value: [Tag?]) -> [Snapshot?] in value.map { (value: Tag?) -> Snapshot? in value.flatMap { (value: Tag) -> Snapshot in value.snapshot } } }, "readUserIds": readUserIds, "twitterData": twitterData.flatMap { (value: TwitterDatum) -> Snapshot in value.snapshot }, "facebookData": facebookData.flatMap { (value: FacebookDatum) -> Snapshot in value.snapshot }])
       }
 
@@ -5772,9 +5794,9 @@ public final class GetLastQuery: GraphQLQuery {
         }
       }
 
-      public var updatedAt: Int? {
+      public var updatedAt: SDate? {
         get {
-          return snapshot["updatedAt"] as? Int
+          return snapshot["updatedAt"] as? SDate
         }
         set {
           snapshot.updateValue(newValue, forKey: "updatedAt")
@@ -8084,7 +8106,7 @@ public struct MessageDetail: GraphQLFragment {
     GraphQLField("customerId", type: .scalar(String.self)),
     GraphQLField("userId", type: .scalar(String.self)),
     GraphQLField("internal", type: .scalar(Bool.self)),
-    GraphQLField("createdAt", type: .scalar(Int.self)),
+    GraphQLField("createdAt", type: .scalar(SDate.self)),
     GraphQLField("user", type: .object(User.selections)),
   ]
 
@@ -8094,7 +8116,7 @@ public struct MessageDetail: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, formWidgetData: JSON? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, `internal`: Bool? = nil, createdAt: Int? = nil, user: User? = nil) {
+  public init(id: String, content: String? = nil, attachments: [JSON?]? = nil, formWidgetData: JSON? = nil, conversationId: String? = nil, customerId: String? = nil, userId: String? = nil, `internal`: Bool? = nil, createdAt: SDate? = nil, user: User? = nil) {
     self.init(snapshot: ["__typename": "ConversationMessage", "_id": id, "content": content, "attachments": attachments, "formWidgetData": formWidgetData, "conversationId": conversationId, "customerId": customerId, "userId": userId, "internal": `internal`, "createdAt": createdAt, "user": user.flatMap { (value: User) -> Snapshot in value.snapshot }])
   }
 
@@ -8179,9 +8201,9 @@ public struct MessageDetail: GraphQLFragment {
     }
   }
 
-  public var createdAt: Int? {
+  public var createdAt: SDate? {
     get {
-      return snapshot["createdAt"] as? Int
+      return snapshot["createdAt"] as? SDate
     }
     set {
       snapshot.updateValue(newValue, forKey: "createdAt")
@@ -8324,7 +8346,7 @@ public struct MessageDetail: GraphQLFragment {
 
 public struct CustomerList: GraphQLFragment {
   public static let fragmentString =
-    "fragment CustomerList on Customer {\n  __typename\n  _id\n  firstName\n  lastName\n  email\n  phone\n  getTags {\n    __typename\n    _id\n    name\n    colorCode\n  }\n}"
+    "fragment CustomerList on Customer {\n  __typename\n  _id\n  firstName\n  lastName\n  primaryEmail\n  primaryPhone\n  facebookData\n  twitterData\n  getTags {\n    __typename\n    _id\n    name\n    colorCode\n  }\n}"
 
   public static let possibleTypes = ["Customer"]
 
@@ -8333,8 +8355,10 @@ public struct CustomerList: GraphQLFragment {
     GraphQLField("_id", type: .nonNull(.scalar(String.self))),
     GraphQLField("firstName", type: .scalar(String.self)),
     GraphQLField("lastName", type: .scalar(String.self)),
-    GraphQLField("email", type: .scalar(String.self)),
-    GraphQLField("phone", type: .scalar(String.self)),
+    GraphQLField("primaryEmail", type: .scalar(String.self)),
+    GraphQLField("primaryPhone", type: .scalar(String.self)),
+    GraphQLField("facebookData", type: .scalar(JSON.self)),
+    GraphQLField("twitterData", type: .scalar(JSON.self)),
     GraphQLField("getTags", type: .list(.object(GetTag.selections))),
   ]
 
@@ -8344,8 +8368,8 @@ public struct CustomerList: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, getTags: [GetTag?]? = nil) {
-    self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
+  public init(id: String, firstName: String? = nil, lastName: String? = nil, primaryEmail: String? = nil, primaryPhone: String? = nil, facebookData: JSON? = nil, twitterData: JSON? = nil, getTags: [GetTag?]? = nil) {
+    self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "primaryEmail": primaryEmail, "primaryPhone": primaryPhone, "facebookData": facebookData, "twitterData": twitterData, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
   }
 
   public var __typename: String {
@@ -8384,21 +8408,39 @@ public struct CustomerList: GraphQLFragment {
     }
   }
 
-  public var email: String? {
+  public var primaryEmail: String? {
     get {
-      return snapshot["email"] as? String
+      return snapshot["primaryEmail"] as? String
     }
     set {
-      snapshot.updateValue(newValue, forKey: "email")
+      snapshot.updateValue(newValue, forKey: "primaryEmail")
     }
   }
 
-  public var phone: String? {
+  public var primaryPhone: String? {
     get {
-      return snapshot["phone"] as? String
+      return snapshot["primaryPhone"] as? String
     }
     set {
-      snapshot.updateValue(newValue, forKey: "phone")
+      snapshot.updateValue(newValue, forKey: "primaryPhone")
+    }
+  }
+
+  public var facebookData: JSON? {
+    get {
+      return snapshot["facebookData"] as? JSON
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "facebookData")
+    }
+  }
+
+  public var twitterData: JSON? {
+    get {
+      return snapshot["twitterData"] as? JSON
+    }
+    set {
+      snapshot.updateValue(newValue, forKey: "twitterData")
     }
   }
 
@@ -8484,7 +8526,7 @@ public struct CustomerDetail: GraphQLFragment {
     GraphQLField("phone", type: .scalar(String.self)),
     GraphQLField("isUser", type: .scalar(Bool.self)),
     GraphQLField("integrationId", type: .scalar(String.self)),
-    GraphQLField("createdAt", type: .scalar(Int.self)),
+    GraphQLField("createdAt", type: .scalar(SDate.self)),
     GraphQLField("remoteAddress", type: .scalar(String.self)),
     GraphQLField("location", type: .scalar(JSON.self)),
     GraphQLField("visitorContactInfo", type: .scalar(JSON.self)),
@@ -8511,7 +8553,7 @@ public struct CustomerDetail: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, integrationId: String? = nil, createdAt: Int? = nil, remoteAddress: String? = nil, location: JSON? = nil, visitorContactInfo: JSON? = nil, customFieldsData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, ownerId: String? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil) {
+  public init(id: String, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, integrationId: String? = nil, createdAt: SDate? = nil, remoteAddress: String? = nil, location: JSON? = nil, visitorContactInfo: JSON? = nil, customFieldsData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, ownerId: String? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil) {
     self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "integrationId": integrationId, "createdAt": createdAt, "remoteAddress": remoteAddress, "location": location, "visitorContactInfo": visitorContactInfo, "customFieldsData": customFieldsData, "twitterData": twitterData, "facebookData": facebookData, "ownerId": ownerId, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "tagIds": tagIds, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
   }
 
@@ -8587,9 +8629,9 @@ public struct CustomerDetail: GraphQLFragment {
     }
   }
 
-  public var createdAt: Int? {
+  public var createdAt: SDate? {
     get {
-      return snapshot["createdAt"] as? Int
+      return snapshot["createdAt"] as? SDate
     }
     set {
       snapshot.updateValue(newValue, forKey: "createdAt")
@@ -9143,7 +9185,7 @@ public struct CompanyDetail: GraphQLFragment {
   public static let selections: [GraphQLSelection] = [
     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
     GraphQLField("_id", type: .nonNull(.scalar(String.self))),
-    GraphQLField("createdAt", type: .scalar(Int.self)),
+    GraphQLField("createdAt", type: .scalar(SDate.self)),
     GraphQLField("modifiedAt", type: .scalar(Int.self)),
     GraphQLField("avatar", type: .scalar(String.self)),
     GraphQLField("primaryName", type: .scalar(String.self)),
@@ -9174,7 +9216,7 @@ public struct CompanyDetail: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, createdAt: Int? = nil, modifiedAt: Int? = nil, avatar: String? = nil, primaryName: String? = nil, names: [String?]? = nil, size: Int? = nil, industry: String? = nil, plan: String? = nil, parentCompanyId: String? = nil, email: String? = nil, ownerId: String? = nil, phone: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, businessType: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, parentCompany: ParentCompany? = nil, customFieldsData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil) {
+  public init(id: String, createdAt: SDate? = nil, modifiedAt: Int? = nil, avatar: String? = nil, primaryName: String? = nil, names: [String?]? = nil, size: Int? = nil, industry: String? = nil, plan: String? = nil, parentCompanyId: String? = nil, email: String? = nil, ownerId: String? = nil, phone: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, businessType: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, owner: Owner? = nil, parentCompany: ParentCompany? = nil, customFieldsData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil) {
     self.init(snapshot: ["__typename": "Company", "_id": id, "createdAt": createdAt, "modifiedAt": modifiedAt, "avatar": avatar, "primaryName": primaryName, "names": names, "size": size, "industry": industry, "plan": plan, "parentCompanyId": parentCompanyId, "email": email, "ownerId": ownerId, "phone": phone, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "businessType": businessType, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "parentCompany": parentCompany.flatMap { (value: ParentCompany) -> Snapshot in value.snapshot }, "customFieldsData": customFieldsData, "tagIds": tagIds, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }])
   }
 
@@ -9196,9 +9238,9 @@ public struct CompanyDetail: GraphQLFragment {
     }
   }
 
-  public var createdAt: Int? {
+  public var createdAt: SDate? {
     get {
-      return snapshot["createdAt"] as? Int
+      return snapshot["createdAt"] as? SDate
     }
     set {
       snapshot.updateValue(newValue, forKey: "createdAt")
@@ -9708,7 +9750,7 @@ public struct CustomerInfo: GraphQLFragment {
     GraphQLField("ownerId", type: .scalar(String.self)),
     GraphQLField("owner", type: .object(Owner.selections)),
     GraphQLField("integrationId", type: .scalar(String.self)),
-    GraphQLField("createdAt", type: .scalar(Int.self)),
+    GraphQLField("createdAt", type: .scalar(SDate.self)),
     GraphQLField("remoteAddress", type: .scalar(String.self)),
     GraphQLField("location", type: .scalar(JSON.self)),
     GraphQLField("customFieldsData", type: .scalar(JSON.self)),
@@ -9729,7 +9771,7 @@ public struct CustomerInfo: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, firstName: String? = nil, lastName: String? = nil, avatar: String? = nil, primaryEmail: String? = nil, emails: [String?]? = nil, primaryPhone: String? = nil, phones: [String?]? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, ownerId: String? = nil, owner: Owner? = nil, integrationId: String? = nil, createdAt: Int? = nil, remoteAddress: String? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil, integration: Integration? = nil, getMessengerCustomData: JSON? = nil, companies: [Company?]? = nil, conversations: [Conversation?]? = nil) {
+  public init(id: String, firstName: String? = nil, lastName: String? = nil, avatar: String? = nil, primaryEmail: String? = nil, emails: [String?]? = nil, primaryPhone: String? = nil, phones: [String?]? = nil, isUser: Bool? = nil, visitorContactInfo: JSON? = nil, position: String? = nil, department: String? = nil, leadStatus: String? = nil, lifecycleState: String? = nil, hasAuthority: String? = nil, description: String? = nil, doNotDisturb: String? = nil, links: Link? = nil, ownerId: String? = nil, owner: Owner? = nil, integrationId: String? = nil, createdAt: SDate? = nil, remoteAddress: String? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, tagIds: [String?]? = nil, getTags: [GetTag?]? = nil, integration: Integration? = nil, getMessengerCustomData: JSON? = nil, companies: [Company?]? = nil, conversations: [Conversation?]? = nil) {
     self.init(snapshot: ["__typename": "Customer", "_id": id, "firstName": firstName, "lastName": lastName, "avatar": avatar, "primaryEmail": primaryEmail, "emails": emails, "primaryPhone": primaryPhone, "phones": phones, "isUser": isUser, "visitorContactInfo": visitorContactInfo, "position": position, "department": department, "leadStatus": leadStatus, "lifecycleState": lifecycleState, "hasAuthority": hasAuthority, "description": description, "doNotDisturb": doNotDisturb, "links": links.flatMap { (value: Link) -> Snapshot in value.snapshot }, "ownerId": ownerId, "owner": owner.flatMap { (value: Owner) -> Snapshot in value.snapshot }, "integrationId": integrationId, "createdAt": createdAt, "remoteAddress": remoteAddress, "location": location, "customFieldsData": customFieldsData, "messengerData": messengerData, "twitterData": twitterData, "facebookData": facebookData, "tagIds": tagIds, "getTags": getTags.flatMap { (value: [GetTag?]) -> [Snapshot?] in value.map { (value: GetTag?) -> Snapshot? in value.flatMap { (value: GetTag) -> Snapshot in value.snapshot } } }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "getMessengerCustomData": getMessengerCustomData, "companies": companies.flatMap { (value: [Company?]) -> [Snapshot?] in value.map { (value: Company?) -> Snapshot? in value.flatMap { (value: Company) -> Snapshot in value.snapshot } } }, "conversations": conversations.flatMap { (value: [Conversation?]) -> [Snapshot?] in value.map { (value: Conversation?) -> Snapshot? in value.flatMap { (value: Conversation) -> Snapshot in value.snapshot } } }])
   }
 
@@ -9931,9 +9973,9 @@ public struct CustomerInfo: GraphQLFragment {
     }
   }
 
-  public var createdAt: Int? {
+  public var createdAt: SDate? {
     get {
-      return snapshot["createdAt"] as? Int
+      return snapshot["createdAt"] as? SDate
     }
     set {
       snapshot.updateValue(newValue, forKey: "createdAt")
@@ -10420,7 +10462,7 @@ public struct CustomerInfo: GraphQLFragment {
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
       GraphQLField("_id", type: .nonNull(.scalar(String.self))),
       GraphQLField("content", type: .scalar(String.self)),
-      GraphQLField("createdAt", type: .scalar(Int.self)),
+      GraphQLField("createdAt", type: .scalar(SDate.self)),
       GraphQLField("assignedUser", type: .object(AssignedUser.selections)),
       GraphQLField("integration", type: .object(Integration.selections)),
       GraphQLField("tags", type: .list(.object(Tag.selections))),
@@ -10433,7 +10475,7 @@ public struct CustomerInfo: GraphQLFragment {
       self.snapshot = snapshot
     }
 
-    public init(id: String, content: String? = nil, createdAt: Int? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil) {
+    public init(id: String, content: String? = nil, createdAt: SDate? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil) {
       self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "createdAt": createdAt, "assignedUser": assignedUser.flatMap { (value: AssignedUser) -> Snapshot in value.snapshot }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "tags": tags.flatMap { (value: [Tag?]) -> [Snapshot?] in value.map { (value: Tag?) -> Snapshot? in value.flatMap { (value: Tag) -> Snapshot in value.snapshot } } }, "readUserIds": readUserIds])
     }
 
@@ -10464,9 +10506,9 @@ public struct CustomerInfo: GraphQLFragment {
       }
     }
 
-    public var createdAt: Int? {
+    public var createdAt: SDate? {
       get {
-        return snapshot["createdAt"] as? Int
+        return snapshot["createdAt"] as? SDate
       }
       set {
         snapshot.updateValue(newValue, forKey: "createdAt")
@@ -11213,7 +11255,7 @@ public struct ConversationDetail: GraphQLFragment {
     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
     GraphQLField("_id", type: .nonNull(.scalar(String.self))),
     GraphQLField("content", type: .scalar(String.self)),
-    GraphQLField("createdAt", type: .scalar(Int.self)),
+    GraphQLField("createdAt", type: .scalar(SDate.self)),
     GraphQLField("customerId", type: .scalar(String.self)),
     GraphQLField("customer", type: .object(Customer.selections)),
   ]
@@ -11224,7 +11266,7 @@ public struct ConversationDetail: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, content: String? = nil, createdAt: Int? = nil, customerId: String? = nil, customer: Customer? = nil) {
+  public init(id: String, content: String? = nil, createdAt: SDate? = nil, customerId: String? = nil, customer: Customer? = nil) {
     self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "createdAt": createdAt, "customerId": customerId, "customer": customer.flatMap { (value: Customer) -> Snapshot in value.snapshot }])
   }
 
@@ -11255,9 +11297,9 @@ public struct ConversationDetail: GraphQLFragment {
     }
   }
 
-  public var createdAt: Int? {
+  public var createdAt: SDate? {
     get {
-      return snapshot["createdAt"] as? Int
+      return snapshot["createdAt"] as? SDate
     }
     set {
       snapshot.updateValue(newValue, forKey: "createdAt")
@@ -11293,7 +11335,7 @@ public struct ConversationDetail: GraphQLFragment {
       GraphQLField("email", type: .scalar(String.self)),
       GraphQLField("phone", type: .scalar(String.self)),
       GraphQLField("isUser", type: .scalar(Bool.self)),
-      GraphQLField("createdAt", type: .scalar(Int.self)),
+      GraphQLField("createdAt", type: .scalar(SDate.self)),
       GraphQLField("remoteAddress", type: .scalar(String.self)),
       GraphQLField("internalNotes", type: .scalar(JSON.self)),
       GraphQLField("location", type: .scalar(JSON.self)),
@@ -11310,7 +11352,7 @@ public struct ConversationDetail: GraphQLFragment {
       self.snapshot = snapshot
     }
 
-    public init(integrationId: String? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, createdAt: Int? = nil, remoteAddress: String? = nil, internalNotes: JSON? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, getIntegrationData: JSON? = nil) {
+    public init(integrationId: String? = nil, firstName: String? = nil, lastName: String? = nil, email: String? = nil, phone: String? = nil, isUser: Bool? = nil, createdAt: SDate? = nil, remoteAddress: String? = nil, internalNotes: JSON? = nil, location: JSON? = nil, customFieldsData: JSON? = nil, messengerData: JSON? = nil, twitterData: JSON? = nil, facebookData: JSON? = nil, getIntegrationData: JSON? = nil) {
       self.init(snapshot: ["__typename": "Customer", "integrationId": integrationId, "firstName": firstName, "lastName": lastName, "email": email, "phone": phone, "isUser": isUser, "createdAt": createdAt, "remoteAddress": remoteAddress, "internalNotes": internalNotes, "location": location, "customFieldsData": customFieldsData, "messengerData": messengerData, "twitterData": twitterData, "facebookData": facebookData, "getIntegrationData": getIntegrationData])
     }
 
@@ -11377,9 +11419,9 @@ public struct ConversationDetail: GraphQLFragment {
       }
     }
 
-    public var createdAt: Int? {
+    public var createdAt: SDate? {
       get {
-        return snapshot["createdAt"] as? Int
+        return snapshot["createdAt"] as? SDate
       }
       set {
         snapshot.updateValue(newValue, forKey: "createdAt")
@@ -11470,7 +11512,7 @@ public struct ObjectDetail: GraphQLFragment {
     GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
     GraphQLField("_id", type: .nonNull(.scalar(String.self))),
     GraphQLField("content", type: .scalar(String.self)),
-    GraphQLField("updatedAt", type: .scalar(Int.self)),
+    GraphQLField("updatedAt", type: .scalar(SDate.self)),
     GraphQLField("status", type: .scalar(String.self)),
     GraphQLField("assignedUser", type: .object(AssignedUser.selections)),
     GraphQLField("integration", type: .object(Integration.selections)),
@@ -11488,7 +11530,7 @@ public struct ObjectDetail: GraphQLFragment {
     self.snapshot = snapshot
   }
 
-  public init(id: String, content: String? = nil, updatedAt: Int? = nil, status: String? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, customer: Customer? = nil, tagIds: [String?]? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil, twitterData: TwitterDatum? = nil, facebookData: FacebookDatum? = nil) {
+  public init(id: String, content: String? = nil, updatedAt: SDate? = nil, status: String? = nil, assignedUser: AssignedUser? = nil, integration: Integration? = nil, customer: Customer? = nil, tagIds: [String?]? = nil, tags: [Tag?]? = nil, readUserIds: [String?]? = nil, twitterData: TwitterDatum? = nil, facebookData: FacebookDatum? = nil) {
     self.init(snapshot: ["__typename": "Conversation", "_id": id, "content": content, "updatedAt": updatedAt, "status": status, "assignedUser": assignedUser.flatMap { (value: AssignedUser) -> Snapshot in value.snapshot }, "integration": integration.flatMap { (value: Integration) -> Snapshot in value.snapshot }, "customer": customer.flatMap { (value: Customer) -> Snapshot in value.snapshot }, "tagIds": tagIds, "tags": tags.flatMap { (value: [Tag?]) -> [Snapshot?] in value.map { (value: Tag?) -> Snapshot? in value.flatMap { (value: Tag) -> Snapshot in value.snapshot } } }, "readUserIds": readUserIds, "twitterData": twitterData.flatMap { (value: TwitterDatum) -> Snapshot in value.snapshot }, "facebookData": facebookData.flatMap { (value: FacebookDatum) -> Snapshot in value.snapshot }])
   }
 
@@ -11519,9 +11561,9 @@ public struct ObjectDetail: GraphQLFragment {
     }
   }
 
-  public var updatedAt: Int? {
+  public var updatedAt: SDate? {
     get {
-      return snapshot["updatedAt"] as? Int
+      return snapshot["updatedAt"] as? SDate
     }
     set {
       snapshot.updateValue(newValue, forKey: "updatedAt")

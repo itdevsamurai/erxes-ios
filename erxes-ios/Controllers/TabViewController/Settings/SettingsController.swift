@@ -15,8 +15,7 @@ class SettingsController: UIViewController {
     var autoCompleteCharacterCount = 0
     var timer = Timer()
     var brands = [BrandDetail]()
-    let signatureView = EmailSignaturesModalView()
-    let notificationView = NotificationSettingsModalView()
+    
     var profileView:ProfileView?
     
     
@@ -216,17 +215,7 @@ extension SettingsController: UITableViewDataSource {
 
     }
     
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-//
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        return self.profileView
-//    }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableViewAutomaticDimension
-//    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
@@ -246,84 +235,6 @@ extension SettingsController: UITableViewDataSource {
 }
 
 
-extension SettingsController: UITextFieldDelegate {
-    
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        var subString = (textField.text!.capitalized as NSString).replacingCharacters(in: range, with: string) // 2
-        subString = formatSubstring(subString: subString)
-        print(subString)
-        if subString.count == 0 {
-            resetValues()
-        } else {
-            searchAutocompleteEntriesWIthSubstring(substring: subString)
-        }
-        return true
-    }
-    
-    func formatSubstring(subString: String) -> String {
-        let formatted = String(subString.dropLast(autoCompleteCharacterCount)).lowercased().capitalized //5
-        return formatted
-    }
-    
-    func resetValues() {
-        autoCompleteCharacterCount = 0
-        signatureView.brandField.textField.text = ""
-    }
-    
-    func searchAutocompleteEntriesWIthSubstring(substring: String) {
-        let userQuery = substring
-        let suggestions = getAutocompleteSuggestions(userText: substring) //1
-    
-        if suggestions.count > 0 {
-            timer = .scheduledTimer(withTimeInterval: 0.01, repeats: false, block: { (timer) in //2
-                let autocompleteResult = self.formatAutocompleteResult(substring: substring, possibleMatches: suggestions ) // 3
-                self.putColourFormattedTextInTextField(autocompleteResult: autocompleteResult, userQuery : userQuery) //4
-                self.moveCaretToEndOfUserQueryPosition(userQuery: userQuery) //5
-            })
-        } else {
-            timer = .scheduledTimer(withTimeInterval: 0.01, repeats: false, block: { (timer) in //7
-                self.signatureView.brandField.textField.text = substring
-            })
-            autoCompleteCharacterCount = 0
-        }
-    }
-    
-    func getAutocompleteSuggestions(userText: String) -> [BrandDetail]{
-        var possibleMatches: [BrandDetail] = []
-        for item in brands {
-         
-            let myString:NSString! = item.name! as NSString
-            let substringRange :NSRange! = myString.range(of: userText.lowercased())
-            print(myString)
-            print(substringRange)
-            if (substringRange.location == 0)
-            {
-                possibleMatches.append(item)
-            }
-        }
-        
-        return possibleMatches
-    }
-    
-    func putColourFormattedTextInTextField(autocompleteResult: String, userQuery : String) {
-        let colouredString: NSMutableAttributedString = NSMutableAttributedString(string: userQuery + autocompleteResult)
-        colouredString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.ERXES_COLOR, range: NSRange(location: userQuery.count,length:autocompleteResult.count))
-        self.signatureView.brandField.textField.attributedText = colouredString
-    }
-    func moveCaretToEndOfUserQueryPosition(userQuery : String) {
-        if let newPosition = self.signatureView.brandField.textField.position(from: self.signatureView.brandField.textField.beginningOfDocument, offset: userQuery.count) {
-            self.signatureView.brandField.textField.selectedTextRange = self.signatureView.brandField.textField.textRange(from: newPosition, to: newPosition)
-        }
-        let selectedRange: UITextRange? = signatureView.brandField.textField.selectedTextRange
-        signatureView.brandField.textField.offset(from: signatureView.brandField.textField.beginningOfDocument, to: (selectedRange?.start)!)
-    }
-    func formatAutocompleteResult(substring: String, possibleMatches: [BrandDetail]) -> String {
-        var autoCompleteResult = possibleMatches[0].name as! String
-        autoCompleteResult.removeSubrange(autoCompleteResult.startIndex..<autoCompleteResult.index(autoCompleteResult.startIndex, offsetBy: substring.count))
-        autoCompleteCharacterCount = autoCompleteResult.count
-        return autoCompleteResult
-    }
-}
+
 
 
