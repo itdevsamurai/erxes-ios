@@ -37,11 +37,7 @@ class InboxController: UIViewController {
 
 
     var total = Int()
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-25, y: Constants.SCREEN_HEIGHT/2-25, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+
     var timer: Timer!
     var topOffset: CGFloat = 0.0
     var shimmer: FBShimmeringView!
@@ -188,7 +184,7 @@ class InboxController: UIViewController {
 //        shimmer.contentView = tableView
 //        self.view.addSubview(shimmer)
 //        shimmer.isShimmering = true
-//        self.view.addSubview(loader)
+//        
     }
 
     override func viewDidLoad() {

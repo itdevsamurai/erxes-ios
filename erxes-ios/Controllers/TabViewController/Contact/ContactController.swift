@@ -19,11 +19,7 @@ class ContactController: UIViewController {
 //    }()
 
     let arr = ["Customers", "Companies"]
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH / 2 - 25, y: Constants.SCREEN_HEIGHT / 2 - 25, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+
     var isCustomer: Bool = true
     var customersLimit = 20
     var companiesLimit = 20
@@ -87,9 +83,48 @@ class ContactController: UIViewController {
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .clear
         tableView.separatorColor = UIColor.LIGHT_GRAY_COLOR
-
+      
         return tableView
     }()
+    
+    @objc func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchPoint) {
+                self.showActionSheet(indexPath: indexPath)
+            }
+        }
+    }
+    
+    func showActionSheet(indexPath:IndexPath){
+        let actionSheet = UIAlertController(title: "Connect to customer", message: "Please select connection method", preferredStyle: .actionSheet)
+        if isCustomer{
+            let customer = self.customers[indexPath.row]
+            if !customer.primaryPhone.isNullOrEmpty{
+                
+                actionSheet.addAction(UIAlertAction(title: "Make a phone call", style: .default, handler: { (action) in
+                    if let url = URL(string: "tel://\(customer.primaryPhone)") {
+                        UIApplication.shared.openURL(url)
+                    }
+                }))
+            }
+           
+            if customer.conversations?.count != 0 {
+                actionSheet.addAction(UIAlertAction(title: "Go to conversation", style: .default, handler: { (action) in
+                    self.dismiss(animated: true, completion: nil)
+                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: "", customerId: customer.id))
+                }))
+            }
+            
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { (action) in
+                self.dismiss(animated: true, completion: nil)
+            }))
+        }
+        if actionSheet.actions.count > 1{
+            self.present(actionSheet, animated: true)
+        }
+    }
 
     @objc func toggleSegmentedControl(sender: UISegmentedControl) {
 
@@ -102,12 +137,16 @@ class ContactController: UIViewController {
             isCustomer = true
             customerAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
             leftItem.customView = customerAddButton
-            self.getCustomers()
+            if self.customers.count == 0{
+                self.getCustomers()
+            }
         } else {
             companyAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
             leftItem.customView = companyAddButton
             isCustomer = false
-            self.getCompanies()
+            if self.companies.count == 0 {
+                self.getCompanies()
+            }
         }
         self.navigationItem.leftBarButtonItem? = leftItem
         self.tableView.reloadData()
@@ -137,14 +176,16 @@ class ContactController: UIViewController {
 
 
         self.navigationItem.leftBarButtonItem = leftItem
-        self.navigationItem.rightBarButtonItem = rightItem
+//        self.navigationItem.rightBarButtonItem = rightItem
         segmentedControl.addTarget(self, action: #selector(toggleSegmentedControl(sender:)), for: .valueChanged)
         self.navigationItem.titleView = segmentedControl
 
         tableView.delegate = self
         tableView.dataSource = self
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPress(longPressGestureRecognizer:)))
+        tableView.addGestureRecognizer(longPress)
         self.view.addSubview(tableView)
-        self.view.addSubview(loader)
+        
     }
 
     func isEditing() {
@@ -213,7 +254,7 @@ class ContactController: UIViewController {
 
     func getCompanies(limit: Int = 20) {
 //        self.showLoader()
-        if self.companies.count == 0 {
+        
             let query = CompaniesQuery()
             query.perPage = limit
 
@@ -238,17 +279,15 @@ class ContactController: UIViewController {
                 if result?.data != nil {
                     if let allCompanies = result?.data?.companies {
                         self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
-//                self?.hideLoader()
 
                     }
                 }
             }
-        }
+        
     }
 
     func getCustomers(limit: Int = 20) {
-//        self.showLoader()
-        if self.customers.count == 0 {
+
             let query = CustomersQuery()
             query.perPage = limit
             appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
@@ -271,14 +310,13 @@ class ContactController: UIViewController {
                 if result?.data != nil {
                     if let allCustomers = result?.data?.customers {
                         self?.customers = allCustomers.map { ($0!.fragments.customerList) }
-//                    self?.customers = allCustomers.list.map {($0.fra)}
-//                self?.hideLoader()
+                        print(self?.customers.count)
 
 
                     }
                 }
             }
-        }
+        
     }
 
     func deleteCustomer(index: Int) {
@@ -417,8 +455,9 @@ extension ContactController: UITableViewDelegate {
             //        self.timer.invalidate()
             let currentOffset = scrollView.contentOffset.y
             let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-
-            if maximumOffset - currentOffset <= 0.0 {
+            print(maximumOffset - currentOffset)
+            if maximumOffset - currentOffset < 0.0 {
+                print("FETCHING")
                 if isCustomer {
                     customersLimit = customersLimit + 20
                     self.getCustomers(limit: customersLimit)

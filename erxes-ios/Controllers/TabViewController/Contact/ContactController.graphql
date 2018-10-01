@@ -20,8 +20,11 @@ colorCode
 
 }
 
-}
+conversations {
+    _id
 
+}
+}
 
 
 
@@ -98,6 +101,8 @@ name
 colorCode
 
 }
+
+
 
 }
 

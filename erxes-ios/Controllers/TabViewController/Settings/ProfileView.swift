@@ -20,6 +20,8 @@ class ProfileView: UIView {
         }
     }
     
+   open var avatarView = UIImageView()
+    
    fileprivate var backGroundImageView = UIImageView()
     
     override init(frame: CGRect) {
@@ -46,8 +48,9 @@ class ProfileView: UIView {
     func initialize(user: ErxesUser,style: ProfilewViewStyle) {
         
         
-        let avatarView = UIImageView()
+        
         avatarView.image = #imageLiteral(resourceName: "ic_avatar")
+        avatarView.isUserInteractionEnabled = true
         if let url = user.avatar {
             avatarView.sd_setImage(with: URL(string: url), placeholderImage: UIImage(named: "ic_avatar"))
         }
@@ -188,6 +191,10 @@ class ProfileView: UIView {
             backGroundImageView.frame.size.height = height + offsetY
         }
     }
+    
+   
+    
+    
 }
 
 

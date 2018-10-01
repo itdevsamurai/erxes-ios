@@ -232,13 +232,20 @@ extension UIImageView {
 
 
         UIGraphicsBeginImageContextWithOptions(size, false, CGFloat(scale))
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {
+            UIGraphicsEndImageContext()
+            print("Context  nil")
+            return 
+        }
 
         let path = CGPath(ellipseIn: self.bounds, transform: nil)
-        context!.addPath(path)
-        context?.clip()
-        context!.setFillColor(backGroundColor.cgColor)
-        context!.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height));
+      
+        context.addPath(path)
+        
+        
+        context.clip()
+        context.setFillColor(backGroundColor.cgColor)
+        context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height));
 
         let textSize = displayString.size(withAttributes: attributes)
 
