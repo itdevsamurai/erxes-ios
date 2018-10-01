@@ -59,7 +59,7 @@ class ChatBaseCell: UICollectionViewCell {
     func updateView() {
         
         if let avatar = viewModel?.user?.details?.avatar {
-            ivAvatar.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "avatar.png"))
+            ivAvatar.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
         } else {
             ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         }
