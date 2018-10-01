@@ -20,7 +20,7 @@ class ColChatController:UIViewController {
     var conversationId:String?
     var customerId:String?
     var inited = false
-    
+    var isInternal = false
 //    public typealias ModelT = TextCell.ViewModel
     var messages:[MessageDetail]! {
         didSet {
@@ -30,15 +30,26 @@ class ColChatController:UIViewController {
                     
                 }
                 inited = true
-                loader.startAnimating()
+                
             }
         }
     }
+    
+//    mention begin
+    var users = [User]()
+    var userView:UITableView = {
+        let tv = UITableView()
+        tv.isHidden = true
+        return tv
+    }()
+//    mention end
+    
     var calculatedHeights:[CGFloat] = []
     
     var container:UIView = {
         let view = UIView()
         view.clipsToBounds = true
+        view.backgroundColor = .white
         return view
     }()
     
@@ -67,52 +78,109 @@ class ColChatController:UIViewController {
     
     var chatInputView: UITextField = {
         let textfield = UITextField()
-        textfield.backgroundColor = UIColor.init(hexString: "f0ebf8")
-        textfield.layer.cornerRadius = 5.0
-        textfield.tintColor = .ERXES_COLOR
-        textfield.placeholder = "Write a reply..."
-        let sendButton = UIButton(type: .custom)
-        sendButton.titleLabel?.font = UIFont.fontWith(type: .ultralight, size: 14)
-        //        sendButton.setTitle("Send", for: .normal)
-        sendButton.setImage(UIImage.erxes(with: .send, textColor: .ERXES_COLOR), for: .normal)
-        sendButton.setTitleColor(.ERXES_COLOR, for: .normal)
-        sendButton.frame = CGRect(x: 0, y: CGFloat(0), width: CGFloat(60), height: CGFloat(40))
-        sendButton.addTarget(self, action: #selector(btnSendClick), for: .touchUpInside)
-        let line = UIView(frame: CGRect(x: 0, y: 10, width: 1, height: 20))
-        line.backgroundColor = .ERXES_COLOR
-        sendButton.addSubview(line)
+        textfield.backgroundColor = UIColor(hexString: "#f4f4f4")
+        textfield.layer.cornerRadius = 18.0
+        textfield.layer.borderWidth = 1
+        textfield.layer.borderColor = UIColor(hexString: "#d7d7d7")?.cgColor
+        textfield.placeholder = "Type a message"
+        let btnSend = UIButton(type: .custom)
+        btnSend.frame = CGRect(x: 0, y: 0, width: 36, height: 26)
+        btnSend.setImage(#imageLiteral(resourceName: "btn_send"), for: .normal)
+        btnSend.contentMode = UIViewContentMode.center
+        btnSend.addTarget(self, action: #selector(btnSendClick), for: .touchUpInside)
         
-        textfield.rightView = sendButton
+        textfield.rightView = btnSend
         textfield.rightViewMode = .always
         
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
-        let attachmentButton = UIButton(type: .custom)
-        attachmentButton.setImage(UIImage.erxes(with: .attach, textColor: .ERXES_COLOR), for: .normal)
-        attachmentButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        attachmentButton.imageView?.contentMode = .scaleAspectFit
-        attachmentButton.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
-        leftView.addSubview(attachmentButton)
-        let cameraButton = UIButton(type: .custom)
-        cameraButton.setImage(UIImage.erxes(with: .photocamera, textColor: .ERXES_COLOR), for: .normal)
-        cameraButton.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
-        cameraButton.imageView?.contentMode = .scaleAspectFit
-//        cameraButton.addTarget(self, action: #selector(launchCamera(sender:)), for: .touchUpInside)
-        leftView.addSubview(cameraButton)
-        textfield.leftView = leftView
+        textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
         textfield.leftViewMode = .always
+        textfield.font = UIFont.fontWith(type: .comfortaa, size: 14)
         
         return textfield
     }()
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-25, y: Constants.SCREEN_HEIGHT/2-25, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+    var btnAttachment = UIButton()
+    var btnCamera = UIButton()
+    var label = UILabel()
+    var btnInternalNote = UIButton()
+    
+    func initChatInput() {
+        
+        btnAttachment = UIButton(type: .custom)
+        btnAttachment.setImage(UIImage.erxes(with: .attach, textColor: UIColor(hexString: "#999999")!), for: .normal)
+        btnAttachment.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        btnAttachment.imageView?.contentMode = .scaleAspectFit
+        btnAttachment.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
+        
+        btnCamera = UIButton(type: .custom)
+        btnCamera.setImage(UIImage.erxes(with: .photocamera, textColor: UIColor(hexString: "#999999")!), for: .normal)
+        btnCamera.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
+        btnCamera.imageView?.contentMode = .scaleAspectFit
+        btnCamera.addTarget(self, action: #selector(launchCamera), for: .touchUpInside)
+        
+        btnInternalNote = UIButton(type: .custom)
+        btnInternalNote.setImage(#imageLiteral(resourceName: "tick"), for: .normal)
+        btnInternalNote.setImage(#imageLiteral(resourceName: "ticked"), for: .selected)
+        btnAttachment.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        btnInternalNote.imageView?.contentMode = .scaleAspectFit
+        btnInternalNote.addTarget(self, action: #selector(btnInternalNoteClick), for: .touchUpInside)
+        
+        label.text = "Internal note"
+        label.textColor = UIColor(hexString: "#a9a9a9", alpha: 0.57)
+        label.font = UIFont.fontWith(type: .comfortaa, size: 12)
+        
+//        btnInternalNote = UIButton(type: .custom)
+//        btnInternalNote
+        
+        inputContainer.addSubview(chatInputView)
+        inputContainer.addSubview(btnAttachment)
+        inputContainer.addSubview(btnCamera)
+        inputContainer.addSubview(label)
+        inputContainer.addSubview(btnInternalNote)
+        
+        chatInputView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(9)
+            make.right.equalToSuperview().offset(-23)
+            make.left.equalToSuperview().offset(23)
+            make.height.equalTo(36)
+        }
+        
+        btnAttachment.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview().offset(30)
+            make.height.width.equalTo(40)
+        }
+        
+        btnCamera.snp.makeConstraints{ (make) in
+            make.bottom.equalToSuperview()
+            make.left.equalTo(btnAttachment.snp.right).offset(12)
+            make.height.width.equalTo(40)
+        }
+        
+        btnInternalNote.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.left.equalTo(btnCamera.snp.right).offset(12)
+            make.height.width.equalTo(40)
+        }
+
+        label.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.left.equalTo(btnInternalNote.snp.right).offset(12)
+            make.height.equalTo(40)
+            make.width.equalTo(80)
+        }
+    }
+    
+    @objc func btnInternalNoteClick() {
+        isInternal = !isInternal
+        btnInternalNote.isSelected = isInternal
+    }
+    
+  
     
     var inputContainer:UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.init(hexString: "cccfd6")
+        view.backgroundColor = .white
         return view
     }()
     
@@ -130,8 +198,6 @@ class ColChatController:UIViewController {
         
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.chatView.delegate = self
@@ -140,7 +206,8 @@ class ColChatController:UIViewController {
         self.chatView.refreshControl = refresher
         container.addSubview(self.chatView)
         container.addSubview(inputContainer)
-        inputContainer.addSubview(chatInputView)
+        container.addSubview(userView)
+//        inputContainer.addSubview(chatInputView)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         messages = [MessageDetail]()
@@ -149,7 +216,7 @@ class ColChatController:UIViewController {
         manager.queryMessages()
         manager.subscribe()
         manager.markAsRead(id: conversationId!)
-        self.container.addSubview(loader)
+        
         self.view.backgroundColor = .white
         
         let rightItem: UIBarButtonItem = {
@@ -180,32 +247,36 @@ class ColChatController:UIViewController {
             make.bottom.equalTo(inputContainer.snp.top)
         }
         
+        userView.snp.makeConstraints { (make) in
+            make.bottom.equalTo(chatView.snp.bottom)
+            make.right.left.equalToSuperview()
+        }
+        
         inputContainer.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            make.height.equalTo(47)
+            make.height.equalTo(85)
             make.bottom.equalToSuperview()
         }
 
-        chatInputView.snp.makeConstraints { (make) in
-            make.left.equalTo(self.view.snp.left).offset(10)
-            make.right.equalTo(self.view.snp.right).inset(10)
-            make.height.equalTo(40)
-            make.bottom.equalToSuperview().inset(3)
-        }
+//        chatInputView.snp.makeConstraints { (make) in
+//            make.left.equalTo(self.view.snp.left).offset(10)
+//            make.right.equalTo(self.view.snp.right).inset(10)
+//            make.height.equalTo(85)
+//            make.bottom.equalToSuperview().inset(3)
+//        }
 
         chatView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(self.inputContainer.snp.top)
         }
         
-        loader.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.center.equalTo(self.view.snp.center)
-        }
+        
+        
+        initChatInput()
     }
     
-    @objc func gotoUser(sender:UIButton){
-        self.navigate(.customerProfile(_id: self.customerId!, count: 0))
+    @objc func gotoUser(sender:UIButton) {
+        self.navigate(.customerProfile(_id: self.customerId!))
         
     }
     
@@ -250,7 +321,7 @@ class ColChatController:UIViewController {
         self.manager.queryMessages()
     }
     
-    @objc func launchCamera(){
+    @objc func launchCamera() {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         {
             let imagePicker:UIImagePickerController = UIImagePickerController()
@@ -267,7 +338,7 @@ class ColChatController:UIViewController {
         }
     }
     
-    @objc func openImagePicker(){
+    @objc func openImagePicker() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = manager
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -299,8 +370,10 @@ extension ColChatController {
         guard let message = chatInputView.text, message.count > 0 else {
             return
         }
+        manager.mutateAddMessage(msg: message, isInternal: isInternal)
         chatInputView.text = ""
-        manager.mutateAddMessage(msg: message)
+        btnInternalNote.isSelected = false
+        isInternal = false
     }
     
     @objc func btnPhotoLibraryClick() {
@@ -352,19 +425,24 @@ extension ColChatController:UICollectionViewDelegateFlowLayout {
         
         var height:CGFloat = 0
         
-        if let form = item.formWidgetData {
-            height = FormCell.calculateFormHeight(item)
-        } else
-        if let files = item.attachments, files.count > 0 {
-            height = 150
+        if indexPath.row < calculatedHeights.count{
+            height = calculatedHeights[indexPath.row]
         } else {
-            height = ChatBaseCell.calculateHeight(item)
+            if let form = item.formWidgetData {
+                height = FormCell.calculateFormHeight(item)
+            } else
+                if let files = item.attachments, files.count > 0 {
+                    height = 150
+                } else {
+                    height = ChatBaseCell.calculateHeight(item)
+            }
+            calculatedHeights.append(height)
         }
         
         return CGSize(width: self.view.frame.size.width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
 }

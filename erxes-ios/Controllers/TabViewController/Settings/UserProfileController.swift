@@ -14,11 +14,7 @@ class UserProfileController: FormViewController {
     var userId: String?
     
 
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader()
-        loader.lineWidth = 3
-        return loader
-    }()
+   
 
     var channels = [ChannelObject]()
     var locations = Constants.LOCATIONS
@@ -178,32 +174,32 @@ class UserProfileController: FormViewController {
 
         }
 
-        self.view.addSubview(loader)
+        
 
     }
 
     func getUserData(id: String) {
-        loader.startAnimating()
+        
         let query = UserDetailQuery(_id: id)
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
 
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
 
             if result?.data != nil {
                 if let userData = result?.data?.userDetail {
                     self?.buildForm(user: userData)
-                    self?.loader.stopAnimating()
+                    
 
                 }
 
@@ -238,7 +234,7 @@ class UserProfileController: FormViewController {
             row.placeholder = "-"
             row.value = user.details?.position
         }
-        <<< TextAreaRow("descrition") { row in
+        <<< TextAreaRow("desc") { row in
             row.title = "Description:"
             row.placeholder = "Description"
             row.value = user.details?.description
@@ -312,7 +308,11 @@ class UserProfileController: FormViewController {
                 row.baseCell.isUserInteractionEnabled = false
 
             }
-            saveAction()
+
+            self.presentTextFieldAlert(title: "Confirm", msg: "Enter your password to confirm") { (textValue) in
+                print(textValue)
+                self.saveAction(userPassword: textValue!)
+            }
         } else {
             sender.isSelected = true
             for row in form.allRows {
@@ -325,11 +325,9 @@ class UserProfileController: FormViewController {
         }
     }
 
-    func saveAction() {
-        let modalView = PasswordConfirmModalView()
-        modalView.show(animated: true)
-        modalView.handler = {
-            let password = modalView.passwordField.textField.text
+    func saveAction(userPassword:String) {
+    
+            
             let userName = self.form.rowBy(tag: "username")?.baseValue as? String
             let email = self.form.rowBy(tag: "email")?.baseValue as? String
             let facebook = self.form.rowBy(tag: "facebook")?.baseValue as? String
@@ -339,33 +337,34 @@ class UserProfileController: FormViewController {
             let website = self.form.rowBy(tag: "website")?.baseValue as? String
             let youtube = self.form.rowBy(tag: "youtube")?.baseValue as? String
 
-            let mutation = UsersEditProfileMutation(username: userName!, email: email!, password: password!)
-            mutation.details = UserDetails(fullName: self.form.rowBy(tag: "fullName")?.baseValue as? String, position: self.form.rowBy(tag: "position")?.baseValue as? String, location: self.form.rowBy(tag: "location")?.baseValue as? String, description: self.form.rowBy(tag: "description")?.baseValue as? String)
+            let mutation = UsersEditProfileMutation(username: userName!, email: email!, password: userPassword)
+        mutation.details = UserDetails(avatar: ErxesUser.sharedUserInfo().avatar,fullName: self.form.rowBy(tag: "fullName")?.baseValue as? String, position: self.form.rowBy(tag: "position")?.baseValue as? String, location: self.form.rowBy(tag: "location")?.baseValue as? String, description: self.form.rowBy(tag: "desc")?.baseValue as? String)
             mutation.links = UserLinks(linkedIn: linkedIn, twitter: twitter, facebook: facebook, youtube: youtube, github: github, website: website)
             appnet.perform(mutation: mutation) { [weak self] result, error in
                 if let error = error {
 
-                    self?.showResult(isSuccess: false, message: error.localizedDescription)
-                    self?.loader.stopAnimating()
+                    self?.showResult(isSuccess: false, message: error.localizedDescription,resultCompletion: nil)
+
                     return
                 }
                 if let err = result?.errors {
 
-                    self?.showResult(isSuccess: false, message: err[0].localizedDescription)
+                    self?.showResult(isSuccess: false, message: err[0].localizedDescription,resultCompletion: nil)
 
-                    self?.loader.stopAnimating()
                 }
                 if result?.data != nil {
                     if (result?.data?.usersEditProfile) != nil {
-                        self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                        self?.getCurrentUser()
+                        self?.showResult(isSuccess: true, message: "Changes Saved Successfully",resultCompletion: {
+                            self?.navigationController?.popViewController(animated: true)
+                        })
+
                     }
-                    self?.loader.stopAnimating()
+
 
                 }
             }
 
-        }
+        
     }
     
     func getCurrentUser(){
@@ -395,7 +394,7 @@ class UserProfileController: FormViewController {
                 currentUser.position = user?.details?.position
                 currentUser.getNotificationByEmail = user?.getNotificationByEmail
      
-                self?.loader.stopAnimating()
+                
                
             }
         }
@@ -408,10 +407,7 @@ class UserProfileController: FormViewController {
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
 
-        loader.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.center.equalTo(self.view.snp.center)
-        }
+        
     }
 
     override func didReceiveMemoryWarning() {

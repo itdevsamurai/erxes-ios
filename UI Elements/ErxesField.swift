@@ -22,44 +22,53 @@ class ErxesField: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        let titlebg = UIView()
+        titlebg.backgroundColor = UIColor.init(hexString: "ebebeb")
+        self.addSubview(titlebg)
         
-        
+        let line = UIView()
+        line.backgroundColor = UIColor.init(hexString: "ebebeb")
+        self.addSubview(line)
+        line.tag = 1
         titleLabel = UILabel ()
-        titleLabel.font = UIFont.fontWith(type: .light, size: 14    )
-        titleLabel.textColor = .TEXT_COLOR
+        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 12    )
+        titleLabel.textColor = .black
         
-        self.addSubview(titleLabel)
+        
+        titlebg.addSubview(titleLabel)
         
         textField = UITextField ()
         textField.delegate = self
-        textField.font = UIFont.fontWith(type: .light, size: 14    )
+        textField.font = UIFont.fontWith(type: .comfortaa, size: 15   )
         textField.borderStyle = .none
-        textField.textColor = .TEXT_COLOR
-        let lineView = UIView()
-        lineView.tag = 1
-        lineView.backgroundColor = .TEXT_COLOR
-        self.addSubview(lineView)
-        
-        let leftView = UIView(frame: CGRect(x:0, y:0, width:20, height:30))
-        textField.leftView = leftView
-        textField.leftViewMode = .always
+        textField.textColor = .black
+
         self.addSubview(textField)
         
-        titleLabel.snp.makeConstraints { (make) in
+        titlebg.snp.makeConstraints { (make) in
             make.left.top.right.equalToSuperview()
-            make.height.equalTo(20)
+            make.height.equalTo(30)
+        }
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(55)
+            make.right.equalTo(-16)
+            make.centerY.equalToSuperview()
         }
         
         textField.snp.makeConstraints { (make) in
-            make.left.bottom.right.equalToSuperview()
-            make.height.equalTo(30)
+            make.left.equalTo(55)
+            make.right.equalTo(-16)
+            make.bottom.equalTo(-10)
 
         }
         
-        lineView.snp.makeConstraints { (make) in
+        line.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(0.5)
         }
+        
+
     }
     
 }

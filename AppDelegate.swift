@@ -20,18 +20,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
-        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.ERXES_COLOR)
-        UINavigationBar.appearance().tintColor = UIColor.ERXES_COLOR
+        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)
+        UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().backIndicatorImage = backImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-1000, 0), for: .default)
+        let attrs = [
+            NSAttributedStringKey.foregroundColor: UIColor.white,
+            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+        ]
+        
+        UINavigationBar.appearance().titleTextAttributes = attrs
         Route.default.setupAppNavigation(appNavigation: MyAppNavigation())
         loginContoller.title = "Login"
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        let vc = ColChatController()
-//        window?.rootViewController = vc
+
         window?.makeKeyAndVisible()
         return true
         

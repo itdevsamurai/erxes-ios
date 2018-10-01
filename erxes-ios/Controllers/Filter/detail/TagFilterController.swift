@@ -25,11 +25,7 @@ class TagFilterController: UIViewController {
         }
     }
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-35, y: 125, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+ 
    
     
     var tableView: UITableView = {
@@ -48,7 +44,7 @@ class TagFilterController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-        self.view.addSubview(loader)
+        
         self.view.backgroundColor = .clear
         
         getTags()
@@ -68,14 +64,14 @@ class TagFilterController: UIViewController {
     
     func getTags(){
         
-        loader.startAnimating()
+        
         let query = TagsQuery(type: "conversation")
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
@@ -83,7 +79,7 @@ class TagFilterController: UIViewController {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 print( err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
@@ -92,7 +88,7 @@ class TagFilterController: UIViewController {
                     
                     self?.tags = allTags.map { ($0?.fragments.tagDetail)! }
                     
-                    self?.loader.stopAnimating()
+                    
                 }
                 
             }

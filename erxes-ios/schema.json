@@ -4858,7 +4858,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -4870,7 +4870,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -5068,7 +5068,7 @@
         },
         {
           "kind": "SCALAR",
-          "name": "Int",
+          "name": "SDate",
           "description": "Date custom scalar type",
           "fields": null,
           "inputFields": null,
@@ -5575,7 +5575,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6000,7 +6000,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6802,7 +6802,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -6901,7 +6901,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -7290,7 +7290,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -7468,7 +7468,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -8158,7 +8158,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -8241,7 +8241,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10208,7 +10208,7 @@
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
-                  "name": "Int",
+                  "name": "SDate",
                   "ofType": null
                 }
               },
@@ -10398,7 +10398,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10505,7 +10505,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -10592,7 +10592,7 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -19810,7 +19810,7 @@
               "description": "",
               "type": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "SDate",
                 "ofType": null
               },
               "defaultValue": null

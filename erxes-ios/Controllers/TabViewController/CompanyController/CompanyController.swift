@@ -20,11 +20,7 @@ class CompanyController: FormViewController {
     }
   
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader()
-        loader.lineWidth = 3
-        return loader
-    }()
+ 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,10 +41,7 @@ class CompanyController: FormViewController {
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
         
-        loader.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.center.equalTo(self.view.snp.center)
-        }
+        
     }
     
     convenience init(id:String?) {
@@ -217,7 +210,7 @@ class CompanyController: FormViewController {
 
         }
         
-        self.view.addSubview(loader)
+        
     }
     
     func buildForm() {
@@ -444,14 +437,14 @@ class CompanyController: FormViewController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             
             if result?.data != nil {
@@ -519,7 +512,7 @@ class CompanyController: FormViewController {
     var users = [UserData]()
     
     func getCompanies() {
-        loader.startAnimating()
+        
         
         let query = CompaniesQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
@@ -527,14 +520,14 @@ class CompanyController: FormViewController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             
             if result?.data != nil {
@@ -542,7 +535,7 @@ class CompanyController: FormViewController {
                     
                     self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
                     
-                    self?.loader.stopAnimating()
+                    
                     
                     
                 }
@@ -552,27 +545,27 @@ class CompanyController: FormViewController {
     }
     
     func getUsers() {
-        loader.startAnimating()
+        
         let query = GetUsersQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             
             if result?.data != nil {
                 if let result = result?.data?.users {
                     self?.users = result.map { ($0?.fragments.userData)! }
-                    self?.loader.stopAnimating()
+                    
                 }
             }
         }

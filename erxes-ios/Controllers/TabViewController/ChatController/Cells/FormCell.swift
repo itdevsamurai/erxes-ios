@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-var css = "<style>table{border-collapse: collapse; color: #444; font-family:Roboto,Arial,sans-serif; font-size:12px;} table, th, td {border: 1px solid #eee; padding: 10px; } tr:nth-child(even) {background-color: #F7F8FC;font-weight:bold;}tr:first-child {text-align:center; font-size:11px; text-transform:uppercase; font-weight:bold;}</style>"
+var css = "<style>table{border-collapse: collapse; color: #444; font-family:Roboto,Arial,sans-serif; font-size:12px; min-width:100%} table, th, td {border: 1px solid #eee; padding: 10px; } tr:nth-child(even) {background-color: #F7F8FC;font-weight:bold;}tr:first-child {text-align:center; font-size:11px; text-transform:uppercase; font-weight:bold;}</style>"
 
 class FormCell: ChatBaseCell {
     

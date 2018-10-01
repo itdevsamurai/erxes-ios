@@ -8,45 +8,55 @@
 
 import UIKit
 import Apollo
+import Photos
+import Alamofire
 class SettingsController: UIViewController {
 
+    var size = 0
+    
+    var userData = [UserDetailQuery.Data.UserDetail]()
     var titles = ["Change Password","Email signatures","Notification settings","Sign Out"]
+    var icons:[ErxesFont] = [.openlock, .email1, .switch3, .logout2]
     var autoCompleteCharacterCount = 0
     var timer = Timer()
     var brands = [BrandDetail]()
-    let signatureView = EmailSignaturesModalView()
-    let notificationView = NotificationSettingsModalView()
+    
     var profileView:ProfileView?
     
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader()
-        loader.lineWidth = 3
-        return loader
-    }()
+   
     var tableView: UITableView = {
         let tableview = UITableView()
         tableview.backgroundColor = .clear
         tableview.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
-        tableview.estimatedRowHeight = 40
-        tableview.contentInset = UIEdgeInsetsMake(100, 0, 0, 0 )
-        tableview.tableFooterView = UIView()
-//        tableview.backgroundColor = .blue
+        
+        tableview.rowHeight = 40
+        tableview.tableFooterView = UIView()         
         return tableview
     }()
     
     func configureViews(){
-        notificationView.delegate = self
+        
         self.view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         let currentUser = ErxesUser.sharedUserInfo()
         profileView = ProfileView(user: currentUser)
-        profileView?.backgroundColor = UIColor.INBOX_BG_COLOR
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTap(tapGesture:)))
+        profileView!.avatarView.addGestureRecognizer(tapGesture)
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         profileView?.addGestureRecognizer(tap)
+       
+//        tableView.tableHeaderView = profileView
         self.view.addSubview(profileView!)
-        self.view.addSubview(loader)
+        
+        let backGroundImage = UIImage(named: "profileBackground")
+        let ratio = CGFloat((backGroundImage!.size.width)) / CGFloat((backGroundImage!.size.height))
+        let imageHeight = (Constants.SCREEN_WIDTH)/ratio
+        tableView.contentInset = UIEdgeInsets(top: imageHeight, left: 0, bottom: 0, right: 0)
+        tableView.reloadData()
     }
     
     @objc func handleTap(sender:UITapGestureRecognizer){
@@ -54,14 +64,152 @@ class SettingsController: UIViewController {
         self.navigate(.userProfile(id: currentUser._id!))
     }
     
+    @objc func imageTap(tapGesture:UITapGestureRecognizer){
+        self.checkPermission()
+    }
+    
+    @objc func openImagePicker() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        //        imagePicker.allowsEditing = true
+        DispatchQueue.main.async {
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func checkPermission() {
+        
+        let photos = PHPhotoLibrary.authorizationStatus()
+        if photos == .notDetermined {
+            PHPhotoLibrary.requestAuthorization({status in
+                if status == .authorized {
+                    self.openImagePicker()
+                } else {
+                }
+            })
+        } else {
+            self.openImagePicker()
+        }
+    }
+    
+    func uploadFile(image:UIImage) {
+        
+        //        self.uploadView.isHidden = false
+        //        self.progress.progress = 0
+        //        self.upload
+        
+        let url = Constants.URL_UPLOAD
+        
+        if let imgData = UIImage.resize(image) as? Data{
+            size = imgData.count
+            let bcf = ByteCountFormatter()
+            bcf.allowedUnits = [.useKB]
+            bcf.countStyle = .file
+            //            self.lblFilesize.text = bcf.string(fromByteCount: Int64(size))
+            
+            Alamofire.upload(multipartFormData: { multipartFormData in
+                multipartFormData.append(imgData, withName: "file",fileName: "file.jpg", mimeType: "image/jpg")
+            },
+                             to:url ) {
+                                (result) in
+                                
+                                switch result {
+                                case .success(let upload, _, _):
+                                    self.processUpload(upload)
+                                case .failure(let encodingError):
+                                    print(encodingError)
+                                }
+            }
+        }
+    }
+    
+    func processUpload(_ upload:UploadRequest) {
+        upload.uploadProgress(closure: { (progress) in
+            print("Upload Progress: \(progress.fractionCompleted)")
+            //            self.progress.progress = Float(progress.fractionCompleted)
+        })
+        
+        upload.responseString { response in
+            print(response)
+            if let remoteUrl = response.value{
+                self.presentTextFieldAlert(title: "Confirm", msg: "Enter your password to confirm") { (textValue) in
+                    self.saveImage(imageUrl: remoteUrl, userPassword: textValue!)
+                }
+            }
+        }
+    }
+    
+    func saveImage(imageUrl:String,userPassword:String) {
+        let currentUser = ErxesUser.sharedUserInfo()
+        let user = self.userData[0]
+        let mutation = UsersEditProfileMutation(username: currentUser.username!, email: currentUser.email!, password: userPassword)
+        mutation.details = UserDetails(avatar: imageUrl, fullName: user.details?.fullName, position: user.details?.position, location: user.details?.location, description: user.details?.location)
+        mutation.links? = UserLinks(linkedIn: user.links?.linkedIn, twitter: user.links?.twitter, facebook: user.links?.facebook, youtube: user.links?.youtube, github: user.links?.github, website: user.links?.website)
+        appnet.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                
+                self?.showResult(isSuccess: false, message: error.localizedDescription,resultCompletion: nil)
+                
+                return
+            }
+            if let err = result?.errors {
+                
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription,resultCompletion: nil)
+                
+            }
+            if result?.data != nil {
+                if (result?.data?.usersEditProfile) != nil {
+                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully",resultCompletion: {
+                        currentUser.avatar = imageUrl
+                        self?.profileView?.avatarView.sd_setImage(with: URL(string: imageUrl), placeholderImage: UIImage(named: "ic_avatar"))
+                    })
+                    
+                }
+                
+                
+            }
+        }
+    }
+    
+    func getUserData(id: String)  {
+        
+        let query = UserDetailQuery(_id: id)
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                
+            }
+            
+            if result?.data != nil {
+                if let userData = result?.data?.userDetail {
+                    
+                    self?.userData = [userData]
+                    
+                }
+                
+            }
+        }
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "SETTINGS"
-         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
+        title = "Settings"
+         self.view.backgroundColor = UIColor.white
         
         configureViews()
         getBrands()
-        getNotificationsData()
+        getUserData(id: ErxesUser.sharedUserInfo()._id!)
         // Do any additional setup after loading the view.
     }
     
@@ -79,43 +227,40 @@ class SettingsController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        profileView?.snp.makeConstraints({ (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(self.topLayoutGuide.snp.bottom)
+        })
         tableView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
             make.bottom.equalTo(bottomLayoutGuide.snp.top)
         }
-        
-        profileView?.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(self.topLayoutGuide.snp.bottom)
-            make.height.equalTo(100)
-        }
-        
+ 
     }
     
     func getBrands(){
-        loader.startAnimating()
+        
         let query = BrandsQuery()
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             
             if result?.data != nil {
                 if let allBrands = result?.data?.brands {
                     self?.brands = allBrands.map { ($0?.fragments.brandDetail)! }
-                    self?.signatureView.brands = (self?.brands)!
-                    self?.loader.stopAnimating()
+                    
                     
                 }
                 
@@ -123,207 +268,32 @@ class SettingsController: UIViewController {
         }
     }
     
-    func getNotificationsData(){
-        loader.startAnimating()
-        let query = NotificationsModulesQuery()
-        let query1 = NotificationsGetConfigurationsQuery()
-        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-                return
-            }
-            
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-            }
-            
-            if result?.data != nil {
-                if let modules = result?.data?.notificationsModules {
-                    self?.notificationView.modules = modules as! [JSON]
-                    
-                    let firstItem: JSON = ["description": "NOTIFICATIONS ", "name": "notifications ","types": [["name":"usersConfigGetNotificationByEmail", "text": "Get notification by email"]]]
-                    self?.notificationView.modules.insert(firstItem, at: 0)
-                  
-                    self?.loader.stopAnimating()
-                    
-                }
-                
-            }
-        }
-        
-        appnet.fetch(query: query1, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-                return
-            }
-            
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
-            }
-            
-            if result?.data != nil {
-                if let configs = result?.data?.notificationsGetConfigurations {
-                    self?.notificationView.configs = configs.map { ($0?.fragments.notificationConf)! }
-                    self?.loader.stopAnimating()
-                    
-                }
-                
-            }
-        }
-    }
-
-    func changePassword(new:String,current:String){
-        self.loader.startAnimating()
-        let mutation = UsersChangePasswordMutation(currentPassword: current, newPassword: new)
-
-        appnet.perform(mutation: mutation) { [weak self] result, error in
-            if let error = error {
-               
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
-                return
-            }
-            if let err = result?.errors {
-                
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-               
-                self?.loader.stopAnimating()
-            }
-            if result?.data != nil {
-                if (result?.data?.usersChangePassword) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                }
-                self?.loader.stopAnimating()
-                
-            }
-        }
-    }
     
-    func insertSignature(signature:EmailSignature){
-        self.loader.startAnimating()
-        let mutation = UsersConfigEmailSignaturesMutation()
-        mutation.signatures = [signature]
-        appnet.perform(mutation: mutation) { [weak self] result, error in
-            if let error = error {
-                
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
-                return
-            }
-            if let err = result?.errors {
-                
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-                
-                self?.loader.stopAnimating()
-            }
-            if result?.data != nil {
-                if (result?.data?.usersConfigEmailSignatures) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                }
-                self?.loader.stopAnimating()
-                
-            }
-        }
-    }
-    
-    
-    func getNotificationByEmailMutation(isAllowed:Bool){
-        let mutation = UsersConfigGetNotificationByEmailMutation(isAllowed: isAllowed)
-        appnet.perform(mutation: mutation) { [weak self] result, error in
-            if let error = error {
-                
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
-                return
-            }
-            if let err = result?.errors {
-                
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-                
-                self?.loader.stopAnimating()
-            }
-            if result?.data != nil {
-                if (result?.data?.usersConfigGetNotificationByEmail) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                }
-                self?.loader.stopAnimating()
-            }
-        }
-    }
-    
-    func notificationsSaveConfigMutation(notifType:String,isAllowed:Bool){
-        let mutation = NotificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
-        appnet.perform(mutation: mutation) { [weak self] result, error in
-            if let error = error {
-                
-                self?.showResult(isSuccess: false, message: error.localizedDescription)
-                self?.loader.stopAnimating()
-                return
-            }
-            if let err = result?.errors {
-                
-                self?.showResult(isSuccess: false, message: err[0].localizedDescription)
-                
-                self?.loader.stopAnimating()
-            }
-            if result?.data != nil {
-                if (result?.data?.notificationsSaveConfig) != nil {
-                    self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
-                }
-                self?.loader.stopAnimating()
-            }
-        }
-    }
 }
 
 extension SettingsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let passwordModalView = PasswordModalView()
-            passwordModalView.show(animated: true)
-            passwordModalView.handler = {
-                let current = passwordModalView.currentField.textField.text
-                let new = passwordModalView.newField.textField.text
-                self.changePassword(new: new!, current: current!)
-            }
+            self.navigate(.passwordSettings())
         }else if indexPath.row == 1 {
-            
-            signatureView.show(animated: true)
-            signatureView.handler = {
-                let brandId = self.signatureView.selectedBrandId
-                let signature = self.signatureView.signatureView.textView.text
-                let signatureObj = EmailSignature(brandId: brandId, signature: signature)
-                self.insertSignature(signature: signatureObj)
-            }
+            self.navigate(.emailSignature(brands:self.brands))
         }else if indexPath.row == 2{
-            notificationView.show(animated: true)
-            notificationView.handler = {
-                self.getNotificationsData()
-            }
+            self.navigate(.notificationSettings())
         }else if indexPath.row == 3{
-           
-           
-            
-            do {
-                try ErxesUser.signOut()
-                let emptyUser = ErxesUser()
-                var currentUser = ErxesUser.sharedUserInfo()
-                currentUser = emptyUser
-                UserDefaults.standard.removeObject(forKey: "email")
-                UserDefaults.standard.synchronize()
-                self.parent?.navigationController?.popToRootViewController(animated: true)
-            } catch {
-                print("sign out failure")
+
+            self.presentAlert(title: "Sign out", msg: "Are you sure you want to sign out ?") {
+                do {
+                    try ErxesUser.signOut()
+                    let emptyUser = ErxesUser()
+                    var currentUser = ErxesUser.sharedUserInfo()
+                    currentUser = emptyUser
+                    UserDefaults.standard.removeObject(forKey: "email")
+                    UserDefaults.standard.synchronize()
+                    self.parent?.navigationController?.popToRootViewController(animated: true)
+                } catch {
+                    print("sign out failure")
+                }
+
             }
             
         }
@@ -333,14 +303,11 @@ extension SettingsController: UITableViewDelegate {
 extension SettingsController: UITableViewDataSource {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.profileView?.scrollViewDidScroll(scrollView: scrollView)
 
-        
     }
     
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
@@ -349,101 +316,34 @@ extension SettingsController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath) as? SettingsCell)!
         cell.contentView.backgroundColor = .clear
-        
+        cell.iconType = icons[indexPath.row]
+        cell.accessoryType = .disclosureIndicator
+        cell.accessoryView = UIImageView(image: UIImage.erxes(with: .chevron, textColor: .black, size: CGSize(width: 10, height: 10)))
         cell.desc.text = titles[indexPath.row]
-        cell.tintColor = UIColor.ERXES_COLOR
+       
 
         return cell
     }
 }
 
 
-extension SettingsController: UITextFieldDelegate {
+
+
+
+extension SettingsController:UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        var subString = (textField.text!.capitalized as NSString).replacingCharacters(in: range, with: string) // 2
-        subString = formatSubstring(subString: subString)
-        print(subString)
-        if subString.count == 0 {
-            resetValues()
-        } else {
-            searchAutocompleteEntriesWIthSubstring(substring: subString)
-        }
-        return true
-    }
-    
-    func formatSubstring(subString: String) -> String {
-        let formatted = String(subString.dropLast(autoCompleteCharacterCount)).lowercased().capitalized //5
-        return formatted
-    }
-    
-    func resetValues() {
-        autoCompleteCharacterCount = 0
-        signatureView.brandField.textField.text = ""
-    }
-    
-    func searchAutocompleteEntriesWIthSubstring(substring: String) {
-        let userQuery = substring
-        let suggestions = getAutocompleteSuggestions(userText: substring) //1
-    
-        if suggestions.count > 0 {
-            timer = .scheduledTimer(withTimeInterval: 0.01, repeats: false, block: { (timer) in //2
-                let autocompleteResult = self.formatAutocompleteResult(substring: substring, possibleMatches: suggestions ) // 3
-                self.putColourFormattedTextInTextField(autocompleteResult: autocompleteResult, userQuery : userQuery) //4
-                self.moveCaretToEndOfUserQueryPosition(userQuery: userQuery) //5
-            })
-        } else {
-            timer = .scheduledTimer(withTimeInterval: 0.01, repeats: false, block: { (timer) in //7
-                self.signatureView.brandField.textField.text = substring
-            })
-            autoCompleteCharacterCount = 0
-        }
-    }
-    
-    func getAutocompleteSuggestions(userText: String) -> [BrandDetail]{
-        var possibleMatches: [BrandDetail] = []
-        for item in brands {
-         
-            let myString:NSString! = item.name! as NSString
-            let substringRange :NSRange! = myString.range(of: userText.lowercased())
-            print(myString)
-            print(substringRange)
-            if (substringRange.location == 0)
-            {
-                possibleMatches.append(item)
-            }
-        }
+    public func imagePickerController(_ picker: UIImagePickerController,
+                                      didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        print(info)
         
-        return possibleMatches
+        if let chosenImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            //            ivPicked.image = chosenImage
+            uploadFile(image: chosenImage)
+        }
     }
     
-    func putColourFormattedTextInTextField(autocompleteResult: String, userQuery : String) {
-        let colouredString: NSMutableAttributedString = NSMutableAttributedString(string: userQuery + autocompleteResult)
-        colouredString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.ERXES_COLOR, range: NSRange(location: userQuery.count,length:autocompleteResult.count))
-        self.signatureView.brandField.textField.attributedText = colouredString
+    public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
-    func moveCaretToEndOfUserQueryPosition(userQuery : String) {
-        if let newPosition = self.signatureView.brandField.textField.position(from: self.signatureView.brandField.textField.beginningOfDocument, offset: userQuery.count) {
-            self.signatureView.brandField.textField.selectedTextRange = self.signatureView.brandField.textField.textRange(from: newPosition, to: newPosition)
-        }
-        let selectedRange: UITextRange? = signatureView.brandField.textField.selectedTextRange
-        signatureView.brandField.textField.offset(from: signatureView.brandField.textField.beginningOfDocument, to: (selectedRange?.start)!)
-    }
-    func formatAutocompleteResult(substring: String, possibleMatches: [BrandDetail]) -> String {
-        var autoCompleteResult = possibleMatches[0].name as! String
-        autoCompleteResult.removeSubrange(autoCompleteResult.startIndex..<autoCompleteResult.index(autoCompleteResult.startIndex, offsetBy: substring.count))
-        autoCompleteCharacterCount = autoCompleteResult.count
-        return autoCompleteResult
-    }
-}
-
-extension SettingsController: NotificationsDelegate {
-    func getNotificationsByEmail(isAllowed: Bool) {
-        self.getNotificationByEmailMutation(isAllowed: isAllowed)
-    }
-    func notificationsSaveConfig(notifType: String, isAllowed: Bool) {
-        self.notificationsSaveConfigMutation(notifType: notifType, isAllowed: isAllowed)
-    }
-
 }

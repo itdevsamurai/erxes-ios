@@ -21,7 +21,8 @@ extension ColChatController {
         
         if notification.name == .UIKeyboardWillShow {
             container.snp.remakeConstraints { (make) in
-                make.top.right.left.equalToSuperview()
+                make.top.equalTo(self.topLayoutGuide.snp.bottom)
+                make.right.left.equalToSuperview()
                 make.bottom.equalToSuperview().inset(keyboardFrame.size.height)
             }
             

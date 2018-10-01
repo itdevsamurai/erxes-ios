@@ -37,6 +37,7 @@ class ChatManager:NSObject {
     var uploaded = JSON()
     var attachments = [JSON]()
     var size = 0
+    var isInternal = false
     
     override init() {
         super.init()
@@ -78,7 +79,7 @@ class ChatManager:NSObject {
         }
     }
     
-    func mutateAddMessage(msg:String){
+    func mutateAddMessage(msg:String, isInternal:Bool){
         let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!)
         
         if msg.count > 0 {
@@ -87,6 +88,10 @@ class ChatManager:NSObject {
         
         if attachments.count > 0 {
             mutation.attachments = attachments
+        }
+        
+        if isInternal {
+            mutation.internal = isInternal
         }
         
         appnet.perform(mutation: mutation) { [weak self] result, error in
@@ -110,12 +115,12 @@ extension ColChatController:ChatManagerDelegate {
         messages = data
         updateView()
         refresher.endRefreshing()
-        loader.stopAnimating()
+        
     }
     
     func messageRecieve(message:MessageDetail) {
         messages.append(message)
-        loader.stopAnimating()
+       
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.scrollToBottom()
         }
@@ -132,7 +137,7 @@ extension ColChatController:ChatManagerDelegate {
 extension ChatManager: LiveGQLDelegate{
     
     func subscribe(){
-        gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){_id,content,userId,createdAt,customerId,user{_id,details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
+        gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){_id,content,userId,createdAt,customerId,internal,user{_id,details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
     }
     
     public func receivedRawMessage(text: String) {
@@ -145,9 +150,14 @@ extension ChatManager: LiveGQLDelegate{
                 guard let item = result.payload?.data?.conversationMessageInserted else {
                     return
                 }
-    
-                var message = MessageDetail(id:(item._id)!, content:item.content, userId:item.userId, createdAt: item.createdAt)
                 
+                var message = MessageDetail(id:(item._id)!, content:item.content, userId:item.userId, createdAt: item.createdAt)
+
+                if let details = item.user?.details {
+                    let user = MessageDetail.User(id: (item.user?._id)!, details: MessageDetail.User.Detail(avatar: details.avatar))
+                    message.user = user
+                }
+
                 if item.attachments.count > 0, let attachment = item.attachments.first {
                     var attachments = [JSON]()
                     var file = JSON()
@@ -157,7 +167,9 @@ extension ChatManager: LiveGQLDelegate{
                     attachments.append(file)
                     message.attachments = attachments
                 }
-                
+
+                message.internal = item.internal
+
                 delegate?.messageRecieve(message: message)
             }
         }
@@ -173,7 +185,7 @@ extension ChatManager:FileUploader {
         
 //        self.uploadView.isHidden = false
 //        self.progress.progress = 0
-//        self.uploadLoader.startAnimating()
+//        self.upload
         
         let url = Constants.URL_UPLOAD
         
@@ -214,7 +226,7 @@ extension ChatManager:FileUploader {
 //            self.uploadView.isHidden = false
             self.attachments = [JSON]()
             self.attachments.append(self.uploaded)
-            self.mutateAddMessage(msg: "image")
+            self.mutateAddMessage(msg: "image", isInternal: false)
         }
     }
 }
