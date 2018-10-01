@@ -23,11 +23,7 @@ class BrandFilterController: UIViewController {
     
     var filterOptions = FilterOptions()
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-35, y: 125, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+ 
     
     var brands = [BrandDetail](){
         didSet{
@@ -52,7 +48,7 @@ class BrandFilterController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-        self.view.addSubview(loader)
+        
         self.view.backgroundColor = .clear
         getBrands()
 
@@ -71,28 +67,28 @@ class BrandFilterController: UIViewController {
     }
     
     func getBrands(){
-        loader.startAnimating()
+        
         let query = BrandsQuery()
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             
             if result?.data != nil {
                 if let allBrands = result?.data?.brands {
                     self?.brands = allBrands.map { ($0?.fragments.brandDetail)! }
                    
-                    self?.loader.stopAnimating()
+                    
                     
                 }
                 

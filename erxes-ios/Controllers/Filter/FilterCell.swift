@@ -18,8 +18,8 @@ class FilterCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .clear
-        self.contentView.backgroundColor = .clear
+        self.backgroundColor = .white
+        self.contentView.backgroundColor = .white
         
         
         self.selectionStyle = .none

@@ -9,8 +9,10 @@ fragment CustomerList on Customer {
 _id
 firstName
 lastName
-email
-phone
+primaryEmail
+primaryPhone
+    facebookData
+    twitterData
 getTags {
 _id
 name
@@ -18,8 +20,11 @@ colorCode
 
 }
 
-}
+conversations {
+    _id
 
+}
+}
 
 
 
@@ -96,6 +101,8 @@ name
 colorCode
 
 }
+
+
 
 }
 

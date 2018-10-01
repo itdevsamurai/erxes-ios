@@ -12,17 +12,13 @@ import Eureka
 
 class CustomerProfileController: FormViewController {
 
-//    var profileFields = ["String"]()
+
     var profileField = FieldGroup(id: "profile")
 
     var customerId: String?
     var messagesCount = 0
 
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader()
-        loader.lineWidth = 3
-        return loader
-    }()
+   
 
     var companies = [CompanyList]() {
         didSet {
@@ -38,7 +34,9 @@ class CustomerProfileController: FormViewController {
         }
     }
 
-
+    func isEdit() -> Bool {
+        return self.customerId != nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,18 +44,21 @@ class CustomerProfileController: FormViewController {
 
         self.configureViews()
         self.getFields()
-        self.getCustomerData()
         self.getCompanies()
         self.getUsers()
+        if isEdit(){
+            self.getCustomerData()
+        }
+        
+        
+        
 
         // Do any additional setup after loading the view.
     }
 
 
     func getFields() {
-        loader.startAnimating()
-
-
+        
 
         let query = FieldsGroupsQuery(contentType: "customer")
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
@@ -65,21 +66,21 @@ class CustomerProfileController: FormViewController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
 
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
 
 
             if result?.data != nil {
                 if let resultData = result?.data?.fieldsGroups {
                     self?.fieldGroups = resultData.map { ($0?.fragments.fieldGroup)! }
-                    self?.loader.stopAnimating()
+                    
                     self?.profileField.isVisible = true
                     self?.profileField.name = "PROFILE"
                     self?.profileField.order = -1
@@ -110,7 +111,9 @@ class CustomerProfileController: FormViewController {
                     self?.profileField.fields = fieldsArray
 
                     self?.fieldGroups.insert((self?.profileField)!, at: 0)
-
+                    if !(self?.isEdit())!{
+                        self?.buildForm(customer: nil)
+                    }
                 }
             }
         }
@@ -118,51 +121,54 @@ class CustomerProfileController: FormViewController {
     }
 
     func getCustomerData() {
-        loader.startAnimating()
+        
         let query = CustomerDetailQuery(_id: self.customerId!)
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
 
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
 
             if result?.data != nil {
                 if let result = result?.data?.customerDetail?.fragments.customerInfo {
                     self?.buildForm(customer: result)
 
-                    self?.loader.stopAnimating()
+                    
 
                 }
             }
         }
     }
 
-    func buildForm(customer: CustomerInfo) {
-
-        let obj = Mirror(reflecting: customer)
+    func buildForm(customer: CustomerInfo?) {
         var profile = [String: Any]()
         var customFields = [String: Any]()
-
-        for case let (label?, value) in obj.children {
-            let c = value as! [String: Any]
-            profile = c
-
-            if let tmp = profile["customFieldsData"] as? [String: Any] {
-                customFields = tmp
+        if customer != nil {
+            let obj = Mirror(reflecting: customer!)
+            
+            
+            for case let (label?, value) in obj.children {
+                let c = value as! [String: Any]
+                profile = c
+                
+                if let tmp = profile["customFieldsData"] as? [String: Any] {
+                    customFields = tmp
+                }
+                
             }
-
         }
 
         for group in fieldGroups {
+         
             if group.isVisible! {
                 form +++ Section(group.name!)
                 let sorted = group.fields?.sorted { obj1, obj2 in
@@ -175,20 +181,27 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< NameRow (field?.id) { row in
                                     row.title = field?.text
-                                    row.value = profile[(field?.id)!] as? String
+                                    if let val = profile[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
+                                    
 
                                 }
                             } else if field?.type == "input" && (field?.validation?.isEmpty)! {
                                 form.last!
                                 <<< TextRow (field?.id) { row in
                                     row.title = field?.text
-                                    row.value = profile[(field?.id)!] as? String
+                                    if let val = profile[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }
                             } else if field?.type == "input" && field?.validation == "number" {
                                 form.last!
                                 <<< TextRow (field?.id) { row in
                                     row.title = field?.text
-                                    row.value = profile[(field?.id)!] as? String
+                                    if let val = profile[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
 
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textField.keyboardType = .numberPad
@@ -197,7 +210,9 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< DateRow (field?.id) { row in
                                     row.title = field?.text
-                                    row.value = profile[(field?.id)!] as? Date
+                                    if let val = profile[((field?.id)!)] as? Date {
+                                        row.value = val
+                                    }
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -208,8 +223,10 @@ class CustomerProfileController: FormViewController {
                                 <<< PushRow<String> (field?.id) { row in
                                     row.title = field?.text
                                     row.options = field?.options as? [String]
-                                    print(field?.options)
-                                    row.value = profile[(field?.id)!] as? String
+                                    row.value = ""
+                                    if let val = profile[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -223,13 +240,15 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< SwitchRow(field?.id) { row in
                                     row.title = field?.text
-                                    let state = profile[(field?.id)!] as? String
-
-                                    if state == "Yes" {
-                                        row.value = true
-                                    } else {
-                                        row.value = false
+                                    row.value = false
+                                    if let state = profile[((field?.id)!)] as? String {
+                                        if state == "Yes" {
+                                            row.value = true
+                                        } else {
+                                            row.value = false
+                                        }
                                     }
+                                    
 
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
@@ -255,7 +274,9 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< EmailRow(field?.id) { row in
                                     row.title = field?.text
-                                    row.value = profile[(field?.id)!] as? String
+                                    if let val = profile[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }
                             } else if field?.text == "Owner" {
 
@@ -263,7 +284,7 @@ class CustomerProfileController: FormViewController {
                                 <<< PushRow<UserData>(field?.id) { row in
                                     row.title = field?.text
                                     row.options = self.users
-                                    row.value = customer.owner?.fragments.userData
+                                    row.value = customer?.owner?.fragments.userData
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -292,21 +313,28 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< NameRow (field?.id) { row in
                                     row.title = field?.text
-                                    row.value = customFields[(field?.id)!] as? String
+                                    
+                                    if let val = customFields[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
 
                                 }
                             } else if field?.type == "input" && (field?.validation?.isEmpty)! {
                                 form.last!
                                 <<< TextRow (field?.id) { row in
                                     row.title = field?.text
-                                    row.value = customFields[(field?.id)!] as? String
+                                    if let val = customFields[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }
                             } else if field?.type == "input" && field?.validation == "number" {
                                 form.last!
                                 <<< TextRow (field?.id) { row in
 
                                     row.title = field?.text
-                                    row.value = customFields[(field?.id)!] as? String
+                                    if let val = customFields[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textField.keyboardType = .numberPad
                                 })
@@ -328,7 +356,10 @@ class CustomerProfileController: FormViewController {
                                 <<< PushRow<String> (field?.id) { row in
                                     row.title = field?.text
                                     row.options = field?.options as? [String]
-                                    row.value = customFields[(field?.id)!] as? String
+                                    row.value = ""
+                                    if let val = customFields[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -337,13 +368,15 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< SwitchRow(field?.id) { row in
                                     row.title = field?.text
-
-                                    let state = customFields[(field?.id)!] as? String
-                                    if state == "Yes" {
-                                        row.value = true
-                                    } else {
-                                        row.value = false
+                                    row.value = false
+                                    if let state = customFields[((field?.id)!)] as? String {
+                                        if state == "Yes" {
+                                            row.value = true
+                                        } else {
+                                            row.value = false
+                                        }
                                     }
+                                    
                                 }.cellSetup({ (cell, lrow) in
                                     cell.textLabel?.textColor = UIColor.TEXT_COLOR
                                     cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -368,7 +401,9 @@ class CustomerProfileController: FormViewController {
                                 form.last!
                                 <<< EmailRow(field?.id) { row in
                                     row.title = field?.text
-                                    row.value = customFields[(field?.id)!] as? String
+                                    if let val = customFields[((field?.id)!)] as? String {
+                                        row.value = val
+                                    }
                                 }
                             }
                         }
@@ -387,7 +422,7 @@ class CustomerProfileController: FormViewController {
 
 
     func getCompanies() {
-        loader.startAnimating()
+        
 
         let query = CompaniesQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
@@ -395,14 +430,14 @@ class CustomerProfileController: FormViewController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
 
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
 
             if result?.data != nil {
@@ -410,7 +445,7 @@ class CustomerProfileController: FormViewController {
 
                     self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
 
-                    self?.loader.stopAnimating()
+                    
 
 
                 }
@@ -420,27 +455,27 @@ class CustomerProfileController: FormViewController {
     }
 
     func getUsers() {
-        loader.startAnimating()
+        
         let query = GetUsersQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
 
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
 
             if result?.data != nil {
                 if let result = result?.data?.users {
                     self?.users = result.map { ($0?.fragments.userData)! }
-                    self?.loader.stopAnimating()
+                    
                 }
             }
         }
@@ -455,7 +490,12 @@ class CustomerProfileController: FormViewController {
                 row.baseCell.isUserInteractionEnabled = false
 
             }
-            saveAction()
+            if isEdit(){
+                saveAction()
+            }else{
+                insertAction()
+            }
+            
         } else {
             sender.isSelected = true
             for row in form.allRows {
@@ -469,8 +509,90 @@ class CustomerProfileController: FormViewController {
     }
 
 
+    func insertAction(){
+        let mutation = CustomersAddMutation()
+        mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
+        mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
+        mutation.primaryEmail = form.rowBy(tag: "primaryEmail")?.baseValue as? String
+        mutation.primaryPhone = form.rowBy(tag: "primaryPhone")?.baseValue as? String
+        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
+        mutation.ownerId = owner?.id
+        mutation.position = form.rowBy(tag: "position")?.baseValue as? String
+        mutation.department = form.rowBy(tag: "department")?.baseValue as? String
+        mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
+        mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
+        if (form.rowBy(tag: "hasAuthority")?.baseValue as? Bool)! {
+            mutation.hasAuthority = "Yes"
+        } else {
+            mutation.hasAuthority = "No"
+        }
+        
+        mutation.description = form.rowBy(tag: "description")?.baseValue as? String
+        if (form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool)! {
+            mutation.doNotDisturb = "Yes"
+        } else {
+            mutation.doNotDisturb = "No"
+        }
+        
+        mutation.links = JSON()
+        var customFields = JSON()
+        
+        for row in form.allRows {
+            if row.section?.index != 0 {
+                
+                if let textRow = row as? TextRow {
+                    customFields[row.tag!] = textRow.baseValue as Any
+                }
+                
+                if let dateRow = row as? DateRow {
+                    if let dateValue = dateRow.value {
+                        let dateString = dateValue.mainDateString()
+                        customFields[row.tag!] = dateString
+                    }
+                }
+                
+                if let switchRow = row as? SwitchRow {
+                    if let value = switchRow.value {
+                        if value {
+                            customFields[row.tag!] = "Yes"
+                        } else {
+                            customFields[row.tag!] = "No"
+                        }
+                    }
+                }
+                
+                if let multiSelectorRow = row as? MultipleSelectorRow<String> {
+                    if let value = multiSelectorRow.value {
+                        let arr = Array(value)
+                        customFields[row.tag!] = arr
+                    }
+                }
+            }
+        }
+        
+        mutation.customFieldsData = customFields
+        appnet.perform(mutation: mutation) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+               
+                self?.showResult(isSuccess: false, message: error.localizedDescription, resultCompletion: nil)
+                return
+            }
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription, resultCompletion: nil)
+            }
+            if result?.data != nil {
+                self?.showResult(isSuccess: true, message: "Success", resultCompletion: {
+                    self?.navigationController?.popViewController(animated: true)
+                })
+            }
+        }
+    }
+    
     func saveAction() {
-        self.loader.startAnimating()
+        
         let mutation = CustomersEditMutation(_id: customerId!)
 
 
@@ -537,20 +659,18 @@ class CustomerProfileController: FormViewController {
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
+            
+                self?.showResult(isSuccess: false, message: error.localizedDescription, resultCompletion: nil)
                 return
             }
             if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                self?.loader.stopAnimating()
+               
+                self?.showResult(isSuccess: false, message: err[0].localizedDescription, resultCompletion: nil)
             }
             if result?.data != nil {
-
-                self?.loader.stopAnimating()
-                self?.showResult(isSuccess: true, message: "Changes Saved Successfully")
+                self?.showResult(isSuccess: true, message: "Success", resultCompletion: {
+                    self?.navigationController?.popViewController(animated: true)
+                })
             }
         }
     }
@@ -702,7 +822,7 @@ class CustomerProfileController: FormViewController {
 //                }
 //
 //            }
-        self.view.addSubview(loader)
+        
 
     }
 
@@ -713,16 +833,13 @@ class CustomerProfileController: FormViewController {
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
 
-        loader.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.center.equalTo(self.view.snp.center)
-        }
+        
     }
 
-    convenience init(_id: String, count: Int) {
+    convenience init(_id: String?) {
         self.init()
         self.customerId = _id
-        self.messagesCount = count
+       
     }
 
     override func didReceiveMemoryWarning() {

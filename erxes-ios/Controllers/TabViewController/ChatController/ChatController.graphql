@@ -1,6 +1,6 @@
 
-mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[JSON]){
-    conversationMessageAdd(conversationId:$conversationId,content:$content, attachments:$attachments){
+mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[JSON], $internal:Boolean){
+conversationMessageAdd(conversationId:$conversationId,content:$content, attachments:$attachments, internal:$internal){
         _id
         
     }

@@ -26,6 +26,7 @@ fragment ConversationDetail on Conversation {
         facebookData
         getIntegrationData
         
+        
     }
 }
 

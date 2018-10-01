@@ -21,6 +21,7 @@ class Appnet: NSObject {
         client = Appnet.newClient(token: token)
     }
     
+    var isAnimating:Bool = false
     
     var client: ApolloClient?
     
@@ -47,7 +48,11 @@ class Appnet: NSObject {
         if tokenChanged {
             refreshClient()
         }
-        
+        let topController = UIApplication.topViewController()
+        if !isAnimating {
+            topController?.showLoader()
+            isAnimating = true
+        }
         let q = query
         client?.fetch(query: query, cachePolicy: cachePolicy, queue:queue) { result, error in
             
@@ -58,17 +63,22 @@ class Appnet: NSObject {
                     let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
                     self.apollo.perform(mutation: loginMutation) { [weak self] result, error in
                         if let error = error {
+                            self?.isAnimating = false
+                            topController?.hideLoader()
                             return
                         }
                         if let err = result?.errors {
                             let alert = FailureAlert(message:err[0].localizedDescription)
                             alert.show(animated: true)
+                            topController?.hideLoader()
+                            self?.isAnimating = false
                         }
                         if result?.data != nil {
                             self?.token = (result?.data?.login.token)!
                             self?.tokenChanged = true
                             
-                            
+                            topController?.hideLoader()
+                            self?.isAnimating = false
                             let cl = Appnet.newClient(token: result?.data?.login.token)
                             cl.fetch(query: q, cachePolicy:cachePolicy, queue:queue) { result, error in
                                 print("fetched again")
@@ -78,15 +88,20 @@ class Appnet: NSObject {
                     }
                 } else {
                     handler(result, error)
+                    topController?.hideLoader()
+                    self.isAnimating = false
                 }
             } else {
                 handler(result, error)
+                topController?.hideLoader()
+                self.isAnimating = false
             }
         }
     }
     
     func perform<Mutation: GraphQLMutation>(mutation: Mutation, queue: DispatchQueue = DispatchQueue.main, handler: OperationResultHandler<Mutation>? = nil) {
-        
+        let topController = UIApplication.topViewController()
+        topController?.showLoader()
         let mut = mutation
         
         client?.perform(mutation: mutation, queue:queue) { [weak self] result, error in
@@ -100,17 +115,22 @@ class Appnet: NSObject {
                     let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
                     self?.apollo.perform(mutation: loginMutation) { [weak self] result, error in
                         if let error = error {
+                            topController?.hideLoader()
+                            self?.isAnimating = false
                             return
                         }
                         if let err = result?.errors {
                             let alert = FailureAlert(message:err[0].localizedDescription)
                             alert.show(animated: true)
+                             topController?.hideLoader()
+                            self?.isAnimating = false
                         }
                         if result?.data != nil {
                             self?.token = (result?.data?.login.token)!
                             self?.tokenChanged = true
                             
-                            
+                             topController?.hideLoader()
+                            self?.isAnimating = false
                             let cl = Appnet.newClient(token: result?.data?.login.token)
                             cl.perform(mutation:mut, queue:queue) { result, error in
                                 handler(result, error)
@@ -119,11 +139,17 @@ class Appnet: NSObject {
                     }
                 } else {
                     handler(result, error)
+                     topController?.hideLoader()
+                    self?.isAnimating = false
                 }
             } else {
                 handler(result, error)
+                 topController?.hideLoader()
+                self?.isAnimating = false
             }
         }
     }
+    
+
     
 }
