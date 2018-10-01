@@ -21,18 +21,21 @@ class ErxesTextView: UIView {
         super.init(frame: frame)
         
         
+        let titlebg = UIView()
+        titlebg.backgroundColor = UIColor.init(hexString: "ebebeb")
+        self.addSubview(titlebg)
         
         titleLabel = UILabel ()
-        titleLabel.font = UIFont.fontWith(type: .light, size: 14    )
-        titleLabel.textColor = .TEXT_COLOR
+        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 12    )
+        titleLabel.textColor = .black
         titleLabel.text = titleLabel.text?.capitalized
-        self.addSubview(titleLabel)
+        titlebg.addSubview(titleLabel)
         
         textView = UITextView()
         textView.delegate = self
-        textView.font = UIFont.fontWith(type: .light, size: 14    )
+        textView.font = UIFont.fontWith(type: .comfortaa, size: 15    )
         textView.backgroundColor = .clear
-        textView.textColor = .TEXT_COLOR
+        textView.textColor = .black
         let lineView = UIView()
         lineView.tag = 1
         lineView.backgroundColor = .TEXT_COLOR
@@ -41,14 +44,23 @@ class ErxesTextView: UIView {
      
         self.addSubview(textView)
         
-        titleLabel.snp.makeConstraints { (make) in
+        
+        titlebg.snp.makeConstraints { (make) in
             make.left.top.right.equalToSuperview()
-            make.height.equalTo(20)
+            make.height.equalTo(30)
+        }
+        
+        titleLabel.snp.makeConstraints { (make) in
+            make.left.equalTo(55)
+            make.right.equalTo(-16)
+            make.centerY.equalToSuperview()
         }
         
         textView.snp.makeConstraints { (make) in
-            make.left.bottom.right.equalToSuperview()
+            make.left.equalTo(55)
+            make.right.equalTo(-16)
             make.height.equalTo(50)
+            make.bottom.equalToSuperview()
             
         }
         

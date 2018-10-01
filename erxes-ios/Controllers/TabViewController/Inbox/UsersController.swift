@@ -18,11 +18,7 @@ class UsersController: UIViewController {
     
     
     var conversationId = String()
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-35, y: 125, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+  
     weak var delegate: UserControllerDelegate?
     
     var users = [UserData]() {
@@ -46,7 +42,7 @@ class UsersController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-        self.view.addSubview(loader)
+        
         self.view.backgroundColor = .clear
         self.getUsers()
     }
@@ -57,27 +53,27 @@ class UsersController: UIViewController {
     }
     
     func getUsers(){
-        loader.startAnimating()
+        
         let query = GetUsersQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             
             if result?.data != nil {
                 if let result = result?.data?.users {
                     self?.users = result.map { ($0?.fragments.userData)! }
-                    self?.loader.stopAnimating()
+                    
                 }
             }
         }

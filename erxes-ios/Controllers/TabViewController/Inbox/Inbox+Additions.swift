@@ -344,13 +344,13 @@ extension InboxController: UserControllerDelegate {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
                 return
             }
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                self?.loader.stopAnimating()
+                
             }
             if result?.data != nil {
                 self?.getInbox(limit: (self?.conversationLimit)!)

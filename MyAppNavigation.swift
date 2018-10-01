@@ -23,6 +23,12 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
                 return CompanyController(id: id)
             case .userProfile(let id):
                 return UserProfileController(_id: id)
+            case .passwordSettings():
+                return PasswordSettingsController()
+            case .emailSignature(let brands):
+                return EmailSignatureController(brands: brands)
+            case .notificationSettings():
+                return NotificationSettingsController()
             }
         }
         return UIViewController()
@@ -43,4 +49,7 @@ enum MyNavigation: Navigation {
     case customerProfile(_id:String?)
     case companyProfile(id:String?)
     case userProfile(id:String)
+    case passwordSettings()
+    case emailSignature(brands:[BrandDetail])
+    case notificationSettings()
 }

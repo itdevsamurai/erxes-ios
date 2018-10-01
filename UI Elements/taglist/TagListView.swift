@@ -400,6 +400,7 @@ open class TagListView: UIView {
     open func removeAllTags() {
         let views = tagViews as [UIView] + tagBackgroundViews
         for view in views {
+            
             view.removeFromSuperview()
         }
         tagViews = []

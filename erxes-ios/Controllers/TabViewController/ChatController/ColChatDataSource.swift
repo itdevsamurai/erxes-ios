@@ -115,12 +115,12 @@ extension ColChatController:ChatManagerDelegate {
         messages = data
         updateView()
         refresher.endRefreshing()
-        loader.stopAnimating()
+        
     }
     
     func messageRecieve(message:MessageDetail) {
         messages.append(message)
-        loader.stopAnimating()
+       
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.scrollToBottom()
         }
@@ -185,7 +185,7 @@ extension ChatManager:FileUploader {
         
 //        self.uploadView.isHidden = false
 //        self.progress.progress = 0
-//        self.uploadLoader.startAnimating()
+//        self.upload
         
         let url = Constants.URL_UPLOAD
         

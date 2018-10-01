@@ -15,13 +15,17 @@
 		9B1E939D20C8E34B00AC4FED /* MyAppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E939C20C8E34B00AC4FED /* MyAppNavigation.swift */; };
 		9B1E939F20C8FD1D00AC4FED /* ChatController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */; };
 		9B1E93A320C94D2800AC4FED /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1E93A220C94D2800AC4FED /* Message.swift */; };
+		9B27ADF92160A7A4000E0A7C /* EmailSignatureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADF82160A7A4000E0A7C /* EmailSignatureController.swift */; };
+		9B27ADFB2160B708000E0A7C /* NotificationSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */; };
+		9B27ADFD2160CE03000E0A7C /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */; };
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
-		9B3FC3D2213B83B00032526E /* PasswordConfirmModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3FC3D1213B83B00032526E /* PasswordConfirmModalView.swift */; };
 		9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */; };
 		9B441AB020DBCB0A008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AAF20DBCB0A008B29AF /* screenshot.png */; };
 		9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8A2137B9CB0074346B /* SettingsController.swift */; };
 		9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8C2137BDB20074346B /* SettingsCell.swift */; };
 		9B475C8F2137CBA70074346B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8E2137CBA70074346B /* ProfileView.swift */; };
+		9B477B3F215E082000B01E3B /* PasswordSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B477B3E215E082000B01E3B /* PasswordSettingsController.swift */; };
+		9B55DE1F215CD4FF0044F684 /* LineProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B55DE1E215CD4FF0044F684 /* LineProgressView.swift */; };
 		9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */; };
 		9B567094212A84FA0023B5AF /* erxes.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B567093212A84FA0023B5AF /* erxes.ttf */; };
 		9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567095212A856E0023B5AF /* ErxesFont.swift */; };
@@ -32,10 +36,8 @@
 		9B5CE65620D90846003EDBF9 /* UsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5CE65520D90846003EDBF9 /* UsersController.swift */; };
 		9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5CE65720D9088E003EDBF9 /* UserCell.swift */; };
 		9B5CE65A20D90993003EDBF9 /* UsersController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B5CE65920D90993003EDBF9 /* UsersController.graphql */; };
-		9B5E4558213914B200DDD687 /* PasswordModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5E4557213914B200DDD687 /* PasswordModalView.swift */; };
 		9B5E455A21391BE300DDD687 /* MyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5E455921391BE300DDD687 /* MyButton.swift */; };
 		9B5E455C21393DCF00DDD687 /* SettingsController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B5E455B21393DCF00DDD687 /* SettingsController.graphql */; };
-		9B5E455E21396A7400DDD687 /* EmailSignaturesModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5E455D21396A7400DDD687 /* EmailSignaturesModalView.swift */; };
 		9B5E456021396AEC00DDD687 /* ErxesTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5E455F21396AEC00DDD687 /* ErxesTextView.swift */; };
 		9B6202E920EC60820094A87D /* CustomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202E820EC60820094A87D /* CustomRow.swift */; };
 		9B6202F220EC817A0094A87D /* SuggestionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202EB20EC81790094A87D /* SuggestionTableViewCell.swift */; };
@@ -55,11 +57,15 @@
 		9B94F41820DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41720DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift */; };
 		9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41920DB5A7400313543 /* KCKeyboardImagePickerView.swift */; };
 		9B94F41C20DBB48400313543 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41B20DBB48400313543 /* API.swift */; };
+		9B9E34412158B8DF006F9E2D /* ErxesTagLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9E34402158B8DF006F9E2D /* ErxesTagLabel.swift */; };
+		9B9E34432158BC22006F9E2D /* ErxesTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9E34422158BC22006F9E2D /* ErxesTagView.swift */; };
+		9B9E34472158DF2B006F9E2D /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9E34442158DF2A006F9E2D /* TagListView.swift */; };
+		9B9E34482158DF2B006F9E2D /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9E34452158DF2B006F9E2D /* CloseButton.swift */; };
+		9B9E34492158DF2B006F9E2D /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9E34462158DF2B006F9E2D /* TagView.swift */; };
 		9B9F5543212E83DA0081EC89 /* Appnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5542212E83D90081EC89 /* Appnet.swift */; };
 		9B9F5547212E9A450081EC89 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5546212E9A450081EC89 /* CustomCells.swift */; };
 		9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */; };
 		9B9F554D212EB4E60081EC89 /* Profile.json in Resources */ = {isa = PBXBuildFile; fileRef = 9B9F554C212EB4E60081EC89 /* Profile.json */; };
-		9BB71604213A775900E2ACD0 /* NotificationSettingsModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71603213A775900E2ACD0 /* NotificationSettingsModalView.swift */; };
 		9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */; };
 		9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */; };
 		9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */; };
@@ -78,9 +84,6 @@
 		9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF35FF20D1150F004E3F44 /* ContactController.swift */; };
 		9BDF360220D12EEA004E3F44 /* ContactController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BDF360120D12EE9004E3F44 /* ContactController.graphql */; };
 		9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF360320D130C3004E3F44 /* ContactCell.swift */; };
-		9BF5B466209989F6006CF2D3 /* CloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF5B463209989F6006CF2D3 /* CloseButton.swift */; };
-		9BF5B467209989F6006CF2D3 /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF5B464209989F6006CF2D3 /* TagListView.swift */; };
-		9BF5B468209989F6006CF2D3 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF5B465209989F6006CF2D3 /* TagView.swift */; };
 		9BFFA5F520B2D8B40029A028 /* TagFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */; };
 		9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F620B2D9780029A028 /* TagCell.swift */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
@@ -152,13 +155,17 @@
 		9B1E939C20C8E34B00AC4FED /* MyAppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAppNavigation.swift; sourceTree = "<group>"; };
 		9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChatController.graphql; sourceTree = "<group>"; };
 		9B1E93A220C94D2800AC4FED /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		9B27ADF82160A7A4000E0A7C /* EmailSignatureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignatureController.swift; sourceTree = "<group>"; };
+		9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsController.swift; sourceTree = "<group>"; };
+		9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
-		9B3FC3D1213B83B00032526E /* PasswordConfirmModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordConfirmModalView.swift; sourceTree = "<group>"; };
 		9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		9B441AAF20DBCB0A008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		9B475C8A2137B9CB0074346B /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		9B475C8C2137BDB20074346B /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		9B475C8E2137CBA70074346B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		9B477B3E215E082000B01E3B /* PasswordSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordSettingsController.swift; sourceTree = "<group>"; };
+		9B55DE1E215CD4FF0044F684 /* LineProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineProgressView.swift; sourceTree = "<group>"; };
 		9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		9B567093212A84FA0023B5AF /* erxes.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = erxes.ttf; sourceTree = "<group>"; };
 		9B567095212A856E0023B5AF /* ErxesFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesFont.swift; sourceTree = "<group>"; };
@@ -169,10 +176,8 @@
 		9B5CE65520D90846003EDBF9 /* UsersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersController.swift; sourceTree = "<group>"; };
 		9B5CE65720D9088E003EDBF9 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		9B5CE65920D90993003EDBF9 /* UsersController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UsersController.graphql; sourceTree = "<group>"; };
-		9B5E4557213914B200DDD687 /* PasswordModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordModalView.swift; sourceTree = "<group>"; };
 		9B5E455921391BE300DDD687 /* MyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyButton.swift; path = alert/MyButton.swift; sourceTree = "<group>"; };
 		9B5E455B21393DCF00DDD687 /* SettingsController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = SettingsController.graphql; sourceTree = "<group>"; };
-		9B5E455D21396A7400DDD687 /* EmailSignaturesModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignaturesModalView.swift; sourceTree = "<group>"; };
 		9B5E455F21396AEC00DDD687 /* ErxesTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesTextView.swift; sourceTree = "<group>"; };
 		9B6202E820EC60820094A87D /* CustomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRow.swift; sourceTree = "<group>"; };
 		9B6202EB20EC81790094A87D /* SuggestionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionTableViewCell.swift; sourceTree = "<group>"; };
@@ -192,11 +197,15 @@
 		9B94F41720DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCKeyboardImagePickerPreviewViewController.swift; sourceTree = "<group>"; };
 		9B94F41920DB5A7400313543 /* KCKeyboardImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCKeyboardImagePickerView.swift; sourceTree = "<group>"; };
 		9B94F41B20DBB48400313543 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = "erxes-ios/API.swift"; sourceTree = "<group>"; };
+		9B9E34402158B8DF006F9E2D /* ErxesTagLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesTagLabel.swift; sourceTree = "<group>"; };
+		9B9E34422158BC22006F9E2D /* ErxesTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErxesTagView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9B9E34442158DF2A006F9E2D /* TagListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
+		9B9E34452158DF2B006F9E2D /* CloseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
+		9B9E34462158DF2B006F9E2D /* TagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		9B9F5542212E83D90081EC89 /* Appnet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appnet.swift; sourceTree = "<group>"; };
 		9B9F5546212E9A450081EC89 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
 		9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		9B9F554C212EB4E60081EC89 /* Profile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Profile.json; sourceTree = "<group>"; };
-		9BB71603213A775900E2ACD0 /* NotificationSettingsModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsModalView.swift; sourceTree = "<group>"; };
 		9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsCell.swift; sourceTree = "<group>"; };
 		9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserProfileController.graphql; sourceTree = "<group>"; };
@@ -215,9 +224,6 @@
 		9BDF35FF20D1150F004E3F44 /* ContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactController.swift; sourceTree = "<group>"; };
 		9BDF360120D12EE9004E3F44 /* ContactController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactController.graphql; sourceTree = "<group>"; };
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
-		9BF5B463209989F6006CF2D3 /* CloseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseButton.swift; sourceTree = "<group>"; };
-		9BF5B464209989F6006CF2D3 /* TagListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
-		9BF5B465209989F6006CF2D3 /* TagView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFilterController.swift; sourceTree = "<group>"; };
 		9BFFA5F620B2D9780029A028 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColChatController+KeyboardHandler.swift"; sourceTree = "<group>"; };
@@ -351,6 +357,7 @@
 			children = (
 				9B576F4E20D39B7C00E70269 /* CircleLayer.swift */,
 				9B576F5020D3A62000E70269 /* ErxesLoader.swift */,
+				9B55DE1E215CD4FF0044F684 /* LineProgressView.swift */,
 			);
 			path = loader;
 			sourceTree = "<group>";
@@ -389,6 +396,7 @@
 			children = (
 				B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */,
 				9B02B95B209701A500C10A6E /* Extensions.swift */,
+				9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */,
 				9B82254320B7DE0300B7C16D /* SwiftHEXColors.swift */,
 				F58F203A207B372800D8564D /* ErxesUser.swift */,
 				9B1E93A220C94D2800AC4FED /* Message.swift */,
@@ -500,9 +508,11 @@
 		9BF5B462209989F6006CF2D3 /* taglist */ = {
 			isa = PBXGroup;
 			children = (
-				9BF5B463209989F6006CF2D3 /* CloseButton.swift */,
-				9BF5B464209989F6006CF2D3 /* TagListView.swift */,
-				9BF5B465209989F6006CF2D3 /* TagView.swift */,
+				9B9E34452158DF2B006F9E2D /* CloseButton.swift */,
+				9B9E34442158DF2A006F9E2D /* TagListView.swift */,
+				9B9E34462158DF2B006F9E2D /* TagView.swift */,
+				9B9E34402158B8DF006F9E2D /* ErxesTagLabel.swift */,
+				9B9E34422158BC22006F9E2D /* ErxesTagView.swift */,
 			);
 			path = taglist;
 			sourceTree = "<group>";
@@ -617,11 +627,10 @@
 				9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */,
 				9B475C8E2137CBA70074346B /* ProfileView.swift */,
 				9B475C8C2137BDB20074346B /* SettingsCell.swift */,
-				9B5E4557213914B200DDD687 /* PasswordModalView.swift */,
-				9B5E455D21396A7400DDD687 /* EmailSignaturesModalView.swift */,
-				9BB71603213A775900E2ACD0 /* NotificationSettingsModalView.swift */,
 				9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */,
-				9B3FC3D1213B83B00032526E /* PasswordConfirmModalView.swift */,
+				9B477B3E215E082000B01E3B /* PasswordSettingsController.swift */,
+				9B27ADF82160A7A4000E0A7C /* EmailSignatureController.swift */,
+				9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -875,23 +884,24 @@
 				9B80E79720E75A10008BA4BF /* CustomerProfileController.swift in Sources */,
 				F5BEE327207760E10042DFC2 /* MyFormViewController.swift in Sources */,
 				F58F2040207B381400D8564D /* FailureAlert.swift in Sources */,
-				9B3FC3D2213B83B00032526E /* PasswordConfirmModalView.swift in Sources */,
 				F5BEE31620772C0D0042DFC2 /* LoginController.swift in Sources */,
 				9B94F41820DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift in Sources */,
 				9B82254420B7DE0300B7C16D /* SwiftHEXColors.swift in Sources */,
+				9B9E34432158BC22006F9E2D /* ErxesTagView.swift in Sources */,
 				F5BEE329207761730042DFC2 /* MyTextField.swift in Sources */,
 				9B6202F520EC817A0094A87D /* SuggestionCollectionViewCell.swift in Sources */,
 				B86FE587213F837700124BD3 /* ImageCell.swift in Sources */,
-				9B5E455E21396A7400DDD687 /* EmailSignaturesModalView.swift in Sources */,
 				9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */,
 				9B5CE65620D90846003EDBF9 /* UsersController.swift in Sources */,
 				9B1E939D20C8E34B00AC4FED /* MyAppNavigation.swift in Sources */,
-				9BF5B467209989F6006CF2D3 /* TagListView.swift in Sources */,
 				9B567098212A89480023B5AF /* ErxesFontKit.swift in Sources */,
+				9B9E34482158DF2B006F9E2D /* CloseButton.swift in Sources */,
 				F58F2063207B4FE900D8564D /* ErxesLabel.swift in Sources */,
 				9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */,
 				B8C669E72140E6A400097B4F /* ViewConstants.swift in Sources */,
+				9B27ADFD2160CE03000E0A7C /* UIViewController+Extensions.swift in Sources */,
 				9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */,
+				9B27ADF92160A7A4000E0A7C /* EmailSignatureController.swift in Sources */,
 				9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */,
 				B8C3FDEB2161DF06000EE9AF /* Filter+Keyboard.swift in Sources */,
 				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
@@ -899,35 +909,37 @@
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
 				9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */,
 				9B5E455A21391BE300DDD687 /* MyButton.swift in Sources */,
+				9B477B3F215E082000B01E3B /* PasswordSettingsController.swift in Sources */,
 				9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */,
 				9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */,
+				9B27ADFB2160B708000E0A7C /* NotificationSettingsController.swift in Sources */,
 				B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */,
 				9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */,
 				9B1E939B20C8D8F700AC4FED /* Route.swift in Sources */,
+				9B55DE1F215CD4FF0044F684 /* LineProgressView.swift in Sources */,
 				F58F2041207B381400D8564D /* Modal.swift in Sources */,
 				F58F2062207B4FE900D8564D /* ErxesButton.swift in Sources */,
 				B8BE67C4215B4FFD00E8A0A6 /* InputCell.swift in Sources */,
 				F55583BD207716F800413F6A /* TabController.swift in Sources */,
 				9B94F41220DB309200313543 /* KCKeyboardImagePickerController.swift in Sources */,
 				9BD9BE4220E38D1000CCFEA6 /* ComposeView.swift in Sources */,
-				9BB71604213A775900E2ACD0 /* NotificationSettingsModalView.swift in Sources */,
 				9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */,
 				9B9F5543212E83DA0081EC89 /* Appnet.swift in Sources */,
 				B8FDDE9B213E48FF00286DE0 /* ColChatController.swift in Sources */,
 				9B475C8F2137CBA70074346B /* ProfileView.swift in Sources */,
-				9BF5B468209989F6006CF2D3 /* TagView.swift in Sources */,
 				9B6D056120AAED3F00F5D77C /* ChannelFilterController.swift in Sources */,
 				B83794D22147A87E00C5991D /* InComingCell.swift in Sources */,
 				F55583BF2077173C00413F6A /* NavigationController.swift in Sources */,
 				B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */,
+				9B9E34412158B8DF006F9E2D /* ErxesTagLabel.swift in Sources */,
 				F58F203B207B372900D8564D /* ErxesUser.swift in Sources */,
 				9B5CE65420D8DC6E003EDBF9 /* MyData.swift in Sources */,
 				B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */,
 				B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */,
+				9B9E34492158DF2B006F9E2D /* TagView.swift in Sources */,
 				9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */,
 				F58F2064207B4FE900D8564D /* ErxesField.swift in Sources */,
 				9B5E456021396AEC00DDD687 /* ErxesTextView.swift in Sources */,
-				9B5E4558213914B200DDD687 /* PasswordModalView.swift in Sources */,
 				9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */,
 				9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */,
 				B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */,
@@ -954,8 +966,8 @@
 				B8127C91214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift in Sources */,
 				F58F205E207B4F4B00D8564D /* ErxesInboxCell.swift in Sources */,
 				9B9F5547212E9A450081EC89 /* CustomCells.swift in Sources */,
+				9B9E34472158DF2B006F9E2D /* TagListView.swift in Sources */,
 				F55583BB207716BB00413F6A /* Constants.swift in Sources */,
-				9BF5B466209989F6006CF2D3 /* CloseButton.swift in Sources */,
 				9B6D056520AAF26400F5D77C /* BrandFilterController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

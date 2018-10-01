@@ -30,7 +30,7 @@ class ColChatController:UIViewController {
                     
                 }
                 inited = true
-                loader.startAnimating()
+                
             }
         }
     }
@@ -176,11 +176,7 @@ class ColChatController:UIViewController {
         btnInternalNote.isSelected = isInternal
     }
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-25, y: Constants.SCREEN_HEIGHT/2-25, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+  
     
     var inputContainer:UIView = {
         let view = UIView()
@@ -220,7 +216,7 @@ class ColChatController:UIViewController {
         manager.queryMessages()
         manager.subscribe()
         manager.markAsRead(id: conversationId!)
-        self.container.addSubview(loader)
+        
         self.view.backgroundColor = .white
         
         let rightItem: UIBarButtonItem = {
@@ -274,10 +270,7 @@ class ColChatController:UIViewController {
             make.bottom.equalTo(self.inputContainer.snp.top)
         }
         
-        loader.snp.makeConstraints { (make) in
-            make.width.height.equalTo(50)
-            make.center.equalTo(self.view.snp.center)
-        }
+        
         
         initChatInput()
     }

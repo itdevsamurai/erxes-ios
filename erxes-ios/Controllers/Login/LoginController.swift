@@ -75,11 +75,7 @@ class LoginController: UIViewController {
         return imageView
     }()
 
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader()
-        loader.lineWidth = 3
-        return loader
-    }()
+
 
     var emailField: MyTextField = {
         let field = MyTextField()
@@ -174,7 +170,8 @@ class LoginController: UIViewController {
             make.left.right.bottom.equalToSuperview()
 
         }
-
+       
+        
         passwordField.snp.makeConstraints { (make) in
             make.bottom.equalTo(self.signInButton.snp.top).offset(-20)
             make.left.right.equalToSuperview()
@@ -306,9 +303,11 @@ class LoginController: UIViewController {
         outerCircle.add(animation1, forKey: nil)
         innerCircle.strokeEnd = endAngle
         innerCircle.add(animation2, forKey: nil)
+        self.view.isUserInteractionEnabled = true
     }
 
     func animateAlongCircle(repeatCount: Float) {
+        self.view.isUserInteractionEnabled = false
         let innerCirclePath = UIBezierPath(arcCenter: mailImageView.center, radius: mailImageView.frame.width / 2 + 45, startAngle: .pi / 4, endAngle: .pi / 4 - 0.0174532925, clockwise: true)
 
         let innerAnimation = CAKeyframeAnimation(keyPath: #keyPath(CALayer.position))
@@ -330,11 +329,44 @@ class LoginController: UIViewController {
 
         orangeOrb.layer.add(innerAnimation, forKey: nil)
         blueOrb.layer.add(outerAnimation, forKey: nil)
+        let particleEmitter = CAEmitterLayer()
+        
+        particleEmitter.emitterPosition = CGPoint(x: orangeOrb.center.x, y: -96)
+        particleEmitter.emitterShape = kCAEmitterLayerLine
+        particleEmitter.emitterSize = CGSize(width: orangeOrb.frame.size.width, height: 1)
+        
+        let red = makeEmitterCell(color: UIColor.red)
+        let green = makeEmitterCell(color: UIColor.green)
+        let blue = makeEmitterCell(color: UIColor.blue)
+        
+        particleEmitter.emitterCells = [red, green, blue]
+        
+//        orangeOrb.layer.addSublayer(particleEmitter)
+    }
+    
+    func makeEmitterCell(color: UIColor) -> CAEmitterCell {
+        let cell = CAEmitterCell()
+        cell.birthRate = 3
+        cell.lifetime = 7.0
+        cell.lifetimeRange = 0
+        cell.color = color.cgColor
+        cell.velocity = 200
+        cell.velocityRange = 50
+        cell.emissionLongitude = CGFloat.pi
+        cell.emissionRange = CGFloat.pi / 4
+        cell.spin = 2
+        cell.spinRange = 3
+        cell.scaleRange = 0.5
+        cell.scaleSpeed = -0.05
+        
+        cell.contents = UIImage(named: "particle_confetti")?.cgImage
+        return cell
     }
 
     func stopAnimation() {
         orangeOrb.layer.removeAllAnimations()
         blueOrb.layer.removeAllAnimations()
+        self.view.isUserInteractionEnabled = true
     }
 
     func revealSubViews() {
@@ -359,11 +391,11 @@ class LoginController: UIViewController {
             mutateLogin(email: emailField.text!, password: passwordField.text!)
 
         } else if !passwordField.validate(type: .password){
-            passwordField.becomeFirstResponder()
+//            passwordField.becomeFirstResponder()
         }else if  !emailField.validate(type: .email) {
-            emailField.becomeFirstResponder()
+//            emailField.becomeFirstResponder()
         }else {
-            emailField.becomeFirstResponder()
+//            emailField.becomeFirstResponder()
         }
 
 
@@ -510,7 +542,7 @@ extension LoginController: UITextFieldDelegate {
         if textField == emailField && emailField.validate(type: .email){
             passwordField.becomeFirstResponder()
         } else if textField == passwordField && passwordField.validate(type: .password){
-            passwordField.resignFirstResponder()
+//            passwordField.resignFirstResponder()
         }
         return true
     }

@@ -24,11 +24,7 @@ class ChannelFilterController: UIViewController {
         }
     }
     
-    var loader: ErxesLoader = {
-        let loader = ErxesLoader(frame: CGRect(x: Constants.SCREEN_WIDTH/2-35, y: 125, width: 50, height: 50))
-        loader.lineWidth = 3
-        return loader
-    }()
+  
     
     weak var channelDelegate: ChannelDelegate?
     
@@ -52,7 +48,7 @@ class ChannelFilterController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-        self.view.addSubview(loader)
+        
         self.view.backgroundColor = .clear
 
         getChannels()
@@ -63,7 +59,7 @@ class ChannelFilterController: UIViewController {
     }
     
     func getChannels(){
-        loader.startAnimating()
+        
             let query = ChannelsQuery()
         
 //
@@ -73,20 +69,20 @@ class ChannelFilterController: UIViewController {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)
                     alert.show(animated: true)
-                    self?.loader.stopAnimating()
+                    
                     return
                 }
                 
                 if let err = result?.errors {
                     let alert = FailureAlert(message: err[0].localizedDescription)
                     alert.show(animated: true)
-                    self?.loader.stopAnimating()
+                    
                 }
                 
                 if result?.data != nil {
                     if let allchannels = result?.data?.channels {
                         self?.channels = allchannels.map { ($0?.fragments.channelDetail)! }
-                        self?.loader.stopAnimating()
+                        
                     }
             }
         }

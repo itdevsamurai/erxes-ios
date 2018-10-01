@@ -14,7 +14,7 @@ class ContactCell: UITableViewCell {
     var topLabel: UILabel!
     var bottomLabel: UILabel!
     var icon: UIImageView!
-    
+    var taglistView: ErxesTagView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -27,14 +27,14 @@ class ContactCell: UITableViewCell {
         
         topLabel = UILabel()
         topLabel.textAlignment = .right
-        topLabel.textColor = UIColor.ERXES_COLOR
-        topLabel.font = UIFont.fontWith(type: .light, size: 14)
+        topLabel.textColor = UIColor.black
+        topLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
         contentView.addSubview(topLabel)
         
         bottomLabel = UILabel()
         bottomLabel.textAlignment = .right
-        bottomLabel.textColor = UIColor.TEXT_COLOR
-        bottomLabel.font = UIFont.fontWith(type: .light, size: 14)
+        bottomLabel.textColor = UIColor.LIGHT_GRAY_COLOR
+        bottomLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
         contentView.addSubview(bottomLabel)
         
     
@@ -43,35 +43,48 @@ class ContactCell: UITableViewCell {
         
 //        icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
         icon.tintColor = UIColor.ERXES_COLOR
+        icon.image = #imageLiteral(resourceName: "ic_avatar")
         contentView.addSubview(icon)
-        self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        
+        taglistView = ErxesTagView()
+        taglistView.clipsToBounds = true
+        contentView.addSubview(taglistView)
+//        self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         icon.snp.makeConstraints { (make) in
             make.left.equalTo(contentView.snp.left).inset(10)
-            make.width.height.equalTo(15)
+            make.width.height.equalTo(50)
             make.centerY.equalTo(contentView.snp.centerY)
             
         }
         
         topLabel.snp.makeConstraints { (make) in
             make.left.equalTo(icon.snp.right).offset(10)
-            make.top.equalTo(contentView.snp.top).offset(5)
+            make.top.equalTo(icon.snp.top)
 //            make.height.equalTo(20)
         }
         
         bottomLabel.snp.makeConstraints { (make) in
             make.left.equalTo(icon.snp.right).offset(10)
-            make.bottom.equalTo(contentView.snp.bottom).inset(5)
-//            make.height.equalTo(20)
+            make.centerY.equalToSuperview()
+            //            make.height.equalTo(20)
         }
         
-      
+        taglistView.snp.makeConstraints { (make) in
+            make.left.equalTo(topLabel.snp.left)
+            make.right.equalTo(contentView.snp.right).inset(20)
+            make.bottom.equalTo(contentView.snp.bottom).inset(5)
+            make.height.equalTo(18)
+        }
         
-        
+       
     }
+    
+    
     
     
     

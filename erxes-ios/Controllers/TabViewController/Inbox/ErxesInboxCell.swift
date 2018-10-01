@@ -70,7 +70,7 @@ class ErxesInboxCell: UITableViewCell {
         message.font = UIFont.fontWith(type: .comfortaa, size: 13)
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
-        message.backgroundColor = .SHIMMER_COLOR
+        message.backgroundColor = UIColor.LIGHT_GRAY_COLOR
         message.lineBreakMode = .byWordWrapping
         contentView.addSubview(message)
 
