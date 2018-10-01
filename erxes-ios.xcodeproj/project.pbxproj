@@ -99,6 +99,8 @@
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
 		B8BE67C4215B4FFD00E8A0A6 /* InputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */; };
 		B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */; };
+		B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3FDE82161CCEE000EE9AF /* MentionController.swift */; };
+		B8C3FDEB2161DF06000EE9AF /* Filter+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3FDEA2161DF06000EE9AF /* Filter+Keyboard.swift */; };
 		B8C669E72140E6A400097B4F /* ViewConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C669E62140E6A400097B4F /* ViewConstants.swift */; };
 		B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */; };
 		B8E8CB142150BE7300AE492D /* Inbox+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */; };
@@ -235,6 +237,8 @@
 		B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCell.swift; sourceTree = "<group>"; };
 		B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Network.swift"; sourceTree = "<group>"; };
+		B8C3FDE82161CCEE000EE9AF /* MentionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentionController.swift; sourceTree = "<group>"; };
+		B8C3FDEA2161DF06000EE9AF /* Filter+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Keyboard.swift"; sourceTree = "<group>"; };
 		B8C669E62140E6A400097B4F /* ViewConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConstants.swift; sourceTree = "<group>"; };
 		B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+TableView.swift"; sourceTree = "<group>"; };
 		B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+Additions.swift"; sourceTree = "<group>"; };
@@ -320,6 +324,7 @@
 				B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */,
 				9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */,
 				B8C669E62140E6A400097B4F /* ViewConstants.swift */,
+				B8C3FDE82161CCEE000EE9AF /* MentionController.swift */,
 			);
 			path = ChatController;
 			sourceTree = "<group>";
@@ -482,6 +487,7 @@
 			isa = PBXGroup;
 			children = (
 				9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */,
+				B8C3FDEA2161DF06000EE9AF /* Filter+Keyboard.swift */,
 				B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */,
 				B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */,
 				9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */,
@@ -887,6 +893,7 @@
 				B8C669E72140E6A400097B4F /* ViewConstants.swift in Sources */,
 				9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */,
 				9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */,
+				B8C3FDEB2161DF06000EE9AF /* Filter+Keyboard.swift in Sources */,
 				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
 				B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */,
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
@@ -912,6 +919,7 @@
 				9B6D056120AAED3F00F5D77C /* ChannelFilterController.swift in Sources */,
 				B83794D22147A87E00C5991D /* InComingCell.swift in Sources */,
 				F55583BF2077173C00413F6A /* NavigationController.swift in Sources */,
+				B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */,
 				F58F203B207B372900D8564D /* ErxesUser.swift in Sources */,
 				9B5CE65420D8DC6E003EDBF9 /* MyData.swift in Sources */,
 				B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */,

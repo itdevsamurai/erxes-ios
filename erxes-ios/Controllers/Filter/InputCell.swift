@@ -26,10 +26,13 @@ class InputCell:UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        input.snp.removeConstraints()
         input.snp.makeConstraints { (make) in
-            make.top.right.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(50)
+            make.top.right.bottom.equalToSuperview()
         }
+        
+        input.becomeFirstResponder()
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

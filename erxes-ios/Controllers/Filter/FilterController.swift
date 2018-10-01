@@ -64,15 +64,16 @@ class FilterController: UIViewController {
         configureView()
         tableView.delegate = self
         tableView.dataSource = self
-        self.view.backgroundColor = .clear
         
-        UIView.animate(withDuration: 0.2, delay: 2, options: .curveLinear, animations: {
-            self.view.backgroundColor = UIColor(hexString: "#000000", alpha: 0.6)
-        }, completion:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        self.view.backgroundColor = .clear
+        UIView.animate(withDuration: 0.3, delay: 0.4, options: .curveLinear, animations: {
+            self.view.backgroundColor = UIColor(hexString: "#000000", alpha: 0.6)
+        }, completion:nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -325,6 +326,7 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         
+        view.backgroundColor = .white
         let line = UIView(frame: CGRect(x: 12, y: 0, width: DEVICE_WIDTH - 24, height: 1))
         line.backgroundColor = UIColor(hexString: "#eaeaea")
         view.addSubview(line)
@@ -406,6 +408,7 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         selectedSection = -1
         tableView.endUpdates()
         list = []
+        self.view.endEditing(true)
     }
     
     func expandSection(_ section:Int) {

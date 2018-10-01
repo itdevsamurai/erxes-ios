@@ -34,6 +34,16 @@ class ColChatController:UIViewController {
             }
         }
     }
+    
+//    mention begin
+    var users = [User]()
+    var userView:UITableView = {
+        let tv = UITableView()
+        tv.isHidden = true
+        return tv
+    }()
+//    mention end
+    
     var calculatedHeights:[CGFloat] = []
     
     var container:UIView = {
@@ -200,6 +210,7 @@ class ColChatController:UIViewController {
         self.chatView.refreshControl = refresher
         container.addSubview(self.chatView)
         container.addSubview(inputContainer)
+        container.addSubview(userView)
 //        inputContainer.addSubview(chatInputView)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -238,6 +249,11 @@ class ColChatController:UIViewController {
         chatView.snp.makeConstraints { (make) in
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(inputContainer.snp.top)
+        }
+        
+        userView.snp.makeConstraints { (make) in
+            make.bottom.equalTo(chatView.snp.bottom)
+            make.right.left.equalToSuperview()
         }
         
         inputContainer.snp.makeConstraints { (make) in
@@ -434,6 +450,6 @@ extension ColChatController:UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
 }

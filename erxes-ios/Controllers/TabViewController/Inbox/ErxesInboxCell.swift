@@ -38,6 +38,7 @@ class ErxesInboxCell: UITableViewCell {
         fullName.textAlignment = .left
         fullName.font = UIFont.fontWith(type: .comfortaa, size: 13)
         fullName.textColor = UIColor(hexString: "#232323")
+        fullName.backgroundColor = .SHIMMER_COLOR
         contentView.addSubview(fullName)
 
 
@@ -47,6 +48,7 @@ class ErxesInboxCell: UITableViewCell {
         desc.textColor = UIColor(hexString: "#232323", alpha:0.5)
         desc.minimumScaleFactor = 0.5
         desc.adjustsFontSizeToFitWidth = true
+        desc.backgroundColor = .SHIMMER_COLOR
         contentView.addSubview(desc)
 
 
@@ -56,6 +58,7 @@ class ErxesInboxCell: UITableViewCell {
         date.textColor = .gray
         date.numberOfLines = 0
         date.lineBreakMode = .byCharWrapping
+        date.backgroundColor = .SHIMMER_COLOR
         date.font = date.font.withSize(10)
         contentView.addSubview(date)
 
@@ -67,7 +70,7 @@ class ErxesInboxCell: UITableViewCell {
         message.font = UIFont.fontWith(type: .comfortaa, size: 13)
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
-        message.backgroundColor = .red
+        message.backgroundColor = .SHIMMER_COLOR
         message.lineBreakMode = .byWordWrapping
         contentView.addSubview(message)
 

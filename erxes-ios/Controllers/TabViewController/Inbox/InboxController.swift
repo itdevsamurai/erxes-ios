@@ -166,7 +166,7 @@ class InboxController: UIViewController {
         leftItem.customView = leftButton
 //        leftItem.image = leftImage
 
-        self.navigationItem.leftBarButtonItem = leftItem
+        self.navigationItem.rightBarButtonItem = leftItem
 
         var rightImage = #imageLiteral(resourceName: "ic_search")
         rightImage = rightImage.withRenderingMode(.alwaysTemplate)
