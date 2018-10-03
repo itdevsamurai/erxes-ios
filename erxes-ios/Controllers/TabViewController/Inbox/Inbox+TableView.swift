@@ -172,15 +172,15 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
     
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        //        self.timer.invalidate()
-//        let currentOffset = scrollView.contentOffset.y
-//        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-//
-//        if maximumOffset - currentOffset <= 0.0 {
-//            conversationLimit = conversationLimit + 10
-//            self.getInbox(limit: conversationLimit)
-//            //             self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(inboxTimer(sender:)), userInfo: self.conversationLimit, repeats: true)
-//        }
+        //        self.timer.invalidate()
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+
+        if maximumOffset - currentOffset <= 0.0 {
+            conversationLimit = conversationLimit + 10
+            self.getInbox(limit: conversationLimit)
+            //             self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(inboxTimer(sender:)), userInfo: self.conversationLimit, repeats: true)
+        }
     }
     
     

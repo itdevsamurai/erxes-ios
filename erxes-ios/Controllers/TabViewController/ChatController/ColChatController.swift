@@ -36,10 +36,15 @@ class ColChatController:UIViewController {
     }
     
 //    mention begin
-    var users = [User]()
+    
+    var mentionController = MentionController()
+    
     var userView:UITableView = {
         let tv = UITableView()
         tv.isHidden = true
+        tv.separatorStyle = .none
+        tv.separatorColor = .lightGray
+        tv.separatorInset = UIEdgeInsetsMake(0, 10, 0, 10)
         return tv
     }()
 //    mention end
@@ -95,6 +100,7 @@ class ColChatController:UIViewController {
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
         textfield.leftViewMode = .always
         textfield.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        textfield.addTarget(self, action: #selector(InputViewTextChanged(_:)), for: .editingChanged)
         
         return textfield
     }()
@@ -208,14 +214,20 @@ class ColChatController:UIViewController {
         container.addSubview(inputContainer)
         container.addSubview(userView)
 //        inputContainer.addSubview(chatInputView)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHandler), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
         messages = [MessageDetail]()
         manager.delegate = self
         manager.conversationId = conversationId
         manager.queryMessages()
         manager.subscribe()
         manager.markAsRead(id: conversationId!)
+        
+        userView.delegate = mentionController
+        userView.dataSource = mentionController
+        mentionController.delegate = self
         
         self.view.backgroundColor = .white
         
@@ -250,6 +262,7 @@ class ColChatController:UIViewController {
         userView.snp.makeConstraints { (make) in
             make.bottom.equalTo(chatView.snp.bottom)
             make.right.left.equalToSuperview()
+            make.top.equalToSuperview()
         }
         
         inputContainer.snp.makeConstraints { (make) in
@@ -269,8 +282,6 @@ class ColChatController:UIViewController {
             make.top.left.right.equalToSuperview()
             make.bottom.equalTo(self.inputContainer.snp.top)
         }
-        
-        
         
         initChatInput()
     }
@@ -370,8 +381,9 @@ extension ColChatController {
         guard let message = chatInputView.text, message.count > 0 else {
             return
         }
-        manager.mutateAddMessage(msg: message, isInternal: isInternal)
+        manager.mutateAddMessage(msg: message, isInternal: isInternal, mentions: mentionController.mentionedUserIds())
         chatInputView.text = ""
+        mentionController.clear()
         btnInternalNote.isSelected = false
         isInternal = false
     }
