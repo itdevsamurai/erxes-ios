@@ -9,17 +9,26 @@
 import UIKit
 import Apollo
 
+public struct ContactFilterOptions {
+
+    public var segment: SegmentObj? = nil
+    public var form: FormObj? = nil
+    public var brand: BrandDetail? = nil
+    public var lead: String = ""
+    public var lifeCycle: String = ""
+    public var integrationType: String = ""
+    public var tag: TagDetail? = nil
+   
+    mutating func removeAll() {
+        self = ContactFilterOptions()
+    }
+    public init() { }
+}
 
 class ContactController: UIViewController {
 
-//    var linearLoader: LineProgressView = {
-//       let loader = LineProgressView()
-//        loader.bgColor = .clear
-//        return loader
-//    }()
-
     let arr = ["Customers", "Companies"]
-
+    public var options: ContactFilterOptions? = nil
     var isCustomer: Bool = true
     var customersLimit = 20
     var companiesLimit = 20
@@ -163,7 +172,7 @@ class ContactController: UIViewController {
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
             button.tintColor = UIColor.white
-            button.addTarget(self, action: #selector(changeEditMode(sender:)), for: .touchUpInside)
+            button.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
         }()
@@ -176,7 +185,7 @@ class ContactController: UIViewController {
 
 
         self.navigationItem.leftBarButtonItem = leftItem
-//        self.navigationItem.rightBarButtonItem = rightItem
+        self.navigationItem.rightBarButtonItem = rightItem
         segmentedControl.addTarget(self, action: #selector(toggleSegmentedControl(sender:)), for: .valueChanged)
         self.navigationItem.titleView = segmentedControl
 
@@ -207,6 +216,20 @@ class ContactController: UIViewController {
             navigate(.companyProfile(id: nil))
         }
 
+    }
+    
+    @objc func navigateFilter() {
+        //        let nav = NavigationController()
+        let controller = ContactFilterController(isCustomer: self.isCustomer)
+        controller.delegate = self
+        if self.options != nil {
+            controller.filterOptions = self.options!
+        }
+        controller.modalPresentationStyle = .overFullScreen
+        //        nav.viewControllers = [controller]
+        self.present(controller, animated: true) {
+            
+        }
     }
 
     override func viewDidLoad() {
@@ -287,8 +310,17 @@ class ContactController: UIViewController {
     }
 
     func getCustomers(limit: Int = 20) {
-
+        
             let query = CustomersQuery()
+        if options != nil {
+            query.segment = options?.segment?.id
+            query.tag = options?.tag?.id
+            query.brand = options?.brand?.id
+            query.form = options?.form?.id
+            query.leadStatus = options?.lead
+            query.lifecycleState = options?.lifeCycle
+            query.integration = options?.integrationType
+        }
             query.perPage = limit
             appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
                 if let error = error {
@@ -471,3 +503,12 @@ extension ContactController: UITableViewDelegate {
 
 
 
+extension ContactController: ContactFilterDelegate {
+    func passFilterOptions(options: ContactFilterOptions) {
+        self.options = options
+        if isCustomer {
+            self.getCustomers(limit: self.customersLimit)
+            print("filter")
+        }
+    }
+}

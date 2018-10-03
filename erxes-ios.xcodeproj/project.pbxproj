@@ -84,6 +84,8 @@
 		9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF35FF20D1150F004E3F44 /* ContactController.swift */; };
 		9BDF360220D12EEA004E3F44 /* ContactController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BDF360120D12EE9004E3F44 /* ContactController.graphql */; };
 		9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF360320D130C3004E3F44 /* ContactCell.swift */; };
+		9BF0C32D216358390030247F /* ContactFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF0C32C216358390030247F /* ContactFilterController.swift */; };
+		9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BF0C32E216358570030247F /* ContactFilterController.graphql */; };
 		9BFFA5F520B2D8B40029A028 /* TagFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */; };
 		9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F620B2D9780029A028 /* TagCell.swift */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
@@ -224,6 +226,8 @@
 		9BDF35FF20D1150F004E3F44 /* ContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactController.swift; sourceTree = "<group>"; };
 		9BDF360120D12EE9004E3F44 /* ContactController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactController.graphql; sourceTree = "<group>"; };
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		9BF0C32C216358390030247F /* ContactFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactFilterController.swift; sourceTree = "<group>"; };
+		9BF0C32E216358570030247F /* ContactFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactFilterController.graphql; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.graphql; };
 		9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFilterController.swift; sourceTree = "<group>"; };
 		9BFFA5F620B2D9780029A028 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColChatController+KeyboardHandler.swift"; sourceTree = "<group>"; };
@@ -612,8 +616,10 @@
 			isa = PBXGroup;
 			children = (
 				9BDF35FF20D1150F004E3F44 /* ContactController.swift */,
-				9BDF360320D130C3004E3F44 /* ContactCell.swift */,
 				9BDF360120D12EE9004E3F44 /* ContactController.graphql */,
+				9BDF360320D130C3004E3F44 /* ContactCell.swift */,
+				9BF0C32C216358390030247F /* ContactFilterController.swift */,
+				9BF0C32E216358570030247F /* ContactFilterController.graphql */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -771,6 +777,7 @@
 				F5BEE33920776BD40042DFC2 /* Montserrat-Hairline.otf in Resources */,
 				B842CC482123E3420052E5C9 /* Industry.json in Resources */,
 				9BC2D9C520CE6CFF003ADEE7 /* ChannelFilterController.graphql in Resources */,
+				9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */,
 				9B089B3F20CA7A67003EC255 /* avatar.png in Resources */,
 				9BC0912A214F7EDD0099BDE7 /* Assets.xcassets in Resources */,
 				9BC0912C214F94330099BDE7 /* Gotham-Bold.otf in Resources */,
@@ -940,6 +947,7 @@
 				9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */,
 				F58F2064207B4FE900D8564D /* ErxesField.swift in Sources */,
 				9B5E456021396AEC00DDD687 /* ErxesTextView.swift in Sources */,
+				9BF0C32D216358390030247F /* ContactFilterController.swift in Sources */,
 				9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */,
 				9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */,
 				B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */,

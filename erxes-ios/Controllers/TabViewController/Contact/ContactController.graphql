@@ -1,8 +1,10 @@
-query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String) {
-    customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue) {
+query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String,$brand: String, $integration: String, $form: String, $startDate: String, $endDate: String, $leadStatus: String, $lifecycleState: String) {
+    customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue,brand: $brand, integration: $integration, form: $form, startDate: $startDate, endDate: $endDate, leadStatus: $leadStatus, lifecycleState: $lifecycleState) {
         ...CustomerList
     }
 }
+
+
 
 fragment CustomerList on Customer {
 

@@ -150,7 +150,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                     cell?.setIcon(type: .feed)
                 }
             } else if conversation.integration?.kind != nil && conversation.integration?.kind == "messenger" {
-                if (conversation.customer?.isUser)! {
+                if (conversation.customer?.isUser)! && conversation.customer?.isUser != nil  {
                     cell?.setIcon(type: .user)
                 } else {
                     cell?.setIcon(type: .notuser)
