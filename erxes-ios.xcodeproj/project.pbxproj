@@ -94,6 +94,7 @@
 		B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE582213EDC3B00124BD3 /* BaseCell.swift */; };
 		B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE584213EDC8100124BD3 /* SentCell.swift */; };
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
+		B895E23B2166007C0074669A /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B895E23A2166007C0074669A /* FilterCell.swift */; };
 		B8BE67C4215B4FFD00E8A0A6 /* InputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */; };
 		B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */; };
 		B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3FDE82161CCEE000EE9AF /* MentionController.swift */; };
@@ -229,6 +230,7 @@
 		B86FE584213EDC8100124BD3 /* SentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCell.swift; sourceTree = "<group>"; };
 		B86FE586213F837700124BD3 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
+		B895E23A2166007C0074669A /* FilterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCell.swift; sourceTree = "<group>"; };
 		B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Network.swift"; sourceTree = "<group>"; };
 		B8C3FDE82161CCEE000EE9AF /* MentionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentionController.swift; sourceTree = "<group>"; };
@@ -603,6 +605,7 @@
 		F58F204A207B4DB000D8564D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				B895E23A2166007C0074669A /* FilterCell.swift */,
 				9B475C8A2137B9CB0074346B /* SettingsController.swift */,
 				9B5E455B21393DCF00DDD687 /* SettingsController.graphql */,
 				9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */,
@@ -880,6 +883,7 @@
 				9B9E34482158DF2B006F9E2D /* CloseButton.swift in Sources */,
 				F58F2063207B4FE900D8564D /* ErxesLabel.swift in Sources */,
 				9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */,
+				B895E23B2166007C0074669A /* FilterCell.swift in Sources */,
 				B8C669E72140E6A400097B4F /* ViewConstants.swift in Sources */,
 				9B27ADFD2160CE03000E0A7C /* UIViewController+Extensions.swift in Sources */,
 				9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */,
