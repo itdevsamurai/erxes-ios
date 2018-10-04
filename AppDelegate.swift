@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
         ]
-        
+      
         UINavigationBar.appearance().titleTextAttributes = attrs
         Route.default.setupAppNavigation(appNavigation: MyAppNavigation())
         loginContoller.title = "Login"

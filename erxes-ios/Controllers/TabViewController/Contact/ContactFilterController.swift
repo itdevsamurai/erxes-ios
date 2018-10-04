@@ -51,7 +51,11 @@ class ContactFilterController: UIViewController {
 
     func getSegments() {
         segments.removeAll()
-        let query = SegmentsQuery(contentType: "customer")
+        var type = "customer"
+        if !isCustomer{
+            type = "company"
+        }
+        let query = SegmentsQuery(contentType: type)
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -85,7 +89,12 @@ class ContactFilterController: UIViewController {
     }
     
     func getTags(){
-        let query = TagsQuery(type: "customer")
+        var type = "customer"
+        if !isCustomer{
+            type = "company"
+        }
+        
+        let query = TagsQuery(type: type)
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -114,16 +123,13 @@ class ContactFilterController: UIViewController {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                
                 return
             }
-            
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
                 
             }
-            
             if result?.data != nil {
                 if let allBrands = result?.data?.brands {
                     self?.brands = allBrands.map { ($0?.fragments.brandDetail)! }
@@ -163,6 +169,13 @@ class ContactFilterController: UIViewController {
         if !self.isCustomer{
 //            ["Segments", "Tags", "Integrations", "Brand", "Form", "Lead status", "Lifecycle States"]
             self.sections = ["Segments","Tags","Lead Status","Lifecycle State","Brand"]
+            self.segment = 0
+            self.tag = 1
+            self.lead = 2
+            self.lifecycle = 3
+            self.brand = 4
+            self.integration = -1
+            self.form = -1
             
         }
     }

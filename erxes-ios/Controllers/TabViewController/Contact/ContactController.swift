@@ -27,6 +27,46 @@ public struct ContactFilterOptions {
 
 class ContactController: UIViewController {
 
+    
+    var searchField:UITextField = {
+       let field = UITextField(frame: CGRect(x: 16, y: 5, width: DEVICE_WIDTH-32, height: 30))
+        field.layer.cornerRadius = 6
+        field.backgroundColor = .white
+        let imageView = UIImageView(image: UIImage.erxes(with: .magnifyingglass, textColor: .ERXES_COLOR))
+        imageView.frame.size.width = 30
+        imageView.contentMode = .scaleAspectFit
+        field.leftView = imageView
+        field.leftViewMode = .always
+        field.placeholder = "Search"
+        
+        let btnCancel = UIButton(type: .custom)
+        btnCancel.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
+        btnCancel.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        btnCancel.setTitleColor(.ERXES_COLOR, for: .normal)
+        btnCancel.setTitle("Cancel", for: .normal)
+        btnCancel.contentMode = UIViewContentMode.center
+        btnCancel.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
+        
+        field.rightView = btnCancel
+        field.rightViewMode = .whileEditing
+        field.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        field.returnKeyType = .search
+        
+        return field
+    }()
+    
+    @objc func cancelAction(){
+        searchField.endEditing(true)
+        searchField.text = ""
+        if isCustomer {
+            self.getCustomers()
+        }else{
+            self.getCompanies()
+        }
+    }
+    
+    var searchBackGround = UIView()
+    
     let arr = ["Customers", "Companies"]
     public var options: ContactFilterOptions? = nil
     var isCustomer: Bool = true
@@ -90,7 +130,7 @@ class ContactController: UIViewController {
         tableView.register(ContactCell.self, forCellReuseIdentifier: "ContactCell")
         tableView.rowHeight = 90
         tableView.tableFooterView = UIView()
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = .ERXES_COLOR
         tableView.separatorColor = UIColor.LIGHT_GRAY_COLOR
       
         return tableView
@@ -194,6 +234,12 @@ class ContactController: UIViewController {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPress(longPressGestureRecognizer:)))
         tableView.addGestureRecognizer(longPress)
         self.view.addSubview(tableView)
+         searchBackGround = UIView(frame: CGRect(x: 0, y: 0, width: DEVICE_WIDTH, height: 44))
+        searchBackGround.backgroundColor = .ERXES_COLOR
+        searchBackGround.addSubview(searchField)
+        tableView.tableHeaderView = searchBackGround
+        tableView.sectionHeaderHeight = 44
+        searchField.delegate = self
         
     }
 
@@ -262,47 +308,46 @@ class ContactController: UIViewController {
 
 
         tableView.snp.makeConstraints { (make) in
-            make.left.equalTo(self.view.snp.left).offset(16)
-            make.right.equalTo(self.view.snp.right).inset(16)
+//            make.left.equalTo(self.view.snp.left).offset(16)
+//            make.right.equalTo(self.view.snp.right).inset(16)
+            make.left.right.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
             make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
         }
 
-//        loader.snp.makeConstraints { (make) in
-//            make.width.height.equalTo(50)
-//            make.center.equalTo(self.view.snp.center)
-//        }
+
 
     }
 
     func getCompanies(limit: Int = 20) {
-//        self.showLoader()
-        
-            let query = CompaniesQuery()
-            query.perPage = limit
 
+            let query = CompaniesQuery()
+        
+        if options != nil {
+            query.segment = options?.segment?.id
+            query.tag = options?.tag?.id
+            query.brand = options?.brand?.id
+            query.leadStatus = options?.lead
+            query.lifecycleState = options?.lifeCycle
+        }
+            query.searchValue = searchField.text
+            query.perPage = limit
             appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
                 if let error = error {
                     print(error.localizedDescription)
                     let alert = FailureAlert(message: error.localizedDescription)
                     alert.show(animated: true)
-
-//                self?.hideLoader()
-
                     return
                 }
 
                 if let err = result?.errors {
                     let alert = FailureAlert(message: err[0].localizedDescription)
                     alert.show(animated: true)
-//                self?.hideLoader()
-
                 }
 
                 if result?.data != nil {
                     if let allCompanies = result?.data?.companies {
                         self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
-
                     }
                 }
             }
@@ -321,6 +366,7 @@ class ContactController: UIViewController {
             query.lifecycleState = options?.lifeCycle
             query.integration = options?.integrationType
         }
+            query.searchValue = searchField.text
             query.perPage = limit
             appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
                 if let error = error {
@@ -499,6 +545,33 @@ extension ContactController: UITableViewDelegate {
                 }
             }
         }
+        
+//        func numberOfSections(in tableView: UITableView) -> Int {
+//            return 1
+//        }
+//
+//        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//            let view = UIView(frame: CGRect(x: 0, y: 0, width: DEVICE_WIDTH, height: 44))
+//            view.backgroundColor = .ERXES_COLOR
+//            view.addSubview(searchField)
+//            return view
+//        }
+//
+//        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//            return 44
+//        }
+        
+        func scrollViewDidScroll(scrollView:UIScrollView) {
+            
+            let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
+            if offsetY > 0 {
+//                let height = self.frame.height
+//                backGroundImageView.frame.size.height = height + offsetY
+                let height = tableView.sectionHeaderHeight
+                tableView.sectionHeaderHeight = height + offsetY
+                searchBackGround.frame.size.height = height + offsetY
+            }
+        }
     }
 
 
@@ -508,7 +581,21 @@ extension ContactController: ContactFilterDelegate {
         self.options = options
         if isCustomer {
             self.getCustomers(limit: self.customersLimit)
-            print("filter")
+        }else {
+            self.getCompanies(limit: self.companiesLimit)
         }
+    }
+}
+
+
+extension ContactController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if isCustomer{
+            self.getCustomers()
+        }else{
+            self.getCompanies()
+        }
+        return true
     }
 }
