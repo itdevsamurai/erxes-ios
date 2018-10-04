@@ -30,7 +30,7 @@ class ColChatController:UIViewController {
                     
                 }
                 inited = true
-                
+                print(messages.last)
             }
         }
     }
@@ -339,7 +339,10 @@ class ColChatController:UIViewController {
             imagePicker.delegate = manager
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
             imagePicker.allowsEditing = true
-            
+            imagePicker.navigationBar.tintColor = .black // Cancel button ~ any UITabBarButton items
+            imagePicker.navigationBar.titleTextAttributes = [
+                NSAttributedStringKey.foregroundColor : UIColor.black
+            ]
             self.present(imagePicker, animated: true, completion: nil)
         }
         else
@@ -353,6 +356,10 @@ class ColChatController:UIViewController {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = manager
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.navigationBar.tintColor = .black // Cancel button ~ any UITabBarButton items
+        imagePicker.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor : UIColor.black
+        ]
         //        imagePicker.allowsEditing = true
         DispatchQueue.main.async {
             self.present(imagePicker, animated: true, completion: nil)

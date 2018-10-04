@@ -153,6 +153,8 @@ extension ColChatController {
     
     @objc func InputViewTextChanged (_ sender:UITextField) {
         
+        if !isInternal { return }
+        
         if mentionController.visible {
             
             guard let text = sender.text else { return }
