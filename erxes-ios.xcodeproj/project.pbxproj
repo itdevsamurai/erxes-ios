@@ -19,7 +19,6 @@
 		9B27ADFB2160B708000E0A7C /* NotificationSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */; };
 		9B27ADFD2160CE03000E0A7C /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */; };
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
-		9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */; };
 		9B441AB020DBCB0A008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AAF20DBCB0A008B29AF /* screenshot.png */; };
 		9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8A2137B9CB0074346B /* SettingsController.swift */; };
 		9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8C2137BDB20074346B /* SettingsCell.swift */; };
@@ -47,8 +46,6 @@
 		9B6202F620EC817A0094A87D /* SuggestionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202EF20EC81790094A87D /* SuggestionCell.swift */; };
 		9B6202F720EC817A0094A87D /* String+SuggestionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */; };
 		9B6202F820EC817A0094A87D /* SuggestionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202F120EC817A0094A87D /* SuggestionRow.swift */; };
-		9B6D056120AAED3F00F5D77C /* ChannelFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D056020AAED3F00F5D77C /* ChannelFilterController.swift */; };
-		9B6D056520AAF26400F5D77C /* BrandFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D056420AAF26400F5D77C /* BrandFilterController.swift */; };
 		9B80E79720E75A10008BA4BF /* CustomerProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */; };
 		9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */; };
 		9B82254420B7DE0300B7C16D /* SwiftHEXColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82254320B7DE0300B7C16D /* SwiftHEXColors.swift */; };
@@ -75,7 +72,6 @@
 		9BC0912A214F7EDD0099BDE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09129214F7EDC0099BDE7 /* Assets.xcassets */; };
 		9BC0912C214F94330099BDE7 /* Gotham-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC0912B214F94330099BDE7 /* Gotham-Bold.otf */; };
 		9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */; };
-		9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */; };
 		9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */; };
 		9BC2D9C520CE6CFF003ADEE7 /* ChannelFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C420CE6CFF003ADEE7 /* ChannelFilterController.graphql */; };
 		9BC2D9C720CE6D1C003ADEE7 /* BrandFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C620CE6D1C003ADEE7 /* BrandFilterController.graphql */; };
@@ -84,8 +80,6 @@
 		9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF35FF20D1150F004E3F44 /* ContactController.swift */; };
 		9BDF360220D12EEA004E3F44 /* ContactController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BDF360120D12EE9004E3F44 /* ContactController.graphql */; };
 		9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF360320D130C3004E3F44 /* ContactCell.swift */; };
-		9BFFA5F520B2D8B40029A028 /* TagFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */; };
-		9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F620B2D9780029A028 /* TagCell.swift */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
 		B8127C91214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */; };
 		B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794CF2143DC1500C5991D /* ColChatDataSource.swift */; };
@@ -159,7 +153,6 @@
 		9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsController.swift; sourceTree = "<group>"; };
 		9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
-		9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		9B441AAF20DBCB0A008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		9B475C8A2137B9CB0074346B /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		9B475C8C2137BDB20074346B /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -187,8 +180,6 @@
 		9B6202EF20EC81790094A87D /* SuggestionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionCell.swift; sourceTree = "<group>"; };
 		9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SuggestionValue.swift"; sourceTree = "<group>"; };
 		9B6202F120EC817A0094A87D /* SuggestionRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionRow.swift; sourceTree = "<group>"; };
-		9B6D056020AAED3F00F5D77C /* ChannelFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelFilterController.swift; sourceTree = "<group>"; };
-		9B6D056420AAF26400F5D77C /* BrandFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandFilterController.swift; sourceTree = "<group>"; };
 		9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerProfileController.swift; sourceTree = "<group>"; };
 		9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerProfileCell.swift; sourceTree = "<group>"; };
 		9B82254320B7DE0300B7C16D /* SwiftHEXColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftHEXColors.swift; sourceTree = "<group>"; };
@@ -215,7 +206,6 @@
 		9BC09129214F7EDC0099BDE7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9BC0912B214F94330099BDE7 /* Gotham-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gotham-Bold.otf"; sourceTree = "<group>"; };
 		9BC2D9BC20CE3F5C003ADEE7 /* FilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterController.swift; sourceTree = "<group>"; };
-		9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxCell.swift; sourceTree = "<group>"; };
 		9BC2D9C220CE5FDE003ADEE7 /* GDCheckbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDCheckbox.swift; sourceTree = "<group>"; };
 		9BC2D9C420CE6CFF003ADEE7 /* ChannelFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ChannelFilterController.graphql; sourceTree = "<group>"; };
 		9BC2D9C620CE6D1C003ADEE7 /* BrandFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BrandFilterController.graphql; sourceTree = "<group>"; };
@@ -224,8 +214,6 @@
 		9BDF35FF20D1150F004E3F44 /* ContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactController.swift; sourceTree = "<group>"; };
 		9BDF360120D12EE9004E3F44 /* ContactController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactController.graphql; sourceTree = "<group>"; };
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
-		9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagFilterController.swift; sourceTree = "<group>"; };
-		9BFFA5F620B2D9780029A028 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		B8127C90214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ColChatController+KeyboardHandler.swift"; sourceTree = "<group>"; };
 		B83794CF2143DC1500C5991D /* ColChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColChatDataSource.swift; sourceTree = "<group>"; };
 		B83794D12147A87D00C5991D /* InComingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingCell.swift; sourceTree = "<group>"; };
@@ -410,13 +398,9 @@
 		9B410FAA20B29DAB00AA4A19 /* detail */ = {
 			isa = PBXGroup;
 			children = (
-				9B6D056020AAED3F00F5D77C /* ChannelFilterController.swift */,
 				9BC2D9C420CE6CFF003ADEE7 /* ChannelFilterController.graphql */,
-				9B6D056420AAF26400F5D77C /* BrandFilterController.swift */,
 				9BC2D9C620CE6D1C003ADEE7 /* BrandFilterController.graphql */,
-				9BFFA5F420B2D8B40029A028 /* TagFilterController.swift */,
 				9BC2D9C820CE6D34003ADEE7 /* TagFilterController.graphql */,
-				9BFFA5F620B2D9780029A028 /* TagCell.swift */,
 				9B82254720B7EBAE00B7C16D /* DateFilterController.swift */,
 			);
 			path = detail;
@@ -498,8 +482,6 @@
 				B8C3FDEA2161DF06000EE9AF /* Filter+Keyboard.swift */,
 				B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */,
 				B8BE67C3215B4FFD00E8A0A6 /* InputCell.swift */,
-				9B410FAB20B29DCE00AA4A19 /* FilterCell.swift */,
-				9BC2D9C020CE5F5C003ADEE7 /* CheckBoxCell.swift */,
 				9B410FAA20B29DAB00AA4A19 /* detail */,
 			);
 			path = Filter;
@@ -907,7 +889,6 @@
 				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
 				B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */,
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
-				9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */,
 				9B5E455A21391BE300DDD687 /* MyButton.swift in Sources */,
 				9B477B3F215E082000B01E3B /* PasswordSettingsController.swift in Sources */,
 				9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */,
@@ -927,7 +908,6 @@
 				9B9F5543212E83DA0081EC89 /* Appnet.swift in Sources */,
 				B8FDDE9B213E48FF00286DE0 /* ColChatController.swift in Sources */,
 				9B475C8F2137CBA70074346B /* ProfileView.swift in Sources */,
-				9B6D056120AAED3F00F5D77C /* ChannelFilterController.swift in Sources */,
 				B83794D22147A87E00C5991D /* InComingCell.swift in Sources */,
 				F55583BF2077173C00413F6A /* NavigationController.swift in Sources */,
 				B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */,
@@ -937,11 +917,9 @@
 				B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */,
 				B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */,
 				9B9E34492158DF2B006F9E2D /* TagView.swift in Sources */,
-				9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */,
 				F58F2064207B4FE900D8564D /* ErxesField.swift in Sources */,
 				9B5E456021396AEC00DDD687 /* ErxesTextView.swift in Sources */,
 				9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */,
-				9BC2D9C120CE5F5C003ADEE7 /* CheckBoxCell.swift in Sources */,
 				B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */,
 				F58F205C207B4F2C00D8564D /* InboxController.swift in Sources */,
 				9B576F4F20D39B7C00E70269 /* CircleLayer.swift in Sources */,
@@ -958,7 +936,6 @@
 				9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */,
 				9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */,
 				9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */,
-				9BFFA5F520B2D8B40029A028 /* TagFilterController.swift in Sources */,
 				9B82254820B7EBAE00B7C16D /* DateFilterController.swift in Sources */,
 				9B02B95C209701A500C10A6E /* Extensions.swift in Sources */,
 				9B6202F420EC817A0094A87D /* SuggestionTableCell.swift in Sources */,
@@ -968,7 +945,6 @@
 				9B9F5547212E9A450081EC89 /* CustomCells.swift in Sources */,
 				9B9E34472158DF2B006F9E2D /* TagListView.swift in Sources */,
 				F55583BB207716BB00413F6A /* Constants.swift in Sources */,
-				9B6D056520AAF26400F5D77C /* BrandFilterController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

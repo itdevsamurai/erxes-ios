@@ -79,7 +79,7 @@ class ChatManager:NSObject {
         }
     }
     
-    func mutateAddMessage(msg:String, isInternal:Bool){
+    func mutateAddMessage(msg:String, isInternal:Bool, mentions:[String]){
         let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!)
         
         if msg.count > 0 {
@@ -93,6 +93,8 @@ class ChatManager:NSObject {
         if isInternal {
             mutation.internal = isInternal
         }
+        
+        mutation.mentionedUserIds = mentions
         
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
@@ -226,7 +228,7 @@ extension ChatManager:FileUploader {
 //            self.uploadView.isHidden = false
             self.attachments = [JSON]()
             self.attachments.append(self.uploaded)
-            self.mutateAddMessage(msg: "image", isInternal: false)
+            self.mutateAddMessage(msg: "image", isInternal: false, mentions: [])
         }
     }
 }
