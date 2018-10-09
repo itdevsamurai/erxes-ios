@@ -61,7 +61,7 @@ class FormCell: ChatBaseCell {
         
         tv.attributedText = str
         
-        let h = tv.sizeThatFits(CGSize(width: DEVICE_WIDTH, height: 10000)).height
+        let h = tv.sizeThatFits(CGSize(width: Constants.SCREEN_WIDTH, height: 10000)).height
         if h < 48 {
             return 48
         } else {
