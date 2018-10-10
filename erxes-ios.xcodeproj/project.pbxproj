@@ -69,6 +69,10 @@
 		9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */; };
 		9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */; };
 		9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */; };
+		9BBADE2F216DF20900B6F2D8 /* ContactDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBADE2E216DF20900B6F2D8 /* ContactDetailController.swift */; };
+		9BBADE31216E07F700B6F2D8 /* ActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBADE30216E07F700B6F2D8 /* ActivityController.swift */; };
+		9BBADE33216E080200B6F2D8 /* NoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBADE32216E080200B6F2D8 /* NoteController.swift */; };
+		9BBADE35216E080F00B6F2D8 /* ConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBADE34216E080F00B6F2D8 /* ConversationsController.swift */; };
 		9BC09125214F75EF0099BDE7 /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09123214F75EF0099BDE7 /* Comfortaa-Regular.ttf */; };
 		9BC09126214F75EF0099BDE7 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09124214F75EF0099BDE7 /* Comfortaa-Bold.ttf */; };
 		9BC09128214F76310099BDE7 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BC09127214F76310099BDE7 /* Rubik-Regular.ttf */; };
@@ -211,6 +215,10 @@
 		9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsCell.swift; sourceTree = "<group>"; };
 		9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserProfileController.graphql; sourceTree = "<group>"; };
+		9BBADE2E216DF20900B6F2D8 /* ContactDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailController.swift; sourceTree = "<group>"; };
+		9BBADE30216E07F700B6F2D8 /* ActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityController.swift; sourceTree = "<group>"; };
+		9BBADE32216E080200B6F2D8 /* NoteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteController.swift; sourceTree = "<group>"; };
+		9BBADE34216E080F00B6F2D8 /* ConversationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsController.swift; sourceTree = "<group>"; };
 		9BC09123214F75EF0099BDE7 /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Regular.ttf"; sourceTree = "<group>"; };
 		9BC09124214F75EF0099BDE7 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		9BC09127214F76310099BDE7 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
@@ -458,6 +466,9 @@
 				9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */,
 				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
 				9B6202E820EC60820094A87D /* CustomRow.swift */,
+				9BBADE30216E07F700B6F2D8 /* ActivityController.swift */,
+				9BBADE32216E080200B6F2D8 /* NoteController.swift */,
+				9BBADE34216E080F00B6F2D8 /* ConversationsController.swift */,
 			);
 			path = CustomerProfileController;
 			sourceTree = "<group>";
@@ -620,6 +631,7 @@
 				9BDF360320D130C3004E3F44 /* ContactCell.swift */,
 				9BF0C32C216358390030247F /* ContactFilterController.swift */,
 				9BF0C32E216358570030247F /* ContactFilterController.graphql */,
+				9BBADE2E216DF20900B6F2D8 /* ContactDetailController.swift */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -814,10 +826,13 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-erxes-ios/Pods-erxes-ios-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Apollo/Apollo.framework",
+				"${BUILT_PRODUCTS_DIR}/DTPagerController/DTPagerController.framework",
 				"${BUILT_PRODUCTS_DIR}/Daysquare/Daysquare.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
+				"${BUILT_PRODUCTS_DIR}/HMSegmentedControl/HMSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/Hakawai/Hakawai.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/LiveGQL/LiveGQL.framework",
 				"${BUILT_PRODUCTS_DIR}/NYTPhotoViewer/NYTPhotoViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -830,10 +845,13 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Apollo.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DTPagerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Daysquare.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HMSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hakawai.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiveGQL.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NYTPhotoViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -903,6 +921,7 @@
 				9B1E939D20C8E34B00AC4FED /* MyAppNavigation.swift in Sources */,
 				9B567098212A89480023B5AF /* ErxesFontKit.swift in Sources */,
 				9B9E34482158DF2B006F9E2D /* CloseButton.swift in Sources */,
+				9BBADE33216E080200B6F2D8 /* NoteController.swift in Sources */,
 				F58F2063207B4FE900D8564D /* ErxesLabel.swift in Sources */,
 				9BC2D9BD20CE3F5C003ADEE7 /* FilterController.swift in Sources */,
 				B8C669E72140E6A400097B4F /* ViewConstants.swift in Sources */,
@@ -957,6 +976,7 @@
 				B83794D421490C5500C5991D /* FormCell.swift in Sources */,
 				9B6202F220EC817A0094A87D /* SuggestionTableViewCell.swift in Sources */,
 				9B6202E920EC60820094A87D /* CustomRow.swift in Sources */,
+				9BBADE2F216DF20900B6F2D8 /* ContactDetailController.swift in Sources */,
 				9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */,
 				F5431E202148F09800DB1304 /* CompanyController.swift in Sources */,
 				9B94F41C20DBB48400313543 /* API.swift in Sources */,
@@ -966,10 +986,12 @@
 				9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */,
 				9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */,
 				9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */,
+				9BBADE35216E080F00B6F2D8 /* ConversationsController.swift in Sources */,
 				9BFFA5F520B2D8B40029A028 /* TagFilterController.swift in Sources */,
 				9B82254820B7EBAE00B7C16D /* DateFilterController.swift in Sources */,
 				9B02B95C209701A500C10A6E /* Extensions.swift in Sources */,
 				9B6202F420EC817A0094A87D /* SuggestionTableCell.swift in Sources */,
+				9BBADE31216E07F700B6F2D8 /* ActivityController.swift in Sources */,
 				9B6202F620EC817A0094A87D /* SuggestionCell.swift in Sources */,
 				B8127C91214284ED00A9F9EC /* ColChatController+KeyboardHandler.swift in Sources */,
 				F58F205E207B4F4B00D8564D /* ErxesInboxCell.swift in Sources */,

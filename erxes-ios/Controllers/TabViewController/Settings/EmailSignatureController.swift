@@ -14,6 +14,9 @@ class EmailSignatureController: UIViewController {
             tableView.reloadData()
         }
     }
+    
+    var filtered = [BrandDetail]()
+    var isFiltering: Bool = false
     var selectedBrandId = String()
     var profileView: ProfileView?
     var brandField: ErxesField = {
@@ -21,7 +24,7 @@ class EmailSignatureController: UIViewController {
         field.titleLabel.text = "Brand"
         field.textField.placeholder = "Select brand"
 //        field.textField.delegate = self
-        field.textField.addTarget(self, action: #selector(dropDownAction(textField:)), for: .touchDown)
+        field.textField.addTarget(self, action: #selector(dropDownAction(textField:)), for: .editingChanged)
         return field
     }()
 
@@ -46,10 +49,9 @@ class EmailSignatureController: UIViewController {
         tableview.register(FilterCell.self, forCellReuseIdentifier: "FilterCell")
         tableview.rowHeight = 30
         tableview.tableFooterView = UIView()
-        tableview.separatorColor = UIColor.GRAY_COLOR
+        tableview.separatorColor = UIColor.clear
         tableview.backgroundColor = .white
-        tableview.layer.borderColor = UIColor.GRAY_COLOR.cgColor
-        tableview.layer.borderWidth = 1.0
+       
         return tableview
     }()
 
@@ -213,15 +215,37 @@ class EmailSignatureController: UIViewController {
 }
 
 extension EmailSignatureController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        self.expandTable()
-    }
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        self.expandTable()
+//    }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return false
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        isFiltering = false
+        tableView.reloadData()
+        return true
     }
 
     @objc func dropDownAction(textField: UITextField) {
+        guard let value = textField.text else {
+            isFiltering = false
+            tableView.reloadData()
+            return
+        }
+        isFiltering = true
+        if value.count != 0 {
+            var tmp = [BrandDetail]()
+            tmp = brands.filter{($0.name?.localizedCaseInsensitiveContains(value))!}
+            self.filtered = tmp
+            tableView.reloadData()
+        }else{
+            self.isFiltering = false
+            tableView.reloadData()
+        }
         self.expandTable()
     }
 }
@@ -238,14 +262,27 @@ extension EmailSignatureController: UITableViewDelegate {
 
 extension EmailSignatureController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering {
+            return filtered.count
+        }
         return brands.count
     }
 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FilterCell", for: indexPath) as? FilterCell
-        let brand = brands[indexPath.row]
-        cell?.desc.text = brand.name
+        
+        if isFiltering {
+           let brand = filtered[indexPath.row]
+            cell?.desc.text = brand.name
+        }else{
+            let brand = brands[indexPath.row]
+            cell?.desc.text = brand.name
+        }
+        
+        cell?.desc.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        cell?.desc.textColor = UIColor(hexString: "#1f9fe2")
+        
         cell?.arrow.isHidden = true
         return cell!
     }

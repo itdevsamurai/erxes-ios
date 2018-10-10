@@ -16,5 +16,7 @@ pod 'Alamofire', '~> 4.7'
 pod 'Eureka'
 pod 'NYTPhotoViewer'
 pod 'Hakawai'
-
+pod 'IQKeyboardManagerSwift'
+pod 'DTPagerController'
+pod 'HMSegmentedControl'
 end

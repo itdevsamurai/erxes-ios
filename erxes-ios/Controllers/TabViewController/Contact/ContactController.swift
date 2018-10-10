@@ -130,9 +130,9 @@ class ContactController: UIViewController {
         tableView.register(ContactCell.self, forCellReuseIdentifier: "ContactCell")
         tableView.rowHeight = 90
         tableView.tableFooterView = UIView()
-        tableView.backgroundColor = .ERXES_COLOR
+        tableView.backgroundColor = .white
         tableView.separatorColor = UIColor.LIGHT_GRAY_COLOR
-      
+        tableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)
         return tableView
     }()
     
@@ -237,9 +237,10 @@ class ContactController: UIViewController {
          searchBackGround = UIView(frame: CGRect(x: 0, y: 0, width: DEVICE_WIDTH, height: 44))
         searchBackGround.backgroundColor = .ERXES_COLOR
         searchBackGround.addSubview(searchField)
-        tableView.tableHeaderView = searchBackGround
-        tableView.sectionHeaderHeight = 44
+//        tableView.tableHeaderView = searchBackGround
+//        tableView.sectionHeaderHeight = 44
         searchField.delegate = self
+        self.view.addSubview(searchBackGround)
         
     }
 
@@ -511,7 +512,8 @@ extension ContactController: UITableViewDelegate {
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             if isCustomer {
                 let customer = customers[indexPath.row]
-                navigate(.customerProfile(_id: customer.id))
+//                navigate(.customerProfile(_id: customer.id))
+                navigate(.contactDetail(id: customer.id))
             } else {
                 let company = companies[indexPath.row]
                 navigate(.companyProfile(id: company.id))
@@ -546,32 +548,16 @@ extension ContactController: UITableViewDelegate {
             }
         }
         
-//        func numberOfSections(in tableView: UITableView) -> Int {
-//            return 1
-//        }
-//
-//        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//            let view = UIView(frame: CGRect(x: 0, y: 0, width: DEVICE_WIDTH, height: 44))
-//            view.backgroundColor = .ERXES_COLOR
-//            view.addSubview(searchField)
-//            return view
-//        }
-//
-//        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//            return 44
-//        }
+
         
-        func scrollViewDidScroll(scrollView:UIScrollView) {
-            
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
             if offsetY > 0 {
-//                let height = self.frame.height
-//                backGroundImageView.frame.size.height = height + offsetY
-                let height = tableView.sectionHeaderHeight
-                tableView.sectionHeaderHeight = height + offsetY
+                let height:CGFloat = 44
                 searchBackGround.frame.size.height = height + offsetY
             }
         }
+   
     }
 
 
