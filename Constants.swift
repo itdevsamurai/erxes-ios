@@ -10,9 +10,9 @@ import UIKit
 class Constants: NSObject {
 
 
-    static let URL_API = "https://app-api.crm.nmma.co/"
+    static let URL_API = "https://api.crm.nmma.co/"
     static let API_ENDPOINT = URL_API + "graphql"
-    static let SUBSCRITION_ENDPOINT = "wss://app-api.crm.nmma.co/subscriptions"
+    static let SUBSCRITION_ENDPOINT = "wss://api.crm.nmma.co/subscriptions"
     static let URL_UPLOAD = URL_API + "upload-file"
     
     

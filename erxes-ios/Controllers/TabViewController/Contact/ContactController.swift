@@ -513,7 +513,15 @@ extension ContactController: UITableViewDelegate {
             if isCustomer {
                 let customer = customers[indexPath.row]
 //                navigate(.customerProfile(_id: customer.id))
-                navigate(.contactDetail(id: customer.id))
+                var name = "N/A"
+                if !customer.firstName.isNullOrEmpty && !customer.lastName.isNullOrEmpty {
+                    name = customer.firstName!
+                } else if customer.firstName.isNullOrEmpty && !customer.lastName.isNullOrEmpty {
+                    name = customer.lastName!
+                } else if !customer.firstName.isNullOrEmpty && customer.lastName.isNullOrEmpty {
+                    name = customer.firstName!
+                }
+                navigate(.contactDetail(id: customer.id, name: name))
             } else {
                 let company = companies[indexPath.row]
                 navigate(.companyProfile(id: company.id))

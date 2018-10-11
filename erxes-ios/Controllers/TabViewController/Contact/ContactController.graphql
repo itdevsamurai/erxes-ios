@@ -95,8 +95,8 @@ _id
 avatar
 primaryName
 plan
-email
-phone
+emails
+phones
 getTags {
 _id
 name
@@ -120,9 +120,9 @@ fragment CompanyDetail on Company{
     industry
     plan
     parentCompanyId
-    email
+    emails
     ownerId
-    phone
+    phones
     leadStatus
     lifecycleState
     businessType

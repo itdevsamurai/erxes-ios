@@ -15,6 +15,7 @@ class ContactDetailController: DTPagerController {
     private var titles:[String] = ["Customer","Activity","Notes","Conversation"]
 
     var contactId:String = String()
+    var contactName = String()
 //    var pageMenu : CAPSPageMenu?
     
     override func viewDidLoad() {
@@ -30,7 +31,7 @@ class ContactDetailController: DTPagerController {
         self.scrollIndicator.backgroundColor = .ERXES_COLOR
         let customerController = CustomerProfileController(_id: self.contactId)
         customerController.title = "Customer"
-        let activityController = ActivityController()
+        let activityController = ActivityController(id: self.contactId, name: self.contactName)
         activityController.title = "Activity"
         let noteController = NoteController()
         noteController.title = "Notes"
@@ -43,15 +44,14 @@ class ContactDetailController: DTPagerController {
         self.delegate = self
     }
 
-     init(contactId:String) {
-       
-        
-//        super.init(viewControllers: [customerController,activityController,noteController,conversationController],pageSegmentedControl:segmentedControl as! UIControl & DTSegmentedControlProtocol)
+    init(contactId:String, name:String) {
+
         let segmentedControl = HMSegmentedControl(sectionTitles: titles )
         
        super.init(viewControllers:[])
         self.pageSegmentedControl = segmentedControl!
         self.contactId = contactId
+        self.contactName = name
     }
     
     override func setUpSegmentedControl(viewControllers: [UIViewController]) {
@@ -60,6 +60,7 @@ class ContactDetailController: DTPagerController {
         let segmentedControl = pageSegmentedControl as! HMSegmentedControl
         segmentedControl.selectionIndicatorColor = .ERXES_COLOR
         segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocation.down
+        segmentedControl.selectionIndicatorHeight = 1
         segmentedControl.titleTextAttributes =  [
             NSAttributedStringKey.foregroundColor: UIColor.ERXES_COLOR,
             NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 13)
@@ -73,7 +74,6 @@ class ContactDetailController: DTPagerController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-//        print("did layout=", swipeMenuView.frame)
     }
 
     

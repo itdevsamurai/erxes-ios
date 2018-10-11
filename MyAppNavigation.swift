@@ -29,8 +29,8 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
                 return EmailSignatureController(brands: brands)
             case .notificationSettings():
                 return NotificationSettingsController()
-            case .contactDetail(id: let id):
-                return ContactDetailController(contactId: id)
+            case .contactDetail(id: let id, name: let name):
+                return ContactDetailController(contactId: id, name: name)
             }
         }
         return UIViewController()
@@ -54,5 +54,5 @@ enum MyNavigation: Navigation {
     case passwordSettings()
     case emailSignature(brands:[BrandDetail])
     case notificationSettings()
-    case contactDetail(id:String)
+    case contactDetail(id:String,name:String)
 }

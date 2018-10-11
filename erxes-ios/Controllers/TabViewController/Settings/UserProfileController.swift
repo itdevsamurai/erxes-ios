@@ -26,6 +26,7 @@ class UserProfileController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.form.removeAll()
         self.title = "USER"
         self.configureViews()
 

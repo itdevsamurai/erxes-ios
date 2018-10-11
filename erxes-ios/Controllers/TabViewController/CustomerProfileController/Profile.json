@@ -8,5 +8,4 @@
   {"id":"leadStatus","text":"Lead Status","type":"select","validation":"","options":["New", "Open", "In progress", "Open deal", "Unqualified", "Attempted to Contact", "Connected", "Bad timing"]},
   {"id":"lifecycleState","text":"Lifecycle state","type":"select","validation":"","options":["Subscriber", "Lead", "Marketing Qualified Lead", "Sales Qualified Lead", "Opportunity", "Customer", "Evangelist", "Other"]},
   {"id":"hasAuthority","text":"Has Authority","type":"check","validation":"number","options":["on","off"]},
-  {"id":"description","text":"Description","type":"input","validation":"","options":[]},
-  {"id":"doNotDisturb","text":"Do not disturb","type":"check","validation":"","options":["on","off"]}]
+  {"id":"doNotDisturb","text":"Do not disturb","type":"check","validation":"","options":["on","off"]},{"id":"description","text":"Description","type":"input","validation":"","options":[]}]

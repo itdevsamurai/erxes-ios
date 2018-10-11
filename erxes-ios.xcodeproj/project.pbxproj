@@ -25,6 +25,9 @@
 		9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8C2137BDB20074346B /* SettingsCell.swift */; };
 		9B475C8F2137CBA70074346B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8E2137CBA70074346B /* ProfileView.swift */; };
 		9B477B3F215E082000B01E3B /* PasswordSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B477B3E215E082000B01E3B /* PasswordSettingsController.swift */; };
+		9B4AB584216F409400BDD33D /* ActivityController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9B4AB583216F409400BDD33D /* ActivityController.graphql */; };
+		9B4AB587216F492900BDD33D /* ActivityCellCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4AB586216F492900BDD33D /* ActivityCellCon.swift */; };
+		9B4AB589216F649E00BDD33D /* ActivityCellReg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4AB588216F649E00BDD33D /* ActivityCellReg.swift */; };
 		9B55DE1F215CD4FF0044F684 /* LineProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B55DE1E215CD4FF0044F684 /* LineProgressView.swift */; };
 		9B567091212A7D420023B5AF /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */; };
 		9B567094212A84FA0023B5AF /* erxes.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B567093212A84FA0023B5AF /* erxes.ttf */; };
@@ -171,6 +174,9 @@
 		9B475C8C2137BDB20074346B /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		9B475C8E2137CBA70074346B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		9B477B3E215E082000B01E3B /* PasswordSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordSettingsController.swift; sourceTree = "<group>"; };
+		9B4AB583216F409400BDD33D /* ActivityController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ActivityController.graphql; sourceTree = "<group>"; };
+		9B4AB586216F492900BDD33D /* ActivityCellCon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCellCon.swift; sourceTree = "<group>"; };
+		9B4AB588216F649E00BDD33D /* ActivityCellReg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCellReg.swift; sourceTree = "<group>"; };
 		9B55DE1E215CD4FF0044F684 /* LineProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineProgressView.swift; sourceTree = "<group>"; };
 		9B567090212A7D420023B5AF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		9B567093212A84FA0023B5AF /* erxes.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = erxes.ttf; sourceTree = "<group>"; };
@@ -434,6 +440,17 @@
 			path = detail;
 			sourceTree = "<group>";
 		};
+		9B4AB585216F490800BDD33D /* ActivityLog */ = {
+			isa = PBXGroup;
+			children = (
+				9BBADE30216E07F700B6F2D8 /* ActivityController.swift */,
+				9B4AB583216F409400BDD33D /* ActivityController.graphql */,
+				9B4AB586216F492900BDD33D /* ActivityCellCon.swift */,
+				9B4AB588216F649E00BDD33D /* ActivityCellReg.swift */,
+			);
+			path = ActivityLog;
+			sourceTree = "<group>";
+		};
 		9B567092212A84E00023B5AF /* ErxesFont */ = {
 			isa = PBXGroup;
 			children = (
@@ -466,7 +483,7 @@
 				9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */,
 				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
 				9B6202E820EC60820094A87D /* CustomRow.swift */,
-				9BBADE30216E07F700B6F2D8 /* ActivityController.swift */,
+				9B4AB585216F490800BDD33D /* ActivityLog */,
 				9BBADE32216E080200B6F2D8 /* NoteController.swift */,
 				9BBADE34216E080F00B6F2D8 /* ConversationsController.swift */,
 			);
@@ -676,8 +693,8 @@
 		F5BEE31D20772E900042DFC2 /* TabViewController */ = {
 			isa = PBXGroup;
 			children = (
-				B88B6EAF2122A21000A9B7FF /* CompanyController */,
 				F55583BC207716F800413F6A /* TabController.swift */,
+				B88B6EAF2122A21000A9B7FF /* CompanyController */,
 				9B80E79520E759F4008BA4BF /* CustomerProfileController */,
 				9B1E939520C8D43C00AC4FED /* ChatController */,
 				F58F2048207B4DA200D8564D /* Inbox */,
@@ -773,6 +790,7 @@
 			files = (
 				F5BEE33620776BD40042DFC2 /* Montserrat-ExtraBold.otf in Resources */,
 				F5BEE33520776BD40042DFC2 /* Montserrat-Light.otf in Resources */,
+				9B4AB584216F409400BDD33D /* ActivityController.graphql in Resources */,
 				F5BEE33720776BD40042DFC2 /* Montserrat-UltraLight.otf in Resources */,
 				9B5E455C21393DCF00DDD687 /* SettingsController.graphql in Resources */,
 				B842CC4C2123E3CC0052E5C9 /* LifecycleState.json in Resources */,
@@ -962,6 +980,7 @@
 				9B5CE65420D8DC6E003EDBF9 /* MyData.swift in Sources */,
 				B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */,
 				B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */,
+				9B4AB587216F492900BDD33D /* ActivityCellCon.swift in Sources */,
 				9B9E34492158DF2B006F9E2D /* TagView.swift in Sources */,
 				9B410FAC20B29DCE00AA4A19 /* FilterCell.swift in Sources */,
 				F58F2064207B4FE900D8564D /* ErxesField.swift in Sources */,
@@ -983,6 +1002,7 @@
 				9B6202F820EC817A0094A87D /* SuggestionRow.swift in Sources */,
 				9B1E93A320C94D2800AC4FED /* Message.swift in Sources */,
 				9B6202F720EC817A0094A87D /* String+SuggestionValue.swift in Sources */,
+				9B4AB589216F649E00BDD33D /* ActivityCellReg.swift in Sources */,
 				9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */,
 				9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */,
 				9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */,

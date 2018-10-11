@@ -40,6 +40,7 @@ class CustomerProfileController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.form.removeAll()
         self.title = "Customer"
 
         self.configureViews()
