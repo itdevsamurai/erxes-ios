@@ -1,5 +1,5 @@
 //
-//  ActivityController.swift
+//  ConversationsController.swift
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 10/10/18.
@@ -8,25 +8,26 @@
 
 import UIKit
 
-class ActivityController: UIViewController {
+class ConversationsController: UIViewController {
 
-    var contactId = String()
-    var contactName = String()
-    var logs = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+    var conversations = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
         didSet{
+            for (index, conversation) in conversations.enumerated() {
+            
+                let filtered = conversation?.list.filter({$0?.action == "conversation-create"})
+                self.conversations[index]?.list = filtered!
+             
+            }
+            self.conversations = self.conversations.filter({$0?.list.count != 0})
             tableView.reloadData()
         }
     }
-    convenience init(id:String, name:String){
-        self.init()
-        contactId = id
-        contactName = name
-    }
     
+    var contactName = String()
+    var contactId = String()
     var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ActivityCellCon.self, forCellReuseIdentifier: "ActivityCellCon")
-        tableView.register(ActivityCellReg.self, forCellReuseIdentifier: "ActivityCellReg")
         tableView.rowHeight = 80
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .white
@@ -35,12 +36,18 @@ class ActivityController: UIViewController {
         return tableView
     }()
     
+    convenience init(id:String, name:String){
+        self.init()
+        contactId = id
+        contactName = name
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-      
+        
         // Do any additional setup after loading the view.
     }
     
@@ -50,31 +57,27 @@ class ActivityController: UIViewController {
             make.edges.equalToSuperview()
         }
     }
-    
-
 
 }
 
 
-extension ActivityController: UITableViewDelegate {
+extension ConversationsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let data = logs[indexPath.section]?.list[indexPath.row]
-       
-        if data?.action == "conversation-create" {
-            self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
-        }
+        let data = conversations[indexPath.section]?.list[indexPath.row]
+        self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
+        
         
     }
 }
 
-extension ActivityController: UITableViewDataSource {
+extension ConversationsController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.logs.count
+        return self.conversations.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.logs[section]?.list.count)!
+        return (self.conversations[section]?.list.count)!
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -87,7 +90,7 @@ extension ActivityController: UITableViewDataSource {
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
         label.font = UIFont.fontWith(type: .comfortaa, size: 14)
-        let date = logs[section]?.date
+        let date = conversations[section]?.date
         let monthName = DateFormatter().monthSymbols[(date?.month)!]
         label.text = String(format: "%@ %i", monthName, (date?.year)!)
         headerView.addSubview(label)
@@ -100,45 +103,18 @@ extension ActivityController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let data = logs[indexPath.section]?.list[indexPath.row]
+        let data = conversations[indexPath.section]?.list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
         let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
-        
-        
-        switch data?.action {
-        case "conversation-create":
+
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
-                print(dateLblValue)
                 cell.dateLabel.text = dateLblValue
                 cell.messageLabel.text = data?.content
                 cell.descLabel.text  = contactName + " sent a conversation message"
                 return cell
             }
-        case "customer-create":
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellReg", for: indexPath) as? ActivityCellReg {
-                cell.dateLabel.text = dateLblValue
-                cell.descLabel.text = contactName + " registered to Erxes"
-                
-                return cell
-            }
-        case "internal_note-create":
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
-                cell.descLabel.text = "left a note"
-                cell.avatarView.image = UIImage(named: "avatar.png")
-                cell.dateLabel.text = dateLblValue
-                cell.messageLabel.text = data?.content
-                if let userName = data?.by?.details?.fullName {
-                    cell.descLabel.text  = userName + " left a note"
-                }
-                if let avatarUrl = data?.by?.details?.avatar {
-                    cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
-                }
-                return cell
-            }
-        default:
-            return UITableViewCell()
-        }
+        
         
         return UITableViewCell()
     }
@@ -188,5 +164,5 @@ extension ActivityController: UITableViewDataSource {
         
         return nil
     }
-
+    
 }

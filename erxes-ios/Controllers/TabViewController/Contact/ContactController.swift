@@ -521,7 +521,11 @@ extension ContactController: UITableViewDelegate {
                 } else if !customer.firstName.isNullOrEmpty && customer.lastName.isNullOrEmpty {
                     name = customer.firstName!
                 }
-                navigate(.contactDetail(id: customer.id, name: name))
+                var email = ""
+                if !customer.primaryEmail.isNullOrEmpty {
+                    email = customer.primaryEmail!
+                }
+                navigate(.contactDetail(id: customer.id, name: name, email:email ))
             } else {
                 let company = companies[indexPath.row]
                 navigate(.companyProfile(id: company.id))
@@ -559,6 +563,7 @@ extension ContactController: UITableViewDelegate {
 
         
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            self.view.endEditing(true)
             let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
             if offsetY > 0 {
                 let height:CGFloat = 44

@@ -88,6 +88,9 @@
 		9BC2D9C720CE6D1C003ADEE7 /* BrandFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C620CE6D1C003ADEE7 /* BrandFilterController.graphql */; };
 		9BC2D9C920CE6D34003ADEE7 /* TagFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BC2D9C820CE6D34003ADEE7 /* TagFilterController.graphql */; };
 		9BD9BE4220E38D1000CCFEA6 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD9BE4120E38D1000CCFEA6 /* ComposeView.swift */; };
+		9BDF12B621709F2100B6EBED /* NoteController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BDF12B521709F2100B6EBED /* NoteController.graphql */; };
+		9BDF12B82170A6BC00B6EBED /* LeftImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF12B72170A6BC00B6EBED /* LeftImageButton.swift */; };
+		9BDF12BA2170C4C200B6EBED /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BDF12B92170C4C200B6EBED /* MessageUI.framework */; };
 		9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF35FF20D1150F004E3F44 /* ContactController.swift */; };
 		9BDF360220D12EEA004E3F44 /* ContactController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BDF360120D12EE9004E3F44 /* ContactController.graphql */; };
 		9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF360320D130C3004E3F44 /* ContactCell.swift */; };
@@ -237,6 +240,9 @@
 		9BC2D9C620CE6D1C003ADEE7 /* BrandFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = BrandFilterController.graphql; sourceTree = "<group>"; };
 		9BC2D9C820CE6D34003ADEE7 /* TagFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = TagFilterController.graphql; sourceTree = "<group>"; };
 		9BD9BE4120E38D1000CCFEA6 /* ComposeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
+		9BDF12B521709F2100B6EBED /* NoteController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = NoteController.graphql; sourceTree = "<group>"; };
+		9BDF12B72170A6BC00B6EBED /* LeftImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftImageButton.swift; sourceTree = "<group>"; };
+		9BDF12B92170C4C200B6EBED /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		9BDF35FF20D1150F004E3F44 /* ContactController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactController.swift; sourceTree = "<group>"; };
 		9BDF360120D12EE9004E3F44 /* ContactController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactController.graphql; sourceTree = "<group>"; };
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
@@ -308,6 +314,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BDF12BA2170C4C200B6EBED /* MessageUI.framework in Frameworks */,
 				B83E217F21130CA8005AD39E /* WebKit.framework in Frameworks */,
 				F58F203D207B37F900D8564D /* LocalAuthentication.framework in Frameworks */,
 				A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */,
@@ -331,6 +338,7 @@
 		5B23F9527E4F6C2FBA7439DA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9BDF12B92170C4C200B6EBED /* MessageUI.framework */,
 				B83E217E21130CA8005AD39E /* WebKit.framework */,
 				F58F203C207B37F900D8564D /* LocalAuthentication.framework */,
 				9634C14764D6BB1A1913F342 /* Pods_NMG_CRM.framework */,
@@ -362,6 +370,7 @@
 				9B5E455921391BE300DDD687 /* MyButton.swift */,
 				F58F2060207B4FE800D8564D /* ErxesLabel.swift */,
 				9B5E455F21396AEC00DDD687 /* ErxesTextView.swift */,
+				9BDF12B72170A6BC00B6EBED /* LeftImageButton.swift */,
 				9B35E99E20D78FF400733FAD /* alert */,
 				9B35E99D20D78F1700733FAD /* loader */,
 				9BF5B462209989F6006CF2D3 /* taglist */,
@@ -447,6 +456,9 @@
 				9B4AB583216F409400BDD33D /* ActivityController.graphql */,
 				9B4AB586216F492900BDD33D /* ActivityCellCon.swift */,
 				9B4AB588216F649E00BDD33D /* ActivityCellReg.swift */,
+				9BBADE32216E080200B6F2D8 /* NoteController.swift */,
+				9BDF12B521709F2100B6EBED /* NoteController.graphql */,
+				9BBADE34216E080F00B6F2D8 /* ConversationsController.swift */,
 			);
 			path = ActivityLog;
 			sourceTree = "<group>";
@@ -484,8 +496,6 @@
 				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
 				9B6202E820EC60820094A87D /* CustomRow.swift */,
 				9B4AB585216F490800BDD33D /* ActivityLog */,
-				9BBADE32216E080200B6F2D8 /* NoteController.swift */,
-				9BBADE34216E080F00B6F2D8 /* ConversationsController.swift */,
 			);
 			path = CustomerProfileController;
 			sourceTree = "<group>";
@@ -793,6 +803,7 @@
 				9B4AB584216F409400BDD33D /* ActivityController.graphql in Resources */,
 				F5BEE33720776BD40042DFC2 /* Montserrat-UltraLight.otf in Resources */,
 				9B5E455C21393DCF00DDD687 /* SettingsController.graphql in Resources */,
+				9BDF12B621709F2100B6EBED /* NoteController.graphql in Resources */,
 				B842CC4C2123E3CC0052E5C9 /* LifecycleState.json in Resources */,
 				9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */,
 				B842CC4E2123E3E80052E5C9 /* BusinessType.json in Resources */,
@@ -956,6 +967,7 @@
 				9B477B3F215E082000B01E3B /* PasswordSettingsController.swift in Sources */,
 				9BC2D9C320CE5FDF003ADEE7 /* GDCheckbox.swift in Sources */,
 				9BDF360020D1150F004E3F44 /* ContactController.swift in Sources */,
+				9BDF12B82170A6BC00B6EBED /* LeftImageButton.swift in Sources */,
 				9B27ADFB2160B708000E0A7C /* NotificationSettingsController.swift in Sources */,
 				B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */,
 				9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */,

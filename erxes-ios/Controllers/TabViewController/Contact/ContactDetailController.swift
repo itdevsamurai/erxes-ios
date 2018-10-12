@@ -10,18 +10,36 @@ import UIKit
 import DTPagerController
 import HMSegmentedControl
 
+protocol ContactDelegate: class {
+    func reloadData()
+}
+
 class ContactDetailController: DTPagerController {
 
     private var titles:[String] = ["Customer","Activity","Notes","Conversation"]
 
     var contactId:String = String()
     var contactName = String()
-//    var pageMenu : CAPSPageMenu?
+    var email = String()
+    var logs = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+        didSet{
+            activityController.logs = self.logs
+            noteController.notes = self.logs
+            conversationController.conversations = self.logs
+        }
+    }
+
     
+    var activityController = ActivityController()
+    var noteController = NoteController()
+    var conversationController = ConversationsController()
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = titles[0]
         configureViews()
+        getActivityLog()
     }
     
     func configureViews(){
@@ -31,20 +49,22 @@ class ContactDetailController: DTPagerController {
         self.scrollIndicator.backgroundColor = .ERXES_COLOR
         let customerController = CustomerProfileController(_id: self.contactId)
         customerController.title = "Customer"
-        let activityController = ActivityController(id: self.contactId, name: self.contactName)
+        activityController.contactName = self.contactName
+        activityController.contactId = self.contactId
         activityController.title = "Activity"
-        let noteController = NoteController()
         noteController.title = "Notes"
-        let conversationController = ConversationsController()
+        noteController.contactId = self.contactId
+        noteController.email = self.email
+        noteController.delegate = self
         conversationController.title = "Conversation"
-//        let segmentedControl = HMSegmentedControl(sectionTitles: titles )
+        conversationController.contactId = self.contactId
+        conversationController.contactName = self.contactName
         let controllers = [customerController,activityController,noteController,conversationController]
         self.viewControllers = controllers
-//        self.pageSegmentedControl = segmentedControl!
         self.delegate = self
     }
 
-    init(contactId:String, name:String) {
+    init(contactId:String, name:String, primaryEmail:String) {
 
         let segmentedControl = HMSegmentedControl(sectionTitles: titles )
         
@@ -52,6 +72,7 @@ class ContactDetailController: DTPagerController {
         self.pageSegmentedControl = segmentedControl!
         self.contactId = contactId
         self.contactName = name
+        self.email = primaryEmail
     }
     
     override func setUpSegmentedControl(viewControllers: [UIViewController]) {
@@ -76,7 +97,36 @@ class ContactDetailController: DTPagerController {
 
     }
 
-    
+    func getActivityLog(){
+        self.logs.removeAll()
+
+        let query = ActivityLogsCustomerQuery(_id: contactId)
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+            }
+            
+            if result?.data != nil {
+                if let logDatas = result?.data?.activityLogsCustomer {
+                    for log in logDatas {
+                        if log?.list.count != 0 {
+                            self?.logs.append(log)
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 }
 
@@ -86,18 +136,16 @@ extension ContactDetailController: DTPagerControllerDelegate {
     }
 }
 
-//extension ContactDetailController:SwipeMenuViewDelegate
-//
-//extension ContactDetailController:SwipeMenuViewDataSource
+
 
 extension HMSegmentedControl: DTSegmentedControlProtocol {
     
     public func setImage(_ image: UIImage?, forSegmentAt segment: Int) {
-        // Custom page control does not support
+      
     }
     
     public func setTitle(_ title: String?, forSegmentAt segment: Int) {
-        // Custom page control does not support
+
     }
     
     public func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState) {
@@ -109,4 +157,10 @@ extension HMSegmentedControl: DTSegmentedControlProtocol {
         }
     }
     
+}
+
+extension ContactDetailController: ContactDelegate {
+    func reloadData() {
+        self.getActivityLog()
+    }
 }

@@ -13,7 +13,7 @@ import UIKit
 class ActivityCellCon: UITableViewCell {
 
 
-    private var avatarView = UIImageView()
+    var avatarView:UIImageView!
     var descLabel: UILabel!
     var dateLabel: UILabel!
     var messageLabel: UILabel!
@@ -23,9 +23,12 @@ class ActivityCellCon: UITableViewCell {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
         self.selectionStyle = .none
+        avatarView = UIImageView()
         avatarView.image = UIImage(named: "ic_avatar")
+        avatarView.layer.cornerRadius = 25
+        avatarView.clipsToBounds = true
         dateLabel = UILabel()
-        dateLabel.textColor = .LIGHT_GRAY_COLOR
+        dateLabel.textColor = .GRAY_COLOR
         dateLabel.font = UIFont.fontWith(type: .comfortaa, size: 8)
         dateLabel.textAlignment = .right
 
@@ -35,7 +38,7 @@ class ActivityCellCon: UITableViewCell {
         descLabel.textAlignment = .left
 
         messageLabel = UILabel ()
-        messageLabel.textColor = .LIGHT_GRAY_COLOR
+        messageLabel.textColor = .GRAY_COLOR
         messageLabel.font = UIFont.fontWith(type: .comfortaa, size: 13)
         messageLabel.textAlignment = .left
 
@@ -57,14 +60,14 @@ class ActivityCellCon: UITableViewCell {
         }
 
         dateLabel.snp.makeConstraints { (make) in
-            make.bottom.equalTo(avatarView.snp.bottom)
+            make.bottom.equalTo(avatarView.snp.bottom).inset(5)
             make.right.equalTo(self.contentView.snp.right).inset(16)
         }
 
 
         messageLabel.snp.makeConstraints { (make) in
             make.left.equalTo(avatarView.snp.right).offset(10)
-            make.bottom.equalTo(avatarView.snp.bottom)
+            make.bottom.equalTo(avatarView.snp.bottom).inset(5)
             make.right.equalTo(dateLabel.snp.left).inset(-10)
             
         }
@@ -72,7 +75,7 @@ class ActivityCellCon: UITableViewCell {
         descLabel.snp.makeConstraints { (make) in
             make.left.equalTo(avatarView.snp.right).offset(10)
             make.right.equalTo(contentView.snp.right).inset(16)
-            make.top.equalTo(avatarView.snp.top)
+            make.top.equalTo(avatarView.snp.top).offset(5)
         }
 
     }

@@ -21,7 +21,7 @@ class ActivityCellReg: UITableViewCell {
         self.selectionStyle = .none
         avatarView.image = UIImage(named: "ic_avatar")
         dateLabel = UILabel()
-        dateLabel.textColor = .LIGHT_GRAY_COLOR
+        dateLabel.textColor = .GRAY_COLOR
         dateLabel.font = UIFont.fontWith(type: .comfortaa, size: 8)
         dateLabel.textAlignment = .right
         
