@@ -9,15 +9,14 @@ erxes is an open source growth marketing platform. Marketing, sales, and custome
 [![Build Status][travis-image]][travis-url]
 [![License][license-image]][license-url]
 
-![](https://raw.githubusercontent.com/erxes/erxes-ois/master/erxes-ios/Resources/screenshot.png)
+<a href="https://erxes.io" target="_blank"><img src="https://i.imgur.com/j1dxE7Y.jpg" alt="erxes is an AI meets open source messaging platform for sales, marketing and support "></a>
 
 ## Features
 
-- [x] Team Inbox
-- [x] Assign to users
-- [x] Resolve conversation
-- [x] Filter by Tag, Brand, Integration, Status, Date and Channel
-- [x] Contacts
+* **Team Inbox:** Combine real-time client and team communication with in-app messaging, live chat, email and form, so your customers can reach you however and whenever they want. 
+* **Engage:** Start converting your prospects into potential customers through email, SMS, messenger or more interactions to drive them to a successful close. 
+* **Contact:** Access our all-in-one CRM system in one go so that it’s easier to coordinate and manage your interactions with your customers. 
+
 
 ## Requirements
 
