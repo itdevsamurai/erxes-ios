@@ -15,7 +15,8 @@ class NavigationController: UINavigationController {
 
         self.navigationBar.barTintColor = .ERXES_COLOR
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationBar.isTranslucent = false 
+        self.navigationBar.isTranslucent = false
+        self.navigationBar.shadowImage = UIImage()
     }
 
     override func didReceiveMemoryWarning() {

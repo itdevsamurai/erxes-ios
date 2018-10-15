@@ -1,0 +1,6 @@
+
+mutation internalNotesAdd($contentType: String!, $contentTypeId: String, $content: String) {
+    internalNotesAdd(contentType: $contentType, contentTypeId: $contentTypeId, content: $content) {
+        _id
+    }
+}

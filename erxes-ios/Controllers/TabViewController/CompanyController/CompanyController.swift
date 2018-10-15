@@ -24,6 +24,7 @@ class CompanyController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.form.removeAll()
         self.title = "Company"
         loadData()
         configureViews()
@@ -231,8 +232,8 @@ class CompanyController: FormViewController {
             <<< EmailRow("email") { row in
                 row.title = "email:"
                 row.placeholder = "-"
-                if let item = company?.email {
-                    row.value = item
+                if company?.emails!.count != 0 {
+                    row.value = (company?.emails?.first)!
                 }
             }
         
@@ -261,11 +262,12 @@ class CompanyController: FormViewController {
                     row.value = item
                 }
             }
-            <<< PhoneRow("phone") { row in
+            <<< PhoneRow("phones") { row in
                 row.title = "phone:"
                 row.placeholder = "-"
-                if let item = company?.phone {
-                    row.value = item
+                if  company?.phones!.count != 0  {
+                    row.value = (company?.phones?.first)!
+                    
                 }
             }
         
@@ -588,7 +590,7 @@ class CompanyController: FormViewController {
         mutation.parentCompanyId = parent?.id
         let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
         mutation.ownerId = owner?.id
-        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+        mutation.phones = [form.rowBy(tag: "phones")?.baseValue as? String]
         mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String ?? ""
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String ?? ""
         mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String ?? ""
@@ -649,7 +651,7 @@ class CompanyController: FormViewController {
         mutation.parentCompanyId = parent?.id
         let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
         mutation.ownerId = owner?.id
-        mutation.phone = form.rowBy(tag: "phone")?.baseValue as? String
+        mutation.phones = [form.rowBy(tag: "phones")?.baseValue as? String]
         mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
         mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String

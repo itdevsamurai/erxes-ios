@@ -1,0 +1,27 @@
+
+query segments($contentType: String!) {
+    segments(contentType: $contentType) {
+        
+       ...SegmentObj
+        
+    }
+}
+
+fragment SegmentObj on Segment {
+    _id
+    name
+    subOf
+    color
+}
+
+
+query integrations {
+    integrations(kind: "form") {
+        ...FormObj
+    }
+}
+
+fragment FormObj on Integration {
+    _id
+    name
+}

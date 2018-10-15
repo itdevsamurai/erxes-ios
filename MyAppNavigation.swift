@@ -16,7 +16,7 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
             case .tab:
                 return TabController()
             case .chat(let chatId, let title, let customerId):
-                return ColChatController(chatId: chatId,title:title,customerId:customerId)
+                return ChatController(chatId: chatId,title:title,customerId:customerId)
             case .customerProfile(let id):
                 return CustomerProfileController(_id: id)
             case .companyProfile(let id):
@@ -29,6 +29,8 @@ class MyAppNavigation: RuntimeInjectable, AppNavigation {
                 return EmailSignatureController(brands: brands)
             case .notificationSettings():
                 return NotificationSettingsController()
+            case .contactDetail(id: let id, name: let name, email: let email):
+                return ContactDetailController(contactId: id, name: name, primaryEmail: email)
             }
         }
         return UIViewController()
@@ -52,4 +54,5 @@ enum MyNavigation: Navigation {
     case passwordSettings()
     case emailSignature(brands:[BrandDetail])
     case notificationSettings()
+    case contactDetail(id:String,name:String, email:String)
 }

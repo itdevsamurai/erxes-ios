@@ -114,7 +114,7 @@ class ChatBaseCell: UICollectionViewCell {
             tv.attributedText = str
         }
         
-        let h = tv.sizeThatFits(CGSize(width: DEVICE_WIDTH, height: 10000)).height + 20
+        let h = tv.sizeThatFits(CGSize(width: Constants.SCREEN_WIDTH, height: 10000)).height + 20
         if h < 48 {
             return 48
         } else {

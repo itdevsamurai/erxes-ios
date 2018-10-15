@@ -71,7 +71,7 @@ class ErxesInboxCell: UITableViewCell {
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
         message.backgroundColor = UIColor.LIGHT_GRAY_COLOR
-        message.lineBreakMode = .byWordWrapping
+        message.lineBreakMode = .byTruncatingTail
         contentView.addSubview(message)
 
 
@@ -133,13 +133,13 @@ class ErxesInboxCell: UITableViewCell {
         }
         message.snp.makeConstraints { (make) in
             make.left.equalTo(avatar.snp.right).offset(15)
-            make.right.equalTo(contentView.snp.right).inset(35)
+            make.right.equalTo(contentView.snp.right).inset(100)
             make.top.equalTo(desc.snp.bottom).offset(7)
             make.height.equalTo(13)
         }
         date.snp.makeConstraints { (make) in
             make.right.equalTo(contentView.snp.right).inset(10)
-            make.top.equalTo(contentView.snp.top).inset(32)
+            make.top.equalTo(contentView.snp.top).inset(20)
             make.height.equalTo(16)
             make.left.equalTo(fullName.snp.left).offset(10)
         }
