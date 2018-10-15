@@ -14,7 +14,6 @@ erxes is an open source growth marketing platform. Marketing, sales, and custome
 ## Features
 
 * **Team Inbox:** Combine real-time client and team communication with in-app messaging, live chat, email and form, so your customers can reach you however and whenever they want. 
-* **Engage:** Start converting your prospects into potential customers through email, SMS, messenger or more interactions to drive them to a successful close. 
 * **Contact:** Access our all-in-one CRM system in one go so that it’s easier to coordinate and manage your interactions with your customers. 
 
 
