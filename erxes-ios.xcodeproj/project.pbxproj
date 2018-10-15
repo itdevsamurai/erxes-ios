@@ -69,6 +69,7 @@
 		9B9F5547212E9A450081EC89 /* CustomCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5546212E9A450081EC89 /* CustomCells.swift */; };
 		9B9F554A212E9C200081EC89 /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */; };
 		9B9F554D212EB4E60081EC89 /* Profile.json in Resources */ = {isa = PBXBuildFile; fileRef = 9B9F554C212EB4E60081EC89 /* Profile.json */; };
+		9BA3F75C217443A700B44A13 /* Company.json in Resources */ = {isa = PBXBuildFile; fileRef = 9BA3F75B217443A700B44A13 /* Company.json */; };
 		9BB71606213A77BF00E2ACD0 /* NotificationSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */; };
 		9BB71608213A9C6900E2ACD0 /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */; };
 		9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */; };
@@ -221,6 +222,7 @@
 		9B9F5546212E9A450081EC89 /* CustomCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCells.swift; sourceTree = "<group>"; };
 		9B9F5549212E9C200081EC89 /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		9B9F554C212EB4E60081EC89 /* Profile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Profile.json; sourceTree = "<group>"; };
+		9BA3F75B217443A700B44A13 /* Company.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Company.json; sourceTree = "<group>"; };
 		9BB71605213A77BF00E2ACD0 /* NotificationSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsCell.swift; sourceTree = "<group>"; };
 		9BB71607213A9C6900E2ACD0 /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		9BB71609213A9C7800E2ACD0 /* UserProfileController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = UserProfileController.graphql; sourceTree = "<group>"; };
@@ -575,6 +577,7 @@
 			isa = PBXGroup;
 			children = (
 				F5431E1F2148F09800DB1304 /* CompanyController.swift */,
+				9BA3F75B217443A700B44A13 /* Company.json */,
 				B842CC4F21252ABB0052E5C9 /* CompanyController.graphql */,
 			);
 			path = CompanyController;
@@ -818,6 +821,7 @@
 				F5BEE33920776BD40042DFC2 /* Montserrat-Hairline.otf in Resources */,
 				B842CC482123E3420052E5C9 /* Industry.json in Resources */,
 				9BC2D9C520CE6CFF003ADEE7 /* ChannelFilterController.graphql in Resources */,
+				9BA3F75C217443A700B44A13 /* Company.json in Resources */,
 				9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */,
 				9B089B3F20CA7A67003EC255 /* avatar.png in Resources */,
 				9BC0912A214F7EDD0099BDE7 /* Assets.xcassets in Resources */,
