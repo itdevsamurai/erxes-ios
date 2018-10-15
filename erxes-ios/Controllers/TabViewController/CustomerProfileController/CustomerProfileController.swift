@@ -40,6 +40,7 @@ class CustomerProfileController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.form.removeAll()
         self.title = "Customer"
 
         self.configureViews()
@@ -808,22 +809,6 @@ class CustomerProfileController: FormViewController {
                 return nil
             }
         }
-
-//            SuggestionTableRow<CompanyDetail>.defaultCellUpdate = { cell, row in
-//                row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-//                row.cell.textLabel?.textColor = UIColor.TEXT_COLOR
-//                row.placeholder = "Type to search companies"
-//                cell.textField.textColor = UIColor.TEXT_COLOR
-//                cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-//                cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-//                cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
-//                row.filterFunction = { [unowned self] text in
-//                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
-//                }
-//
-//            }
-        
-
     }
 
     override func viewDidLayoutSubviews() {

@@ -9,7 +9,7 @@
 import UIKit
 import Apollo
 
-
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = false
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
         let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)
@@ -29,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedStringKey.foregroundColor: UIColor.white,
             NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
         ]
-        
+      
         UINavigationBar.appearance().titleTextAttributes = attrs
         Route.default.setupAppNavigation(appNavigation: MyAppNavigation())
         loginContoller.title = "Login"
