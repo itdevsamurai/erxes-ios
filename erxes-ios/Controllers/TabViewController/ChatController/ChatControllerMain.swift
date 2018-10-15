@@ -64,11 +64,21 @@ class ChatController:ChatControllerUI {
         userView.delegate = mentionController
         userView.dataSource = mentionController
         mentionController.delegate = self
+        
+        chatView.delegate = self
+        chatView.dataSource = self
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         initChatInput()
+        btnSend.addTarget(self, action: #selector(btnSendClick), for: .touchUpInside)
+        chatInputView.addTarget(self, action: #selector(InputViewTextChanged(_:)), for: .editingChanged)
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        //        button.addTarget(self, action: #selector(gotoUser(sender:)), for: .touchUpInside)
+        btnAttachment.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
+        btnCamera.addTarget(self, action: #selector(btnCameraClick), for: .touchUpInside)
+        btnInternalNote.addTarget(self, action: #selector(btnInternalNoteClick), for: .touchUpInside)
     }
     
     @objc func gotoUser(sender:UIButton) {

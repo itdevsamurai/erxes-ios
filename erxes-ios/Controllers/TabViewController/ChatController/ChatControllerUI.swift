@@ -48,6 +48,14 @@ class ChatControllerUI:ViewController {
         return view
     }()
     
+    var btnSend:UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.frame = CGRect(x: 0, y: 0, width: 36, height: 26)
+        btn.setImage(#imageLiteral(resourceName: "btn_send"), for: .normal)
+        btn.contentMode = UIViewContentMode.center
+        return btn
+    }()
+    
     var chatInputView: UITextField = {
         let textfield = UITextField()
         textfield.backgroundColor = UIColor(hexString: "#f4f4f4")
@@ -56,13 +64,8 @@ class ChatControllerUI:ViewController {
         textfield.layer.borderColor = UIColor(hexString: "#d7d7d7")?.cgColor
         textfield.placeholder = "Type a message"
         textfield.keyboardType = .emailAddress
-        let btnSend = UIButton(type: .custom)
-        btnSend.frame = CGRect(x: 0, y: 0, width: 36, height: 26)
-        btnSend.setImage(#imageLiteral(resourceName: "btn_send"), for: .normal)
-        btnSend.contentMode = UIViewContentMode.center
-//        btnSend.addTarget(self, action: #selector(btnSendClick), for: .touchUpInside)
         
-        textfield.rightView = btnSend
+//        btnSend.addTarget(self, action: #selector(btnSendClick), for: .touchUpInside)
         textfield.rightViewMode = .always
         
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
@@ -92,6 +95,7 @@ class ChatControllerUI:ViewController {
         container.addSubview(self.chatView)
         container.addSubview(inputContainer)
         container.addSubview(userView)
+        chatInputView.rightView = btnSend
         //        inputContainer.addSubview(chatInputView)
         
         self.view.backgroundColor = .white
