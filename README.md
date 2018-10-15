@@ -1,6 +1,6 @@
 # erxes Inc - erxes for IOS
 
-erxes is an AI meets open source messaging platform for sales and marketing
+erxes is an open source growth marketing platform. Marketing, sales, and customer service platform designed to help your business attract more engaged customers. Replace Hubspot with the mission and community-driven ecosystem.
 
 <a href="https://demohome.erxes.io/">View demo</a> <b>| </b> <a href="https://github.com/erxes/erxes-ios/archive/master.zip">Download ZIP </a> <b> | </b> <a href="https://gitter.im/erxes/Lobby">Join us on Gitter</a>
 
@@ -9,15 +9,13 @@ erxes is an AI meets open source messaging platform for sales and marketing
 [![Build Status][travis-image]][travis-url]
 [![License][license-image]][license-url]
 
-![](https://raw.githubusercontent.com/erxes/erxes-ois/master/erxes-ios/Resources/screenshot.png)
+<a href="https://erxes.io" target="_blank"><img src="https://i.imgur.com/j1dxE7Y.jpg" alt="erxes is an AI meets open source messaging platform for sales, marketing and support "></a>
 
 ## Features
 
-- [x] Team Inbox
-- [x] Assign to users
-- [x] Resolve conversation
-- [x] Filter by Tag, Brand, Integration, Status, Date and Channel
-- [x] Contacts
+* **Team Inbox:** Combine real-time client and team communication with in-app messaging, live chat, email and form, so your customers can reach you however and whenever they want. 
+* **Contact:** Access our all-in-one CRM system in one go so that it’s easier to coordinate and manage your interactions with your customers. 
+
 
 ## Requirements
 
@@ -25,21 +23,9 @@ erxes is an AI meets open source messaging platform for sales and marketing
 - Xcode 9.3
 
 ## Installation
-
-#### Manually
-1. Download erxes-ois-master.zip and unzip it.
-2. Open erxes-ios.xcworkspace
+ * <a href="https://github.com/erxes/erxes-ios/wiki/Installation">Installation instructions</a> <br>
 
 
-## Usage example
-
-1. Open Constants.swift
-2. Edit following lines
-
-```swift
-    static let API_ENDPOINT = "ENTER APP-API-URL HERE!!!"
-    static let SUBSCRITION_ENDPOINT = "ENTER SUBSCRIPTION URL HERE!!!"
-```
 
 ## Contributors
 
