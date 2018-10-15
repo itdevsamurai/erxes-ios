@@ -26,7 +26,7 @@ erxes is an open source growth marketing platform. Marketing, sales, and custome
 ## Installation
 
 #### Manually
-1. Download erxes-ois-master.zip and unzip it.
+1. Download erxes-ios-master.zip and unzip it.
 2. Open erxes-ios.xcworkspace
 
 
