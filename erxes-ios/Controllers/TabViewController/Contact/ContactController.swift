@@ -29,7 +29,7 @@ class ContactController: UIViewController {
 
     
     var searchField:UITextField = {
-       let field = UITextField(frame: CGRect(x: 16, y: 5, width: DEVICE_WIDTH-32, height: 30))
+       let field = UITextField(frame: CGRect(x: 16, y: 5, width: Constants.SCREEN_WIDTH-32, height: 30))
         field.layer.cornerRadius = 6
         field.backgroundColor = .white
         let imageView = UIImageView(image: UIImage.erxes(with: .magnifyingglass, textColor: .ERXES_COLOR))
@@ -234,7 +234,7 @@ class ContactController: UIViewController {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPress(longPressGestureRecognizer:)))
         tableView.addGestureRecognizer(longPress)
         self.view.addSubview(tableView)
-         searchBackGround = UIView(frame: CGRect(x: 0, y: 0, width: DEVICE_WIDTH, height: 44))
+         searchBackGround = UIView(frame: CGRect(x: 0, y: 0, width: Constants.SCREEN_WIDTH, height: 44))
         searchBackGround.backgroundColor = .ERXES_COLOR
         searchBackGround.addSubview(searchField)
 //        tableView.tableHeaderView = searchBackGround

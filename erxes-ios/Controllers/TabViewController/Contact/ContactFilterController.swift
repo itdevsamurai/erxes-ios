@@ -408,7 +408,7 @@ extension ContactFilterController: UITableViewDataSource {
         let view = UIView()
 
         view.backgroundColor = .white
-        let line = UIView(frame: CGRect(x: 12, y: 0, width: DEVICE_WIDTH - 24, height: 1))
+        let line = UIView(frame: CGRect(x: 12, y: 0, width: Constants.SCREEN_WIDTH - 24, height: 1))
         line.backgroundColor = UIColor(hexString: "#eaeaea")
         view.addSubview(line)
 
@@ -419,7 +419,7 @@ extension ContactFilterController: UITableViewDataSource {
         view.addSubview(lbl)
         view.tag = section
 
-        let lblValue = UILabel(frame: CGRect(x: DEVICE_WIDTH - 205, y: 0, width: 180, height: 42))
+        let lblValue = UILabel(frame: CGRect(x: Constants.SCREEN_WIDTH - 205, y: 0, width: 180, height: 42))
         lblValue.text = sections[section]
         lblValue.font = UIFont.fontWith(type: .comfortaaBold, size: 12)
         lblValue.textColor = .gray
@@ -427,7 +427,7 @@ extension ContactFilterController: UITableViewDataSource {
         
         view.addSubview(lblValue)
 
-        let iv = UIImageView(frame: CGRect(x: DEVICE_WIDTH - 30, y: 17, width: 20, height: 10))
+        let iv = UIImageView(frame: CGRect(x: Constants.SCREEN_WIDTH - 30, y: 17, width: 20, height: 10))
         iv.contentMode = .scaleAspectFit
         iv.image = #imageLiteral(resourceName: "ic_right_bracket")
         view.addSubview(iv)
