@@ -13,8 +13,19 @@ import Apollo
 class MentionCell:UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = UIEdgeInsetsInsetRect(contentView.frame, UIEdgeInsetsMake(0, 50, 0, 0))
+//        contentView.frame = UIEdgeInsetsInsetRect(contentView.frame, UIEdgeInsetsMake(0, 30, 0, 0))
         textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        
+        imageView?.clipsToBounds = true
+        imageView?.contentMode = .scaleAspectFit
+        imageView?.snp.remakeConstraints{ (make) in
+            make.top.equalToSuperview().offset(5)
+            make.bottom.equalToSuperview().inset(5)
+            make.left.equalToSuperview().offset(30)
+            make.width.equalTo(25)
+        }
+        imageView?.layer.cornerRadius = 12
+        self.selectionStyle = .none
     }
 }
 
@@ -76,7 +87,8 @@ class MentionController:NSObject {
     
     func filter(_ value:String) {
         if value.count > 0 {
-            filteredUsers = users.filter{$0.details?.fullName?.localizedCaseInsensitiveContains(value) ?? false}
+//            filteredUsers = users.filter{$0.details?.fullName?.localizedCaseInsensitiveContains(value) ?? false}
+            filteredUsers = users.filter{$0.details?.fullName?.lowercased().hasPrefix(value.lowercased()) ?? false}
         } else {
             filteredUsers = users
         }
@@ -107,7 +119,9 @@ extension MentionController:UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = MentionCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = filteredUsers[indexPath.row].details?.fullName
+        let user = filteredUsers[indexPath.row].details
+        cell.textLabel?.text = user?.fullName
+        cell.imageView?.sd_setImage(with: URL(string: user?.avatar ?? ""), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
         return cell
     }
     
@@ -120,11 +134,26 @@ extension MentionController:UITableViewDelegate,UITableViewDataSource {
         mentionedUsers.append(user)
         delegate?.mentionUser(user)
     }
+    
 }
 
-extension ColChatController:MentionControllerDelegate {
+extension ChatController:MentionControllerDelegate {
     func reload() {
+        
         userView.reloadData()
+        
+        let height = chatView.frame.size.height
+        var offset = height - CGFloat(35 * mentionController.filteredUsers.count)
+        
+        if offset < 0 {
+            offset = 0
+        }
+        
+        userView.snp.remakeConstraints { (make) in
+            make.bottom.equalTo(chatView.snp.bottom)
+            make.right.left.equalToSuperview()
+            make.top.equalToSuperview().offset(offset)
+        }
     }
     
     func mentionUser(_ user: UserData) {
@@ -139,7 +168,7 @@ extension ColChatController:MentionControllerDelegate {
     }
 }
 
-extension ColChatController {
+extension ChatController {
     
     func showUserView() {
         userView.isHidden = false

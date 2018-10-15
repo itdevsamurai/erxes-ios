@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension ColChatController {
+extension ChatController {
     
     @objc func keyboardHandler(notification: NSNotification) {
         let info = notification.userInfo!

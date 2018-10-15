@@ -71,7 +71,7 @@ class ErxesInboxCell: UITableViewCell {
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
         message.backgroundColor = UIColor.LIGHT_GRAY_COLOR
-        message.lineBreakMode = .byWordWrapping
+        message.lineBreakMode = .byTruncatingTail
         contentView.addSubview(message)
 
 
