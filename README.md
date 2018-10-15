@@ -24,21 +24,9 @@ erxes is an open source growth marketing platform. Marketing, sales, and custome
 - Xcode 9.3
 
 ## Installation
-
-#### Manually
-1. Download erxes-ios-master.zip and unzip it.
-2. Open erxes-ios.xcworkspace
+ * <a href="https://github.com/erxes/erxes-ios/wiki/Installation">Installation instructions</a> <br>
 
 
-## Usage example
-
-1. Open Constants.swift
-2. Edit following lines
-
-```swift
-    static let API_ENDPOINT = "ENTER APP-API-URL HERE!!!"
-    static let SUBSCRITION_ENDPOINT = "ENTER SUBSCRIPTION URL HERE!!!"
-```
 
 ## Contributors
 
