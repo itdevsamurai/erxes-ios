@@ -27,20 +27,20 @@ class FilterCell: UITableViewCell {
         value = UILabel()
         value.textAlignment = .right
         value.textColor = UIColor.TEXT_COLOR
-        value.font = UIFont.fontWith(type: .light, size: 14)
+        value.font = Font.light(14)
         contentView.addSubview(value)
         
         countLabel = UILabel()
         countLabel.textAlignment = .right
         countLabel.textColor = UIColor.TEXT_COLOR
-        countLabel.font = UIFont.fontWith(type: .light, size: 14)
+        countLabel.font = Font.light(14)
         contentView.addSubview(countLabel)
         
         
         desc = UILabel()
         desc.textAlignment = .left
         desc.textColor = UIColor.TEXT_COLOR
-        desc.font = UIFont.fontWith(type: .light, size: 14)
+        desc.font = Font.light(14)
         contentView.addSubview(desc)
         
         arrow = UIImageView()

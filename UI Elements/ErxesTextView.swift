@@ -26,14 +26,14 @@ class ErxesTextView: UIView {
         self.addSubview(titlebg)
         
         titleLabel = UILabel ()
-        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 12    )
+        titleLabel.font = Font.regular(12)
         titleLabel.textColor = .black
         titleLabel.text = titleLabel.text?.capitalized
         titlebg.addSubview(titleLabel)
         
         textView = UITextView()
         textView.delegate = self
-        textView.font = UIFont.fontWith(type: .comfortaa, size: 15    )
+        textView.font = Font.regular(15)
         textView.backgroundColor = .clear
         textView.textColor = .black
         let lineView = UIView()

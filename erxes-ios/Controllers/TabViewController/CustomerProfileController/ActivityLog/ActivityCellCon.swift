@@ -29,17 +29,17 @@ class ActivityCellCon: UITableViewCell {
         avatarView.clipsToBounds = true
         dateLabel = UILabel()
         dateLabel.textColor = .GRAY_COLOR
-        dateLabel.font = UIFont.fontWith(type: .comfortaa, size: 8)
+        dateLabel.font = Font.regular(8)
         dateLabel.textAlignment = .right
 
         descLabel = UILabel ()
         descLabel.textColor = .black
-        descLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        descLabel.font = Font.regular(14)
         descLabel.textAlignment = .left
 
         messageLabel = UILabel ()
         messageLabel.textColor = .GRAY_COLOR
-        messageLabel.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        messageLabel.font = Font.regular(13)
         messageLabel.textAlignment = .left
 
         contentView.addSubview(avatarView)

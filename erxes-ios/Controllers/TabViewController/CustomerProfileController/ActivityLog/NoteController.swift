@@ -34,7 +34,7 @@ class NoteController: UIViewController {
        let button = UIButton()
         button.setTitle("  New note", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        button.titleLabel?.font = Font.regular(14)
         button.setImage(UIImage.erxes(with: .edit1, textColor: .black, size: CGSize(width: 14, height: 14)), for: .normal)
         button.addTarget(self, action: #selector(noteAction), for: .touchUpInside)
         return button
@@ -60,7 +60,7 @@ class NoteController: UIViewController {
         let button = UIButton()
         button.setTitle("  Email", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        button.titleLabel?.font = Font.regular(14)
         button.setImage(UIImage.erxes(with: .email, textColor: .black, size: CGSize(width: 14, height: 14)), for: .normal)
         button.addTarget(self, action: #selector(emailAction), for: .touchUpInside)
         return button
@@ -101,7 +101,7 @@ class NoteController: UIViewController {
         self.view.addSubview(emailButton)
         self.view.addSubview(tableView)
         textView.delegate = self
-        textView.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        textView.font = Font.regular(14)
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { (action) in
             self.alertController.view.removeObserver(self, forKeyPath: "bounds")
@@ -202,7 +202,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         headerView.addSubview(iconView)
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
-        label.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        label.font = Font.regular(14)
         let date = notes[section]?.date
         let monthName = DateFormatter().monthSymbols[(date?.month)!]
         label.text = String(format: "%@ %i", monthName, (date?.year)!)

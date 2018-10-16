@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-1000, 0), for: .default)
         let attrs = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
       
         UINavigationBar.appearance().titleTextAttributes = attrs

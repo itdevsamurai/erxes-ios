@@ -51,14 +51,14 @@ class FailureAlert: UIView, Modal {
         dialogView.addSubview(headerView)
 
         let messageLabel = UILabel()
-        messageLabel.font = UIFont.fontWith(type: .light, size: 14)
+        messageLabel.font = Font.light(14)
         messageLabel.textColor = UIColor.ERXES_COLOR
         messageLabel.text = message
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.textAlignment = .center
         dialogView.addSubview(messageLabel)
-        let labelHeight = self.heightForView(text: message, font: UIFont.fontWith(type: .light, size: 14), width: 210)
+        let labelHeight = self.heightForView(text: message, font: Font.light(14), width: 210)
         messageLabel.frame = CGRect(x: 20, y: 70, width: 210, height: labelHeight)
 
         let dialogViewHeight = 20 + headerView.frame.height + 8 + labelHeight + 8 + 20

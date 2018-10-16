@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-//protocol ChatController {
-//
-//}
-
 protocol ChatInputProtocol {
     func btnCameraClick()
     func btnAttachmentClick()

@@ -36,7 +36,7 @@ class ChatBaseCell: UICollectionViewCell {
     
     var lblDate:UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.fontWith(type: .comfortaa, size: 10)
+        lbl.font = Font.regular(10)
         lbl.textColor = .gray
         return lbl
     }()
@@ -110,7 +110,7 @@ class ChatBaseCell: UICollectionViewCell {
         let tv = UITextView()
         
         if let str = item.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .comfortaa, size: 13), range: NSMakeRange(0, str.length))
+            str.addAttribute(NSAttributedStringKey.font, value: Font.regular(10), range: NSMakeRange(0, str.length))
             tv.attributedText = str
         }
         

@@ -19,7 +19,7 @@ class ErxesButton: UIButton {
     }
     required override init(frame: CGRect) {
         super.init(frame: frame)
-        self.titleLabel?.font = UIFont.fontWith(type: .light, size: 14)
+        self.titleLabel?.font = Font.light(14)
         self.layer.cornerRadius = 6
         self.addBorder(with: UIColor.ERXES_COLOR)
 

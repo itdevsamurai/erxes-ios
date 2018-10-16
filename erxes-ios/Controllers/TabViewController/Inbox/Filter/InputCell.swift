@@ -40,7 +40,7 @@ class InputCell:UITableViewCell {
         
         input = UITextField()
         input.placeholder = "Search..."
-        input.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        input.font = Font.regular(13)
         input.textColor = UIColor(hexString: "#1f9fe2")
         contentView.addSubview(input)
     }

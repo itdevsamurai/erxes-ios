@@ -217,7 +217,7 @@ extension NotificationSettingsController: UITableViewDataSource {
         titleLabel.frame = headerView.frame
         titleLabel.frame.origin.y = titleLabel.frame.origin.y + 5
         titleLabel.textColor = UIColor.black
-        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        titleLabel.font = Font.regular(15)
         headerView.addSubview(titleLabel)
         let text = self.modules[section]["description"] as? String
         titleLabel.text = text?.uppercased()

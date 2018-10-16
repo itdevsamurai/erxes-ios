@@ -51,7 +51,7 @@ class InboxController: UIViewController {
         imageview.contentMode = .scaleAspectFit
         let label = UILabel()
         label.textColor = .gray
-        label.font = UIFont.fontWith(type: .light, size: 14)
+        label.font = Font.light()
         label.text = "There is no message."
         label.textAlignment = .center
         imageview.addSubview(label)
@@ -64,7 +64,7 @@ class InboxController: UIViewController {
         let tagListView = TagListView()
         tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 6
-        tagListView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
+        tagListView.textFont = Font.light()
         tagListView.textColor = .white
         tagListView.clipsToBounds = false
 //        tagListView.removeButtonIconSize = 4

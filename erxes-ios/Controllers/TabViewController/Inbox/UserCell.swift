@@ -31,18 +31,10 @@ class UserCell: UITableViewCell {
         fullName = UILabel()
         fullName.textAlignment = .right
         fullName.textColor = UIColor.TEXT_COLOR
-        fullName.font = UIFont.fontWith(type: .light, size: 14)
+        fullName.font = Font.light(14)
         contentView.addSubview(fullName)
-        
 
-        
-        
-        
-        
-        
         self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        
-        
     }
     
     override func layoutSubviews() {
@@ -61,7 +53,6 @@ class UserCell: UITableViewCell {
             make.height.equalTo(20)
         }
 
-        
     }
     
     

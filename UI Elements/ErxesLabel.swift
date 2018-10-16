@@ -23,7 +23,7 @@ class ErxesLabel : UILabel {
     
     func setup() {
         
-        self.font = UIFont.fontWith(type: .light, size: 14)
+        self.font = Font.light(14)
    
         self.layer.display()
     }

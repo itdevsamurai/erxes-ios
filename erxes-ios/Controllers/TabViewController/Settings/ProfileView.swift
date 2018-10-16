@@ -83,7 +83,7 @@ class ProfileView: UIView {
 //            self.addSubview(editView)
             let nameLabel = UILabel()
             nameLabel.textColor = UIColor.black
-            nameLabel.font = UIFont.fontWith(type: .comfortaaBold, size: 20)
+            nameLabel.font = Font.bold(20)
             nameLabel.text = user.fullName
             nameLabel.textAlignment = .center
             
@@ -92,7 +92,7 @@ class ProfileView: UIView {
             
             let positionLabel = UILabel()
             positionLabel.textColor = UIColor.GRAY_COLOR
-            positionLabel.font = UIFont.fontWith(type: .comfortaa, size: 15)
+            positionLabel.font = Font.regular(15)
             positionLabel.text = user.position
             positionLabel.textAlignment = .center
             positionLabel.numberOfLines = 2
@@ -138,7 +138,7 @@ class ProfileView: UIView {
             self.addSubview(avatarView)
             let nameLabel = UILabel()
             nameLabel.textColor = UIColor.black
-            nameLabel.font = UIFont.fontWith(type: .comfortaaBold, size: 15)
+            nameLabel.font = Font.bold(15)
             nameLabel.text = user.fullName
             nameLabel.textAlignment = .left
             
@@ -147,7 +147,7 @@ class ProfileView: UIView {
             
             let positionLabel = UILabel()
             positionLabel.textColor = UIColor.GRAY_COLOR
-            positionLabel.font = UIFont.fontWith(type: .comfortaa, size: 13)
+            positionLabel.font = Font.regular(13)
             positionLabel.text = user.position
             positionLabel.textAlignment = .left
             positionLabel.numberOfLines = 2
