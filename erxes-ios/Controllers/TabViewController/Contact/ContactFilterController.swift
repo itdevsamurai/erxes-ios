@@ -78,9 +78,9 @@ class ContactFilterController: UIViewController {
                     }
                     for subSegment in segmentList {
                         if !(subSegment?.subOf.isNullOrEmpty)! {
-                            if let index = self?.segments.firstIndex(where: { $0.id == subSegment!.subOf }) {
-                                self?.segments.insert((subSegment?.fragments.segmentObj)!, at: index + 1)
-                            }
+//                            if let index = self?.segments.firstIndex(where: { $0.id == subSegment!.subOf }) {
+//                                self?.segments.insert((subSegment?.fragments.segmentObj)!, at: index + 1)
+//                            }
                         }
                     }
                 }

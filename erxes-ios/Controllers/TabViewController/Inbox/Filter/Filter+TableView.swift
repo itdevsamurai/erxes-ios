@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+class MyTableViewCell: UITableViewCell {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = UIEdgeInsetsInsetRect(contentView.frame, UIEdgeInsetsMake(0, 50, 0, 0))
+    }
+}
 
 extension FilterController: UITableViewDataSource,UITableViewDelegate {
     
@@ -121,7 +128,6 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = indexPath.row
-        let section = indexPath.section
         
         var cell = MyTableViewCell(style: .default, reuseIdentifier: "cell") as UITableViewCell
         
@@ -129,7 +135,7 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         
         cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
         cell.textLabel?.textColor = UIColor(hexString: "#1f9fe2")
-        //        cell.textLabel.inset
+        
         switch indexPath.section {
             
         case channel:
@@ -229,8 +235,6 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
     
     @objc func sectionSelected(_ sender: UITapGestureRecognizer) {
         if let section = sender.view?.tag {
-            
-            //            expandSection(section)
             
             if selectedSection >= 0 {
                 let oldSection = selectedSection
@@ -337,4 +341,3 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         tableView.endUpdates()
     }
 }
-

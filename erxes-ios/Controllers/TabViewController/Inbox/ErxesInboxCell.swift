@@ -78,7 +78,7 @@ class ErxesInboxCell: UITableViewCell {
         tagListView = TagListView()
         tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 5.0
-        tagListView.textFont = UIFont(name: "Montserrat-Light", size: 8)!
+        tagListView.textFont = UIFont.fontWith(type: .light, size: 8)
         tagListView.textColor = .white
         tagListView.clipsToBounds = false
 

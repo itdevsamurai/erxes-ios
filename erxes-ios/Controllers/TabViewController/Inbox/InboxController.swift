@@ -64,7 +64,7 @@ class InboxController: UIViewController {
         let tagListView = TagListView()
         tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 6
-        tagListView.textFont = UIFont(name: "Montserrat-Light", size: 14)!
+        tagListView.textFont = UIFont.fontWith(type: .light, size: 14)
         tagListView.textColor = .white
         tagListView.clipsToBounds = false
 //        tagListView.removeButtonIconSize = 4

@@ -16,7 +16,7 @@ extension FilterController {
             return
             
         }
-        var keyboardFrame = keyBoardInfo.cgRectValue
+        let keyboardFrame = keyBoardInfo.cgRectValue
         
         if notification.name == .UIKeyboardWillShow {
             tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrame.size.height, 0)

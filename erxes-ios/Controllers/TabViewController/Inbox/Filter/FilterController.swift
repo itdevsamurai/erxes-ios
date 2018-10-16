@@ -28,7 +28,6 @@ class FilterController: UIViewController {
     let dates = ["Begin date:","End date:"]
     let integrations = ["messenger","twitter","facebook","form"]
     let statusArray = ["Unassigned","Participating","Resolved"]
-//    var channels = ["channel 1","channel 2","channel 3","channel 4","channel 5","channel 6","channel 7"]
     var statusValue = ""
     var channels = [ChannelDetail]()
     
@@ -155,25 +154,13 @@ class FilterController: UIViewController {
     }
 }
 
-class MyTableViewCell: UITableViewCell {
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = UIEdgeInsetsInsetRect(contentView.frame, UIEdgeInsetsMake(0, 50, 0, 0))
-    }
-}
-
 extension FilterController: DateDelegate {
     
     func setDate(options: FilterOptions, isBeginDate: Bool) {
         if isBeginDate{
             self.filterOptions.startDate = options.startDate
-//            let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as! FilterCell
-//            cell.value.text = self.filterOptions.startDate
         }else{
             self.filterOptions.endDate = options.endDate
-//            let cell = self.tableView.cellForRow(at: IndexPath(row: 1, section: 1)) as! FilterCell
-//            cell.value.text = self.filterOptions.endDate
         }
         tableView.reloadData()
         collapseSection(selectedSection)
