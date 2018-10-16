@@ -13,7 +13,6 @@ import Apollo
 class MentionCell:UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
-//        contentView.frame = UIEdgeInsetsInsetRect(contentView.frame, UIEdgeInsetsMake(0, 30, 0, 0))
         textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
         
         imageView?.clipsToBounds = true
@@ -41,7 +40,6 @@ class MentionController:NSObject {
     var users = [UserData]() {
         didSet{
             delegate?.reload()
-//            userView.reloadData()
         }
     }
     
@@ -87,7 +85,6 @@ class MentionController:NSObject {
     
     func filter(_ value:String) {
         if value.count > 0 {
-//            filteredUsers = users.filter{$0.details?.fullName?.localizedCaseInsensitiveContains(value) ?? false}
             filteredUsers = users.filter{$0.details?.fullName?.lowercased().hasPrefix(value.lowercased()) ?? false}
         } else {
             filteredUsers = users
