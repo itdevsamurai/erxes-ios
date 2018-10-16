@@ -19,7 +19,7 @@ class IncomingCell: ChatBaseCell {
         ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         lblDate.textAlignment = .right
         if let str = viewModel?.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .comfortaa, size: 13), range: NSMakeRange(0, str.length))
+            str.addAttribute(NSAttributedStringKey.font, value: Font.regular(13), range: NSMakeRange(0, str.length))
             str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, str.length))
             DispatchQueue.main.async{
                 self.tvText.attributedText = str

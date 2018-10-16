@@ -40,7 +40,7 @@ class LoginController: UIViewController {
         let rememberMe = UILabel()
         rememberMe.text = "remember me"
         rememberMe.textColor = .white
-        rememberMe.font = UIFont.fontWith(type: .light, size: 12)
+        rememberMe.font = Font.light(12)
         rememberMe.tag = 200
         rememberMe.alpha = 1.0
         rememberMe.textAlignment = .right
@@ -58,7 +58,7 @@ class LoginController: UIViewController {
     var welcomeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .GRAY_COLOR
-        label.font = UIFont.fontWith(type: .comfortaaBold, size: 28)
+        label.font = Font.regular(28)
         label.text = "Welcome !"
         label.alpha = 0.0
         label.adjustsFontSizeToFitWidth = true

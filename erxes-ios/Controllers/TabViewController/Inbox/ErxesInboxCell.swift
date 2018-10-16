@@ -36,7 +36,7 @@ class ErxesInboxCell: UITableViewCell {
 
         fullName = ErxesLabel()
         fullName.textAlignment = .left
-        fullName.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        fullName.font = Font.regular(13)
         fullName.textColor = UIColor(hexString: "#232323")
         fullName.backgroundColor = .SHIMMER_COLOR
         contentView.addSubview(fullName)
@@ -44,7 +44,7 @@ class ErxesInboxCell: UITableViewCell {
 
         desc = ErxesLabel()
 //        desc.textAlignment = .right
-        desc.font = UIFont.fontWith(type: .comfortaa, size: 10)
+        desc.font = Font.regular(10)
         desc.textColor = UIColor(hexString: "#232323", alpha:0.5)
         desc.minimumScaleFactor = 0.5
         desc.adjustsFontSizeToFitWidth = true
@@ -53,7 +53,7 @@ class ErxesInboxCell: UITableViewCell {
 
 
         date = ErxesLabel()
-        date.font = UIFont.fontWith(type: .comfortaa, size: 8)
+        date.font = Font.regular(8)
         date.textAlignment = .right
         date.textColor = .gray
         date.numberOfLines = 0
@@ -67,7 +67,7 @@ class ErxesInboxCell: UITableViewCell {
         message = ErxesLabel()
         message.textAlignment = .left
         message.textColor = UIColor(hexString: "#232323", alpha:0.5)
-        message.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        message.font = Font.regular(13)
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
         message.backgroundColor = UIColor.LIGHT_GRAY_COLOR
@@ -78,7 +78,7 @@ class ErxesInboxCell: UITableViewCell {
         tagListView = TagListView()
         tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 5.0
-        tagListView.textFont = UIFont.fontWith(type: .light, size: 8)
+        tagListView.textFont = Font.light(8)
         tagListView.textColor = .white
         tagListView.clipsToBounds = false
 

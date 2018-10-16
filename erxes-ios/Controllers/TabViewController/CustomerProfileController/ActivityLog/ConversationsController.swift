@@ -89,7 +89,7 @@ extension ConversationsController: UITableViewDataSource {
         headerView.addSubview(iconView)
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
-        label.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        label.font = Font.regular(14)
         let date = conversations[section]?.date
         let monthName = DateFormatter().monthSymbols[(date?.month)!]
         label.text = String(format: "%@ %i", monthName, (date?.year)!)

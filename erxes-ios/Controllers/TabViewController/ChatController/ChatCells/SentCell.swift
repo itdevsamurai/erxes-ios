@@ -21,13 +21,13 @@ class SentCell: ChatBaseCell {
             if viewModel?.internal ?? false {
                 tvText.backgroundColor = UIColor(hexString: "#fffccc")
                 edgeView.backgroundColor = UIColor(hexString: "#fffccc")
-                str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .comfortaa, size: 13), range: NSMakeRange(0, str.length))
+                str.addAttribute(NSAttributedStringKey.font, value: Font.regular(13), range: NSMakeRange(0, str.length))
                 str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, str.length))
                 
             } else {
                 tvText.backgroundColor = .ERXES_COLOR
                 edgeView.backgroundColor = .ERXES_COLOR
-                str.addAttribute(NSAttributedStringKey.font, value: UIFont.fontWith(type: .comfortaa, size: 13), range: NSMakeRange(0, str.length))
+                str.addAttribute(NSAttributedStringKey.font, value: Font.regular(13), range: NSMakeRange(0, str.length))
                 str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSMakeRange(0, str.length))
             }
             DispatchQueue.main.async{

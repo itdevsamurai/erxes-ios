@@ -32,7 +32,7 @@ class DateFilterController: UIViewController {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Select a date", for: .normal)
-        button.titleLabel?.font = UIFont.fontWith(type: .light, size: 14)
+        button.titleLabel?.font = Font.light(14)
         button.backgroundColor = UIColor.ERXES_COLOR
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)
         return button
@@ -42,7 +42,7 @@ class DateFilterController: UIViewController {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
         button.setTitle("Select a date", for: .normal)
-        button.titleLabel?.font = UIFont.fontWith(type: .light, size: 14)
+        button.titleLabel?.font = Font.light(14)
         button.backgroundColor = UIColor.ERXES_COLOR
         button.alpha = 0.7
         button.addTarget(self, action: #selector(toggleButton(sender:)), for: .touchUpInside)

@@ -82,21 +82,21 @@ class FilterController: UIViewController {
     func configureHeader() {
         let rightButton = UIButton()
         rightButton.setTitle("Done", for: .normal)
-        rightButton.titleLabel?.font = UIFont.fontWith(type: .comfortaaBold, size: 14)
+        rightButton.titleLabel?.font = Font.bold(14)
         rightButton.setTitleColor(.black, for: .normal)
         rightButton.addTarget(self, action: #selector(close(sender:)), for: .touchUpInside)
         self.root.addSubview(rightButton)
         
         let lbl = UILabel()
         lbl.text = "FILTER"
-        lbl.font = UIFont.fontWith(type: .comfortaaBold, size: 15)
+        lbl.font = Font.bold(15)
         lbl.textAlignment = .center
         self.root.addSubview(lbl)
         
         let btnClose = UIButton()
 //        btnClose.setImage(#imageLiteral(resourceName: "ic_xMark"), for: .normal)
         btnClose.setTitle("Clear", for: .normal)
-        btnClose.titleLabel?.font = UIFont.fontWith(type: .comfortaaBold, size: 14)
+        btnClose.titleLabel?.font = Font.bold(14)
         btnClose.setTitleColor(.black, for: .normal)
         btnClose.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         root.addSubview(btnClose)

@@ -28,13 +28,13 @@ class ContactCell: UITableViewCell {
         topLabel = UILabel()
         topLabel.textAlignment = .right
         topLabel.textColor = UIColor.black
-        topLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        topLabel.font = Font.regular(14)
         contentView.addSubview(topLabel)
         
         bottomLabel = UILabel()
         bottomLabel.textAlignment = .right
         bottomLabel.textColor = UIColor.LIGHT_GRAY_COLOR
-        bottomLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        bottomLabel.font = Font.regular(14)
         contentView.addSubview(bottomLabel)
         
     

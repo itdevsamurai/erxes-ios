@@ -280,7 +280,7 @@ extension EmailSignatureController: UITableViewDataSource {
             cell?.desc.text = brand.name
         }
         
-        cell?.desc.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        cell?.desc.font = Font.regular(13)
         cell?.desc.textColor = UIColor(hexString: "#1f9fe2")
         
         cell?.arrow.isHidden = true

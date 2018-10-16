@@ -23,7 +23,7 @@ class ErxesTagLabel: UILabel {
         self.layer.cornerRadius = 5.0
         self.clipsToBounds = true
         
-        self.font = UIFont.fontWith(type: .comfortaa, size: 10)
+        self.font = Font.regular(10)
         self.backgroundColor = backgroundColor
         self.textAlignment = .center
         if backgroundColor.isLight(){

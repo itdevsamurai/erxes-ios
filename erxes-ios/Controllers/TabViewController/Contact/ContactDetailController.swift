@@ -43,8 +43,8 @@ class ContactDetailController: DTPagerController {
     }
     
     func configureViews(){
-        self.font = UIFont.fontWith(type: .comfortaa, size: 14)
-        self.selectedFont = UIFont.fontWith(type: .comfortaaBold, size: 14)
+        self.font = Font.regular(14)
+        self.selectedFont = Font.bold(14)
         self.selectedTextColor = .ERXES_COLOR
         self.scrollIndicator.backgroundColor = .ERXES_COLOR
         let customerController = CustomerProfileController(_id: self.contactId)
@@ -84,7 +84,7 @@ class ContactDetailController: DTPagerController {
         segmentedControl.selectionIndicatorHeight = 1
         segmentedControl.titleTextAttributes =  [
             NSAttributedStringKey.foregroundColor: UIColor.ERXES_COLOR,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 13)
+            NSAttributedStringKey.font: Font.regular(13)
         ]
     }
     

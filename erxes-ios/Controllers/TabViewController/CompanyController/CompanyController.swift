@@ -99,81 +99,81 @@ class CompanyController: FormViewController {
         self.navigationItem.rightBarButtonItem = rightItem
         
         NameRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
         TextRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
         PhoneRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
         
         EmailRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
         
         DateRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.detailTextLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.detailTextLabel?.textColor = UIColor.ERXES_COLOR
         }
         
         SwitchRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.switchControl.tintColor = UIColor.ERXES_COLOR
             cell.switchControl.onTintColor = UIColor.ERXES_COLOR
         }
         IntRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.detailTextLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.detailTextLabel?.textColor = UIColor.ERXES_COLOR
         }
         ActionSheetRow<String>.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
+            cell.detailTextLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.detailTextLabel?.textColor = UIColor.ERXES_COLOR
         }
         ButtonRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.tintColor = UIColor.ERXES_COLOR
             cell.accessoryView?.tintColor = UIColor.ERXES_COLOR
             
         }
         PushRow<String>.defaultCellUpdate = {cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             cell.tintColor = UIColor.ERXES_COLOR
             cell.accessoryView?.tintColor = UIColor.ERXES_COLOR
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.detailTextLabel?.font = Font.light(14)
         }
         
         PushRow<CompanyList>.defaultCellUpdate = { cell, row in
             row.options = self.companies
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
 
         }
 
         PushRow<UserData>.defaultCellUpdate = { cell, row in
             row.options = self.users
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.ERXES_COLOR
             row.displayValueFor = {
                 if let t = $0 {
@@ -185,12 +185,12 @@ class CompanyController: FormViewController {
         }
         
         SuggestionTableRow<UserData>.defaultCellUpdate = { cell, row in
-            row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            row.cell.textLabel?.font = Font.light(14)
             row.cell.textLabel?.textColor = UIColor.ERXES_COLOR
             row.placeholder = "Type to search user"
             cell.textField.textColor = UIColor.ERXES_COLOR
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textField.font = Font.light(14)
+            cell.detailTextLabel?.font = Font.light(14)
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             row.filterFunction = { [unowned self] text in
                 self.users.filter({ ($0.details?.fullName?.lowercased().contains(text.lowercased()))! })
@@ -198,12 +198,12 @@ class CompanyController: FormViewController {
         }
 //
         SuggestionTableRow<CompanyList>.defaultCellUpdate = { cell, row in
-            row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            row.cell.textLabel?.font = Font.light(14)
             row.cell.textLabel?.textColor = UIColor.ERXES_COLOR
             row.placeholder = "Type to search companies"
             cell.textField.textColor = UIColor.ERXES_COLOR
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textField.font = Font.light(14)
+            cell.detailTextLabel?.font = Font.light(14)
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             row.filterFunction = { [unowned self] text in
                 self.companies.filter({ ($0.primaryName?.lowercased().contains(text.lowercased()))! })

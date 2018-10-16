@@ -22,12 +22,12 @@ class ActivityCellReg: UITableViewCell {
         avatarView.image = UIImage(named: "ic_avatar")
         dateLabel = UILabel()
         dateLabel.textColor = .GRAY_COLOR
-        dateLabel.font = UIFont.fontWith(type: .comfortaa, size: 8)
+        dateLabel.font = Font.regular(8)
         dateLabel.textAlignment = .right
         
         descLabel = UILabel ()
         descLabel.textColor = .black
-        descLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        descLabel.font = Font.regular(14)
         descLabel.textAlignment = .left
 
         

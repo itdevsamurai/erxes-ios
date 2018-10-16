@@ -56,13 +56,4 @@ extension UIImageView {
         
         self.image = image
     }
-    
-    func fontName(fontName: String) -> UIFont {
-        let fontSize: CGFloat = self.bounds.width * 40
-        if fontName.count != 0 {
-            return UIFont(name: fontName, size: fontSize)!
-        } else {
-            return UIFont.systemFont(ofSize: fontSize)
-        }
-    }
 }

@@ -19,7 +19,7 @@ class MyButton: UIButton {
     required override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        self.titleLabel?.font = Font.regular(15)
       
         self.setTitleColor(.white, for: .normal)
         print("BUTTON INIT")

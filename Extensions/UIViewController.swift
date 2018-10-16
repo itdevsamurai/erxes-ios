@@ -29,7 +29,7 @@ extension UIViewController {
         notifyLabel.text = message
         notifyLabel.textAlignment = .center
         notifyLabel.textColor = .white
-        notifyLabel.font = UIFont.fontWith(type: .light, size: 14)
+        notifyLabel.font = Font.light(14)
         bannerView.addSubview(notifyLabel)
         
         bannerView.center.y -= (navigationController?.navigationBar.bounds.height)!
@@ -88,11 +88,11 @@ public extension UIViewController {
         
         let attrs = [
             NSAttributedStringKey.foregroundColor: UIColor.black,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
         let msgAttrs = [
             NSAttributedStringKey.foregroundColor: UIColor.GRAY_COLOR,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
         
         mutableTitle.addAttributes(attrs, range: NSRange(location: 0, length: (title?.count)!))
@@ -123,7 +123,7 @@ public extension UIViewController {
         
         let attrs = [
             NSAttributedStringKey.foregroundColor: UIColor.black,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
         
         
@@ -136,7 +136,7 @@ public extension UIViewController {
         alertController.addTextField { (textField) in
             textField.isSecureTextEntry = true
             textField.textColor = UIColor.GRAY_COLOR
-            textField.font = UIFont.fontWith(type: .comfortaa, size: 15)
+            textField.font = Font.regular(15)
             textField.placeholder = msg
             textField.tintColor = .ERXES_COLOR
         }

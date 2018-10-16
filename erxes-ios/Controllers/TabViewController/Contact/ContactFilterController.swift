@@ -207,20 +207,20 @@ class ContactFilterController: UIViewController {
     func configureHeader() {
         let rightButton = UIButton()
         rightButton.setTitle("Done", for: .normal)
-        rightButton.titleLabel?.font = UIFont.fontWith(type: .comfortaaBold, size: 14)
+        rightButton.titleLabel?.font = Font.bold(14)
         rightButton.setTitleColor(.black, for: .normal)
         rightButton.addTarget(self, action: #selector(close(sender:)), for: .touchUpInside)
         self.root.addSubview(rightButton)
 
         let lbl = UILabel()
         lbl.text = "FILTER"
-        lbl.font = UIFont.fontWith(type: .comfortaaBold, size: 15)
+        lbl.font = Font.bold(15)
         lbl.textAlignment = .center
         self.root.addSubview(lbl)
 
         let btnClose = UIButton()
         btnClose.setTitle("Clear", for: .normal)
-        btnClose.titleLabel?.font = UIFont.fontWith(type: .comfortaaBold, size: 14)
+        btnClose.titleLabel?.font = Font.bold(14)
         btnClose.setTitleColor(.black, for: .normal)
         btnClose.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         root.addSubview(btnClose)
@@ -353,17 +353,17 @@ extension ContactFilterController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = MyTableViewCell(style: .default, reuseIdentifier: "cell") as UITableViewCell
-        cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        cell.textLabel?.font = Font.regular(13)
         cell.textLabel?.textColor = UIColor(hexString: "#1f9fe2")
         switch indexPath.section {
         case segment:
             let segment = self.segments[indexPath.row]
             cell.textLabel?.text = segment.name
             cell.imageView?.image = UIImage(named: "ic_dot")
-            cell.textLabel?.font = UIFont.fontWith(type: .comfortaaBold, size: 13)
+            cell.textLabel?.font = Font.bold(13)
             if !segment.subOf.isNullOrEmpty {
                 cell = MyTableViewSubCell(style: .default, reuseIdentifier: "subCell") as UITableViewCell
-                cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+                cell.textLabel?.font = Font.regular(13)
                 cell.textLabel?.textColor = UIColor(hexString: "#1f9fe2")
                 cell.textLabel?.text = segment.name
             }
@@ -414,14 +414,14 @@ extension ContactFilterController: UITableViewDataSource {
 
         let lbl = UILabel(frame: CGRect(x: 40, y: 0, width: 120, height: 42))
         lbl.text = sections[section]
-        lbl.font = UIFont.fontWith(type: .comfortaaBold, size: 15)
+        lbl.font = Font.bold(15)
         
         view.addSubview(lbl)
         view.tag = section
 
         let lblValue = UILabel(frame: CGRect(x: Constants.SCREEN_WIDTH - 205, y: 0, width: 180, height: 42))
         lblValue.text = sections[section]
-        lblValue.font = UIFont.fontWith(type: .comfortaaBold, size: 12)
+        lblValue.font = Font.bold(12)
         lblValue.textColor = .gray
         lblValue.textAlignment = .right
         

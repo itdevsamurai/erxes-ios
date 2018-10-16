@@ -133,7 +133,7 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         
         //        var cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
-        cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        cell.textLabel?.font = Font.regular(13)
         cell.textLabel?.textColor = UIColor(hexString: "#1f9fe2")
         
         switch indexPath.section {
@@ -187,13 +187,13 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         
         let lbl = UILabel(frame: CGRect(x: 50, y: 0, width: 100, height: 42))
         lbl.text = sections[section]
-        lbl.font = UIFont.fontWith(type: .comfortaaBold, size: 15)
+        lbl.font = Font.bold(15)
         view.addSubview(lbl)
         view.tag = section
         
         let lblValue = UILabel(frame: CGRect(x: Constants.SCREEN_WIDTH - 275, y: 0, width: 200, height: 42))
         lblValue.text = sections[section]
-        lblValue.font = UIFont.fontWith(type: .comfortaaBold, size: 12)
+        lblValue.font = Font.bold(12)
         lblValue.textColor = .gray
         lblValue.textAlignment = .right
         view.addSubview(lblValue)

@@ -13,7 +13,7 @@ import Apollo
 class MentionCell:UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
-        textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        textLabel?.font = Font.regular(13)
         
         imageView?.clipsToBounds = true
         imageView?.contentMode = .scaleAspectFit

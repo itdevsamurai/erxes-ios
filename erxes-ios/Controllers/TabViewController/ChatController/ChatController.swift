@@ -79,6 +79,9 @@ class ChatController:ChatControllerUI {
         btnAttachment.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
         btnCamera.addTarget(self, action: #selector(btnCameraClick), for: .touchUpInside)
         btnInternalNote.addTarget(self, action: #selector(btnInternalNoteClick), for: .touchUpInside)
+        if let btn = self.navigationItem.rightBarButtonItem?.customView as? UIButton {
+            btn.addTarget(self, action: #selector(gotoUser(sender:)), for: .touchUpInside)
+        }
     }
     
     @objc func gotoUser(sender:UIButton) {

@@ -41,7 +41,7 @@ class ContactController: UIViewController {
         
         let btnCancel = UIButton(type: .custom)
         btnCancel.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
-        btnCancel.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        btnCancel.titleLabel?.font = Font.regular(13)
         btnCancel.setTitleColor(.ERXES_COLOR, for: .normal)
         btnCancel.setTitle("Cancel", for: .normal)
         btnCancel.contentMode = UIViewContentMode.center
@@ -49,7 +49,7 @@ class ContactController: UIViewController {
         
         field.rightView = btnCancel
         field.rightViewMode = .whileEditing
-        field.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        field.font = Font.regular(15)
         field.returnKeyType = .search
         
         return field
@@ -114,7 +114,7 @@ class ContactController: UIViewController {
         control.backgroundColor = UIColor.init(hexString: "421f8b")
         let attributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
 
         control.setTitleTextAttributes(attributes, for: .normal)
@@ -481,7 +481,7 @@ extension ContactController: UITableViewDelegate {
             }
 
             if fullName != "Unnamed" {
-                cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
             }
 
             } else {
@@ -493,7 +493,7 @@ extension ContactController: UITableViewDelegate {
                 if company.plan != nil {
                     cell?.bottomLabel.text = company.plan
                 }
-                cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
             }
 
             return cell!
