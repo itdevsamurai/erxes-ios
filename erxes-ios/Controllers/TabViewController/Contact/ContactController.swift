@@ -284,7 +284,7 @@ class ContactController: UIViewController {
         self.title = "Contacts"
         self.view.backgroundColor = UIColor.white
         self.configureViews()
-//        self.getCustomers()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -525,10 +525,12 @@ extension ContactController: UITableViewDelegate {
                 if !customer.primaryEmail.isNullOrEmpty {
                     email = customer.primaryEmail!
                 }
-                navigate(.contactDetail(id: customer.id, name: name, email:email ))
+
+                navigate(.contactDetail(id: customer.id, name: name, isCompany: false))
             } else {
                 let company = companies[indexPath.row]
-                navigate(.companyProfile(id: company.id))
+               
+                navigate(.contactDetail(id: company.id, name: company.primaryName!, isCompany: true))
             }
 
         }

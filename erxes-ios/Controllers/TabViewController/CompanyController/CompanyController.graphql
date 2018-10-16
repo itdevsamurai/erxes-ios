@@ -13,7 +13,53 @@ mutation companiesEdit($_id: String!, $names: [String], $avatar: String, $primar
 
 query CompanyDetail($id: String!) {
     companyDetail(_id:$id) {
-        ...CompanyDetail
+        ...CompanyObj
+    }
+}
+
+fragment CompanyObj on Company{
+    _id
+    createdAt
+    modifiedAt
+    avatar
+    primaryName
+    names
+    size
+    industry
+    plan
+    parentCompanyId
+    emails
+    ownerId
+    phones
+    leadStatus
+    lifecycleState
+    businessType
+    description
+    doNotDisturb
+    links {
+        linkedIn
+        twitter
+        facebook
+        github
+        youtube
+        website
+        
+    }
+    owner {
+        ...UserData
+    }
+    parentCompany {
+        _id
+        primaryName
+        
+    }
+    customFieldsData
+    tagIds
+    getTags {
+        _id
+        name
+        colorCode
+        
     }
 }
 

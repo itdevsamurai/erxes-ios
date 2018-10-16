@@ -11,47 +11,62 @@ import Apollo
 import Eureka
 
 class CompanyController: FormViewController {
-    
-    var companyId:String?
-    var company:CompanyDetailQuery.Data.CompanyDetail? {
+    var profileField = FieldGroup(id: "profile")
+    var companyId: String?
+
+    var companies = [CompanyList]() {
         didSet {
-            buildForm()
+
         }
     }
-  
-    
- 
-    
+
+    var fieldGroups = [FieldGroup]()
+
+    var users = [UserData]() {
+        didSet {
+
+        }
+    }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.form.removeAll()
         self.title = "Company"
-        loadData()
-        configureViews()
+
+
+        self.configureViews()
+        self.getFields()
+        self.getCompanies()
+        self.getUsers()
         if isEdit() {
-            queryCompanyDetail()
-        } else {
-            buildForm()
+            self.queryCompanyDetail()
         }
     }
-    
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.form.removeAll()
+        self.tableView.reloadData()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
-        
-        
+
+
     }
-    
-    convenience init(id:String?) {
+
+    convenience init(id: String?) {
         self.init()
         if let id = id {
             self.companyId = id
         }
     }
-    
+
     @objc func editAction(sender: UIButton) {
         if sender.isSelected {
             sender.isSelected = false
@@ -60,15 +75,15 @@ class CompanyController: FormViewController {
         } else {
             sender.isSelected = true
             formWritable()
-            let firstRow = form.rowBy(tag: "firstName")
+            let firstRow = form.rowBy(tag: "primaryName")
             firstRow?.baseCell.cellBecomeFirstResponder()
         }
     }
-    
+
     func isEdit() -> Bool {
         return self.companyId != nil
     }
-    
+
     func saveAction() {
         if isEdit() {
             mutateCompaiesEdit()
@@ -76,105 +91,108 @@ class CompanyController: FormViewController {
             mutateCompaniesAdd()
         }
     }
-    
+
     func configureViews() {
         self.view.backgroundColor = .white
+        self.tableView.backgroundColor = .clear
         let rightItem: UIBarButtonItem = {
-            var rightImage = #imageLiteral(resourceName: "ic_edit")
-            var saveImage = #imageLiteral(resourceName: "ic_saveCustomer")
+            var rightImage = UIImage.erxes(with: .edit, textColor: UIColor.TEXT_COLOR)
+            var saveImage = UIImage.erxes(with: .user2, textColor: UIColor.TEXT_COLOR)
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
             let button = UIButton()
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
-            button.tintColor = UIColor.ERXES_COLOR
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
-            if !isEdit() {
-                button.isSelected = true
-            }
             barButtomItem.customView = button
             return barButtomItem
         }()
+        rightItem.tintColor = UIColor.TEXT_COLOR
         self.navigationItem.rightBarButtonItem = rightItem
-        
+
+
         NameRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
         TextRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
         PhoneRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
-        
+
         EmailRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
-        
+
         DateRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            cell.detailTextLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
+
         }
-        
+
         SwitchRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            cell.switchControl.tintColor = UIColor.ERXES_COLOR
-            cell.switchControl.onTintColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.switchControl.tintColor = UIColor.TEXT_COLOR
+            cell.switchControl.onTintColor = UIColor.TEXT_COLOR
         }
         IntRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            cell.detailTextLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
         }
         ActionSheetRow<String>.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            cell.detailTextLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
         }
         ButtonRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            cell.tintColor = UIColor.ERXES_COLOR
-            cell.accessoryView?.tintColor = UIColor.ERXES_COLOR
-            
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.tintColor = UIColor.TEXT_COLOR
+            cell.accessoryView?.tintColor = UIColor.TEXT_COLOR
+
         }
-        PushRow<String>.defaultCellUpdate = {cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            cell.tintColor = UIColor.ERXES_COLOR
-            cell.accessoryView?.tintColor = UIColor.ERXES_COLOR
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-        }
-        
         PushRow<CompanyList>.defaultCellUpdate = { cell, row in
             row.options = self.companies
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
+        }
+
+        DecimalRow.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.tintColor = UIColor.TEXT_COLOR
+            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
 
         }
 
         PushRow<UserData>.defaultCellUpdate = { cell, row in
             row.options = self.users
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.ERXES_COLOR
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
             row.displayValueFor = {
                 if let t = $0 {
                     print("owner = ", t)
@@ -183,283 +201,419 @@ class CompanyController: FormViewController {
                 return nil
             }
         }
-        
-        SuggestionTableRow<UserData>.defaultCellUpdate = { cell, row in
-            row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            row.cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            row.placeholder = "Type to search user"
-            cell.textField.textColor = UIColor.ERXES_COLOR
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
-            row.filterFunction = { [unowned self] text in
-                self.users.filter({ ($0.details?.fullName?.lowercased().contains(text.lowercased()))! })
+
+        PushRow<String>.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            row.displayValueFor = {
+                if let str = $0 {
+                    return str
+                }
+                return nil
             }
         }
-//
-        SuggestionTableRow<CompanyList>.defaultCellUpdate = { cell, row in
-            row.cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            row.cell.textLabel?.textColor = UIColor.ERXES_COLOR
-            row.placeholder = "Type to search companies"
-            cell.textField.textColor = UIColor.ERXES_COLOR
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
-            row.filterFunction = { [unowned self] text in
-                self.companies.filter({ ($0.primaryName?.lowercased().contains(text.lowercased()))! })
+
+        MultipleSelectorRow<String>.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            row.displayValueFor = {
+                //                var values = Set<String>()
+                if let str = $0 {
+                    let arr = [String](str)
+                    return arr.joined(separator: ",")
+                }
+                return nil
+            }
+        }
+    }
+
+    func buildForm(company: CompanyObj?) {
+        if self.form.rows.count == 0 {
+            var profile = [String: Any]()
+            var customFields = [String: Any]()
+            if company != nil {
+                let obj = Mirror(reflecting: company!)
+
+
+                for case let (label?, value) in obj.children {
+                    let c = value as! [String: Any]
+                    profile = c
+
+                    if let tmp = profile["customFieldsData"] as? [String: Any] {
+                        customFields = tmp
+                    }
+
+                }
             }
 
+            for group in fieldGroups {
+
+
+                if group.isVisible! {
+                    form +++ Section(group.name!)
+                    let sorted = group.fields?.sorted { obj1, obj2 in
+                        (obj1?.order)! < (obj2?.order)!
+                    }
+                    if group.order == -1 {
+                        for field in sorted! {
+                            if (field?.isVisible)! {
+                                if field?.type == "firstName" || field?.type == "lastName" {
+                                    form.last!
+                                    <<< NameRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+
+
+                                    }
+                                } else if field?.type == "input" && (field?.validation?.isEmpty)! {
+                                    form.last!
+                                    <<< TextRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }
+                                } else if field?.type == "input" && field?.validation == "number" {
+                                    form.last!
+                                    <<< TextRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textField.keyboardType = .numberPad
+                                    })
+                                } else if field?.type == "input" && field?.validation == "date" {
+                                    form.last!
+                                    <<< DateRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? Date {
+                                            row.value = val
+                                        }
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    })
+
+                                } else if field?.type == "select" {
+                                    form.last!
+                                    <<< PushRow<String> (field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+                                        row.value = ""
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    }).onPresent { from, to in
+                                        to.selectableRowCellUpdate = { cell, row in
+                                            cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14)
+                                            cell.textLabel!.textColor = UIColor.TEXT_COLOR
+                                        }
+                                    }
+                                } else if field?.type == "check" && field?.options == ["on", "off"] {
+                                    form.last!
+                                    <<< SwitchRow(field?.id) { row in
+                                        row.title = field?.text
+                                        row.value = false
+                                        if let state = profile[((field?.id)!)] as? String {
+                                            if state == "Yes" {
+                                                row.value = true
+                                            } else {
+                                                row.value = false
+                                            }
+                                        }
+
+
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    })
+                                } else if field?.type == "check" {
+                                    form.last!
+                                    <<< MultipleSelectorRow<String>(field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+                                        //                                        row.value = profile[(field?.id)!] as? Set<String>
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    }).onPresent { from, to in
+                                        to.selectableRowCellUpdate = { cell, row in
+
+                                            cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14)
+                                            cell.textLabel!.textColor = UIColor.TEXT_COLOR
+                                        }
+                                    }
+                                } else if field?.validation == "email" {
+                                    form.last!
+                                    <<< EmailRow(field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }
+                                } else if field?.text == "Owner" {
+
+                                    form.last!
+                                    <<< PushRow<UserData>(field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = self.users
+                                        row.value = company?.owner?.fragments.userData
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                        lrow.displayValueFor = {
+                                            if let t = $0 {
+                                                print("owner = ", t)
+                                                return t.details?.fullName
+                                            }
+                                            return nil
+                                        }
+                                    }).onPresent { from, to in
+                                        to.selectableRowCellUpdate = { cell, row in
+                                            cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14)
+                                            cell.textLabel!.textColor = UIColor.TEXT_COLOR
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    } else {
+
+                        for field in sorted! {
+                            if (field?.isVisible)! {
+                                if field?.type == "firstName" || field?.type == "lastName" {
+                                    form.last!
+                                    <<< NameRow (field?.id) { row in
+                                        row.title = field?.text
+
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+
+                                    }
+                                } else if field?.type == "input" && (field?.validation?.isEmpty)! {
+                                    form.last!
+                                    <<< TextRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }
+                                } else if field?.type == "input" && field?.validation == "number" {
+                                    form.last!
+                                    <<< TextRow (field?.id) { row in
+
+                                        row.title = field?.text
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textField.keyboardType = .numberPad
+                                    })
+                                } else if field?.type == "input" && field?.validation == "date" {
+                                    form.last!
+                                    <<< DateRow (field?.id) { row in
+                                        row.title = field?.text
+                                        let stringDate = customFields[(field?.id)!] as? String
+                                        if (stringDate != nil) {
+                                            row.value = stringDate?.dateFromString()
+                                        }
+
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    })
+                                } else if field?.type == "select" {
+                                    form.last!
+                                    <<< PushRow<String> (field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+                                        row.value = ""
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    })
+                                } else if field?.type == "check" && field?.options == ["on", "off"] {
+                                    form.last!
+                                    <<< SwitchRow(field?.id) { row in
+                                        row.title = field?.text
+                                        row.value = false
+                                        if let state = customFields[((field?.id)!)] as? String {
+                                            if state == "Yes" {
+                                                row.value = true
+                                            } else {
+                                                row.value = false
+                                            }
+                                        }
+
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    })
+                                } else if field?.type == "check" {
+                                    form.last!
+                                    <<< MultipleSelectorRow<String>(field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+
+                                        if let array = customFields[(field?.id)!] as? [String] {
+                                            if array.count != 0 {
+                                                let objectSet = Set(array.map { $0 })
+                                                row.value = objectSet
+                                            }
+                                        }
+                                    }.cellSetup({ (cell, lrow) in
+                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+                                    })
+                                } else if field?.validation == "email" {
+                                    form.last!
+                                    <<< EmailRow(field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            if isEdit() {
+                formWritable()
+            }
+            else {
+                formReadOnly()
+            }
         }
-        
-        
     }
-    
-    func buildForm() {
-        
-        form +++ Section("PROFILE"){
-                $0.header?.height = { 30 }
-                $0.footer = HeaderFooterView(title: "")
-                $0.footer?.height = { 0 }
-            }
-            <<< NameRow("name") { row in
-                row.title = "Name:"
-                row.placeholder = "-"
-                if let item = company?.primaryName {
-                    row.value = item
-                }
-            }
-        
-            <<< EmailRow("email") { row in
-                row.title = "email:"
-                row.placeholder = "-"
-                if company?.emails!.count != 0 {
-                    row.value = (company?.emails?.first)!
-                }
-            }
-        
-            <<< IntRow("size") { row in
-                row.title = "size:"
-                row.placeholder = "-"
-                if let item = company?.size {
-                    row.value = item
-                }
-            }
-        
-        //industry
-            <<< PushRow<String>("industry") {
-                $0.title = "industry"
-                $0.selectorTitle = "industry"
-                $0.options = self.industries
-                if let item = company?.industry {
-                    $0.value = item
-                }
-            }
-        
-            <<< NameRow("plan") { row in
-                row.title = "plan:"
-                row.placeholder = "-"
-                if let item = company?.plan {
-                    row.value = item
-                }
-            }
-            <<< PhoneRow("phones") { row in
-                row.title = "phone:"
-                row.placeholder = "-"
-                if  company?.phones!.count != 0  {
-                    row.value = (company?.phones?.first)!
-                    
-                }
-            }
-        
-        //leadstatus
-            <<< PushRow<String>("leadStatus") {
-                $0.title = "leadStatus"
-                $0.selectorTitle = "lead status"
-                $0.options = self.leadStatus
-                if let item = company?.leadStatus {
-                    $0.value = item
-                }
-            }
-            
-        //lifecycle state
-            <<< PushRow<String>("lifecycleState") {
-                $0.title = "lifecycleState"
-                $0.selectorTitle = "lifecycle state"
-                $0.options = self.lifecycleStates
-                if let item = company?.lifecycleState {
-                    $0.value = item
-                }
-            }
-        //business type
-            <<< PushRow<String>("businessType") {
-                $0.title = "businessType"
-                $0.selectorTitle = "business type"
-                $0.options = self.businessTypes
-                if let item = company?.businessType {
-                    $0.value = item
-                }
-            }
-        //description
-        //employee count
-        //do not disturb radiobox
-            
-            <<< SwitchRow("doNotDisturb") { row in
-                row.title = "Do not disturb"
-                if let doNotDisturb = company?.doNotDisturb, doNotDisturb == "Yes" {
-                    row.value = true
-                } else {
-                    row.value = false
-                }
-            }
-            
-            +++ Section("Owner"){
-                $0.header?.height = { 30 }
-                $0.footer = HeaderFooterView(title: "")
-                $0.footer?.height = { 0 }
-            }
-            
-            //owner
-            <<< SuggestionTableRow<UserData>("owner") {
-                $0.filterFunction = { [unowned self] text in
-                    self.users.filter({ ($0.details?.fullName?.lowercased().contains(text.lowercased()))! })
-                }
-                $0.placeholder = "Search for a user"
-                if let item = company?.owner {
-                    let owner = UserData(id: item.id, details: UserData.Detail(fullName: item.details?.fullName, avatar: ""))
-                    $0.value = owner
-                }
-            }
-            //parent
-            
-            +++ Section("Parent company"){
-                $0.header?.height = { 30 }
-                $0.footer = HeaderFooterView(title: "")
-                $0.footer?.height = { 0 }
-            }
-            
-//            <<< SuggestionTableRow<CompanyDetail>("parentCompany") {
-//                $0.filterFunction = { [unowned self] text in
-//                    self.companies.filter({ ($0.name?.lowercased().contains(text.lowercased()))! })
-//                }
-//                $0.placeholder = "Search for a company"
-//                if let item = company?.parentCompany {
-//                    let parent = CompanyDetail(id: item.id, name: item.name)
-//                    $0.value = parent
-//                }
-//            }
-        
-            +++ Section("Links"){
-                $0.footer = HeaderFooterView(title: "")
-                $0.header?.height = { 30 }
-                $0.footer?.height = { 0 }
-            }
-        
-            <<< NameRow("linkedIn") { row in
-                row.title = "linkedIn:"
-                row.placeholder = "-"
-                if let item = company?.links?.linkedIn {
-                    row.value = item
-                }
-        }
-        
-            <<< NameRow("twitter") { row in
-                row.title = "twitter:"
-                row.placeholder = "-"
-                if let item = company?.links?.twitter {
-                    row.value = item
-                }
-        }
-        
-            <<< NameRow("facebook") { row in
-                row.title = "facebook:"
-                row.placeholder = "-"
-                if let item = company?.links?.facebook {
-                    row.value = item
-                }
-        }
-        
-            <<< NameRow("github") { row in
-                row.title = "github:"
-                row.placeholder = "-"
-                if let item = company?.links?.github {
-                    row.value = item
-                }
-        }
-        
-            <<< NameRow("youtube") { row in
-                row.title = "youtube:"
-                row.placeholder = "-"
-                if let item = company?.links?.youtube {
-                    row.value = item
-                }
-        }
-        
-            <<< NameRow("website") { row in
-                row.title = "website:"
-                row.placeholder = "-"
-                if let item = company?.links?.website {
-                    row.value = item
-                }
-        }
-        
-        self.getCompanies()
-        self.getUsers()
-        
-        if isEdit() {
-            formWritable()
-        }
-        else {
-            formReadOnly()
-        }
-    }
-    
+
     func formWritable() {
         for row in form.allRows {
             row.baseCell.alpha = 0.7
             row.baseCell.isUserInteractionEnabled = false
         }
     }
-    
+
     func formReadOnly() {
         for row in form.allRows {
             row.baseCell.alpha = 1.0
             row.baseCell.isUserInteractionEnabled = true
         }
     }
-    
+
     func queryCompanyDetail() {
         guard let comId = self.companyId else {
             return
         }
-        
+
         let query = CompanyDetailQuery(id: comId)
-        
-        appnet.fetch(query: query) { [weak self] result,error in
+
+        appnet.fetch(query: query) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                
+
                 return
             }
-            
+
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                
+
             }
-            
-            if result?.data != nil {
-                self?.company = result?.data?.companyDetail
+
+
+            if let result = result?.data?.companyDetail?.fragments.companyObj {
+                self?.buildForm(company: result)
             }
         }
     }
-    
+
+    func getFields() {
+
+
+        let query = FieldsGroupsQuery(contentType: "company")
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+
+                return
+            }
+
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+
+            }
+
+
+            if result?.data != nil {
+                if let resultData = result?.data?.fieldsGroups {
+
+                    self?.fieldGroups = resultData.map { ($0?.fragments.fieldGroup)! }
+
+                    self?.profileField.isVisible = true
+                    self?.profileField.name = "PROFILE"
+                    self?.profileField.order = -1
+                    //                    self?.profileField.fields = [field]
+                    var fieldsArray = [FieldGroup.Field]()
+
+                    if let path = Bundle.main.path(forResource: "Company", ofType: "json") {
+                        do {
+                            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                            let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                            if let jsonResult = jsonResult as? [[String: Any]] {
+                                for (index, json) in jsonResult.enumerated() {
+                                    var field = FieldGroup.Field(snapshot: ["": ""])
+                                    field.id = json["id"] as! String
+                                    field.text = json["text"] as? String
+                                    field.type = json["type"] as? String
+                                    field.validation = json["validation"] as? String
+                                    field.options = json["options"] as! [String]
+                                    field.order = index
+                                    field.isVisible = true
+                                    fieldsArray.append(field)
+                                }
+                            }
+                        } catch {
+                            // handle error
+                        }
+                    }
+                    self?.profileField.fields = fieldsArray
+
+                    self?.fieldGroups.insert((self?.profileField)!, at: 0)
+                    if !(self?.isEdit())! {
+                        self?.buildForm(company: nil)
+                    }
+                }
+            }
+        }
+
+    }
+
     var industries = [String]()
     var leadStatus = [String]()
     var lifecycleStates = [String]()
     var businessTypes = [String]()
-    
+
     func loadData() {
         if let path = Bundle.main.path(forResource: "Industry", ofType: "json") {
             do {
@@ -472,7 +626,7 @@ class CompanyController: FormViewController {
                 print(error)
             }
         }
-        
+
         if let path = Bundle.main.path(forResource: "LeadStatus", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
@@ -484,7 +638,7 @@ class CompanyController: FormViewController {
                 print(error)
             }
         }
-        
+
         if let path = Bundle.main.path(forResource: "LifecycleState", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
@@ -496,7 +650,7 @@ class CompanyController: FormViewController {
                 print(error)
             }
         }
-        
+
         if let path = Bundle.main.path(forResource: "BusinessType", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
@@ -509,83 +663,82 @@ class CompanyController: FormViewController {
             }
         }
     }
-    
-    var companies = [CompanyList]()
-    var users = [UserData]()
-    
+
+
+
     func getCompanies() {
-        
-        
+
+
         let query = CompaniesQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                
+
                 return
             }
-            
+
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                
+
             }
-            
+
             if result?.data != nil {
                 if let allCompanies = result?.data?.companies {
-                    
+
                     self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
-                    
-                    
-                    
-                    
+
+
+
+
                 }
             }
         }
-        
+
     }
-    
+
     func getUsers() {
-        
+
         let query = GetUsersQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                
+
                 return
             }
-            
+
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                
+
             }
-            
+
             if result?.data != nil {
                 if let result = result?.data?.users {
                     self?.users = result.map { ($0?.fragments.userData)! }
-                    
+
                 }
             }
         }
-        
+
     }
-    
-    func mutateCompaniesAdd(){
+
+    func mutateCompaniesAdd() {
         if self.companyId != nil {
             return
         }
-        
+
         let mutation = CompaniesAddMutation()
-//        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
+        //        mutation.name = form.rowBy(tag: "name")?.baseValue as? String
         mutation.email = form.rowBy(tag: "email")?.baseValue as? String
         mutation.size = form.rowBy(tag: "size")?.baseValue as? Int
-//        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
+        //        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
         mutation.industry = form.rowBy(tag: "industry")?.baseValue as? String ?? ""
-//        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
+        //        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
         let parent = form.rowBy(tag: "parentCompany")?.baseValue as? CompanyDetail
         mutation.parentCompanyId = parent?.id
         let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
@@ -595,58 +748,59 @@ class CompanyController: FormViewController {
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String ?? ""
         mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String ?? ""
         mutation.description = form.rowBy(tag: "description")?.baseValue as? String
-//        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
+        //        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
         mutation.doNotDisturb = form.rowBy(tag: "doNotDisturb")?.baseValue as? String
-        
+
         //        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String
         //        mutation.customFieldsData = form.rowBy(tag: "name")?.baseValue as? String
-        
+
         if let item = form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool, item {
             mutation.doNotDisturb = "Yes"
         } else {
             mutation.doNotDisturb = "No"
         }
-        
-        let links = ["facebook":form.rowBy(tag: "facebook")?.baseValue as? String,
-                     "linkedIn":form.rowBy(tag: "linkedIn")?.baseValue as? String,
-                     "github":form.rowBy(tag: "github")?.baseValue as? String,
-                     "twitter":form.rowBy(tag: "twitter")?.baseValue as? String,
-                     "website":form.rowBy(tag: "website")?.baseValue as? String,
-                     "youtube":form.rowBy(tag: "youtube")?.baseValue as? String]
-        
+
+        let links = ["facebook": form.rowBy(tag: "facebook")?.baseValue as? String,
+            "linkedIn": form.rowBy(tag: "linkedIn")?.baseValue as? String,
+            "github": form.rowBy(tag: "github")?.baseValue as? String,
+            "twitter": form.rowBy(tag: "twitter")?.baseValue as? String,
+            "website": form.rowBy(tag: "website")?.baseValue as? String,
+            "youtube": form.rowBy(tag: "youtube")?.baseValue as? String]
+
         mutation.links = links
-        
-        appnet.perform(mutation: mutation){ [weak self] result, error in
+
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let err = error {
                 print(err)
             }
             else {
-                
+
                 if let errs = result?.errors {
                     print(errs)
                 }
                 else {
-                    print(result?.data?.companiesAdd)
-                    self?.navigationController?.popViewController(animated:true)
+                    if ((self?.parent) == nil) {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
     }
-    
+
     func mutateCompaiesEdit() {
-        
-        
-        guard let comId = company?.id, comId.count > 0 else {
-            return
-        }
-        
-        let mutation = CompaniesEditMutation(_id: comId)
+
+
+        //        guard let comId = company?.id, comId.count > 0 else {
+        //            return
+        //        }
+
+        let mutation = CompaniesEditMutation(_id: self.companyId!)
         mutation.primaryName = form.rowBy(tag: "name")?.baseValue as? String
         mutation.email = form.rowBy(tag: "email")?.baseValue as? String
         mutation.size = form.rowBy(tag: "size")?.baseValue as? Int
-//        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
+        //        mutation.website = form.rowBy(tag: "website")?.baseValue as? String
         mutation.industry = form.rowBy(tag: "industry")?.baseValue as? String
-//        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
+        //        mutation.plan = form.rowBy(tag: "plan")?.baseValue as? String
         let parent = form.rowBy(tag: "parentCompany")?.baseValue as? CompanyDetail
         mutation.parentCompanyId = parent?.id
         let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
@@ -656,28 +810,28 @@ class CompanyController: FormViewController {
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
         mutation.businessType = form.rowBy(tag: "businessType")?.baseValue as? String
         mutation.description = form.rowBy(tag: "description")?.baseValue as? String
-//        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
+        //        mutation.employees = form.rowBy(tag: "employees")?.baseValue as? Int
         mutation.doNotDisturb = form.rowBy(tag: "doNotDisturb")?.baseValue as? String
 
-//        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String
-//        mutation.customFieldsData = form.rowBy(tag: "name")?.baseValue as? String
-        
+        //        mutation.tagIds = form.rowBy(tag: "name")?.baseValue as? String
+        //        mutation.customFieldsData = form.rowBy(tag: "name")?.baseValue as? String
+
         if let item = form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool, item {
             mutation.doNotDisturb = "Yes"
         } else {
             mutation.doNotDisturb = "No"
         }
-        
-        let links = ["facebook":form.rowBy(tag: "facebook")?.baseValue as? String,
-                     "linkedIn":form.rowBy(tag: "linkedIn")?.baseValue as? String,
-                     "github":form.rowBy(tag: "github")?.baseValue as? String,
-                     "twitter":form.rowBy(tag: "twitter")?.baseValue as? String,
-                     "website":form.rowBy(tag: "website")?.baseValue as? String,
-                     "youtube":form.rowBy(tag: "youtube")?.baseValue as? String]
-        
+
+        let links = ["facebook": form.rowBy(tag: "facebook")?.baseValue as? String,
+            "linkedIn": form.rowBy(tag: "linkedIn")?.baseValue as? String,
+            "github": form.rowBy(tag: "github")?.baseValue as? String,
+            "twitter": form.rowBy(tag: "twitter")?.baseValue as? String,
+            "website": form.rowBy(tag: "website")?.baseValue as? String,
+            "youtube": form.rowBy(tag: "youtube")?.baseValue as? String]
+
         mutation.links = links
-        
-        appnet.perform(mutation: mutation){ [weak self] result, error in
+
+        appnet.perform(mutation: mutation) { [weak self] result, error in
             if let err = error {
                 print(err)
             }
@@ -693,7 +847,7 @@ extension UserData: SuggestionValue {
     public init?(string stringValue: String) {
         return nil
     }
-    
+
     // Text that is displayed as a completion suggestion.
     public var suggestionString: String {
         return (details?.fullName)!

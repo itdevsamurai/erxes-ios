@@ -12,7 +12,7 @@ class ActivityController: UIViewController {
 
     var contactId = String()
     var contactName = String()
-    var logs = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+    var logs = [LogData](){
         didSet{
             tableView.reloadData()
         }
@@ -51,14 +51,23 @@ class ActivityController: UIViewController {
         }
     }
     
-
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
 
 }
 
 
 extension ActivityController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let data = logs[indexPath.section]?.list[indexPath.row]
+        let data = logs[indexPath.section].list[indexPath.row]
        
         if data?.action == "conversation-create" {
             self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
@@ -74,7 +83,7 @@ extension ActivityController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.logs[section]?.list.count)!
+        return (self.logs[section].list.count)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -87,9 +96,9 @@ extension ActivityController: UITableViewDataSource {
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
         label.font = UIFont.fontWith(type: .comfortaa, size: 14)
-        let date = logs[section]?.date
-        let monthName = DateFormatter().monthSymbols[(date?.month)!]
-        label.text = String(format: "%@ %i", monthName, (date?.year)!)
+        let date = logs[section].date
+        let monthName = DateFormatter().monthSymbols![(date.month)!]
+        label.text = String(format: "%@ %i", monthName, (date.year)!)
         headerView.addSubview(label)
         return headerView
     }
@@ -100,7 +109,7 @@ extension ActivityController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let data = logs[indexPath.section]?.list[indexPath.row]
+        let data = logs[indexPath.section].list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
         let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
@@ -109,7 +118,7 @@ extension ActivityController: UITableViewDataSource {
         switch data?.action {
         case "conversation-create":
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
-                print(dateLblValue)
+                
                 cell.dateLabel.text = dateLblValue
                 cell.messageLabel.text = data?.content
                 cell.descLabel.text  = contactName + " sent a conversation message"
@@ -122,6 +131,18 @@ extension ActivityController: UITableViewDataSource {
                 
                 return cell
             }
+        case "company-create":
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellReg", for: indexPath) as? ActivityCellReg {
+                cell.dateLabel.text = dateLblValue
+                cell.descLabel.text = contactName + " registered to Erxes"
+                if let userName = data?.by?.details?.fullName {
+                    cell.descLabel.text  = userName + " created " + data!.content!
+                }
+                if let avatarUrl = data?.by?.details?.avatar {
+                    cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
+                }
+                return cell
+            }
         case "internal_note-create":
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
                 cell.descLabel.text = "left a note"
@@ -130,6 +151,23 @@ extension ActivityController: UITableViewDataSource {
                 cell.messageLabel.text = data?.content
                 if let userName = data?.by?.details?.fullName {
                     cell.descLabel.text  = userName + " left a note"
+                }
+                if let avatarUrl = data?.by?.details?.avatar {
+                    cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
+                }
+                return cell
+            }
+        case "email-send":
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
+                let dict = convertToDictionary(text: (data?.content)!)
+                print("dict = ", dict)
+                cell.descLabel.text = "left a note"
+                cell.avatarView.image = UIImage(named: "avatar.png")
+                cell.dateLabel.text = dateLblValue
+                cell.messageLabel.text = dict!["body"]! as! String
+                if let userName = data?.by?.details?.fullName {
+                    
+                    cell.descLabel.text  = userName + " sent email to: " + (dict!["toEmails"]! as! String)
                 }
                 if let avatarUrl = data?.by?.details?.avatar {
                     cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))

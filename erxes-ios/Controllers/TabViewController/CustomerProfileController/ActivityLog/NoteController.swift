@@ -12,16 +12,16 @@ class NoteController: UIViewController {
 
     weak var delegate: ContactDelegate?
     
-    var notes = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+    var notes = [LogData](){
         didSet{
             
             for (index, note) in notes.enumerated() {
                 
-                let filtered = note?.list.filter({$0?.action == "internal_note-create"})
-                self.notes[index]?.list = filtered!
+                let filtered = note.list.filter({$0?.action == "internal_note-create"})
+                self.notes[index].list = filtered
                 
             }
-            self.notes = self.notes.filter({$0?.list.count != 0})
+            self.notes = self.notes.filter({$0.list.count != 0})
             tableView.reloadData()
         }
     }
@@ -190,7 +190,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.notes[section]?.list.count)!
+        return (self.notes[section].list.count)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -203,9 +203,9 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
         label.font = UIFont.fontWith(type: .comfortaa, size: 14)
-        let date = notes[section]?.date
-        let monthName = DateFormatter().monthSymbols[(date?.month)!]
-        label.text = String(format: "%@ %i", monthName, (date?.year)!)
+        let date = notes[section].date
+        let monthName = DateFormatter().monthSymbols![(date.month)!]
+        label.text = String(format: "%@ %i", monthName, (date.year)!)
         headerView.addSubview(label)
         return headerView
     }
@@ -216,7 +216,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let data = notes[indexPath.section]?.list[indexPath.row]
+        let data = notes[indexPath.section].list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
         let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)

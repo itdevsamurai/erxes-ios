@@ -93,7 +93,6 @@
 		9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BDF360320D130C3004E3F44 /* ContactCell.swift */; };
 		9BF0C32D216358390030247F /* ContactFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF0C32C216358390030247F /* ContactFilterController.swift */; };
 		9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BF0C32E216358570030247F /* ContactFilterController.graphql */; };
-		9BFFA5F720B2D9780029A028 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFFA5F620B2D9780029A028 /* TagCell.swift */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
 		B8127C91214284ED00A9F9EC /* ChatController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */; };
 		B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794CF2143DC1500C5991D /* ColChatDataSource.swift */; };
@@ -250,7 +249,6 @@
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		9BF0C32C216358390030247F /* ContactFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactFilterController.swift; sourceTree = "<group>"; };
 		9BF0C32E216358570030247F /* ContactFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactFilterController.graphql; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.graphql; };
-		9BFFA5F620B2D9780029A028 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatController+Keyboard.swift"; sourceTree = "<group>"; };
 		B83794CF2143DC1500C5991D /* ColChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColChatDataSource.swift; sourceTree = "<group>"; };
 		B83794D12147A87D00C5991D /* InComingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingCell.swift; sourceTree = "<group>"; };
