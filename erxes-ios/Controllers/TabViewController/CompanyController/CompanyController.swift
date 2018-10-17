@@ -13,7 +13,15 @@ import Eureka
 class CompanyController: FormViewController {
     var profileField = FieldGroup(id: "profile")
     var companyId: String?
-
+    var phones: [String?]?
+    var emails: [String?]?
+    
+    var assignedUser: UserData? {
+        didSet {
+            self.form.rowBy(tag: "ownerId")?.updateCell()
+        }
+    }
+    
     var companies = [CompanyList]() {
         didSet {
 
@@ -44,11 +52,7 @@ class CompanyController: FormViewController {
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.form.removeAll()
-        self.tableView.reloadData()
-    }
+
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -189,18 +193,7 @@ class CompanyController: FormViewController {
 
         }
 
-        PushRow<UserData>.defaultCellUpdate = { cell, row in
-            row.options = self.users
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            row.displayValueFor = {
-                if let t = $0 {
-                    print("owner = ", t)
-                    return t.details?.fullName
-                }
-                return nil
-            }
-        }
+
 
         PushRow<String>.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -228,6 +221,10 @@ class CompanyController: FormViewController {
     }
 
     func buildForm(company: CompanyObj?) {
+        
+        let usersController = UsersController()
+        usersController.delegate = self
+        
         if self.form.rows.count == 0 {
             var profile = [String: Any]()
             var customFields = [String: Any]()
@@ -359,29 +356,115 @@ class CompanyController: FormViewController {
                                         }
                                     }
                                 } else if field?.text == "Owner" {
-
+                                    
                                     form.last!
-                                    <<< PushRow<UserData>(field?.id) { row in
-                                        row.title = field?.text
-                                        row.options = self.users
-                                        row.value = company?.owner?.fragments.userData
-                                    }.cellSetup({ (cell, lrow) in
-                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-                                        lrow.displayValueFor = {
-                                            if let t = $0 {
-                                                print("owner = ", t)
-                                                return t.details?.fullName
+                                        
+                                        <<< LabelRow(field?.id) { row in
+                                            row.title = field?.text
+                                            row.value = self.assignedUser?.details?.fullName
+                                            }.cellUpdate({ (cell, lrow) in
+                                                lrow.value = self.assignedUser?.details?.fullName
+                                            }).onCellSelection({ (cell, row) in
+                                                self.navigationController?.pushViewController(usersController, animated: true)
+                                            })
+                                } else if field?.id == "phone" {
+                                    
+                                    if((company?.phones) != nil) {
+                                        if company?.phones?.count == 0 {
+                                            form.last!
+                                                <<< TextRow (field?.id) { row in
+                                                    row.title = field?.text
+                                                    if let val = profile[((field?.id)!)] as? String {
+                                                        row.value = val
+                                                    }
+                                                    
+                                                    }.cellSetup({ (cell, lrow) in
+                                                        cell.textField.keyboardType = .numberPad
+                                                    }).onCellHighlightChanged({ (cell, trow) in
+                                                        
+                                                        if !trow.isHighlighted && trow.value?.count != 0 {
+                                                            self.phones?.append(trow.value)
+                                                        }
+                                                    })
+                                        } else {
+                                            form.last!
+                                                <<< ActionSheetRow<String> (field?.id) { row in
+                                                    row.title = field?.text
+                                                    if let options = company?.phones {
+                                                        row.options = (options as! [String])
+                                                    }
+                                                    row.value = ""
+                                                    if let val = profile[((field?.id)!)] as? String {
+                                                        row.value = val
+                                                    }
                                             }
-                                            return nil
                                         }
-                                    }).onPresent { from, to in
-                                        to.selectableRowCellUpdate = { cell, row in
-                                            cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14)
-                                            cell.textLabel!.textColor = UIColor.TEXT_COLOR
-                                        }
+                                    } else {
+                                        form.last!
+                                            <<< TextRow (field?.id) { row in
+                                                row.title = field?.text
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                                }.cellSetup({ (cell, lrow) in
+                                                    cell.textField.keyboardType = .numberPad
+                                                }).onCellHighlightChanged({ (cell, trow) in
+                                                    if !trow.isHighlighted && trow.value?.count != 0 {
+                                                        self.phones?.append(trow.value)
+                                                    }
+                                                })
                                     }
+                                    
+                                } else if field?.id == "email" {
+                                    print(company?.emails)
+                                    if((company?.emails) != nil) {
+                                        if company?.emails?.count == 0 {
+                                            form.last!
+                                                <<< TextRow (field?.id) { row in
+                                                    row.title = field?.text
+                                                    if let val = profile[((field?.id)!)] as? String {
+                                                        row.value = val
+                                                    }
+                                                    
+                                                    }.cellSetup({ (cell, lrow) in
+                                                        cell.textField.keyboardType = .emailAddress
+                                                    }).onCellHighlightChanged({ (cell, trow) in
+                                                        
+                                                        if !trow.isHighlighted && trow.value?.count != 0 {
+                                                            self.emails?.append(trow.value)
+                                                        }
+                                                    })
+                                        } else {
+                                            form.last!
+                                                <<< ActionSheetRow<String> (field?.id) { row in
+                                                    row.title = field?.text
+                                                    if let options = company?.emails {
+                                                        row.options = (options as! [String])
+                                                    }
+                                                    row.value = ""
+                                                    if let val = profile[((field?.id)!)] as? String {
+                                                        row.value = val
+                                                    }
+                                            }
+                                        }
+                                    } else {
+                                        form.last!
+                                            <<< TextRow (field?.id) { row in
+                                                row.title = field?.text
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                                }.cellSetup({ (cell, lrow) in
+                                                    cell.textField.keyboardType = .emailAddress
+                                                }).onCellHighlightChanged({ (cell, trow) in
+                                                    if !trow.isHighlighted && trow.value?.count != 0 {
+                                                        self.emails?.append(trow.value)
+                                                    }
+                                                })
+                                    }
+                                    
                                 }
+
 
                             }
                         }
@@ -540,6 +623,9 @@ class CompanyController: FormViewController {
 
 
             if let result = result?.data?.companyDetail?.fragments.companyObj {
+                self?.assignedUser = result.owner?.fragments.userData
+                self?.phones = result.phones
+                self?.emails = result.emails
                 self?.buildForm(company: result)
             }
         }
@@ -851,5 +937,11 @@ extension UserData: SuggestionValue {
     // Text that is displayed as a completion suggestion.
     public var suggestionString: String {
         return (details?.fullName)!
+    }
+}
+
+extension CompanyController: UserControllerDelegate {
+    func assignUser(user: UserData, conversationId: String) {
+        self.assignedUser = user
     }
 }

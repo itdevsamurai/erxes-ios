@@ -160,7 +160,6 @@ class ContactDetailController: DTPagerController {
                             self?.logs.append(log)
                         }
                     }
-                    print(self?.logs)
                 }
             }
         }

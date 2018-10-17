@@ -9,15 +9,20 @@
 import UIKit
 import Apollo
 import Eureka
-
+import ImageRow
 class CustomerProfileController: FormViewController {
 
 
     var profileField = FieldGroup(id: "profile")
-
+    var phones: [String?]?
+    var emails: [String?]?
     var customerId: String?
     var messagesCount = 0
-
+    var assignedUser: UserData? {
+        didSet {
+            self.form.rowBy(tag: "ownerId")?.updateCell()
+        }
+    }
 
 
     var companies = [CompanyList]() {
@@ -40,7 +45,7 @@ class CustomerProfileController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("DIDLOAD")
+        self.view.backgroundColor = .white
         self.form.removeAll()
 
         self.title = "Customer"
@@ -55,11 +60,7 @@ class CustomerProfileController: FormViewController {
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.form.removeAll()
-        self.tableView.reloadData()
-    }
+
 
 
     func getFields() {
@@ -148,7 +149,9 @@ class CustomerProfileController: FormViewController {
 
             if result?.data != nil {
                 if let result = result?.data?.customerDetail?.fragments.customerInfo {
-
+                    self?.assignedUser = result.owner?.fragments.userData
+                    self?.phones = result.phones
+                    self?.emails = result.emails
                     self?.buildForm(customer: result)
                 }
             }
@@ -156,6 +159,10 @@ class CustomerProfileController: FormViewController {
     }
 
     func buildForm(customer: CustomerInfo?) {
+
+        let usersController = UsersController()
+        usersController.delegate = self
+
         if self.form.rows.count == 0 {
 
             var profile = [String: Any]()
@@ -178,7 +185,9 @@ class CustomerProfileController: FormViewController {
             for group in fieldGroups {
 
                 if group.isVisible! {
-                    form +++ Section(group.name!)
+                    var section = Section()
+                    section.header = HeaderFooterView(stringLiteral: group.name!)
+                    form +++ section
                     let sorted = group.fields?.sorted { obj1, obj2 in
                         (obj1?.order)! < (obj2?.order)!
                     }
@@ -287,26 +296,128 @@ class CustomerProfileController: FormViewController {
                                 } else if field?.text == "Owner" {
 
                                     form.last!
-                                    <<< PushRow<UserData>(field?.id) { row in
+
+                                    <<< LabelRow(field?.id) { row in
                                         row.title = field?.text
-                                        row.options = self.users
-                                        row.value = customer?.owner?.fragments.userData
-                                    }.cellSetup({ (cell, lrow) in
-                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-                                        lrow.displayValueFor = {
-                                            if let t = $0 {
-                                                print("owner = ", t)
-                                                return t.details?.fullName
+                                        row.value = self.assignedUser?.details?.fullName
+                                    }.cellUpdate({ (cell, lrow) in
+                                        lrow.value = self.assignedUser?.details?.fullName
+                                    }).onCellSelection({ (cell, row) in
+                                        self.navigationController?.pushViewController(usersController, animated: true)
+                                    })
+                                } else if field?.id == "primaryPhone" {
+
+                                    if((customer?.phones) != nil) {
+                                        if customer?.phones?.count == 0 {
+                                            form.last!
+                                            <<< TextRow (field?.id) { row in
+                                                row.title = field?.text
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+
+                                            }.cellSetup({ (cell, lrow) in
+                                                cell.textField.keyboardType = .numberPad
+                                            }).onCellHighlightChanged({ (cell, trow) in
+
+                                                if !trow.isHighlighted && trow.value?.count != 0 {
+                                                    self.phones?.append(trow.value)
+                                                }
+                                            })
+                                        } else {
+                                            form.last!
+                                            <<< ActionSheetRow<String> (field?.id) { row in
+                                                row.title = field?.text
+                                                if let options = customer?.phones {
+                                                    row.options = (options as! [String])
+                                                }
+                                                row.value = ""
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
                                             }
-                                            return nil
                                         }
-                                    }).onPresent { from, to in
-                                        to.selectableRowCellUpdate = { cell, row in
-                                            cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14)
-                                            cell.textLabel!.textColor = UIColor.TEXT_COLOR
-                                        }
+                                    } else {
+                                        form.last!
+                                        <<< TextRow (field?.id) { row in
+                                            row.title = field?.text
+                                            if let val = profile[((field?.id)!)] as? String {
+                                                row.value = val
+                                            }
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textField.keyboardType = .numberPad
+                                        }).onCellHighlightChanged({ (cell, trow) in
+                                            if !trow.isHighlighted && trow.value?.count != 0 {
+                                                self.phones?.append(trow.value)
+                                            }
+                                        })
                                     }
+
+                                } else if field?.id == "primaryEmail" {
+                                    print(customer?.emails)
+                                    if((customer?.emails) != nil) {
+                                        if customer?.emails?.count == 0 {
+                                            form.last!
+                                                <<< TextRow (field?.id) { row in
+                                                    row.title = field?.text
+                                                    if let val = profile[((field?.id)!)] as? String {
+                                                        row.value = val
+                                                    }
+                                                    
+                                                    }.cellSetup({ (cell, lrow) in
+                                                        cell.textField.keyboardType = .emailAddress
+                                                    }).onCellHighlightChanged({ (cell, trow) in
+                                                        
+                                                        if !trow.isHighlighted && trow.value?.count != 0 {
+                                                            self.emails?.append(trow.value)
+                                                        }
+                                                    })
+                                        } else {
+                                            form.last!
+                                                <<< ActionSheetRow<String> (field?.id) { row in
+                                                    row.title = field?.text
+                                                    if let options = customer?.emails {
+                                                        row.options = (options as! [String])
+                                                    }
+                                                    row.value = ""
+                                                    if let val = profile[((field?.id)!)] as? String {
+                                                        row.value = val
+                                                    }
+                                            }
+                                        }
+                                    } else {
+                                        form.last!
+                                            <<< TextRow (field?.id) { row in
+                                                row.title = field?.text
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                                }.cellSetup({ (cell, lrow) in
+                                                    cell.textField.keyboardType = .emailAddress
+                                                }).onCellHighlightChanged({ (cell, trow) in
+                                                    if !trow.isHighlighted && trow.value?.count != 0 {
+                                                        self.emails?.append(trow.value)
+                                                    }
+                                                })
+                                    }
+                                    
+                                }else if field?.id == "avatar" {
+                                    form.last!
+                                        <<< ImageRow(field?.id) { row in
+                                            row.title = field?.text
+                                            if !(customer?.avatar.isNullOrEmpty)! {
+                                                let url = URL(string: (customer?.avatar)!)
+                                                let data = try? Data(contentsOf: url!)
+                                                let image = UIImage.sd_image(with: data)
+                                                row.value = image
+                                            }
+                                            
+                                            }.cellSetup({ (cell, irow) in
+                                                cell.accessoryView?.layer.cornerRadius = 17
+                                                cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+                                                cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
+                                                cell.textLabel?.textColor = .TEXT_COLOR
+                                            })
                                 }
 
                             }
@@ -522,12 +633,13 @@ class CustomerProfileController: FormViewController {
         mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
         mutation.primaryEmail = form.rowBy(tag: "primaryEmail")?.baseValue as? String
         mutation.primaryPhone = form.rowBy(tag: "primaryPhone")?.baseValue as? String
-        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
-        mutation.ownerId = owner?.id
+        mutation.ownerId = assignedUser?.id
         mutation.position = form.rowBy(tag: "position")?.baseValue as? String
         mutation.department = form.rowBy(tag: "department")?.baseValue as? String
         mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
+        mutation.phones = self.phones
+        mutation.emails = self.emails
         if (form.rowBy(tag: "hasAuthority")?.baseValue as? Bool)! {
             mutation.hasAuthority = "Yes"
         } else {
@@ -607,12 +719,13 @@ class CustomerProfileController: FormViewController {
         mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
         mutation.primaryEmail = form.rowBy(tag: "primaryEmail")?.baseValue as? String
         mutation.primaryPhone = form.rowBy(tag: "primaryPhone")?.baseValue as? String
-        let owner = form.rowBy(tag: "owner")?.baseValue as? UserData
-        mutation.ownerId = owner?.id
+        mutation.ownerId = assignedUser?.id
         mutation.position = form.rowBy(tag: "position")?.baseValue as? String
         mutation.department = form.rowBy(tag: "department")?.baseValue as? String
         mutation.leadStatus = form.rowBy(tag: "leadStatus")?.baseValue as? String
         mutation.lifecycleState = form.rowBy(tag: "lifecycleState")?.baseValue as? String
+        mutation.phone = self.phones
+        mutation.email = self.emails
         if (form.rowBy(tag: "hasAuthority")?.baseValue as? Bool)! {
             mutation.hasAuthority = "Yes"
         } else {
@@ -687,7 +800,7 @@ class CustomerProfileController: FormViewController {
 
     func configureViews() {
         self.view.backgroundColor = .white
-        self.tableView.backgroundColor = .clear
+        self.tableView.backgroundColor = .white
         let rightItem: UIBarButtonItem = {
             var rightImage = UIImage.erxes(with: .edit, textColor: UIColor.TEXT_COLOR)
             var saveImage = UIImage.erxes(with: .user2, textColor: UIColor.TEXT_COLOR)
@@ -704,7 +817,11 @@ class CustomerProfileController: FormViewController {
         rightItem.tintColor = UIColor.TEXT_COLOR
         self.navigationItem.rightBarButtonItem = rightItem
 
-
+        ImageRow.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+        }
+        
         NameRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textField.font = UIFont.fontWith(type: .light, size: 14)
@@ -716,6 +833,14 @@ class CustomerProfileController: FormViewController {
             cell.textField.font = UIFont.fontWith(type: .light, size: 14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
+        }
+
+        LabelRow.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
+            cell.accessoryType = .disclosureIndicator
         }
         PhoneRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -866,6 +991,16 @@ class CustomerProfileController: FormViewController {
     override func reloadAnimation(oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.none
     }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let header = view as? UITableViewHeaderFooterView {
+            header.backgroundView?.backgroundColor = UIColor.init(hexString: "ebebeb")
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
 
 }
 
@@ -896,5 +1031,8 @@ extension CompanyList: SuggestionValue {
     }
 }
 
-
-
+extension CustomerProfileController: UserControllerDelegate {
+    func assignUser(user: UserData, conversationId: String) {
+        self.assignedUser = user
+    }
+}
