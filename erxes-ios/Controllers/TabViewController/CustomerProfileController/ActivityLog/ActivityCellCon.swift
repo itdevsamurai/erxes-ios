@@ -17,6 +17,7 @@ class ActivityCellCon: UITableViewCell {
     var descLabel: UILabel!
     var dateLabel: UILabel!
     var messageLabel: UILabel!
+    var iconView: UIImageView!
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -42,11 +43,17 @@ class ActivityCellCon: UITableViewCell {
         messageLabel.font = UIFont.fontWith(type: .comfortaa, size: 13)
         messageLabel.textAlignment = .left
 
+        iconView = UIImageView()
+        iconView.contentMode = .center
+        iconView.layer.cornerRadius = 10
+        iconView.clipsToBounds = true
+        iconView.backgroundColor = .ERXES_COLOR
+        iconView.image = UIImage.erxes(with: .adduser, textColor: .white, size: CGSize(width: 14, height: 14))
         contentView.addSubview(avatarView)
         contentView.addSubview(dateLabel)
         contentView.addSubview(descLabel)
         contentView.addSubview(messageLabel)
-
+        contentView.addSubview(iconView)
 
     }
 
@@ -76,6 +83,12 @@ class ActivityCellCon: UITableViewCell {
             make.left.equalTo(avatarView.snp.right).offset(10)
             make.right.equalTo(contentView.snp.right).inset(16)
             make.top.equalTo(avatarView.snp.top).offset(5)
+        }
+        
+        iconView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(20)
+            make.left.equalTo(avatarView.snp.right).inset(15)
+            make.top.equalTo(avatarView.snp.bottom).inset(15)
         }
 
     }

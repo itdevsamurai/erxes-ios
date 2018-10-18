@@ -22,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
-        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)
+//        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)
+        let backImage = UIImage(named: "ic_back")
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().backIndicatorImage = backImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage

@@ -19,6 +19,7 @@
 		9B27ADFB2160B708000E0A7C /* NotificationSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */; };
 		9B27ADFD2160CE03000E0A7C /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */; };
 		9B32D12520945AB80011262C /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9B32D12420945AB80011262C /* Montserrat-Medium.otf */; };
+		9B33430A21786A810096E55B /* CompanyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B33430921786A810096E55B /* CompanyListController.swift */; };
 		9B441AB020DBCB0A008B29AF /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B441AAF20DBCB0A008B29AF /* screenshot.png */; };
 		9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8A2137B9CB0074346B /* SettingsController.swift */; };
 		9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B475C8C2137BDB20074346B /* SettingsCell.swift */; };
@@ -175,6 +176,7 @@
 		9B27ADFA2160B708000E0A7C /* NotificationSettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsController.swift; sourceTree = "<group>"; };
 		9B27ADFC2160CE03000E0A7C /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		9B32D12420945AB80011262C /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
+		9B33430921786A810096E55B /* CompanyListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyListController.swift; sourceTree = "<group>"; };
 		9B441AAF20DBCB0A008B29AF /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		9B475C8A2137B9CB0074346B /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		9B475C8C2137BDB20074346B /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -584,6 +586,7 @@
 				F5431E1F2148F09800DB1304 /* CompanyController.swift */,
 				9BA3F75B217443A700B44A13 /* Company.json */,
 				B842CC4F21252ABB0052E5C9 /* CompanyController.graphql */,
+				9B33430921786A810096E55B /* CompanyListController.swift */,
 			);
 			path = CompanyController;
 			sourceTree = "<group>";
@@ -1021,6 +1024,7 @@
 				B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */,
 				B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */,
 				9B4AB587216F492900BDD33D /* ActivityCellCon.swift in Sources */,
+				9B33430A21786A810096E55B /* CompanyListController.swift in Sources */,
 				9B9E34492158DF2B006F9E2D /* TagView.swift in Sources */,
 				B88C31F3216C9AA700B7448E /* LiveGQL.swift in Sources */,
 				F58F2064207B4FE900D8564D /* ErxesField.swift in Sources */,

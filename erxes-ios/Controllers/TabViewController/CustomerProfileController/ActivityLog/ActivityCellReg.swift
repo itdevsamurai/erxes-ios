@@ -13,6 +13,7 @@ class ActivityCellReg: UITableViewCell {
     var avatarView: UIImageView!
     var descLabel: UILabel!
     var dateLabel: UILabel!
+    var iconView: UIImageView!
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -35,10 +36,17 @@ class ActivityCellReg: UITableViewCell {
         descLabel.numberOfLines = 2
         descLabel.lineBreakMode = .byWordWrapping
         
+        iconView = UIImageView()
+        iconView.contentMode = .center
+        iconView.layer.cornerRadius = 10
+        iconView.clipsToBounds = true
+        iconView.backgroundColor = .ERXES_COLOR
+        iconView.image = UIImage.erxes(with: .adduser, textColor: .white, size: CGSize(width: 14, height: 14))
+        
         contentView.addSubview(avatarView)
         contentView.addSubview(dateLabel)
         contentView.addSubview(descLabel)
-  
+        contentView.addSubview(iconView)
         
         
     }
@@ -65,7 +73,11 @@ class ActivityCellReg: UITableViewCell {
             make.top.equalTo(avatarView.snp.top).offset(5)
             make.bottom.equalTo(avatarView.snp.bottom).inset(5)
         }
-        
+        iconView.snp.makeConstraints { (make) in
+            make.width.height.equalTo(20)
+            make.left.equalTo(avatarView.snp.right).inset(15)
+            make.top.equalTo(avatarView.snp.bottom).inset(15)
+        }
     }
     
     

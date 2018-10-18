@@ -1,15 +1,16 @@
-mutation companiesAdd($names: [String], $avatar: String, $primaryName: String, $size: Int, $industry: String, $parentCompanyId: String, $email: String, $ownerId: String, $phones: [String], $leadStatus: String, $lifecycleState: String, $businessType: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
-    companiesAdd(names: $names, avatar: $avatar, primaryName: $primaryName, size: $size, industry: $industry, parentCompanyId: $parentCompanyId, email: $email, ownerId: $ownerId, phones: $phones, leadStatus: $leadStatus, lifecycleState: $lifecycleState, businessType: $businessType, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {
+mutation companiesAdd($names: [String], $avatar: String, $primaryName: String, $size: Int, $industry: String, $parentCompanyId: String, $emails: [String], $primaryEmail: String, $ownerId: String, $phones: [String], $primaryPhone: String, $leadStatus: String, $lifecycleState: String, $businessType: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
+    companiesAdd(names: $names, avatar: $avatar, primaryName: $primaryName, size: $size, industry: $industry, parentCompanyId: $parentCompanyId, emails: $emails, primaryEmail: $primaryEmail, ownerId: $ownerId, phones: $phones, primaryPhone: $primaryPhone, leadStatus: $leadStatus, lifecycleState: $lifecycleState, businessType: $businessType, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {
         _id
-        __typename
     }
 }
 
-mutation companiesEdit($_id: String!, $names: [String], $avatar: String, $primaryName: String, $size: Int, $industry: String, $parentCompanyId: String, $email: String, $ownerId: String, $phones: [String], $leadStatus: String, $lifecycleState: String, $businessType: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
-    companiesEdit(_id: $_id, names: $names, avatar: $avatar, primaryName: $primaryName, size: $size, industry: $industry, parentCompanyId: $parentCompanyId, email: $email, ownerId: $ownerId, phones: $phones, leadStatus: $leadStatus, lifecycleState: $lifecycleState, businessType: $businessType, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {
+mutation companiesEdit($_id: String!, $names: [String], $avatar: String, $primaryName: String, $size: Int, $industry: String, $parentCompanyId: String, $emails: [String], $primaryEmail: String, $ownerId: String, $phones: [String], $primaryPhone: String, $leadStatus: String, $lifecycleState: String, $businessType: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
+    companiesEdit(_id: $_id, names: $names, avatar: $avatar, primaryName: $primaryName, size: $size, industry: $industry, parentCompanyId: $parentCompanyId, emails: $emails, primaryEmail: $primaryEmail, ownerId: $ownerId, phones: $phones, primaryPhone: $primaryPhone, leadStatus: $leadStatus, lifecycleState: $lifecycleState, businessType: $businessType, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {
         _id
     }
 }
+
+
 
 query CompanyDetail($id: String!) {
     companyDetail(_id:$id) {
@@ -29,8 +30,10 @@ fragment CompanyObj on Company{
     plan
     parentCompanyId
     emails
+    primaryEmail
     ownerId
     phones
+    primaryPhone
     leadStatus
     lifecycleState
     businessType
@@ -49,9 +52,7 @@ fragment CompanyObj on Company{
         ...UserData
     }
     parentCompany {
-        _id
-        primaryName
-        
+        ...CompanyList
     }
     customFieldsData
     tagIds
@@ -61,7 +62,37 @@ fragment CompanyObj on Company{
         colorCode
         
     }
+    customers {
+        _id
+        firstName
+        lastName
+        primaryEmail
+        primaryPhone
+        
+    }
+    deals {
+        _id
+        companies {
+            _id
+            primaryName
+            
+        }
+        customers {
+            _id
+            firstName
+            primaryEmail
+            
+        }
+        products
+        amount
+        closeDate
+        
+        
+    }
+    
 }
+
+
 
 mutation CompaniesRemove($companyIds:[String]) {
     companiesRemove(companyIds:$companyIds)

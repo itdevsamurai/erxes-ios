@@ -10,14 +10,22 @@ import UIKit
 import Apollo
 import Eureka
 import ImageRow
+import Alamofire
 class CustomerProfileController: FormViewController {
 
-
+    var size = 0
+    var avatarUrl = String()
     var profileField = FieldGroup(id: "profile")
     var phones: [String?]?
     var emails: [String?]?
     var customerId: String?
     var messagesCount = 0
+    
+    var customer:CustomerInfo?{
+        didSet{
+            self.buildForm(customer: customer)
+        }
+    }
     var assignedUser: UserData? {
         didSet {
             self.form.rowBy(tag: "ownerId")?.updateCell()
@@ -25,19 +33,10 @@ class CustomerProfileController: FormViewController {
     }
 
 
-    var companies = [CompanyList]() {
-        didSet {
-
-        }
-    }
 
     var fieldGroups = [FieldGroup]()
 
-    var users = [UserData]() {
-        didSet {
 
-        }
-    }
 
     func isEdit() -> Bool {
         return self.customerId != nil
@@ -52,12 +51,7 @@ class CustomerProfileController: FormViewController {
 
         self.configureViews()
         self.getFields()
-        self.getCompanies()
-        self.getUsers()
-
-        if (self.customerId != nil) {
-            self.getCustomerData()
-        }
+     
     }
 
 
@@ -120,8 +114,9 @@ class CustomerProfileController: FormViewController {
                     self?.fieldGroups.insert((self?.profileField)!, at: 0)
 
                     if ((self?.customerId) == nil) {
-
                         self?.buildForm(customer: nil)
+                    }else{
+                        self?.getCustomerData()
                     }
                 }
             }
@@ -152,18 +147,25 @@ class CustomerProfileController: FormViewController {
                     self?.assignedUser = result.owner?.fragments.userData
                     self?.phones = result.phones
                     self?.emails = result.emails
-                    self?.buildForm(customer: result)
+                    if let avatar = result.avatar {
+                        self?.avatarUrl = avatar
+                    }
+                    if ((self?.customer) == nil) {
+                        self?.customer = result
+                    }
                 }
             }
         }
     }
 
     func buildForm(customer: CustomerInfo?) {
-
+        if self.form.count != 0 {
+           self.form.removeAll()
+        }
         let usersController = UsersController()
         usersController.delegate = self
 
-        if self.form.rows.count == 0 {
+       
 
             var profile = [String: Any]()
             var customFields = [String: Any]()
@@ -285,14 +287,6 @@ class CustomerProfileController: FormViewController {
                                             cell.textLabel!.textColor = UIColor.TEXT_COLOR
                                         }
                                     }
-                                } else if field?.validation == "email" {
-                                    form.last!
-                                    <<< EmailRow(field?.id) { row in
-                                        row.title = field?.text
-                                        if let val = profile[((field?.id)!)] as? String {
-                                            row.value = val
-                                        }
-                                    }
                                 } else if field?.text == "Owner" {
 
                                     form.last!
@@ -395,6 +389,7 @@ class CustomerProfileController: FormViewController {
                                                 }.cellSetup({ (cell, lrow) in
                                                     cell.textField.keyboardType = .emailAddress
                                                 }).onCellHighlightChanged({ (cell, trow) in
+                                                    print(trow.isHighlighted)
                                                     if !trow.isHighlighted && trow.value?.count != 0 {
                                                         self.emails?.append(trow.value)
                                                     }
@@ -405,18 +400,20 @@ class CustomerProfileController: FormViewController {
                                     form.last!
                                         <<< ImageRow(field?.id) { row in
                                             row.title = field?.text
-                                            if !(customer?.avatar.isNullOrEmpty)! {
-                                                let url = URL(string: (customer?.avatar)!)
+                                            if self.avatarUrl.count != 0 {
+                                                let url = URL(string: self.avatarUrl)
                                                 let data = try? Data(contentsOf: url!)
                                                 let image = UIImage.sd_image(with: data)
                                                 row.value = image
                                             }
-                                            
                                             }.cellSetup({ (cell, irow) in
                                                 cell.accessoryView?.layer.cornerRadius = 17
                                                 cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
                                                 cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
                                                 cell.textLabel?.textColor = .TEXT_COLOR
+                                            }).onChange({ (irow) in
+                                               let image = irow.value
+                                                self.uploadFile(image: image!)
                                             })
                                 }
 
@@ -533,73 +530,13 @@ class CustomerProfileController: FormViewController {
                 row.baseCell.isUserInteractionEnabled = false
 
             }
-        }
+        
     }
 
 
 
 
-    func getCompanies() {
-
-
-        let query = CompaniesQuery()
-        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-
-                return
-            }
-
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-
-            }
-
-            if result?.data != nil {
-                if let allCompanies = result?.data?.companies {
-
-                    self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
-
-
-
-
-                }
-            }
-        }
-
-    }
-
-    func getUsers() {
-
-        let query = GetUsersQuery()
-        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-
-                return
-            }
-
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-
-            }
-
-            if result?.data != nil {
-                if let result = result?.data?.users {
-                    self?.users = result.map { ($0?.fragments.userData)! }
-
-                }
-            }
-        }
-
-    }
-
+ 
     @objc func editAction(sender: UIButton) {
         if sender.isSelected {
             sender.isSelected = false
@@ -629,6 +566,7 @@ class CustomerProfileController: FormViewController {
 
     func insertAction() {
         let mutation = CustomersAddMutation()
+        mutation.avatar = self.avatarUrl
         mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
         mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
         mutation.primaryEmail = form.rowBy(tag: "primaryEmail")?.baseValue as? String
@@ -713,8 +651,7 @@ class CustomerProfileController: FormViewController {
     func saveAction() {
 
         let mutation = CustomersEditMutation(_id: customerId!)
-
-
+        mutation.avatar = self.avatarUrl
         mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
         mutation.lastName = form.rowBy(tag: "lastName")?.baseValue as? String
         mutation.primaryEmail = form.rowBy(tag: "primaryEmail")?.baseValue as? String
@@ -842,19 +779,7 @@ class CustomerProfileController: FormViewController {
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             cell.accessoryType = .disclosureIndicator
         }
-        PhoneRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.textField.textColor = UIColor.TEXT_COLOR
-        }
-
-        EmailRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.textField.textColor = UIColor.TEXT_COLOR
-        }
+    
 
         DateRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
@@ -882,44 +807,7 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
         }
-        ButtonRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.tintColor = UIColor.TEXT_COLOR
-            cell.accessoryView?.tintColor = UIColor.TEXT_COLOR
-
-        }
-        PushRow<CompanyList>.defaultCellUpdate = { cell, row in
-            row.options = self.companies
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
-        }
-
-        DecimalRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.tintColor = UIColor.TEXT_COLOR
-            cell.textField.font = UIFont.fontWith(type: .light, size: 14)
-
-        }
-
-        PushRow<UserData>.defaultCellUpdate = { cell, row in
-            row.options = self.users
-            cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            row.displayValueFor = {
-                if let t = $0 {
-                    print("owner = ", t)
-                    return t.details?.fullName
-                }
-                return nil
-            }
-        }
-
+  
         PushRow<String>.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
@@ -935,7 +823,6 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             row.displayValueFor = {
-//                var values = Set<String>()
                 if let str = $0 {
                     let arr = [String](str)
                     return arr.joined(separator: ",")
@@ -1002,6 +889,47 @@ class CustomerProfileController: FormViewController {
         return 40
     }
 
+    func uploadFile(image:UIImage) {
+        
+        let url = Constants.URL_UPLOAD
+        
+        if let imgData = UIImage.resize(image) as? Data{
+            size = imgData.count
+            let bcf = ByteCountFormatter()
+            bcf.allowedUnits = [.useKB]
+            bcf.countStyle = .file
+            //            self.lblFilesize.text = bcf.string(fromByteCount: Int64(size))
+            
+            Alamofire.upload(multipartFormData: { multipartFormData in
+                multipartFormData.append(imgData, withName: "file",fileName: "file.jpg", mimeType: "image/jpg")
+            },
+                             to:url ) {
+                                (result) in
+                                
+                                switch result {
+                                case .success(let upload, _, _):
+                                    self.processUpload(upload)
+                                case .failure(let encodingError):
+                                    print(encodingError)
+                                }
+            }
+        }
+    }
+    
+    func processUpload(_ upload:UploadRequest) {
+        upload.uploadProgress(closure: { (progress) in
+            print("Upload Progress: \(progress.fractionCompleted)")
+            //            self.progress.progress = Float(progress.fractionCompleted)
+        })
+        
+        upload.responseString { response in
+            print(response)
+            if let remoteUrl = response.value{
+                self.avatarUrl = remoteUrl
+            }
+        }
+    }
+    
 }
 
 extension CompanyList: Equatable {
@@ -1036,3 +964,6 @@ extension CustomerProfileController: UserControllerDelegate {
         self.assignedUser = user
     }
 }
+
+
+

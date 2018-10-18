@@ -122,13 +122,17 @@ extension ActivityController: UITableViewDataSource {
                 cell.dateLabel.text = dateLblValue
                 cell.messageLabel.text = data?.content
                 cell.descLabel.text  = contactName + " sent a conversation message"
+                cell.iconView.image = UIImage.erxes(with: .speechbubble3, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "f54038")
+                
                 return cell
             }
         case "customer-create":
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellReg", for: indexPath) as? ActivityCellReg {
                 cell.dateLabel.text = dateLblValue
                 cell.descLabel.text = contactName + " registered to Erxes"
-                
+                cell.iconView.image = UIImage.erxes(with: .adduser, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "a387d1")
                 return cell
             }
         case "company-create":
@@ -141,6 +145,8 @@ extension ActivityController: UITableViewDataSource {
                 if let avatarUrl = data?.by?.details?.avatar {
                     cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
                 }
+                cell.iconView.image = UIImage.erxes(with: .briefcase, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "a387d1")
                 return cell
             }
         case "internal_note-create":
@@ -155,6 +161,8 @@ extension ActivityController: UITableViewDataSource {
                 if let avatarUrl = data?.by?.details?.avatar {
                     cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
                 }
+                cell.iconView.image = UIImage.erxes(with: .pushpin, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "f8cf5f")
                 return cell
             }
         case "email-send":
@@ -172,6 +180,8 @@ extension ActivityController: UITableViewDataSource {
                 if let avatarUrl = data?.by?.details?.avatar {
                     cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
                 }
+                cell.iconView.image = UIImage.erxes(with: .email3, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "d84436")
                 return cell
             }
         default:

@@ -62,6 +62,7 @@ class ContactDetailController: DTPagerController {
         noteController.contactId = self.contactId
         noteController.email = self.email
         noteController.delegate = self
+        noteController.isCompany = self.isCompany
         conversationController.title = "Conversation"
         conversationController.contactId = self.contactId
         conversationController.contactName = self.contactName

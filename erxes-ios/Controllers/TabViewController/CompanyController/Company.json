@@ -1,7 +1,8 @@
 
-[{"id":"primaryName","text":"Name","type":"input","validation":"","options":[]},
+[{"id":"avatar","text":"Photo","type":"","validation":"","options":[]},
+    {"id":"primaryName","text":"Name","type":"","validation":"","options":[]},
     {"id":"size","text":"Size","type":"input","validation":"","options":[]},
-    {"id":"industry","text":"Industry","type":"select","validation":"","options": ["",
+    {"id":"industry","text":"Industry","type":"select","validation":"","options": [
         "Advertising/Public Relations",
         "Aerospace, Defense Contractors",
         "Agriculture",
@@ -56,14 +57,13 @@
         "Transportation",
     "TV / Movies / Music"]
 },
-    {"id":"parentCompany","text":"Parent Company","type":"select","validation":"","options":[]},
-    {"id":"email","text":"Email","type":"","validation":"","options":[]},
-    {"id":"ownerId","text":"Owner","type":"select","validation":"","options":[]},
-    {"id":"phone","text":"Phone","type":"","validation":"","options":[]},
+    {"id":"parentCompany","text":"Parent Company","type":"","validation":"","options":[]},
+    {"id":"primaryEmail","text":"Email","type":"","validation":"","options":[]},
+    {"id":"ownerId","text":"Owner","type":"","validation":"","options":[]},
+    {"id":"primaryPhone","text":"Phone","type":"","validation":"","options":[]},
     {"id":"leadStatus","text":"Lead Status","type":"select","validation":"","options":["New", "Open", "In progress", "Open deal", "Unqualified", "Attempted to Contact", "Connected", "Bad timing"]},
     {"id":"lifecycleState","text":"Lifecycle state","type":"select","validation":"","options":["Subscriber", "Lead", "Marketing Qualified Lead", "Sales Qualified Lead", "Opportunity", "Customer", "Evangelist", "Other"]},
     {"id":"businessType","text":"Business Type","type":"select","validation":"","options": [
-        "",
         "Analyst",
         "Competitor",
         "Customer",

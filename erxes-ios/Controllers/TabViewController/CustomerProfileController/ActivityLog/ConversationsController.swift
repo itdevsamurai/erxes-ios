@@ -112,6 +112,8 @@ extension ConversationsController: UITableViewDataSource {
                 cell.dateLabel.text = dateLblValue
                 cell.messageLabel.text = data?.content
                 cell.descLabel.text  = contactName + " sent a conversation message"
+                cell.iconView.image = UIImage.erxes(with: .speechbubble3, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "f54038")
                 return cell
             }
         

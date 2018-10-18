@@ -11,7 +11,7 @@ import MessageUI
 class NoteController: UIViewController {
 
     weak var delegate: ContactDelegate?
-    
+    var isCompany = Bool()
     var notes = [LogData](){
         didSet{
             
@@ -154,7 +154,13 @@ class NoteController: UIViewController {
  
     
     func saveMutation(content:String){
-        let mutation = InternalNotesAddMutation(contentType: "customer")
+        var contentType = String()
+        if isCompany {
+            contentType = "company"
+        }else{
+            contentType = "customer"
+        }
+        let mutation = InternalNotesAddMutation(contentType: contentType)
         mutation.content = content
         mutation.contentTypeId = contactId
         appnet.perform(mutation: mutation) { [weak self] result, error in
@@ -231,6 +237,9 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
                 if let avatarUrl = data?.by?.details?.avatar {
                     cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
                 }
+                
+                cell.iconView.image = UIImage.erxes(with: .pushpin, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "f8cf5f")
                 return cell
             }
       
