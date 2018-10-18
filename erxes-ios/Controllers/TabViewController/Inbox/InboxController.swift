@@ -41,7 +41,7 @@ class InboxController: UIViewController {
     var timer: Timer!
     var topOffset: CGFloat = 0.0
     var shimmer: FBShimmeringView!
-    var conversationLimit = 10
+    var conversationLimit = 20
     
 
 
@@ -73,8 +73,13 @@ class InboxController: UIViewController {
         tagListView.enableRemoveButton = true
         return tagListView
     }()
-
-
+    
+    let refresher:UIRefreshControl = {
+        let refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        return refresher
+    }()
+    
     let gql = LiveGQL(socket: Constants.SUBSCRITION_ENDPOINT)
 
     func configLive() {
@@ -178,6 +183,7 @@ class InboxController: UIViewController {
         tableView.dataSource = self
         self.view.addSubview(tableView)
         tableView.backgroundColor = .white
+        tableView.refreshControl = refresher
 
 
 //        shimmer = FBShimmeringView()
@@ -317,7 +323,13 @@ class InboxController: UIViewController {
         }
     }
 
-    @objc func getInbox(limit: Int = 10) {
+    @objc func refresh() {
+//        XCUIDevice.shared().siriService.activate(voiceRecognitionText: "Turn off wifi")
+//        XCUIDevice.shared().press(XCUIDeviceButton.home)
+        getInbox(limit: 20)
+    }
+    
+    @objc func getInbox(limit: Int = 20) {
         if self.timer != nil {
             self.timer.invalidate()
         }
@@ -347,7 +359,10 @@ class InboxController: UIViewController {
         }
         query.limit = limit
 
-        appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
+            
+            self?.refresher.endRefreshing()
+            
             if let error = error {
 
                 let alert = FailureAlert(message: error.localizedDescription)

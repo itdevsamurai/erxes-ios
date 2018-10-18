@@ -34,12 +34,30 @@ class Appnet: NSObject {
     
     var tokenChanged = true
     
+    public static func temporarySQLiteFileURL() -> URL {
+        let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!
+        let applicationSupportURL = URL(fileURLWithPath: applicationSupportPath)
+        let temporaryDirectoryURL = try! FileManager.default.url(
+            for: .itemReplacementDirectory,
+            in: .userDomainMask,
+            appropriateFor: applicationSupportURL,
+            create: true)
+        return temporaryDirectoryURL.appendingPathComponent("db.sqlite3")
+    }
+    
     class func newClient(token:String?) -> ApolloClient{
+        
+        let fileURL = temporarySQLiteFileURL()
+        let cache = try! SQLiteNormalizedCache(fileURL: fileURL)
+        let store = ApolloStore(cache: cache)
+        store.cacheKeyForObject = { $0["id"] }
         
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["x-token": token as Any]
         let url = URL(string: Constants.API_ENDPOINT)!
-        let client = ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+        let transport = HTTPNetworkTransport(url: url, configuration: configuration)
+        let client = ApolloClient(networkTransport: transport, store:store)
+    
         return client
     }
     
