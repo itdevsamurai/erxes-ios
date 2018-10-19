@@ -16,23 +16,51 @@ class SentCell: ChatBaseCell {
         
         super.updateView()
         
-        if let str = viewModel?.content?.convertHtml(){
-            
-            if viewModel?.internal ?? false {
-                tvText.backgroundColor = UIColor(hexString: "#fffccc")
-                edgeView.backgroundColor = UIColor(hexString: "#fffccc")
-                str.addAttribute(NSAttributedStringKey.font, value: Font.regular(13), range: NSMakeRange(0, str.length))
-                str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, str.length))
-                
-            } else {
-                tvText.backgroundColor = .ERXES_COLOR
-                edgeView.backgroundColor = .ERXES_COLOR
-                str.addAttribute(NSAttributedStringKey.font, value: Font.regular(13), range: NSMakeRange(0, str.length))
-                str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSMakeRange(0, str.length))
-            }
-            DispatchQueue.main.async{
-                self.tvText.attributedText = str
-            }
+        guard var content = viewModel?.content else {
+            return
+        }
+        
+//        content = content.replacingOccurrences(of: "<p>", with: "")
+//        content = content.replacingOccurrences(of: "</p>", with: "")
+        
+        let str = content.convertHtml()
+        
+        var options = [NSAttributedStringKey:Any]()
+        options[NSAttributedStringKey.font] = Font.regular(13)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        paragraphStyle.paragraphSpacing = 0
+        options[NSAttributedStringKey.paragraphStyle] = paragraphStyle
+        
+        if viewModel?.internal ?? false {
+            tvText.backgroundColor = UIColor(hexString: "#fffccc")
+            edgeView.backgroundColor = UIColor(hexString: "#fffccc")
+            options[NSAttributedStringKey.foregroundColor] = UIColor.black
+        } else {
+            tvText.backgroundColor = .ERXES_COLOR
+            edgeView.backgroundColor = .ERXES_COLOR
+            options[NSAttributedStringKey.foregroundColor] = UIColor.white
+        }
+        
+        
+        
+        str.addAttributes(options, range: NSMakeRange(0, str.length))
+        
+//      highlight user mentions
+        let txt = content.withoutHtml
+
+        let pattern = "@[a-zA-Z0-9._]*"
+        let regex = try? NSRegularExpression(pattern: pattern, options: [])
+        let range = NSMakeRange(0, txt.count)
+        let matches = (regex?.matches(in: txt, options: [], range: range))!
+
+        for match in matches {
+            str.addAttribute(NSAttributedStringKey.font, value: Font.bold(13), range: match.range)
+        }
+        
+        DispatchQueue.main.async{
+            self.tvText.attributedText = str
+            print(str.attributedSubstring(from: NSMakeRange(str.length-1, 1)).string)
         }
     }
     

@@ -18,12 +18,25 @@ class IncomingCell: ChatBaseCell {
         
         ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         lblDate.textAlignment = .right
-        if let str = viewModel?.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: Font.regular(13), range: NSMakeRange(0, str.length))
-            str.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: NSMakeRange(0, str.length))
-            DispatchQueue.main.async{
-                self.tvText.attributedText = str
-            }
+        
+        guard let content = viewModel?.content else {
+            return
+        }
+        
+        let str = content.convertHtml()
+        
+        var options = [NSAttributedStringKey:Any]()
+        options[NSAttributedStringKey.font] = Font.regular(13)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        paragraphStyle.paragraphSpacing = 0
+        options[NSAttributedStringKey.paragraphStyle] = paragraphStyle
+        options[NSAttributedStringKey.foregroundColor] = UIColor.black
+        
+        str.addAttributes(options, range: NSMakeRange(0, str.length))
+        
+        DispatchQueue.main.async{
+            self.tvText.attributedText = str
         }
     }
     

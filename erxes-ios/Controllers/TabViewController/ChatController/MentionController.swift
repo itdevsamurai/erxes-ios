@@ -85,7 +85,7 @@ class MentionController:NSObject {
     
     func filter(_ value:String) {
         if value.count > 0 {
-            filteredUsers = users.filter{$0.details?.fullName?.lowercased().hasPrefix(value.lowercased()) ?? false}
+            filteredUsers = users.filter{$0.username?.lowercased().hasPrefix(value.lowercased()) ?? false}
         } else {
             filteredUsers = users
         }
@@ -116,9 +116,9 @@ extension MentionController:UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = MentionCell(style: .default, reuseIdentifier: "cell")
-        let user = filteredUsers[indexPath.row].details
-        cell.textLabel?.text = user?.fullName
-        cell.imageView?.sd_setImage(with: URL(string: user?.avatar ?? ""), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
+        let user = filteredUsers[indexPath.row]
+        cell.textLabel?.text = user.username
+        cell.imageView?.sd_setImage(with: URL(string: user.details?.avatar ?? ""), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
         return cell
     }
     
@@ -154,7 +154,7 @@ extension ChatController:MentionControllerDelegate {
     }
     
     func mentionUser(_ user: UserData) {
-        if var text = chatInputView.text, let mention = user.details?.fullName {
+        if var text = chatInputView.text, let mention = user.username {
             var array = text.split(separator: "@", maxSplits: 10, omittingEmptySubsequences: false)
             array.remove(at: array.count - 1)
             array.append("")
