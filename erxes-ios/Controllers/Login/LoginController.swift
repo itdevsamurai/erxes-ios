@@ -20,6 +20,8 @@ class LoginController: UIViewController {
         let view = UIView()
         return view
     }()
+    
+    var isLogin = Bool()
 
     var innerCircle = CAShapeLayer()
     var outerCircle = CAShapeLayer()
@@ -227,7 +229,7 @@ class LoginController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        isLogin = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -239,6 +241,7 @@ class LoginController: UIViewController {
 
     func checkAuthentication() {
         if ErxesUser.isSignedIn {
+            isLogin = false
             mutateLogin(email: ErxesUser.storedEmail(), password: ErxesUser.storedPassword())
         }
     }
@@ -387,15 +390,16 @@ class LoginController: UIViewController {
     @objc func loginAction(sender: UIButton) {
 
         if emailField.validate(type: .email) && passwordField.validate(type: .password) {
-            
-            mutateLogin(email: emailField.text!, password: passwordField.text!)
+            isLogin = true
+            self.view.endEditing(true)
+//            mutateLogin(email: emailField.text!, password: passwordField.text!)
 
         } else if !passwordField.validate(type: .password){
-//            passwordField.becomeFirstResponder()
+            passwordField.becomeFirstResponder()
         }else if  !emailField.validate(type: .email) {
-//            emailField.becomeFirstResponder()
+            emailField.becomeFirstResponder()
         }else {
-//            emailField.becomeFirstResponder()
+            emailField.becomeFirstResponder()
         }
 
 
@@ -494,6 +498,7 @@ class LoginController: UIViewController {
 
                 self?.passwordField.text = ""
                 self?.stopAnimation()
+                self?.isLogin = false
                 self?.navigate(.tab)
             }
         }
@@ -520,8 +525,8 @@ class LoginController: UIViewController {
     }
 
     @objc func handleKeyboardDidHide(notification: Notification) {
-
-        UIView.animate(withDuration: 0.3, animations: {
+        guard let duration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double else {return}
+        UIView.animate(withDuration: duration, animations: {
             self.containerView.snp.remakeConstraints { (make) in
                 make.left.equalTo(self.view.snp.left).offset(64)
                 make.right.equalTo(self.view.snp.right).inset(64)
@@ -529,9 +534,16 @@ class LoginController: UIViewController {
                 make.top.equalTo(self.view.snp.top).offset(98)
             }
             self.view.layoutIfNeeded()
+            if self.isLogin{
+                self.perform(#selector(self.signIn), with: nil, afterDelay: duration)
+               
+            }
         })
     }
-
+    
+    @objc func signIn(){
+         self.mutateLogin(email: self.emailField.text!, password: self.passwordField.text!)
+    }
 
 }
 
@@ -542,7 +554,7 @@ extension LoginController: UITextFieldDelegate {
         if textField == emailField && emailField.validate(type: .email){
             passwordField.becomeFirstResponder()
         } else if textField == passwordField && passwordField.validate(type: .password){
-//            passwordField.resignFirstResponder()
+            passwordField.resignFirstResponder()
         }
         return true
     }

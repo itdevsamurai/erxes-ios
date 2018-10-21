@@ -71,9 +71,9 @@ extension InboxController: UIPopoverPresentationControllerDelegate {
 }
 
 extension InboxController: UserControllerDelegate {
-    func assignUser(userId:String, conversationId:String){
+    func assignUser(user:UserData, conversationId:String){
         let mutation = ConversationsAssignMutation(conversationIds: [conversationId])
-        mutation.assignedUserId = userId
+        mutation.assignedUserId = user.id
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)

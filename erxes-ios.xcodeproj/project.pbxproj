@@ -130,6 +130,7 @@
 		B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */; };
 		B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3FDE82161CCEE000EE9AF /* MentionController.swift */; };
 		B8C3FDEB2161DF06000EE9AF /* Filter+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C3FDEA2161DF06000EE9AF /* Filter+Keyboard.swift */; };
+		B8D0F8EC217C760D00990C06 /* CompanyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D0F8EB217C760D00990C06 /* CompanyListController.swift */; };
 		B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */; };
 		B8E8CB142150BE7300AE492D /* Inbox+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */; };
 		B8FDDE9B213E48FF00286DE0 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FDDE9A213E48FF00286DE0 /* ChatController.swift */; };
@@ -286,6 +287,7 @@
 		B8BE67C5215C995700E8A0A6 /* Filter+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Network.swift"; sourceTree = "<group>"; };
 		B8C3FDE82161CCEE000EE9AF /* MentionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentionController.swift; sourceTree = "<group>"; };
 		B8C3FDEA2161DF06000EE9AF /* Filter+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Filter+Keyboard.swift"; sourceTree = "<group>"; };
+		B8D0F8EB217C760D00990C06 /* CompanyListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyListController.swift; sourceTree = "<group>"; };
 		B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+TableView.swift"; sourceTree = "<group>"; };
 		B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+Additions.swift"; sourceTree = "<group>"; };
 		B8FDDE9A213E48FF00286DE0 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
@@ -600,6 +602,7 @@
 		B88B6EAF2122A21000A9B7FF /* CompanyController */ = {
 			isa = PBXGroup;
 			children = (
+				B8D0F8EB217C760D00990C06 /* CompanyListController.swift */,
 				F5431E1F2148F09800DB1304 /* CompanyController.swift */,
 				9BA3F75B217443A700B44A13 /* Company.json */,
 				B842CC4F21252ABB0052E5C9 /* CompanyController.graphql */,
@@ -874,6 +877,7 @@
 				"${BUILT_PRODUCTS_DIR}/HMSegmentedControl/HMSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/Hakawai/Hakawai.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
 				"${BUILT_PRODUCTS_DIR}/LiveGQL/LiveGQL.framework",
 				"${BUILT_PRODUCTS_DIR}/NYTPhotoViewer/NYTPhotoViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
@@ -893,6 +897,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HMSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hakawai.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiveGQL.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NYTPhotoViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
@@ -1015,6 +1020,7 @@
 				F55583BF2077173C00413F6A /* NavigationController.swift in Sources */,
 				B8C3FDE92161CCEE000EE9AF /* MentionController.swift in Sources */,
 				9B9E34412158B8DF006F9E2D /* ErxesTagLabel.swift in Sources */,
+				B8D0F8EC217C760D00990C06 /* CompanyListController.swift in Sources */,
 				F58F203B207B372900D8564D /* ErxesUser.swift in Sources */,
 				9B5CE65420D8DC6E003EDBF9 /* MyData.swift in Sources */,
 				B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */,

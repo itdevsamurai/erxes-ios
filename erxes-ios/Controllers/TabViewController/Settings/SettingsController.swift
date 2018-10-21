@@ -72,7 +72,9 @@ class SettingsController: UIViewController {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        //        imagePicker.allowsEditing = true
+        imagePicker.navigationBar.barStyle = .default
+        imagePicker.navigationBar.tintColor = .ERXES_COLOR
+
         DispatchQueue.main.async {
             self.present(imagePicker, animated: true, completion: nil)
         }
@@ -94,11 +96,7 @@ class SettingsController: UIViewController {
     }
     
     func uploadFile(image:UIImage) {
-        
-        //        self.uploadView.isHidden = false
-        //        self.progress.progress = 0
-        //        self.upload
-        
+
         let url = Constants.URL_UPLOAD
         
         if let imgData = UIImage.resize(image) as? Data{

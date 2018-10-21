@@ -11,17 +11,17 @@ import MessageUI
 class NoteController: UIViewController {
 
     weak var delegate: ContactDelegate?
-    
-    var notes = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+    var isCompany = Bool()
+    var notes = [LogData](){
         didSet{
             
             for (index, note) in notes.enumerated() {
                 
-                let filtered = note?.list.filter({$0?.action == "internal_note-create"})
-                self.notes[index]?.list = filtered!
+                let filtered = note.list.filter({$0?.action == "internal_note-create"})
+                self.notes[index].list = filtered
                 
             }
-            self.notes = self.notes.filter({$0?.list.count != 0})
+            self.notes = self.notes.filter({$0.list.count != 0})
             tableView.reloadData()
         }
     }
@@ -154,7 +154,13 @@ class NoteController: UIViewController {
  
     
     func saveMutation(content:String){
-        let mutation = InternalNotesAddMutation(contentType: "customer")
+        var contentType = String()
+        if isCompany {
+            contentType = "company"
+        }else{
+            contentType = "customer"
+        }
+        let mutation = InternalNotesAddMutation(contentType: contentType)
         mutation.content = content
         mutation.contentTypeId = contactId
         appnet.perform(mutation: mutation) { [weak self] result, error in
@@ -190,7 +196,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.notes[section]?.list.count)!
+        return (self.notes[section].list.count)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -203,9 +209,9 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
         label.font = Font.regular(14)
-        let date = notes[section]?.date
-        let monthName = DateFormatter().monthSymbols[(date?.month)!]
-        label.text = String(format: "%@ %i", monthName, (date?.year)!)
+        let date = notes[section].date
+        let monthName = DateFormatter().monthSymbols![(date.month)!]
+        label.text = String(format: "%@ %i", monthName, (date.year)!)
         headerView.addSubview(label)
         return headerView
     }
@@ -216,7 +222,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let data = notes[indexPath.section]?.list[indexPath.row]
+        let data = notes[indexPath.section].list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
         let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
@@ -231,6 +237,9 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
                 if let avatarUrl = data?.by?.details?.avatar {
                     cell.avatarView.sd_setImage(with: URL(string: avatarUrl), placeholderImage: UIImage(named: "avatar.png"))
                 }
+                
+                cell.iconView.image = UIImage.erxes(with: .pushpin, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "f8cf5f")
                 return cell
             }
       

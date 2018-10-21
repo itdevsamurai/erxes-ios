@@ -10,15 +10,15 @@ import UIKit
 
 class ConversationsController: UIViewController {
 
-    var conversations = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+    var conversations = [LogData](){
         didSet{
             for (index, conversation) in conversations.enumerated() {
             
-                let filtered = conversation?.list.filter({$0?.action == "conversation-create"})
-                self.conversations[index]?.list = filtered!
+                let filtered = conversation.list.filter({$0?.action == "conversation-create"})
+                self.conversations[index].list = filtered
              
             }
-            self.conversations = self.conversations.filter({$0?.list.count != 0})
+            self.conversations = self.conversations.filter({$0.list.count != 0})
             tableView.reloadData()
         }
     }
@@ -63,7 +63,7 @@ class ConversationsController: UIViewController {
 
 extension ConversationsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let data = conversations[indexPath.section]?.list[indexPath.row]
+        let data = conversations[indexPath.section].list[indexPath.row]
         self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
         
         
@@ -77,7 +77,7 @@ extension ConversationsController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.conversations[section]?.list.count)!
+        return (self.conversations[section].list.count)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -90,9 +90,9 @@ extension ConversationsController: UITableViewDataSource {
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
         label.font = Font.regular(14)
-        let date = conversations[section]?.date
-        let monthName = DateFormatter().monthSymbols[(date?.month)!]
-        label.text = String(format: "%@ %i", monthName, (date?.year)!)
+        let date = conversations[section].date
+        let monthName = DateFormatter().monthSymbols![(date.month)!]
+        label.text = String(format: "%@ %i", monthName, (date.year)!)
         headerView.addSubview(label)
         return headerView
     }
@@ -103,7 +103,7 @@ extension ConversationsController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let data = conversations[indexPath.section]?.list[indexPath.row]
+        let data = conversations[indexPath.section].list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
         let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
@@ -112,6 +112,8 @@ extension ConversationsController: UITableViewDataSource {
                 cell.dateLabel.text = dateLblValue
                 cell.messageLabel.text = data?.content
                 cell.descLabel.text  = contactName + " sent a conversation message"
+                cell.iconView.image = UIImage.erxes(with: .speechbubble3, textColor: .white, size: CGSize(width: 12, height: 12))
+                cell.iconView.backgroundColor = UIColor.init(hexString: "f54038")
                 return cell
             }
         
