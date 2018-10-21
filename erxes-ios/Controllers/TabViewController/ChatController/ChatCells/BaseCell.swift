@@ -48,7 +48,7 @@ class ChatBaseCell: UICollectionViewCell {
         view.backgroundColor = .ERXES_COLOR
         view.textColor = .white
         view.layer.cornerRadius = 10
-        view.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        view.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 8)
         return view
     }()
     
@@ -109,14 +109,31 @@ class ChatBaseCell: UICollectionViewCell {
     static func calculateHeight(_ item:MessageDetail) -> CGFloat {
         let tv = UITextView()
         
-        if let str = item.content?.convertHtml(){
-            str.addAttribute(NSAttributedStringKey.font, value: Font.regular(10), range: NSMakeRange(0, str.length))
-            tv.attributedText = str
+        var options = [NSAttributedStringKey:Any]()
+        options[NSAttributedStringKey.font] = Font.regular(13)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 5
+        paragraphStyle.paragraphSpacing = 0
+        options[NSAttributedStringKey.paragraphStyle] = paragraphStyle
+        
+        guard var content = item.content else {
+            return 50
         }
         
-        let h = tv.sizeThatFits(CGSize(width: Constants.SCREEN_WIDTH, height: 10000)).height + 20
-        if h < 48 {
-            return 48
+//        content = content.replacingOccurrences(of: "<p>", with: "")
+//        content = content.replacingOccurrences(of: "</p>", with: "")
+        
+        let str = content.convertHtml()
+        
+        str.addAttributes(options, range: NSMakeRange(0, str.length))
+        if str.attributedSubstring(from: NSMakeRange(str.length-1, 1)).string == "\n" {
+            str.deleteCharacters(in: NSMakeRange(str.length-1, 1))
+        }
+        tv.attributedText = str
+        
+        let h = tv.sizeThatFits(CGSize(width: Constants.SCREEN_WIDTH - 100, height: 10000)).height + 22
+        if h < 50 {
+            return 50
         } else {
             return h
         }

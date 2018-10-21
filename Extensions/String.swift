@@ -24,10 +24,7 @@ extension String {
             return self
         }
         
-        var str = attributedString.string
-        str = str.replacingOccurrences(of: "\n", with: "")
-        
-        return str
+        return attributedString.string
     }
     
     func dateFromString() -> Date {
