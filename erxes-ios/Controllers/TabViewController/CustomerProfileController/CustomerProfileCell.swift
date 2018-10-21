@@ -26,13 +26,13 @@ class CustomerProfileCell: UITableViewCell {
         titleLbl = UILabel()
         titleLbl.textAlignment = .left
         titleLbl.textColor = UIColor.TEXT_COLOR
-        titleLbl.font = UIFont.fontWith(type: .light, size: 14)
+        titleLbl.font = Font.light(14)
         contentView.addSubview(titleLbl)
         
         valueLbl = UILabel()
         valueLbl.textAlignment = .right
         valueLbl.textColor = UIColor.TEXT_COLOR
-        valueLbl.font = UIFont.fontWith(type: .light, size: 14)
+        valueLbl.font = Font.light(14)
         contentView.addSubview(valueLbl)
    
         self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)

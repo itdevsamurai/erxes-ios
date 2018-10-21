@@ -41,7 +41,7 @@ class ContactController: UIViewController {
         
         let btnCancel = UIButton(type: .custom)
         btnCancel.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
-        btnCancel.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        btnCancel.titleLabel?.font = Font.regular(13)
         btnCancel.setTitleColor(.ERXES_COLOR, for: .normal)
         btnCancel.setTitle("Cancel", for: .normal)
         btnCancel.contentMode = UIViewContentMode.center
@@ -49,7 +49,7 @@ class ContactController: UIViewController {
         
         field.rightView = btnCancel
         field.rightViewMode = .whileEditing
-        field.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        field.font = Font.regular(15)
         field.returnKeyType = .search
         
         return field
@@ -110,11 +110,11 @@ class ContactController: UIViewController {
         let control = UISegmentedControl(items: items)
         control.frame = CGRect(x: 0, y: 0, width: 200, height: 23)
         control.layer.cornerRadius = 5.0
-        control.tintColor = UIColor.init(hexString: "4e25a5")
-        control.backgroundColor = UIColor.init(hexString: "421f8b")
+//        control.tintColor = UIColor.init(hexString: "4e25a5")
+//        control.backgroundColor = UIColor.init(hexString: "421f8b")
         let attributes = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
 
         control.setTitleTextAttributes(attributes, for: .normal)
@@ -153,9 +153,16 @@ class ContactController: UIViewController {
             if !customer.primaryPhone.isNullOrEmpty{
                 
                 actionSheet.addAction(UIAlertAction(title: "Make a phone call", style: .default, handler: { (action) in
-                    if let url = URL(string: "tel://\(customer.primaryPhone)") {
-                        UIApplication.shared.openURL(url)
-                    }
+                 
+//                    if let url = URL(string: "tel://\(customer.primaryPhone)"), UIApplication.shared.canOpenURL(url) {
+//                        if #available(iOS 10, *) {
+//                            UIApplication.shared.open(url)
+//                        } else {
+//                            UIApplication.shared.openURL(url)
+//                        }
+//                    }
+                    print(customer.primaryPhone)
+                    self.dialNumber(number: customer.primaryPhone!)
                 }))
             }
            
@@ -174,9 +181,25 @@ class ContactController: UIViewController {
             self.present(actionSheet, animated: true)
         }
     }
+    
+    func dialNumber(number : String) {
+        
+        if let url = URL(string: "tel://\(number)"),
+            UIApplication.shared.canOpenURL(url) {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler:nil)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        } else {
+            // add error message here
+        }
+    }
 
     @objc func toggleSegmentedControl(sender: UISegmentedControl) {
 
+        self.segmentedControl.changeUnderlinePosition()
+        
         let leftItem: UIBarButtonItem = {
             let barButtonItem = UIBarButtonItem()
             return barButtonItem
@@ -227,6 +250,7 @@ class ContactController: UIViewController {
         self.navigationItem.leftBarButtonItem = leftItem
         self.navigationItem.rightBarButtonItem = rightItem
         segmentedControl.addTarget(self, action: #selector(toggleSegmentedControl(sender:)), for: .valueChanged)
+        segmentedControl.addUnderlineForSelectedSegment()
         self.navigationItem.titleView = segmentedControl
 
         tableView.delegate = self
@@ -284,7 +308,7 @@ class ContactController: UIViewController {
         self.title = "Contacts"
         self.view.backgroundColor = UIColor.white
         self.configureViews()
-//        self.getCustomers()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -481,7 +505,7 @@ extension ContactController: UITableViewDelegate {
             }
 
             if fullName != "Unnamed" {
-                cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
             }
 
             } else {
@@ -493,20 +517,20 @@ extension ContactController: UITableViewDelegate {
                 if company.plan != nil {
                     cell?.bottomLabel.text = company.plan
                 }
-                cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
             }
 
             return cell!
         }
 
         func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            if editingStyle == .delete {
-                if isCustomer {
-                    deleteCustomer(index: indexPath.row)
-                } else {
-                    deleteCompany(index: indexPath.row)
-                }
-            }
+//            if editingStyle == .delete {
+//                if isCustomer {
+//                    deleteCustomer(index: indexPath.row)
+//                } else {
+//                    deleteCompany(index: indexPath.row)
+//                }
+//            }
         }
 
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -525,10 +549,12 @@ extension ContactController: UITableViewDelegate {
                 if !customer.primaryEmail.isNullOrEmpty {
                     email = customer.primaryEmail!
                 }
-                navigate(.contactDetail(id: customer.id, name: name, email:email ))
+
+                navigate(.contactDetail(id: customer.id, name: name, isCompany: false))
             } else {
                 let company = companies[indexPath.row]
-                navigate(.companyProfile(id: company.id))
+               
+                navigate(.contactDetail(id: company.id, name: company.primaryName!, isCompany: true))
             }
 
         }
@@ -596,5 +622,55 @@ extension ContactController: UITextFieldDelegate {
             self.getCompanies()
         }
         return true
+    }
+}
+
+
+extension UISegmentedControl{
+    func removeBorder(){
+        let backgroundImage = UIImage.getColoredRectImageWith(color: UIColor.ERXES_COLOR.cgColor, andSize: self.bounds.size)
+        self.setBackgroundImage(backgroundImage, for: .normal, barMetrics: .default)
+        self.setBackgroundImage(backgroundImage, for: .selected, barMetrics: .default)
+        self.setBackgroundImage(backgroundImage, for: .highlighted, barMetrics: .default)
+        
+        let deviderImage = UIImage.getColoredRectImageWith(color: UIColor.ERXES_COLOR.cgColor, andSize: CGSize(width: 1.0, height: self.bounds.size.height))
+        self.setDividerImage(deviderImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
+//        self.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.gray], for: .normal)
+//        self.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(red: 67/255, green: 129/255, blue: 244/255, alpha: 1.0)], for: .selected)
+    }
+    
+    func addUnderlineForSelectedSegment(){
+        removeBorder()
+        let underlineWidth: CGFloat = self.bounds.size.width / CGFloat(self.numberOfSegments)
+        let underlineHeight: CGFloat = 2.0
+        let underlineXPosition = CGFloat(selectedSegmentIndex * Int(underlineWidth))
+        let underLineYPosition = self.bounds.size.height - 1.0
+        let underlineFrame = CGRect(x: underlineXPosition, y: underLineYPosition, width: underlineWidth, height: underlineHeight)
+        let underline = UIView(frame: underlineFrame)
+        underline.backgroundColor = .white
+        underline.tag = 1
+        self.addSubview(underline)
+    }
+    
+    func changeUnderlinePosition(){
+        guard let underline = self.viewWithTag(1) else {return}
+        let underlineFinalXPosition = (self.bounds.width / CGFloat(self.numberOfSegments)) * CGFloat(selectedSegmentIndex)
+        UIView.animate(withDuration: 0.1, animations: {
+            underline.frame.origin.x = underlineFinalXPosition
+        })
+    }
+}
+
+extension UIImage{
+    
+    class func getColoredRectImageWith(color: CGColor, andSize size: CGSize) -> UIImage{
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        let graphicsContext = UIGraphicsGetCurrentContext()
+        graphicsContext?.setFillColor(color)
+        let rectangle = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        graphicsContext?.fill(rectangle)
+        let rectangleImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return rectangleImage!
     }
 }

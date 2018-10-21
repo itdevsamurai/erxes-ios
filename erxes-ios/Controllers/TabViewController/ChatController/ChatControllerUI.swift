@@ -70,7 +70,7 @@ class ChatControllerUI:ViewController {
         
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
         textfield.leftViewMode = .always
-        textfield.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        textfield.font = Font.regular(14)
 //        textfield.addTarget(self, action: #selector(InputViewTextChanged(_:)), for: .editingChanged)
         
         return textfield
@@ -103,8 +103,8 @@ class ChatControllerUI:ViewController {
         let rightItem: UIBarButtonItem = {
             let button = UIButton()
             let barButtomItem = UIBarButtonItem()
-            button.setBackgroundImage(UIImage.erxes(with: .user, textColor: .ERXES_COLOR), for: .normal)
-            button.tintColor = UIColor.ERXES_COLOR
+            button.setBackgroundImage(UIImage.erxes(with: .user, textColor: .white), for: .normal)
+            button.tintColor = .white
 //            button.addTarget(self, action: #selector(gotoUser(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
             return barButtomItem
@@ -164,7 +164,7 @@ class ChatControllerUI:ViewController {
         
         label.text = "Internal note"
         label.textColor = UIColor(hexString: "#a9a9a9", alpha: 0.57)
-        label.font = UIFont.fontWith(type: .comfortaa, size: 12)
+        label.font = Font.regular(12)
         
         inputContainer.addSubview(chatInputView)
         inputContainer.addSubview(btnAttachment)

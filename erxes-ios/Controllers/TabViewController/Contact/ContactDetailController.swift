@@ -16,24 +16,25 @@ protocol ContactDelegate: class {
 
 class ContactDetailController: DTPagerController {
 
-    private var titles:[String] = ["Customer","Activity","Notes","Conversation"]
-
+    private var titles:[String] = ["Profile","Activity","Notes","Conversation"]
+   
     var contactId:String = String()
     var contactName = String()
     var email = String()
-    var logs = [ActivityLogsCustomerQuery.Data.ActivityLogsCustomer?](){
+    var logs = [LogData](){
         didSet{
             activityController.logs = self.logs
             noteController.notes = self.logs
             conversationController.conversations = self.logs
         }
     }
-
+    var isCompany = Bool()
     
     var activityController = ActivityController()
     var noteController = NoteController()
     var conversationController = ConversationsController()
-    
+    var companyController = CompanyController()
+    var customerController = CustomerProfileController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,11 +44,13 @@ class ContactDetailController: DTPagerController {
     }
     
     func configureViews(){
-        self.font = UIFont.fontWith(type: .comfortaa, size: 14)
-        self.selectedFont = UIFont.fontWith(type: .comfortaaBold, size: 14)
+        self.font = Font.regular(14)
+        self.selectedFont = Font.bold(14)
         self.selectedTextColor = .ERXES_COLOR
         self.scrollIndicator.backgroundColor = .ERXES_COLOR
-        let customerController = CustomerProfileController(_id: self.contactId)
+        companyController = CompanyController(id: self.contactId)
+        companyController.title = "Company"
+        customerController = CustomerProfileController(_id: self.contactId)
         customerController.title = "Customer"
         activityController.contactName = self.contactName
         activityController.contactId = self.contactId
@@ -56,15 +59,39 @@ class ContactDetailController: DTPagerController {
         noteController.contactId = self.contactId
         noteController.email = self.email
         noteController.delegate = self
+        noteController.isCompany = self.isCompany
         conversationController.title = "Conversation"
         conversationController.contactId = self.contactId
         conversationController.contactName = self.contactName
-        let controllers = [customerController,activityController,noteController,conversationController]
+        
+        var controllers = [UIViewController]()
+        if isCompany {
+           controllers =  [companyController,activityController,noteController,conversationController]
+        }else{
+            controllers =  [customerController,activityController,noteController,conversationController]
+        }
+        
         self.viewControllers = controllers
         self.delegate = self
+        
+        let rightItem: UIBarButtonItem = {
+            var rightImage = UIImage.erxes(with: .edit, textColor: UIColor.TEXT_COLOR)
+            var saveImage = UIImage.erxes(with: .user2, textColor: UIColor.TEXT_COLOR)
+            rightImage = rightImage.withRenderingMode(.alwaysTemplate)
+            saveImage = saveImage.withRenderingMode(.alwaysTemplate)
+            let barButtomItem = UIBarButtonItem()
+            let button = UIButton()
+            button.setBackgroundImage(rightImage, for: .normal)
+            button.setBackgroundImage(saveImage, for: .selected)
+            button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
+            barButtomItem.customView = button
+            return barButtomItem
+        }()
+        rightItem.tintColor = UIColor.white
+        self.navigationItem.rightBarButtonItem = rightItem
     }
 
-    init(contactId:String, name:String, primaryEmail:String) {
+    init(contactId:String, name:String, isCompany:Bool) {
 
         let segmentedControl = HMSegmentedControl(sectionTitles: titles )
         
@@ -72,7 +99,8 @@ class ContactDetailController: DTPagerController {
         self.pageSegmentedControl = segmentedControl!
         self.contactId = contactId
         self.contactName = name
-        self.email = primaryEmail
+        self.isCompany = isCompany
+       
     }
     
     override func setUpSegmentedControl(viewControllers: [UIViewController]) {
@@ -84,7 +112,7 @@ class ContactDetailController: DTPagerController {
         segmentedControl.selectionIndicatorHeight = 1
         segmentedControl.titleTextAttributes =  [
             NSAttributedStringKey.foregroundColor: UIColor.ERXES_COLOR,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 13)
+            NSAttributedStringKey.font: Font.regular(13)
         ]
     }
     
@@ -97,9 +125,17 @@ class ContactDetailController: DTPagerController {
 
     }
 
+    @objc func editAction(sender:UIButton) {
+        if isCompany {
+            companyController.editAction(sender: sender)
+        }else{
+           customerController.editAction(sender: sender)
+        }
+    }
+    
     func getActivityLog(){
         self.logs.removeAll()
-
+        if !self.isCompany {
         let query = ActivityLogsCustomerQuery(_id: contactId)
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
@@ -116,10 +152,37 @@ class ContactDetailController: DTPagerController {
             
             if result?.data != nil {
                 if let logDatas = result?.data?.activityLogsCustomer {
-                    for log in logDatas {
-                        if log?.list.count != 0 {
+                    let logsTmp  = logDatas.map { ($0?.fragments.logData)! }
+                    for log in logsTmp {
+                        if log.list.count != 0 {
                             self?.logs.append(log)
-
+                        }
+                    }
+                }
+            }
+        }
+        }else{
+            let query = ActivityLogsCompanyQuery(_id: contactId)
+            appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    let alert = FailureAlert(message: error.localizedDescription)
+                    alert.show(animated: true)
+                    return
+                }
+                
+                if let err = result?.errors {
+                    let alert = FailureAlert(message: err[0].localizedDescription)
+                    alert.show(animated: true)
+                }
+                
+                if result?.data != nil {
+                    if let logDatas = result?.data?.activityLogsCompany {
+                        let logsTmp  = logDatas.map { ($0?.fragments.logData)! }
+                        for log in logsTmp {
+                            if log.list.count != 0 {
+                                self?.logs.append(log)
+                            }
                         }
                     }
                 }
@@ -133,7 +196,28 @@ class ContactDetailController: DTPagerController {
 extension ContactDetailController: DTPagerControllerDelegate {
     func pagerController(_ pagerController: DTPagerController, didChangeSelectedPageIndex index: Int) {
         self.title = titles[index]
+        if index == 0 {
+            let rightItem: UIBarButtonItem = {
+                var rightImage = UIImage.erxes(with: .edit, textColor: UIColor.TEXT_COLOR)
+                var saveImage = UIImage.erxes(with: .user2, textColor: UIColor.TEXT_COLOR)
+                rightImage = rightImage.withRenderingMode(.alwaysTemplate)
+                saveImage = saveImage.withRenderingMode(.alwaysTemplate)
+                let barButtomItem = UIBarButtonItem()
+                let button = UIButton()
+                button.setBackgroundImage(rightImage, for: .normal)
+                button.setBackgroundImage(saveImage, for: .selected)
+                button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
+                barButtomItem.customView = button
+                return barButtomItem
+            }()
+            rightItem.tintColor = UIColor.white
+            self.navigationItem.rightBarButtonItem = rightItem
+        }else {
+            self.navigationItem.rightBarButtonItem = nil
+        }
     }
+    
+   
 }
 
 
@@ -160,6 +244,8 @@ extension HMSegmentedControl: DTSegmentedControlProtocol {
 }
 
 extension ContactDetailController: ContactDelegate {
+   
+    
     func reloadData() {
         self.getActivityLog()
     }

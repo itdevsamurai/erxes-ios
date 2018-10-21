@@ -32,7 +32,7 @@ class SettingsCell: UITableViewCell {
         desc = UILabel()
         desc.textAlignment = .left
         desc.textColor = UIColor.black
-        desc.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        desc.font = Font.regular(15)
         contentView.addSubview(desc)
 
     }

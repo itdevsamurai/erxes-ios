@@ -39,12 +39,12 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                 if userName.count > 1 {
                     if (conversation.customer?.isUser != nil) {
                         if (conversation.customer?.isUser)! {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                         } else {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                         }
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                     }
                 } else {
                     if conversation.customer?.email != nil {
@@ -86,23 +86,23 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                 userName = (conversation.customer?.firstName!)!
                 if (conversation.customer?.isUser != nil) {
                     if (conversation.customer?.isUser)! {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                     }
                 } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                 }
             } else if conversation.customer?.lastName != nil {
                 userName = (conversation.customer?.lastName!)!
                 if (conversation.customer?.isUser != nil) {
                     if (conversation.customer?.isUser)! {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                     } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                     }
                 } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.fontWith(type: .light, size: 14)])
+                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                 }
             }
             
@@ -214,9 +214,6 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             closeAction.backgroundColor = UIColor.init(hexString: "37ce49")
             arr.append(closeAction)
         }
-        
-        
-        
         return arr
     }
     
@@ -229,28 +226,4 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!, customerId: (conversation.customer?.id)!))
         }
     }
-    
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-//        let shadovFrame = shadovView.frame
-//        if scrollView.contentOffset.y < 0 {
-//
-//            UIView.animate(withDuration: 0.3) {
-//
-//                self.shadovView.frame = CGRect(x: shadovFrame.origin.x, y: self.topOffset + 75, width: shadovFrame.size.width, height: shadovFrame.size.height)
-//                self.tableView.frame = CGRect(x: shadovFrame.origin.x, y: self.topOffset + 75, width: shadovFrame.size.width, height: shadovFrame.size.height)
-//
-//            }
-//        } else {
-//
-//            UIView.animate(withDuration: 0.3) {
-//
-//                self.shadovView.frame = CGRect(x: 16, y: self.topOffset, width: shadovFrame.size.width, height: shadovFrame.size.height)
-//                self.tableView.frame = CGRect(x: 16, y: self.topOffset, width: shadovFrame.size.width, height: shadovFrame.size.height)
-//            }
-//        }
-    }
-    
-    
 }

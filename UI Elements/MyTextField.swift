@@ -18,7 +18,7 @@ class MyTextField: UITextField, UITextFieldDelegate {
        
         
         self.textColor = .GRAY_COLOR
-        self.font = UIFont.fontWith(type: .comfortaa, size: 16)
+        self.font = Font.regular(16)
         
         
         

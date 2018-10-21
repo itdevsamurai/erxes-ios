@@ -22,14 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
-        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)
+//        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)
+        let backImage = UIImage(named: "ic_back")
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().backIndicatorImage = backImage
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-1000, 0), for: .default)
         let attrs = [
             NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont.fontWith(type: .comfortaa, size: 15)
+            NSAttributedStringKey.font: Font.regular(15)
         ]
       
         UINavigationBar.appearance().titleTextAttributes = attrs

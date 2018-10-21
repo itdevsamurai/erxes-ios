@@ -9,6 +9,7 @@ query getUsers{
 
 fragment UserData on User {
     _id
+    username
     details{
         fullName
         avatar

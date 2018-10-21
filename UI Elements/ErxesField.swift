@@ -31,7 +31,7 @@ class ErxesField: UIView {
         self.addSubview(line)
         line.tag = 1
         titleLabel = UILabel ()
-        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 12    )
+        titleLabel.font = Font.regular(12)
         titleLabel.textColor = .black
         
         
@@ -39,7 +39,7 @@ class ErxesField: UIView {
         
         textField = UITextField ()
         textField.delegate = self
-        textField.font = UIFont.fontWith(type: .comfortaa, size: 15   )
+        textField.font = Font.regular(15)
         textField.borderStyle = .none
         textField.textColor = .black
 

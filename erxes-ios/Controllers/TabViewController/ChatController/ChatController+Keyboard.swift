@@ -26,7 +26,6 @@ extension ChatController {
                 make.bottom.equalToSuperview().inset(keyboardFrame.size.height)
             }
             
-            print(keyboardFrame)
 //            inputContainer.snp.updateConstraints { (make) in
 //                make.bottom.equalToSuperview()
 //            }
