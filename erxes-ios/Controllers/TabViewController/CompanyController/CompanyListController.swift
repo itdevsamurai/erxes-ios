@@ -38,7 +38,7 @@ class CompanyListController: UIViewController {
         
         let btnCancel = UIButton(type: .custom)
         btnCancel.frame = CGRect(x: 0, y: 0, width: 80, height: 30)
-        btnCancel.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        btnCancel.titleLabel?.font = Font.regular(13)
         btnCancel.setTitleColor(.ERXES_COLOR, for: .normal)
         btnCancel.setTitle("Cancel", for: .normal)
         btnCancel.contentMode = UIViewContentMode.center
@@ -46,7 +46,7 @@ class CompanyListController: UIViewController {
         
         field.rightView = btnCancel
         field.rightViewMode = .whileEditing
-        field.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        field.font = Font.regular(15)
         field.returnKeyType = .search
         field.addTarget(self, action: #selector(textFieldDidChange(textfield:)), for: .editingChanged)
         return field
@@ -204,7 +204,7 @@ extension CompanyListController: UITableViewDataSource {
   
             company = companies[indexPath.row]
         
-        cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        cell.textLabel?.font = Font.regular(14)
         cell.textLabel?.text = company?.primaryName
         
         return cell

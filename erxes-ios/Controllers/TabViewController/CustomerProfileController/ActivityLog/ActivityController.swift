@@ -96,9 +96,9 @@ extension ActivityController: UITableViewDataSource {
         let label = UILabel(frame: CGRect(x: 48, y: 0, width: Constants.SCREEN_WIDTH-64, height: 40))
         label.textColor = .black
         label.font = Font.regular(14)
-        let date = logs[section]?.date
-        let monthName = DateFormatter().monthSymbols[(date?.month)!]
-        label.text = String(format: "%@ %i", monthName, (date?.year)!)
+        let date = logs[section].date
+        let monthName = DateFormatter().monthSymbols![(date.month)!]
+        label.text = String(format: "%@ %i", monthName, (date.year)!)
         headerView.addSubview(label)
         return headerView
     }

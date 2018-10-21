@@ -12,7 +12,7 @@ import Eureka
 import ImageRow
 import Alamofire
 class CustomerProfileController: FormViewController {
-
+    
     var size = 0
     var avatarUrl = String()
     var profileField = FieldGroup(id: "profile")
@@ -31,63 +31,63 @@ class CustomerProfileController: FormViewController {
             self.form.rowBy(tag: "ownerId")?.updateCell()
         }
     }
-
-
-
+    
+    
+    
     var fieldGroups = [FieldGroup]()
-
-
-
+    
+    
+    
     func isEdit() -> Bool {
         return self.customerId != nil
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.form.removeAll()
-
+        
         self.title = "Customer"
-
+        
         self.configureViews()
         self.getFields()
-     
+        
     }
-
-
-
-
+    
+    
+    
+    
     func getFields() {
-
-
+        
+        
         let query = FieldsGroupsQuery(contentType: "customer")
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-
+                
                 return
             }
-
+            
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-
+                
             }
-
-
+            
+            
             if result?.data != nil {
                 if let resultData = result?.data?.fieldsGroups {
-
+                    
                     self?.fieldGroups = resultData.map { ($0?.fragments.fieldGroup)! }
-
+                    
                     self?.profileField.isVisible = true
                     self?.profileField.name = "PROFILE"
                     self?.profileField.order = -1
-//                    self?.profileField.fields = [field]
+                    //                    self?.profileField.fields = [field]
                     var fieldsArray = [FieldGroup.Field]()
-
+                    
                     if let path = Bundle.main.path(forResource: "Profile", ofType: "json") {
                         do {
                             let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
@@ -110,9 +110,9 @@ class CustomerProfileController: FormViewController {
                         }
                     }
                     self?.profileField.fields = fieldsArray
-
+                    
                     self?.fieldGroups.insert((self?.profileField)!, at: 0)
-
+                    
                     if ((self?.customerId) == nil) {
                         self?.buildForm(customer: nil)
                     }else{
@@ -121,27 +121,27 @@ class CustomerProfileController: FormViewController {
                 }
             }
         }
-
+        
     }
-
+    
     func getCustomerData() {
-
+        
         let query = CustomerDetailQuery(_id: self.customerId!)
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-
+                
                 return
             }
-
+            
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-
+                
             }
-
+            
             if result?.data != nil {
                 if let result = result?.data?.customerDetail?.fragments.customerInfo {
                     self?.assignedUser = result.owner?.fragments.userData
@@ -157,92 +157,86 @@ class CustomerProfileController: FormViewController {
             }
         }
     }
-
+    
     func buildForm(customer: CustomerInfo?) {
         if self.form.count != 0 {
-           self.form.removeAll()
+            self.form.removeAll()
         }
         let usersController = UsersController()
         usersController.delegate = self
-
-       
-
-            var profile = [String: Any]()
-            var customFields = [String: Any]()
-            if customer != nil {
-                let obj = Mirror(reflecting: customer!)
-
-
-                for case let (label?, value) in obj.children {
-                    let c = value as! [String: Any]
-                    profile = c
-
-                    if let tmp = profile["customFieldsData"] as? [String: Any] {
-                        customFields = tmp
-                    }
-
+        
+        
+        
+        var profile = [String: Any]()
+        var customFields = [String: Any]()
+        if customer != nil {
+            let obj = Mirror(reflecting: customer!)
+            
+            
+            for case let (label?, value) in obj.children {
+                let c = value as! [String: Any]
+                profile = c
+                
+                if let tmp = profile["customFieldsData"] as? [String: Any] {
+                    customFields = tmp
                 }
+                
             }
-
-            for group in fieldGroups {
-
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textField.keyboardType = .numberPad
-                                })
-                            } else if field?.type == "input" && field?.validation == "date" {
+        }
+        
+        for group in fieldGroups {
+            
+            if group.isVisible! {
+                var section = Section()
+                section.header = HeaderFooterView(stringLiteral: group.name!)
+                form +++ section
+                let sorted = group.fields?.sorted { obj1, obj2 in
+                    (obj1?.order)! < (obj2?.order)!
+                }
+                if group.order == -1 {
+                    for field in sorted! {
+                        if (field?.isVisible)! {
+                            if field?.type == "firstName" || field?.type == "lastName" {
                                 form.last!
-                                <<< DateRow (field?.id) { row in
-                                    row.title = field?.text
-                                    if let val = profile[((field?.id)!)] as? Date {
-                                        row.value = val
-                                    }
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                })
-
-                            } else if field?.type == "select" {
+                                    <<< NameRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                }
+                            } else if field?.type == "input" && (field?.validation?.isEmpty)! {
                                 form.last!
-                                <<< PushRow<String> (field?.id) { row in
-                                    row.title = field?.text
-                                    row.options = field?.options as? [String]
-                                    row.value = ""
-                                    if let val = profile[((field?.id)!)] as? String {
-                                        row.value = val
-                                    }
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                }).onPresent { from, to in
-                                    to.selectableRowCellUpdate = { cell, row in
-                                        cell.textLabel!.font = Font.light(14)
-                                        cell.textLabel!.textColor = UIColor.TEXT_COLOR
-                                    }
-                                } else if field?.type == "input" && field?.validation == "number" {
-                                    form.last!
                                     <<< TextRow (field?.id) { row in
                                         row.title = field?.text
                                         if let val = profile[((field?.id)!)] as? String {
                                             row.value = val
                                         }
-
-                                    }.cellSetup({ (cell, lrow) in
-                                        cell.textField.keyboardType = .numberPad
-                                    })
-                                } else if field?.type == "input" && field?.validation == "date" {
-                                    form.last!
+                                }
+                            } else if field?.type == "input" && field?.validation == "number" {
+                                form.last!
+                                    <<< TextRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = profile[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                        
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textField.keyboardType = .numberPad
+                                        })
+                            } else if field?.type == "input" && field?.validation == "date" {
+                                form.last!
                                     <<< DateRow (field?.id) { row in
                                         row.title = field?.text
                                         if let val = profile[((field?.id)!)] as? Date {
                                             row.value = val
                                         }
-                                    }.cellSetup({ (cell, lrow) in
-                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-                                    })
-
-                                } else if field?.type == "select" {
-                                    form.last!
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        })
+                                
+                            } else if field?.type == "select" {
+                                form.last!
                                     <<< PushRow<String> (field?.id) { row in
                                         row.title = field?.text
                                         row.options = field?.options as? [String]
@@ -250,17 +244,17 @@ class CustomerProfileController: FormViewController {
                                         if let val = profile[((field?.id)!)] as? String {
                                             row.value = val
                                         }
-                                    }.cellSetup({ (cell, lrow) in
-                                        cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                        cell.textLabel?.font = UIFont.fontWith(type: .light, size: 14)
-                                    }).onPresent { from, to in
-                                        to.selectableRowCellUpdate = { cell, row in
-                                            cell.textLabel!.font = UIFont.fontWith(type: .light, size: 14)
-                                            cell.textLabel!.textColor = UIColor.TEXT_COLOR
-                                        }
-                                    }
-                                } else if field?.type == "check" && field?.options == ["on", "off"] {
-                                    form.last!
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        }).onPresent { from, to in
+                                            to.selectableRowCellUpdate = { cell, row in
+                                                cell.textLabel!.font = Font.light(14)
+                                                cell.textLabel!.textColor = UIColor.TEXT_COLOR
+                                            }
+                                }
+                            } else if field?.type == "check" && field?.options == ["on", "off"] {
+                                form.last!
                                     <<< SwitchRow(field?.id) { row in
                                         row.title = field?.text
                                         row.value = false
@@ -271,210 +265,305 @@ class CustomerProfileController: FormViewController {
                                                 row.value = false
                                             }
                                         }
-
-
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                })
+                                        
+                                        
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        })
                             } else if field?.type == "check" {
                                 form.last!
-                                <<< MultipleSelectorRow<String>(field?.id) { row in
-                                    row.title = field?.text
-                                    row.options = field?.options as? [String]
-//                                        row.value = profile[(field?.id)!] as? Set<String>
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                }).onPresent { from, to in
-                                    to.selectableRowCellUpdate = { cell, row in
-
-                                        cell.textLabel!.font = Font.light(14)
-                                        cell.textLabel!.textColor = UIColor.TEXT_COLOR
-                                    }
-                                }
-                            } else if field?.validation == "email" {
-                                form.last!
-                                <<< EmailRow(field?.id) { row in
-                                    row.title = field?.text
-                                    if let val = profile[((field?.id)!)] as? String {
-                                        row.value = val
-                                    }
+                                    <<< MultipleSelectorRow<String>(field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+                                        //                                        row.value = profile[(field?.id)!] as? Set<String>
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        }).onPresent { from, to in
+                                            to.selectableRowCellUpdate = { cell, row in
+                                                
+                                                cell.textLabel!.font = Font.light(14)
+                                                cell.textLabel!.textColor = UIColor.TEXT_COLOR
+                                            }
                                 }
                             } else if field?.text == "Owner" {
-
+                                
                                 form.last!
-                                <<< PushRow<UserData>(field?.id) { row in
-                                    row.title = field?.text
-                                    row.options = self.users
-                                    row.value = customer?.owner?.fragments.userData
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                    lrow.displayValueFor = {
-                                        if let t = $0 {
-                                            print("owner = ", t)
-                                            return t.details?.fullName
-                                        }
+                                    
+                                    <<< LabelRow(field?.id) { row in
+                                        row.title = field?.text
+                                        row.value = self.assignedUser?.details?.fullName
+                                        }.cellUpdate({ (cell, lrow) in
+                                            lrow.value = self.assignedUser?.details?.fullName
+                                        }).onCellSelection({ (cell, row) in
+                                            self.navigationController?.pushViewController(usersController, animated: true)
+                                        })
+                            } else if field?.id == "primaryPhone" {
+                                
+                                if((customer?.phones) != nil) {
+                                    if customer?.phones?.count == 0 {
+                                        form.last!
+                                            <<< TextRow (field?.id) { row in
+                                                row.title = field?.text
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                                
+                                                }.cellSetup({ (cell, lrow) in
+                                                    cell.textField.keyboardType = .numberPad
+                                                }).onCellHighlightChanged({ (cell, trow) in
+                                                    
+                                                    if !trow.isHighlighted && trow.value?.count != 0 {
+                                                        self.phones?.append(trow.value)
+                                                    }
+                                                })
                                     } else {
                                         form.last!
+                                            <<< ActionSheetRow<String> (field?.id) { row in
+                                                row.title = field?.text
+                                                if let options = customer?.phones {
+                                                    row.options = (options as! [String])
+                                                }
+                                                row.value = ""
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                        }
+                                    }
+                                } else {
+                                    form.last!
                                         <<< TextRow (field?.id) { row in
                                             row.title = field?.text
                                             if let val = profile[((field?.id)!)] as? String {
                                                 row.value = val
                                             }
-                                        }.cellSetup({ (cell, lrow) in
-                                            cell.textField.keyboardType = .numberPad
-                                        }).onCellHighlightChanged({ (cell, trow) in
-                                            if !trow.isHighlighted && trow.value?.count != 0 {
-                                                self.phones?.append(trow.value)
-                                            }
-                                        })
-                                    }
-                                }).onPresent { from, to in
-                                    to.selectableRowCellUpdate = { cell, row in
-                                        cell.textLabel!.font = Font.light(14)
-                                        cell.textLabel!.textColor = UIColor.TEXT_COLOR
-                                    }
-                                    
-                                }else if field?.id == "avatar" {
-                                    form.last!
-                                        <<< ImageRow(field?.id) { row in
-                                            row.title = field?.text
-                                            if self.avatarUrl.count != 0 {
-                                                let url = URL(string: self.avatarUrl)
-                                                let data = try? Data(contentsOf: url!)
-                                                let image = UIImage.sd_image(with: data)
-                                                row.value = image
-                                            }
-                                            }.cellSetup({ (cell, irow) in
-                                                cell.accessoryView?.layer.cornerRadius = 17
-                                                cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
-                                                cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
-                                                cell.textLabel?.textColor = .TEXT_COLOR
-                                            }).onChange({ (irow) in
-                                               let image = irow.value
-                                                self.uploadFile(image: image!)
+                                            }.cellSetup({ (cell, lrow) in
+                                                cell.textField.keyboardType = .numberPad
+                                            }).onCellHighlightChanged({ (cell, trow) in
+                                                if !trow.isHighlighted && trow.value?.count != 0 {
+                                                    self.phones?.append(trow.value)
+                                                }
                                             })
                                 }
-
-                            }
-                        }
-                    } else {
-
-                        for field in sorted! {
-                            if (field?.isVisible)! {
-                                if field?.type == "firstName" || field?.type == "lastName" {
+                                
+                            } else if field?.id == "primaryEmail" {
+                                print(customer?.emails)
+                                if((customer?.emails) != nil) {
+                                    if customer?.emails?.count == 0 {
+                                        form.last!
+                                            <<< TextRow (field?.id) { row in
+                                                row.title = field?.text
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                                
+                                                }.cellSetup({ (cell, lrow) in
+                                                    cell.textField.keyboardType = .emailAddress
+                                                }).onCellHighlightChanged({ (cell, trow) in
+                                                    
+                                                    if !trow.isHighlighted && trow.value?.count != 0 {
+                                                        self.emails?.append(trow.value)
+                                                    }
+                                                })
+                                    } else {
+                                        form.last!
+                                            <<< ActionSheetRow<String> (field?.id) { row in
+                                                row.title = field?.text
+                                                if let options = customer?.emails {
+                                                    row.options = (options as! [String])
+                                                }
+                                                row.value = ""
+                                                if let val = profile[((field?.id)!)] as? String {
+                                                    row.value = val
+                                                }
+                                        }
+                                    }
+                                } else {
                                     form.last!
+                                        <<< TextRow (field?.id) { row in
+                                            row.title = field?.text
+                                            if let val = profile[((field?.id)!)] as? String {
+                                                row.value = val
+                                            }
+                                            }.cellSetup({ (cell, lrow) in
+                                                cell.textField.keyboardType = .emailAddress
+                                            }).onCellHighlightChanged({ (cell, trow) in
+                                                print(trow.isHighlighted)
+                                                if !trow.isHighlighted && trow.value?.count != 0 {
+                                                    self.emails?.append(trow.value)
+                                                }
+                                            })
+                                }
+                                
+                            }else if field?.id == "avatar" {
+                                form.last!
+                                    <<< ImageRow(field?.id) { row in
+                                        row.title = field?.text
+                                        if self.avatarUrl.count != 0 {
+                                            let url = URL(string: self.avatarUrl)
+                                            let data = try? Data(contentsOf: url!)
+                                            let image = UIImage.sd_image(with: data)
+                                            row.value = image
+                                        }
+                                        }.cellSetup({ (cell, irow) in
+                                            cell.accessoryView?.layer.cornerRadius = 17
+                                            cell.accessoryView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+                                            cell.textLabel?.font = Font.regular(14)
+                                            cell.textLabel?.textColor = .TEXT_COLOR
+                                        }).onChange({ (irow) in
+                                            let image = irow.value
+                                            self.uploadFile(image: image!)
+                                        })
+                            }
+                            
+                        }
+                    }
+                } else {
+                    
+                    for field in sorted! {
+                        if (field?.isVisible)! {
+                            if field?.type == "firstName" || field?.type == "lastName" {
+                                form.last!
                                     <<< NameRow (field?.id) { row in
                                         row.title = field?.text
-
+                                        
                                         if let val = customFields[((field?.id)!)] as? String {
                                             row.value = val
                                         }
-
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                })
+                                        
+                                }
+                            } else if field?.type == "input" && (field?.validation?.isEmpty)! {
+                                form.last!
+                                    <<< TextRow (field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                }
+                            } else if field?.type == "input" && field?.validation == "number" {
+                                form.last!
+                                    <<< TextRow (field?.id) { row in
+                                        
+                                        row.title = field?.text
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textField.keyboardType = .numberPad
+                                        })
+                            } else if field?.type == "input" && field?.validation == "date" {
+                                form.last!
+                                    <<< DateRow (field?.id) { row in
+                                        row.title = field?.text
+                                        let stringDate = customFields[(field?.id)!] as? String
+                                        if (stringDate != nil) {
+                                            row.value = stringDate?.dateFromString()
+                                        }
+                                        
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        })
                             } else if field?.type == "select" {
                                 form.last!
-                                <<< PushRow<String> (field?.id) { row in
-                                    row.title = field?.text
-                                    row.options = field?.options as? [String]
-                                    row.value = ""
-                                    if let val = customFields[((field?.id)!)] as? String {
-                                        row.value = val
-                                    }
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                })
+                                    <<< PushRow<String> (field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+                                        row.value = ""
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        })
                             } else if field?.type == "check" && field?.options == ["on", "off"] {
                                 form.last!
-                                <<< SwitchRow(field?.id) { row in
-                                    row.title = field?.text
-                                    row.value = false
-                                    if let state = customFields[((field?.id)!)] as? String {
-                                        if state == "Yes" {
-                                            row.value = true
-                                        } else {
-                                            row.value = false
+                                    <<< SwitchRow(field?.id) { row in
+                                        row.title = field?.text
+                                        row.value = false
+                                        if let state = customFields[((field?.id)!)] as? String {
+                                            if state == "Yes" {
+                                                row.value = true
+                                            } else {
+                                                row.value = false
+                                            }
                                         }
-                                    }
-                                    
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                })
+                                        
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        })
                             } else if field?.type == "check" {
                                 form.last!
-                                <<< MultipleSelectorRow<String>(field?.id) { row in
-                                    row.title = field?.text
-                                    row.options = field?.options as? [String]
-
-                                    if let array = customFields[(field?.id)!] as? [String] {
-                                        if array.count != 0 {
-                                            let objectSet = Set(array.map { $0 })
-                                            row.value = objectSet
+                                    <<< MultipleSelectorRow<String>(field?.id) { row in
+                                        row.title = field?.text
+                                        row.options = field?.options as? [String]
+                                        
+                                        if let array = customFields[(field?.id)!] as? [String] {
+                                            if array.count != 0 {
+                                                let objectSet = Set(array.map { $0 })
+                                                row.value = objectSet
+                                            }
                                         }
-                                    }
-                                }.cellSetup({ (cell, lrow) in
-                                    cell.textLabel?.textColor = UIColor.TEXT_COLOR
-                                    cell.textLabel?.font = Font.light(14)
-                                })
+                                        }.cellSetup({ (cell, lrow) in
+                                            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+                                            cell.textLabel?.font = Font.light(14)
+                                        })
                             } else if field?.validation == "email" {
                                 form.last!
-                                <<< EmailRow(field?.id) { row in
-                                    row.title = field?.text
-                                    if let val = customFields[((field?.id)!)] as? String {
-                                        row.value = val
-                                    }
+                                    <<< EmailRow(field?.id) { row in
+                                        row.title = field?.text
+                                        if let val = customFields[((field?.id)!)] as? String {
+                                            row.value = val
+                                        }
                                 }
                             }
                         }
                     }
                 }
             }
-            for row in form.allRows {
-                row.baseCell.alpha = 0.7
-                row.baseCell.isUserInteractionEnabled = false
-
-            }
+        }
+        for row in form.allRows {
+            row.baseCell.alpha = 0.7
+            row.baseCell.isUserInteractionEnabled = false
+            
+        }
         
     }
-
-
-
-
- 
+    
+    
+    
+    
+    
     @objc func editAction(sender: UIButton) {
         if sender.isSelected {
             sender.isSelected = false
             for row in form.allRows {
                 row.baseCell.alpha = 0.7
                 row.baseCell.isUserInteractionEnabled = false
-
+                
             }
             if isEdit() {
                 saveAction()
             } else {
                 insertAction()
             }
-
+            
         } else {
             sender.isSelected = true
             for row in form.allRows {
                 row.baseCell.alpha = 1.0
                 row.baseCell.isUserInteractionEnabled = true
-
+                
             }
             let firstRow = form.rowBy(tag: "firstName")
             firstRow?.baseCell.cellBecomeFirstResponder()
         }
     }
-
-
+    
+    
     func insertAction() {
         let mutation = CustomersAddMutation()
         mutation.avatar = self.avatarUrl
@@ -494,31 +583,31 @@ class CustomerProfileController: FormViewController {
         } else {
             mutation.hasAuthority = "No"
         }
-
+        
         mutation.description = form.rowBy(tag: "description")?.baseValue as? String
         if (form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool)! {
             mutation.doNotDisturb = "Yes"
         } else {
             mutation.doNotDisturb = "No"
         }
-
+        
         mutation.links = JSON()
         var customFields = JSON()
-
+        
         for row in form.allRows {
             if row.section?.index != 0 {
-
+                
                 if let textRow = row as? TextRow {
                     customFields[row.tag!] = textRow.baseValue as Any
                 }
-
+                
                 if let dateRow = row as? DateRow {
                     if let dateValue = dateRow.value {
                         let dateString = dateValue.mainDateString()
                         customFields[row.tag!] = dateString
                     }
                 }
-
+                
                 if let switchRow = row as? SwitchRow {
                     if let value = switchRow.value {
                         if value {
@@ -528,7 +617,7 @@ class CustomerProfileController: FormViewController {
                         }
                     }
                 }
-
+                
                 if let multiSelectorRow = row as? MultipleSelectorRow<String> {
                     if let value = multiSelectorRow.value {
                         let arr = Array(value)
@@ -537,12 +626,12 @@ class CustomerProfileController: FormViewController {
                 }
             }
         }
-
+        
         mutation.customFieldsData = customFields
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
-
+                
                 self?.showResult(isSuccess: false, message: error.localizedDescription, resultCompletion: nil)
                 return
             }
@@ -558,9 +647,9 @@ class CustomerProfileController: FormViewController {
             }
         }
     }
-
+    
     func saveAction() {
-
+        
         let mutation = CustomersEditMutation(_id: customerId!)
         mutation.avatar = self.avatarUrl
         mutation.firstName = form.rowBy(tag: "firstName")?.baseValue as? String
@@ -579,31 +668,31 @@ class CustomerProfileController: FormViewController {
         } else {
             mutation.hasAuthority = "No"
         }
-
+        
         mutation.description = form.rowBy(tag: "description")?.baseValue as? String
         if (form.rowBy(tag: "doNotDisturb")?.baseValue as? Bool)! {
             mutation.doNotDisturb = "Yes"
         } else {
             mutation.doNotDisturb = "No"
         }
-
+        
         mutation.links = JSON()
         var customFields = JSON()
-
+        
         for row in form.allRows {
             if row.section?.index != 0 {
-
+                
                 if let textRow = row as? TextRow {
                     customFields[row.tag!] = textRow.baseValue as Any
                 }
-
+                
                 if let dateRow = row as? DateRow {
                     if let dateValue = dateRow.value {
                         let dateString = dateValue.mainDateString()
                         customFields[row.tag!] = dateString
                     }
                 }
-
+                
                 if let switchRow = row as? SwitchRow {
                     if let value = switchRow.value {
                         if value {
@@ -613,7 +702,7 @@ class CustomerProfileController: FormViewController {
                         }
                     }
                 }
-
+                
                 if let multiSelectorRow = row as? MultipleSelectorRow<String> {
                     if let value = multiSelectorRow.value {
                         let arr = Array(value)
@@ -622,17 +711,17 @@ class CustomerProfileController: FormViewController {
                 }
             }
         }
-
+        
         mutation.customFieldsData = customFields
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
-
+                
                 self?.showResult(isSuccess: false, message: error.localizedDescription, resultCompletion: nil)
                 return
             }
             if let err = result?.errors {
-
+                
                 self?.showResult(isSuccess: false, message: err[0].localizedDescription, resultCompletion: nil)
             }
             if result?.data != nil {
@@ -640,12 +729,12 @@ class CustomerProfileController: FormViewController {
                     if ((self?.parent) == nil) {
                         self?.navigationController?.popViewController(animated: true)
                     }
-
+                    
                 })
             }
         }
     }
-
+    
     func configureViews() {
         self.view.backgroundColor = .white
         self.tableView.backgroundColor = .white
@@ -664,12 +753,17 @@ class CustomerProfileController: FormViewController {
         }()
         rightItem.tintColor = UIColor.TEXT_COLOR
         self.navigationItem.rightBarButtonItem = rightItem
-
-
+        
+        ImageRow.defaultCellUpdate = { cell, row in
+            cell.textLabel?.font = Font.light(14)
+            cell.textLabel?.textColor = UIColor.TEXT_COLOR
+        }
+        
         NameRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
             cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
+            cell.textField.textColor = UIColor.TEXT_COLOR
         }
         TextRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
@@ -677,31 +771,24 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
         }
-        PhoneRow.defaultCellUpdate = { cell, row in
+        
+        LabelRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
-            cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.textField.textColor = UIColor.TEXT_COLOR
-        }
-
-        EmailRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = Font.light(14)
-            cell.textField.font = Font.light(14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.detailTextLabel?.font = UIFont.fontWith(type: .light, size: 14)
+            cell.detailTextLabel?.font = Font.light(14)
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
             cell.accessoryType = .disclosureIndicator
         }
-    
-
+        
+        
         DateRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
             cell.detailTextLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
-
+            
         }
-
+        
         SwitchRow.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
@@ -720,44 +807,7 @@ class CustomerProfileController: FormViewController {
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
         }
-        ButtonRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = Font.light(14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.tintColor = UIColor.TEXT_COLOR
-            cell.accessoryView?.tintColor = UIColor.TEXT_COLOR
-
-        }
-        PushRow<CompanyList>.defaultCellUpdate = { cell, row in
-            row.options = self.companies
-            cell.textLabel?.font = Font.light(14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.textLabel?.font = Font.light(14)
-            cell.detailTextLabel?.font = Font.light(14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.detailTextLabel?.textColor = UIColor.TEXT_COLOR
-        }
-
-        DecimalRow.defaultCellUpdate = { cell, row in
-            cell.textLabel?.font = Font.light(14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            cell.tintColor = UIColor.TEXT_COLOR
-            cell.textField.font = Font.light(14)
-
-        }
-
-        PushRow<UserData>.defaultCellUpdate = { cell, row in
-            row.options = self.users
-            cell.textLabel?.font = Font.light(14)
-            cell.textLabel?.textColor = UIColor.TEXT_COLOR
-            row.displayValueFor = {
-                if let t = $0 {
-                    print("owner = ", t)
-                    return t.details?.fullName
-                }
-                return nil
-            }
-        }
-
+        
         PushRow<String>.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
@@ -768,7 +818,7 @@ class CustomerProfileController: FormViewController {
                 return nil
             }
         }
-
+        
         MultipleSelectorRow<String>.defaultCellUpdate = { cell, row in
             cell.textLabel?.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
@@ -781,50 +831,50 @@ class CustomerProfileController: FormViewController {
             }
         }
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.snp.makeConstraints { (make) in
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
-
-
+        
+        
     }
-
+    
     convenience init(_id: String?) {
         self.init()
         if let customerid = _id {
             self.customerId = customerid
         }
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     override func insertAnimation(forSections sections: [Section]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.fade
     }
-
+    
     override func insertAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.fade
     }
-
+    
     override func deleteAnimation(forRows rows: [BaseRow]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.none
     }
-
+    
     override func deleteAnimation(forSections sections: [Section]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.none
     }
-
+    
     override func reloadAnimation(oldRows: [BaseRow], newRows: [BaseRow]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.none
     }
-
+    
     override func reloadAnimation(oldSections: [Section], newSections: [Section]) -> UITableViewRowAnimation {
         return UITableViewRowAnimation.none
     }
@@ -838,7 +888,7 @@ class CustomerProfileController: FormViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
-
+    
     func uploadFile(image:UIImage) {
         
         let url = Constants.URL_UPLOAD
@@ -902,7 +952,7 @@ extension CompanyList: SuggestionValue {
     public init?(string stringValue: String) {
         return nil
     }
-
+    
     // Text that is displayed as a completion suggestion.
     public var suggestionString: String {
         return primaryName!
@@ -914,6 +964,5 @@ extension CustomerProfileController: UserControllerDelegate {
         self.assignedUser = user
     }
 }
-
 
 
