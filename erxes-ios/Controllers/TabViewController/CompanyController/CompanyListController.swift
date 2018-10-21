@@ -1,37 +1,29 @@
 //
-//  UsersController.swift
-//  NMG.CRM
+//  CompanyListController.swift
+//  erxes-ios
 //
-//  Created by Soyombo bat-erdene on 6/19/18.
+//  Created by Soyombo bat-erdene on 10/18/18.
 //  Copyright © 2018 soyombo bat-erdene. All rights reserved.
 //
 
 import UIKit
-import Apollo
-import SDWebImage
 
-protocol UserControllerDelegate: class  {
-    func assignUser(user:UserData, conversationId:String)
+protocol CompanyListControllerDelegate: class  {
+    func didSelectCompany(company:CompanyList)
 }
-class UsersController: UIViewController {
+
+class CompanyListController: UIViewController {
+    weak var delegate: CompanyListControllerDelegate?
+    var isSearching = Bool()
+    var companies = [CompanyList]() {
+        didSet{
+            tableView.reloadData()
+        }
+    }
+    
 
     
-    
-    var conversationId = String()
-    
-    weak var delegate: UserControllerDelegate?
-    var isSearching = Bool()
-    var users = [UserData]() {
-        didSet{
-            tableView.reloadData()
-        }
-    }
-    
-    var filtered = [UserData]() {
-        didSet{
-            tableView.reloadData()
-        }
-    }
+    var companiesLimit = 20
     
     var searchField:UITextField = {
         let field = UITextField()
@@ -64,14 +56,14 @@ class UsersController: UIViewController {
         searchField.endEditing(true)
         searchField.text = ""
         isSearching = false
-        tableView.reloadData()
+        self.getCompanies()
     }
     
     var searchBackGround = UIView()
     
     var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UserCell.self, forCellReuseIdentifier: "UserCell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.rowHeight = 40
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = .white
@@ -81,7 +73,7 @@ class UsersController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Users"
+        self.title = "Companies"
         self.view.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
@@ -92,42 +84,10 @@ class UsersController: UIViewController {
         searchField.delegate = self
         self.view.addSubview(searchBackGround)
         self.view.backgroundColor = .clear
-        self.getUsers()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        // Do any additional setup after loading the view.
+        self.getCompanies()
     }
     
-    func getUsers(){
-        
-        let query = GetUsersQuery()
-        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
-            if let error = error {
-                print(error.localizedDescription)
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                
-                return
-            }
-            
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                
-            }
-            
-            if result?.data != nil {
-                if let result = result?.data?.users {
-                    self?.users = result.map { ($0?.fragments.userData)! }
-                    
-                }
-            }
-        }
-    }
-    
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.snp.makeConstraints { (make) in
@@ -144,7 +104,7 @@ class UsersController: UIViewController {
             make.height.equalTo(30)
             make.center.equalToSuperview()
         }
-
+        
     }
     
     @objc func textFieldDidChange(textfield:UITextField) {
@@ -154,8 +114,7 @@ class UsersController: UIViewController {
         if searchField.text?.count == 0 {
             isSearching = false
         }else{
-            filtered = users.filter{($0.details?.fullName?.localizedCaseInsensitiveContains(value))!}
-            isSearching = true
+            self.getCompanies()
         }
         tableView.reloadData()
     }
@@ -172,27 +131,54 @@ class UsersController: UIViewController {
         return false
     }
     
+    func getCompanies(limit: Int = 20) {
+        
+        let query = CompaniesQuery()
+        
+   
+        query.searchValue = searchField.text
+        query.perPage = limit
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+            }
+            
+            if result?.data != nil {
+                if let allCompanies = result?.data?.companies {
+                    self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
+                }
+            }
+        }
+        
+    }
+
 }
 
-extension UsersController: UITableViewDelegate {
+extension CompanyListController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        var user:UserData?
-        if isSearching{
-          user = filtered[indexPath.row]
-        }else{
-            user = users[indexPath.row]
-        }
+        var company:CompanyList?
+ 
+            company = companies[indexPath.row]
+    
         
         if isModal(){
             self.dismiss(animated: true) {
-                self.delegate?.assignUser(user: user!,conversationId: self.conversationId)
+                self.delegate?.didSelectCompany(company: company!)
             }
         }else{
-            self.delegate?.assignUser(user: user!, conversationId: "")
+            self.delegate?.didSelectCompany(company: company!)
             self.navigationController?.popViewController(animated: true)
         }
-      
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -205,42 +191,43 @@ extension UsersController: UITableViewDelegate {
     }
 }
 
-extension UsersController: UITableViewDataSource {
-    
+extension CompanyListController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearching {
-            return filtered.count
-        }else{
-            return users.count
-        }
+  
+            return companies.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as? UserCell
-        var user:UserData?
-//        let user = users[indexPath.row]
-        if isSearching {
-            user = filtered[indexPath.row]
-        }else{
-            user = users[indexPath.row]
-        }
-        cell?.fullName.text = ""
-        cell?.avatar.image = nil
-        cell?.fullName.text = user!.details?.fullName
-        cell?.avatar.sd_setImage(with: URL(string: (user!.details?.avatar)!), placeholderImage: UIImage(named: "avatar.png"))
-        return cell!
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        var company:CompanyList?
+  
+            company = companies[indexPath.row]
+        
+        cell.textLabel?.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        cell.textLabel?.text = company?.primaryName
+        
+        return cell
     }
     
-    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        //        self.timer.invalidate()
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+        print(maximumOffset - currentOffset)
+        if maximumOffset - currentOffset < 0.0 {
+   
+                companiesLimit = companiesLimit + 20
+                self.getCompanies(limit: companiesLimit)
+            
+        }
+    }
 }
 
-extension UsersController: UITextFieldDelegate {
+extension CompanyListController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
+        self.getCompanies()
         return true
     }
-    
-
 }

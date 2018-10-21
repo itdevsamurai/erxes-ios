@@ -29,7 +29,7 @@ class UserCell: UITableViewCell {
         contentView.addSubview(avatar)
         
         fullName = UILabel()
-        fullName.textAlignment = .right
+        fullName.textAlignment = .left
         fullName.textColor = UIColor.TEXT_COLOR
         fullName.font = Font.light(14)
         contentView.addSubview(fullName)
