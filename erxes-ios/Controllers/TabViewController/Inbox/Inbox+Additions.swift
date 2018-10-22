@@ -50,7 +50,7 @@ extension InboxController: FilterDelegate {
     func passFilterOptions(options: FilterOptions) {
         self.options = options
         self.filterListView.removeAllTags()
-        self.getInbox(limit: 10)
+        self.getInbox(limit: 20)
     }
 }
 

@@ -27,23 +27,20 @@ public struct FilterOptions {
         self = FilterOptions()
     }
 
-
     public init() { }
 }
 
 class InboxController: UIViewController {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
-
-
+    
     var total = Int()
 
     var timer: Timer!
     var topOffset: CGFloat = 0.0
     var shimmer: FBShimmeringView!
     var conversationLimit = 20
-    
-
+    var loading = false
+    var lastPage = false
 
     var robotView: UIImageView = {
         let imageview = UIImageView()
@@ -86,10 +83,9 @@ class InboxController: UIViewController {
         gql.delegate = self
     }
 
-    func subscribe(id: String) {
-
-        gql.subscribe(graphql: "subscription{conversationsChanged(customerId:\"\(id)\"){type,customerId}}", variables: nil, operationName: nil, identifier: "change")
-
+    func subscribe() {
+        gql.subscribe(graphql: "subscription {conversationClientMessageInserted {_id,conversationId}}", variables: nil, operationName: nil, identifier: "conversationClientMessageInserted")
+//        gql.subscribe(graphql: "subscription{conversationsChanged(customerId:\"\(id)\"){type,customerId}}", variables: nil, operationName: nil, identifier: "change")
     }
 
     var conversations = [ObjectDetail]() {
@@ -122,17 +118,16 @@ class InboxController: UIViewController {
         return view
     }()
 
+    var filterController = FilterController()
 
     @objc func navigateFilter() {
-//        let nav = NavigationController()
-        let controller = FilterController()
-        controller.delegate = self
+
+        filterController.delegate = self
         if self.options != nil {
-            controller.filterOptions = self.options!
+            filterController.filterOptions = self.options!
         }
-        controller.modalPresentationStyle = .overFullScreen
-//        nav.viewControllers = [controller]
-        self.present(controller, animated: true) {
+        filterController.modalPresentationStyle = .overFullScreen
+        self.present(filterController, animated: true) {
 
         }
     }
@@ -208,6 +203,7 @@ class InboxController: UIViewController {
 //        getInbox()
 //        getUnreadCount()
 
+        self.subscribe()
     }
 
 
@@ -227,7 +223,7 @@ class InboxController: UIViewController {
             make.left.equalTo(self.view.snp.left)
             make.right.equalTo(self.view.snp.right)
             make.top.equalTo(topLayoutGuide.snp.bottom)
-            make.bottom.equalTo(self.view.snp.bottom)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top)
         }
 
         filterListView.snp.makeConstraints { (make) in
@@ -324,12 +320,17 @@ class InboxController: UIViewController {
     }
 
     @objc func refresh() {
-//        XCUIDevice.shared().siriService.activate(voiceRecognitionText: "Turn off wifi")
-//        XCUIDevice.shared().press(XCUIDeviceButton.home)
+        lastPage = false
         getInbox(limit: 20)
     }
     
     @objc func getInbox(limit: Int = 20) {
+        
+        if loading {
+            return
+        }
+        loading = true
+        
         if self.timer != nil {
             self.timer.invalidate()
         }
@@ -359,8 +360,8 @@ class InboxController: UIViewController {
         }
         query.limit = limit
 
-        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
-            
+        appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
+            self?.loading = false
             self?.refresher.endRefreshing()
             
             if let error = error {
@@ -378,6 +379,10 @@ class InboxController: UIViewController {
             if result?.data != nil {
                 if let allConversations = result?.data?.conversations {
                   
+                    if allConversations.count < self?.conversationLimit ?? 0 {
+                        self?.lastPage = true
+                    }
+                    
                     if allConversations.count == 0 {
                         self?.conversations.removeAll()
                         self?.tableView.reloadData()
@@ -389,11 +394,6 @@ class InboxController: UIViewController {
                         self?.conversations = allConversations.map { ($0?.fragments.objectDetail)! }
 
 //                    self?.shimmer.isShimmering = false
-                        for conversation in (self?.conversations)! {
-                            self?.subscribe(id: (conversation.customer?.id)!)
-//                            self?.subscribe(id: conversation.id)
-
-                        }
                     }
 
                     //self?.hideLoader()
@@ -481,10 +481,10 @@ class InboxController: UIViewController {
 
         return nil
     }
-
 }
 
 extension InboxController {
+    
     func changeStatus(id:String, status:String){
         let mutation = ConversationsChangeStatusMutation(_ids: [id], status: status)
         appnet.perform(mutation: mutation) { [weak self] result, error in

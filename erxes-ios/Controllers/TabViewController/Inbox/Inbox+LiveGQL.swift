@@ -12,29 +12,33 @@ import LiveGQL
 extension InboxController: LiveGQLDelegate {
     
     public func receivedRawMessage(text: String) {
+        
+        print(text)
+        
         do {
             
             if let dataFromString = text.data(using: .utf8, allowLossyConversion: false) {
                 
                 let item = try JSONDecoder().decode(ConvSubs.self, from: dataFromString)
                 //                self.getInbox(limit: self.conversationLimit)
-                let result = item.payload?.data?.conversationsChanged
+                let result = item.payload?.data?.conversationClientMessageInserted
                 
                 
-                switch result?.type {
-                    
-                case "newMessage":
-                    self.getLast()
-                    
-                case "open":
-                    print("open")
-                case "closed":
-                    print("close")
-                case "assigneeChanged":
-                    print("changed")
-                default:
-                    print("default")
-                }
+//                switch result?.type {
+//
+//                case "newMessage":
+//                    self.getLast()
+//
+//                case "open":
+//                    print("open")
+//                case "closed":
+//                    print("close")
+//                case "assigneeChanged":
+//                    print("changed")
+//                default:
+//                    print("default")
+//                }
+                refresh()
                 self.getUnreadCount()
                 
             }

@@ -81,8 +81,8 @@ class Appnet: NSObject {
                     let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
                     self.apollo.perform(mutation: loginMutation) { [weak self] result, error in
                         if let error = error {
-                            self?.isAnimating = false
                             topController?.hideLoader()
+                            self?.isAnimating = false
                             return
                         }
                         if let err = result?.errors {
@@ -102,6 +102,9 @@ class Appnet: NSObject {
                                 print("fetched again")
                                 handler(result, error)
                             }
+                        } else {
+                            topController?.hideLoader()
+                            self?.isAnimating = false
                         }
                     }
                 } else {
