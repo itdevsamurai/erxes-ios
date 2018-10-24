@@ -200,8 +200,6 @@ class InboxController: UIViewController {
         configLive()
         
         self.getInbox()
-//        getInbox()
-//        getUnreadCount()
 
         self.subscribe()
     }
@@ -361,8 +359,12 @@ class InboxController: UIViewController {
         query.limit = limit
 
         appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
-            self?.loading = false
+            
             self?.refresher.endRefreshing()
+            if !(self?.loading)! {
+                return
+            }
+            self?.loading = false
             
             if let error = error {
 
@@ -406,7 +408,7 @@ class InboxController: UIViewController {
 
     func getUnreadCount() {
         let query = UnreadCountQuery()
-        appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataAndFetch) { [weak self] result, error in
+        appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
     
                 let alert = FailureAlert(message: error.localizedDescription)

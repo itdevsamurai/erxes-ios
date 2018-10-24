@@ -38,7 +38,7 @@ class Appnet: NSObject {
         let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!
         let applicationSupportURL = URL(fileURLWithPath: applicationSupportPath)
         let temporaryDirectoryURL = try! FileManager.default.url(
-            for: .itemReplacementDirectory,
+            for: .cachesDirectory,
             in: .userDomainMask,
             appropriateFor: applicationSupportURL,
             create: true)
@@ -48,9 +48,10 @@ class Appnet: NSObject {
     class func newClient(token:String?) -> ApolloClient{
         
         let fileURL = temporarySQLiteFileURL()
+        print(fileURL)
         let cache = try! SQLiteNormalizedCache(fileURL: fileURL)
         let store = ApolloStore(cache: cache)
-        store.cacheKeyForObject = { $0["id"] }
+//        store.cacheKeyForObject = { $0["_id"] }
         
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["x-token": token as Any]
@@ -61,7 +62,7 @@ class Appnet: NSObject {
         return client
     }
     
-    func fetch<Query:GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, handler: @escaping OperationResultHandler<Query>) {
+    func fetch<Query:GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, callback: @escaping OperationResultHandler<Query>) {
         
         if tokenChanged {
             refreshClient()
@@ -71,8 +72,14 @@ class Appnet: NSObject {
             topController?.showLoader()
             isAnimating = true
         }
+        
+        var cache = cachePolicy
+        if !isOnline {
+            cache = .returnCacheDataDontFetch
+        }
+        
         let q = query
-        client?.fetch(query: query, cachePolicy: cachePolicy, queue:queue) { result, error in
+        client?.fetch(query: query, cachePolicy: cache, queue:queue) { result, error in
             
             if let errors = result?.errors, errors.count > 0 {
                 let err = errors.first
@@ -98,9 +105,9 @@ class Appnet: NSObject {
                             topController?.hideLoader()
                             self?.isAnimating = false
                             let cl = Appnet.newClient(token: result?.data?.login.token)
-                            cl.fetch(query: q, cachePolicy:cachePolicy, queue:queue) { result, error in
+                            cl.fetch(query: q, cachePolicy:cache, queue:queue) { result, error in
                                 print("fetched again")
-                                handler(result, error)
+                                callback(result, error)
                             }
                         } else {
                             topController?.hideLoader()
@@ -108,12 +115,12 @@ class Appnet: NSObject {
                         }
                     }
                 } else {
-                    handler(result, error)
+                    callback(result, error)
                     topController?.hideLoader()
                     self.isAnimating = false
                 }
             } else {
-                handler(result, error)
+                callback(result, error)
                 topController?.hideLoader()
                 self.isAnimating = false
             }

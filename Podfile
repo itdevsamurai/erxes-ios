@@ -20,4 +20,6 @@ pod 'Hakawai'
 pod 'IQKeyboardManagerSwift'
 pod 'DTPagerController'
 pod 'HMSegmentedControl'
+pod 'ReachabilitySwift'
+
 end
