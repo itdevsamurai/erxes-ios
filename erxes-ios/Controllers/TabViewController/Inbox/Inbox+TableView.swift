@@ -182,7 +182,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
 
         if maximumOffset - currentOffset <= 0.0 {
-            conversationLimit = conversationLimit + 10
+            conversationLimit = conversationLimit + 20
             self.getInbox(limit: conversationLimit)
             //             self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(inboxTimer(sender:)), userInfo: self.conversationLimit, repeats: true)
         }
