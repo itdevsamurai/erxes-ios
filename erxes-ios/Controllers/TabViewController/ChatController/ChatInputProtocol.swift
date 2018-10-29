@@ -42,10 +42,30 @@ extension ChatController:ChatInputProtocol {
     }
     
     @objc func btnSendClick() {
-        guard let message = chatInputView.text, message.count > 0 else {
+        guard var message = chatInputView.text, message.count > 0 else {
             return
         }
+        
+        let pattern = "@[a-zA-Z0-9._]*"
+        let regex = try? NSRegularExpression(pattern: pattern, options: [])
+        let range = NSMakeRange(0, message.count)
+        let matches = (regex?.matches(in: message, options: [], range: range))!
+        
+        if mentionController.mentionedUsers.count > 0 {
+            for match in matches.reversed() {
+                let begin = message.index(message.startIndex, offsetBy: match.range.location)
+                let end = message.index(message.startIndex, offsetBy: match.range.location + match.range.length)
+                let range = begin..<end
+                var str = String(message[range])
+                
+                str = "<b>" + str + "</b>"
+                
+                message = message.replacingCharacters(in: range, with: str)
+            }
+        }
+        
         manager.mutateAddMessage(msg: message, isInternal: isInternal, mentions: mentionController.mentionedUserIds())
+        mentionController.mentionedUsers = []
         chatInputView.text = ""
         mentionController.clear()
         btnInternalNote.isSelected = false
