@@ -116,6 +116,7 @@
 		B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE582213EDC3B00124BD3 /* BaseCell.swift */; };
 		B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE584213EDC8100124BD3 /* SentCell.swift */; };
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
+		B87867CD2188562600A78222 /* LoginControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87867CC2188562600A78222 /* LoginControllerUI.swift */; };
 		B88C31E6216B38A000B7448E /* ChatControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88C31E5216B38A000B7448E /* ChatControllerProtocol.swift */; };
 		B88C31E8216B443600B7448E /* ChatControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88C31E7216B443600B7448E /* ChatControllerUI.swift */; };
 		B88C31EA216B46E800B7448E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88C31E9216B46E800B7448E /* ViewController.swift */; };
@@ -272,6 +273,7 @@
 		B86FE582213EDC3B00124BD3 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		B86FE584213EDC8100124BD3 /* SentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCell.swift; sourceTree = "<group>"; };
 		B86FE586213F837700124BD3 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		B87867CC2188562600A78222 /* LoginControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginControllerUI.swift; sourceTree = "<group>"; };
 		B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		B88C31E5216B38A000B7448E /* ChatControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControllerProtocol.swift; sourceTree = "<group>"; };
 		B88C31E7216B443600B7448E /* ChatControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControllerUI.swift; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 			children = (
 				F5BEE31520772C0D0042DFC2 /* LoginController.swift */,
 				F58F2037207B313200D8564D /* LoginController.graphql */,
+				B87867CC2188562600A78222 /* LoginControllerUI.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1061,6 +1064,7 @@
 				9B82254820B7EBAE00B7C16D /* DateFilterController.swift in Sources */,
 				9B6202F420EC817A0094A87D /* SuggestionTableCell.swift in Sources */,
 				9BBADE31216E07F700B6F2D8 /* ActivityController.swift in Sources */,
+				B87867CD2188562600A78222 /* LoginControllerUI.swift in Sources */,
 				9B6202F620EC817A0094A87D /* SuggestionCell.swift in Sources */,
 				B8127C91214284ED00A9F9EC /* ChatController+Keyboard.swift in Sources */,
 				F58F205E207B4F4B00D8564D /* ErxesInboxCell.swift in Sources */,
