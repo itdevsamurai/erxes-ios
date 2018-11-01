@@ -9,7 +9,6 @@
 import UIKit
 import Apollo
 import SDWebImage
-import Shimmer
 import LiveGQL
 
 public struct FilterOptions {
@@ -30,52 +29,15 @@ public struct FilterOptions {
     public init() { }
 }
 
-class InboxController: UIViewController {
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+class InboxController: InboxControllerUI {
     
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     var total = Int()
-
     var timer: Timer!
     var topOffset: CGFloat = 0.0
-    var shimmer: FBShimmeringView!
     var conversationLimit = 20
     var loading = false
     var lastPage = false
-
-    var robotView: UIImageView = {
-        let imageview = UIImageView()
-        imageview.image = #imageLiteral(resourceName: "robot-2")
-        imageview.contentMode = .scaleAspectFit
-        let label = UILabel()
-        label.textColor = .gray
-        label.font = Font.light()
-        label.text = "There is no message."
-        label.textAlignment = .center
-        imageview.addSubview(label)
-        imageview.clipsToBounds = false
-
-        return imageview
-    }()
-
-    var filterListView: TagListView = {
-        let tagListView = TagListView()
-        tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
-        tagListView.cornerRadius = 6
-        tagListView.textFont = Font.light()
-        tagListView.textColor = .white
-        tagListView.clipsToBounds = false
-//        tagListView.removeButtonIconSize = 4
-        tagListView.removeIconLineWidth = 1
-        tagListView.removeIconLineColor = .white
-        tagListView.enableRemoveButton = true
-        return tagListView
-    }()
-    
-    let refresher:UIRefreshControl = {
-        let refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        return refresher
-    }()
     
     let gql = LiveGQL(socket: Constants.SUBSCRITION_ENDPOINT)
 
@@ -85,7 +47,6 @@ class InboxController: UIViewController {
 
     func subscribe() {
         gql.subscribe(graphql: "subscription {conversationClientMessageInserted {_id,conversationId}}", variables: nil, operationName: nil, identifier: "conversationClientMessageInserted")
-//        gql.subscribe(graphql: "subscription{conversationsChanged(customerId:\"\(id)\"){type,customerId}}", variables: nil, operationName: nil, identifier: "change")
     }
 
     var conversations = [ObjectDetail]() {
@@ -132,132 +93,25 @@ class InboxController: UIViewController {
         }
     }
 
-    var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(ErxesInboxCell.self, forCellReuseIdentifier: "ErxesInboxCell")
-        tableView.rowHeight = 100
-        tableView.tableFooterView = UIView()
-        tableView.separatorColor = UIColor(hexString: "#d6d6d6")
-        tableView.backgroundColor = .white
-//        tableView.layer.cornerRadius = 6.0
-        return tableView
-    }()
-
     public var options: FilterOptions? = nil
 
-
-
     func configureViews() {
-//        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-//        let leftImage = UIImage.erxes(with: .filter, textColor: UIColor.ERXES_COLOR, size: CGSize(width: 22, height: 22))
-        let leftImage = #imageLiteral(resourceName: "ic_filter")
-//        leftImage = leftImage.withRenderingMode(.alwaysTemplate)
-        let leftButton = UIButton()
-        leftButton.setImage(leftImage, for: .normal)
-        leftButton.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
-//        leftButton.tintColor = UIColor.ERXES_COLOR
-        let leftItem = UIBarButtonItem()
-//        leftItem.tintColor = UIColor.ERXES_COLOR
-        leftItem.customView = leftButton
-//        leftItem.image = leftImage
-
-        self.navigationItem.rightBarButtonItem = leftItem
-
-        var rightImage = #imageLiteral(resourceName: "ic_search")
-        rightImage = rightImage.withRenderingMode(.alwaysTemplate)
-        let rightItem = UIBarButtonItem()
-        rightItem.tintColor = UIColor.ERXES_COLOR
-        rightItem.image = rightImage
-//        self.navigationItem.rightBarButtonItem = rightItem
-        self.view.addSubview(robotView)
-        robotView.isHidden = true
-        filterListView.delegate = self
-        self.view.addSubview(filterListView)
-
+        filterButton.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
         tableView.delegate = self
         tableView.dataSource = self
-        self.view.addSubview(tableView)
-        tableView.backgroundColor = .white
-        tableView.refreshControl = refresher
-
-
-//        shimmer = FBShimmeringView()
-//        shimmer.contentView = tableView
-//        self.view.addSubview(shimmer)
-//        shimmer.isShimmering = true
-//        
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         let currentUser = ErxesUser.sharedUserInfo()
-
         topOffset = UIApplication.shared.statusBarFrame.height + (self.navigationController?.navigationBar.frame.size.height)! + 3
-
         self.title = "Inbox"
         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         self.configureViews()
         configLive()
-        
         self.getInbox()
-
         self.subscribe()
-    }
-
-
-
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-//        shimmer.snp.makeConstraints { (make) in
-//            make.left.equalTo(self.view.snp.left).offset(16)
-//            make.right.equalTo(self.view.snp.right).inset(16)
-//            make.top.equalTo(topLayoutGuide.snp.bottom).offset(3)
-//            make.bottom.equalTo(self.view.snp.bottom).inset(3)
-//        }
-
-        tableView.snp.makeConstraints { (make) in
-            make.left.equalTo(self.view.snp.left)
-            make.right.equalTo(self.view.snp.right)
-            make.top.equalTo(topLayoutGuide.snp.bottom)
-            make.bottom.equalTo(bottomLayoutGuide.snp.top)
-        }
-
-        filterListView.snp.makeConstraints { (make) in
-            make.left.equalTo(view.snp.left).offset(16)
-            make.right.equalTo(view.snp.right).inset(16)
-            make.height.equalTo(65)
-            make.top.equalTo(topOffset)
-        }
-
-        robotView.snp.makeConstraints { (make) in
-            make.left.equalTo(self.view.snp.left).offset(30)
-            make.right.equalTo(self.view.snp.right).inset(30)
-            make.center.equalToSuperview()
-        }
-
-        robotView.subviews[0].snp.makeConstraints { (make) in
-            make.right.left.width.equalToSuperview()
-            make.height.equalTo(30)
-            make.top.equalTo(robotView.snp.bottom)
-        }
-
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-//        self.timer.invalidate()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     func presentViewControllerAsPopover(viewController: UIViewController, from: UIView) {
@@ -281,42 +135,6 @@ class InboxController: UIViewController {
         self.present(viewController, animated: true, completion: nil)
     }
 
-
-    func getLast() {
-
-        let query = GetLastQuery()
-        appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
-            if let error = error {
-              
-                let alert = FailureAlert(message: error.localizedDescription)
-                alert.show(animated: true)
-                //self?.hideLoader()
-                return
-            }
-            if let err = result?.errors {
-                let alert = FailureAlert(message: err[0].localizedDescription)
-                alert.show(animated: true)
-                //self?.hideLoader()
-            }
-
-            if result?.data != nil {
-                if let rslt = result?.data?.conversationsGetLast {
-                    if self?.lastItem.count == 0 {
-                        self?.lastItem = [rslt.fragments.objectDetail]
-                    } else {
-                        for item in (self?.lastItem)! {
-                            if !item.isNew(to: rslt.fragments.objectDetail) {
-                                self?.lastItem = [rslt.fragments.objectDetail]
-                            }
-                        }
-                    }
-
-                }
-
-            }
-        }
-    }
-
     @objc func refresh() {
         lastPage = false
         getInbox(limit: 20)
@@ -332,7 +150,6 @@ class InboxController: UIViewController {
         if self.timer != nil {
             self.timer.invalidate()
         }
-//        self.showLoader()
         let query = ObjectsQuery()
 
         if options != nil {
@@ -370,13 +187,11 @@ class InboxController: UIViewController {
 
                 let alert = FailureAlert(message: error.localizedDescription)
                 alert.show(animated: true)
-                //self?.hideLoader()
                 return
             }
             if let err = result?.errors {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
-                //self?.hideLoader()
             }
             if result?.data != nil {
                 if let allConversations = result?.data?.conversations {
@@ -394,13 +209,8 @@ class InboxController: UIViewController {
                         self?.tableView.isHidden = false
                         self?.robotView.isHidden = true
                         self?.conversations = allConversations.map { ($0?.fragments.objectDetail)! }
-
-//                    self?.shimmer.isShimmering = false
                     }
-
-                    //self?.hideLoader()
                     self?.tableView.reloadData()
-
                 }
             }
         }
@@ -428,15 +238,10 @@ class InboxController: UIViewController {
                     } else {
                         self?.tabBarItem.badgeValue = nil
                     }
-
                 }
             }
-
         }
-
     }
-
-
 
     func getTimeComponentString(olderDate older: Date, newerDate newer: Date) -> (String?) {
         let formatter = DateComponentsFormatter()
@@ -449,7 +254,6 @@ class InboxController: UIViewController {
             formatter.allowedUnits = [.year]
             return formatter.string(from: older, to: newer)
         }
-
 
         let month = componentsLeftTime.month ?? 0
         if month > 0 {
@@ -506,7 +310,5 @@ extension InboxController {
                 self?.getInbox(limit: (self?.conversationLimit)!)
             }
         }
-        
     }
 }
-

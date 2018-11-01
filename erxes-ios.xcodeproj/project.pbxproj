@@ -87,6 +87,7 @@
 		9BF0C32D216358390030247F /* ContactFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF0C32C216358390030247F /* ContactFilterController.swift */; };
 		9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BF0C32E216358570030247F /* ContactFilterController.graphql */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
+		B80D28B0218AA81F003D52CE /* InboxControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */; };
 		B8127C91214284ED00A9F9EC /* ChatController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */; };
 		B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794CF2143DC1500C5991D /* ColChatDataSource.swift */; };
 		B83794D22147A87E00C5991D /* InComingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794D12147A87D00C5991D /* InComingCell.swift */; };
@@ -243,6 +244,7 @@
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		9BF0C32C216358390030247F /* ContactFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactFilterController.swift; sourceTree = "<group>"; };
 		9BF0C32E216358570030247F /* ContactFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactFilterController.graphql; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.graphql; };
+		B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxControllerUI.swift; sourceTree = "<group>"; };
 		B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatController+Keyboard.swift"; sourceTree = "<group>"; };
 		B83794CF2143DC1500C5991D /* ColChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColChatDataSource.swift; sourceTree = "<group>"; };
 		B83794D12147A87D00C5991D /* InComingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingCell.swift; sourceTree = "<group>"; };
@@ -680,11 +682,12 @@
 			isa = PBXGroup;
 			children = (
 				9BC2D9BA20CE3EE9003ADEE7 /* Filter */,
-				B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */,
-				B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */,
+				B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */,
 				F58F2053207B4F2B00D8564D /* InboxController.swift */,
-				F58F204B207B4F2900D8564D /* InboxController.graphql */,
+				B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */,
 				F58F205D207B4F4B00D8564D /* ErxesInboxCell.swift */,
+				B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */,
+				F58F204B207B4F2900D8564D /* InboxController.graphql */,
 				9B5CE65520D90846003EDBF9 /* UsersController.swift */,
 				9B5CE65920D90993003EDBF9 /* UsersController.graphql */,
 				9B5CE65720D9088E003EDBF9 /* UserCell.swift */,
@@ -978,6 +981,7 @@
 				9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */,
 				9B5CE65620D90846003EDBF9 /* UsersController.swift in Sources */,
 				9B1E939D20C8E34B00AC4FED /* MyAppNavigation.swift in Sources */,
+				B80D28B0218AA81F003D52CE /* InboxControllerUI.swift in Sources */,
 				9B567098212A89480023B5AF /* ErxesFontKit.swift in Sources */,
 				9B9E34482158DF2B006F9E2D /* CloseButton.swift in Sources */,
 				9BBADE33216E080200B6F2D8 /* NoteController.swift in Sources */,
