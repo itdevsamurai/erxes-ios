@@ -76,6 +76,8 @@ class Appnet: NSObject {
         var cache = cachePolicy
         if !isOnline {
             cache = .returnCacheDataDontFetch
+        } else {
+            cache = .fetchIgnoringCacheData
         }
         
         let q = query

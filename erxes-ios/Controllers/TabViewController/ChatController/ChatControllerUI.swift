@@ -103,7 +103,7 @@ class ChatControllerUI:ViewController {
         let rightItem: UIBarButtonItem = {
             let button = UIButton()
             let barButtomItem = UIBarButtonItem()
-            button.setBackgroundImage(UIImage.erxes(with: .user, textColor: .white), for: .normal)
+            button.setBackgroundImage(UIImage.erxes(with: .target1, textColor: .white), for: .normal)
             button.tintColor = .white
 //            button.addTarget(self, action: #selector(gotoUser(sender:)), for: .touchUpInside)
             barButtomItem.customView = button
