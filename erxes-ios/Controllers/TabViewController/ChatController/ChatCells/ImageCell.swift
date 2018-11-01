@@ -11,12 +11,7 @@ import UIKit
 class ImageCell: ChatBaseCell {
     static let ID = "ImageCell"
     
-    var ivAttachment:UIImageView = {
-        let view = UIImageView()
-//        view.backgroundColor = .blue
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
+    var ivAttachment:UIImageView!
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -28,6 +23,11 @@ class ImageCell: ChatBaseCell {
     }
     
     override func commonInit() {
+        
+        ivAttachment = UIImageView()
+        ivAttachment.isUserInteractionEnabled = true
+        ivAttachment.contentMode = .scaleAspectFit
+        
         self.contentView.addSubview(lblDate)
         self.contentView.addSubview(ivAttachment)
         self.contentView.addSubview(ivAvatar)
