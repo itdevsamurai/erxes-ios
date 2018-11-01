@@ -88,6 +88,8 @@
 		9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BF0C32E216358570030247F /* ContactFilterController.graphql */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
 		B80D28B0218AA81F003D52CE /* InboxControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */; };
+		B80D28B2218B0ABF003D52CE /* ChatMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28B1218B0ABF003D52CE /* ChatMenu.swift */; };
+		B80D28B5218B53F8003D52CE /* ChatMenu+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28B4218B53F8003D52CE /* ChatMenu+Network.swift */; };
 		B8127C91214284ED00A9F9EC /* ChatController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */; };
 		B83794D02143DC1500C5991D /* ColChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794CF2143DC1500C5991D /* ColChatDataSource.swift */; };
 		B83794D22147A87E00C5991D /* InComingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83794D12147A87D00C5991D /* InComingCell.swift */; };
@@ -245,6 +247,8 @@
 		9BF0C32C216358390030247F /* ContactFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactFilterController.swift; sourceTree = "<group>"; };
 		9BF0C32E216358570030247F /* ContactFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactFilterController.graphql; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.graphql; };
 		B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxControllerUI.swift; sourceTree = "<group>"; };
+		B80D28B1218B0ABF003D52CE /* ChatMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMenu.swift; sourceTree = "<group>"; };
+		B80D28B4218B53F8003D52CE /* ChatMenu+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMenu+Network.swift"; sourceTree = "<group>"; };
 		B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatController+Keyboard.swift"; sourceTree = "<group>"; };
 		B83794CF2143DC1500C5991D /* ColChatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColChatDataSource.swift; sourceTree = "<group>"; };
 		B83794D12147A87D00C5991D /* InComingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InComingCell.swift; sourceTree = "<group>"; };
@@ -362,12 +366,13 @@
 		9B1E939520C8D43C00AC4FED /* ChatController */ = {
 			isa = PBXGroup;
 			children = (
+				B80D28B3218B53A5003D52CE /* ChatMenu */,
 				B88C31F1216C9A6600B7448E /* ChatManager */,
 				B86FE581213EDB7800124BD3 /* ChatCells */,
 				B88C31E7216B443600B7448E /* ChatControllerUI.swift */,
+				B8FDDE9A213E48FF00286DE0 /* ChatController.swift */,
 				B88C31E5216B38A000B7448E /* ChatControllerProtocol.swift */,
 				B88C31ED216B5ECB00B7448E /* ChatInputProtocol.swift */,
-				B8FDDE9A213E48FF00286DE0 /* ChatController.swift */,
 				B8127C90214284ED00A9F9EC /* ChatController+Keyboard.swift */,
 				9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */,
 				B8C3FDE82161CCEE000EE9AF /* MentionController.swift */,
@@ -568,6 +573,15 @@
 				9B9E34422158BC22006F9E2D /* ErxesTagView.swift */,
 			);
 			path = taglist;
+			sourceTree = "<group>";
+		};
+		B80D28B3218B53A5003D52CE /* ChatMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B80D28B1218B0ABF003D52CE /* ChatMenu.swift */,
+				B80D28B4218B53F8003D52CE /* ChatMenu+Network.swift */,
+			);
+			path = ChatMenu;
 			sourceTree = "<group>";
 		};
 		B84C9AFE2175CA3A00346324 /* Extensions */ = {
@@ -881,7 +895,6 @@
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/HMSegmentedControl/HMSegmentedControl.framework",
-				"${BUILT_PRODUCTS_DIR}/Hakawai/Hakawai.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
 				"${BUILT_PRODUCTS_DIR}/LiveGQL/LiveGQL.framework",
@@ -890,6 +903,7 @@
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework",
+				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
 			);
@@ -902,7 +916,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HMSegmentedControl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hakawai.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiveGQL.framework",
@@ -911,6 +924,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shimmer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 			);
@@ -975,6 +989,7 @@
 				B84C9B042175CB3300346324 /* Date.swift in Sources */,
 				B88C31F0216B633900B7448E /* Box.swift in Sources */,
 				B88C31E6216B38A000B7448E /* ChatControllerProtocol.swift in Sources */,
+				B80D28B5218B53F8003D52CE /* ChatMenu+Network.swift in Sources */,
 				F5BEE329207761730042DFC2 /* MyTextField.swift in Sources */,
 				9B6202F520EC817A0094A87D /* SuggestionCollectionViewCell.swift in Sources */,
 				B86FE587213F837700124BD3 /* ImageCell.swift in Sources */,
@@ -1006,6 +1021,7 @@
 				9B27ADFB2160B708000E0A7C /* NotificationSettingsController.swift in Sources */,
 				B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */,
 				B84C9B022175CB2300346324 /* String.swift in Sources */,
+				B80D28B2218B0ABF003D52CE /* ChatMenu.swift in Sources */,
 				9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */,
 				9B1E939B20C8D8F700AC4FED /* Route.swift in Sources */,
 				B88C31EE216B5ECB00B7448E /* ChatInputProtocol.swift in Sources */,

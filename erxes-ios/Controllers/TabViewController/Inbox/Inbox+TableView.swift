@@ -187,6 +187,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        popBack = true
         let conversation = conversations[indexPath.row]
         if let brand = conversation.integration?.brand {
             navigate(.chat(withId: conversation.id, title: brand.name!, customerId: (conversation.customer?.id)!))

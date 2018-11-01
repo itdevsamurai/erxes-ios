@@ -38,6 +38,7 @@ class InboxController: InboxControllerUI {
     var conversationLimit = 20
     var loading = false
     var lastPage = false
+    var popBack = false
     
     let gql = LiveGQL(socket: Constants.SUBSCRITION_ENDPOINT)
 
@@ -110,10 +111,17 @@ class InboxController: InboxControllerUI {
         self.view.backgroundColor = UIColor.INBOX_BG_COLOR
         self.configureViews()
         configLive()
-        self.getInbox()
         self.subscribe()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if popBack {
+            self.getInbox()
+            popBack = false
+        }
+    }
+    
     func presentViewControllerAsPopover(viewController: UIViewController, from: UIView) {
         if let presentedVC = self.presentedViewController {
             if presentedVC.nibName == viewController.nibName {
