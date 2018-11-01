@@ -15,9 +15,11 @@ pod 'Daysquare'
 pod 'Alamofire', '4.7'
 pod 'Eureka', '4.2.0'
 pod 'ImageRow', '3.0'
-pod 'NYTPhotoViewer'
-pod 'Hakawai'
+pod 'SKPhotoBrowser'
 pod 'IQKeyboardManagerSwift'
 pod 'DTPagerController'
 pod 'HMSegmentedControl'
+pod 'ReachabilitySwift'
+pod 'SideMenu', '~> 4.0.0'
+
 end

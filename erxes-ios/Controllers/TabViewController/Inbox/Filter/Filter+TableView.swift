@@ -27,6 +27,7 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         case channel:
             if row > 0 {
                 filterOptions.channel = channels.filter{$0.name==list[row-1]}[0]
+                change()
             }
             break
             
@@ -64,22 +65,26 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
             default: break
             }
             statusValue = statusArray[row]
+            change()
             //            filterOptions.status = statusArray[row]
             break
             
         case brand:
             if row > 0 {
                 filterOptions.brand = brands.filter{$0.name==list[row-1]}[0]
+                change()
             }
             break
             
         case integration:
             filterOptions.integrationType = integrations[row]
+            change()
             break
             
         case tag:
             if row > 0 {
                 filterOptions.tag = tags.filter{$0.name==list[row-1]}[0]
+                change()
             }
             break
             
@@ -89,8 +94,10 @@ extension FilterController: UITableViewDataSource,UITableViewDelegate {
         
         tableView.reloadData()
         collapseSection(selectedSection)
-        
-        print(filterOptions)
+    }
+    
+    func change() {
+        changed = true
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

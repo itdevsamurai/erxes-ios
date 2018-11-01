@@ -11,6 +11,7 @@ import SnapKit
 import LiveGQL
 import Apollo
 import Alamofire
+import SideMenu
 
 class ChatController:ChatControllerUI {
     
@@ -40,6 +41,10 @@ class ChatController:ChatControllerUI {
         return item
     }()
 
+    var menu:ChatMenu = {
+        let vc = ChatMenu()
+        return vc
+    }()
     
     convenience init(chatId:String,title:String,customerId:String) {
         self.init()
@@ -67,6 +72,11 @@ class ChatController:ChatControllerUI {
         
         chatView.delegate = self
         chatView.dataSource = self
+        
+        let menuRightNavigationController = UISideMenuNavigationController(rootViewController: menu)
+        SideMenuManager.default.menuRightNavigationController = menuRightNavigationController
+        SideMenuManager.default.menuPresentMode = .menuSlideIn
+        SideMenuManager.default.menuRightNavigationController?.sideMenuDelegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,7 +95,9 @@ class ChatController:ChatControllerUI {
     }
     
     @objc func gotoUser(sender:UIButton) {
-        self.navigate(.customerProfile(_id: self.customerId!))
+        
+        menu.conversationId = conversationId!
+        present(SideMenuManager.default.menuRightNavigationController!, animated: true, completion: nil)
         
     }
     
@@ -130,4 +142,14 @@ class ChatController:ChatControllerUI {
         self.manager.queryMessages()
     }
 
+}
+
+extension ChatController:UISideMenuNavigationControllerDelegate {
+    
+    func sideMenuDidDisappear(menu: UISideMenuNavigationController, animated: Bool) {
+        if pushProfile {
+            pushProfile = false
+            self.navigate(.customerProfile(_id: self.customerId))
+        }
+    }
 }

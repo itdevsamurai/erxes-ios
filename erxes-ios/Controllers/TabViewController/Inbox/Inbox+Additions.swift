@@ -49,8 +49,7 @@ extension InboxController: FilterDelegate {
     
     func passFilterOptions(options: FilterOptions) {
         self.options = options
-        self.filterListView.removeAllTags()
-        self.getInbox(limit: 10)
+        self.getInbox(limit: 20)
     }
 }
 
@@ -71,7 +70,7 @@ extension InboxController: UIPopoverPresentationControllerDelegate {
 }
 
 extension InboxController: UserControllerDelegate {
-    func assignUser(user:UserData, conversationId:String){
+    func assignUser(user:UserData, conversationId:String) {
         let mutation = ConversationsAssignMutation(conversationIds: [conversationId])
         mutation.assignedUserId = user.id
         appnet.perform(mutation: mutation) { [weak self] result, error in

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SKPhotoBrowser
 
 extension ChatController:UICollectionViewDelegate {
     
@@ -31,7 +32,11 @@ extension ChatController:UICollectionViewDataSource {
             cell = chatView.dequeueReusableCell(withReuseIdentifier: FormCell.ID, for: indexPath) as! FormCell
         } else
             if let files = item.attachments, files.count > 0 {
-                cell = chatView.dequeueReusableCell(withReuseIdentifier: ImageCell.ID, for: indexPath) as! ImageCell
+                let imageCell = chatView.dequeueReusableCell(withReuseIdentifier: ImageCell.ID, for: indexPath) as! ImageCell
+                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
+                imageCell.ivAttachment.tag = indexPath.row
+                imageCell.ivAttachment.addGestureRecognizer(tapGestureRecognizer)
+                cell = imageCell
             } else
                 if item.customerId != nil {
                     cell = chatView.dequeueReusableCell(withReuseIdentifier: IncomingCell.ID, for: indexPath) as! IncomingCell
@@ -40,6 +45,25 @@ extension ChatController:UICollectionViewDataSource {
         }
         cell.viewModel = messages[indexPath.row]
         return cell
+    }
+    
+    @objc func imageTapped(sender:UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let message = messages[imageView.tag]
+        
+        var images = [SKPhoto]()
+        if let attachments = message.attachments,attachments.count > 0 {
+            
+            for attachment in attachments {
+                let photo = SKPhoto.photoWithImageURL(attachment!["url"] as! String)
+                photo.shouldCachePhotoURLImage = false // you can use image cache by true(NSCache)
+                images.append(photo)
+            }
+        }
+        
+        let browser = SKPhotoBrowser(photos: images)
+        browser.initializePageIndex(0)
+        present(browser, animated: true, completion: {})
     }
 }
 

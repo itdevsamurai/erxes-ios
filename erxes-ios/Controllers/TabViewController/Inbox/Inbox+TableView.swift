@@ -33,81 +33,8 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             cell?.message.text = ""
             cell?.date.text = ""
             cell?.userAvatar.image = nil
-            var userName = ""
-            if conversation.customer?.firstName != nil && conversation.customer?.lastName != nil {
-                userName = String(format: "%@ %@", (conversation.customer?.firstName)!, (conversation.customer?.lastName)!)
-                if userName.count > 1 {
-                    if (conversation.customer?.isUser != nil) {
-                        if (conversation.customer?.isUser)! {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                        } else {
-                            cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                        }
-                    } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                    }
-                } else {
-                    if conversation.customer?.email != nil {
-                        if conversation.customer?.email?.count != 0 {
-                            userName = (conversation.customer?.email!)!
-                        } else {
-                            userName = "Unnamed"
-                        }
-                    } else {
-                        userName = "Unnamed"
-                    }
-                    
-                    cell?.avatar.image = #imageLiteral(resourceName: "ic_avatar")
-                }
-            } else if conversation.customer?.firstName == nil && conversation.customer?.lastName == nil {
-                if conversation.customer?.email != nil {
-                    if conversation.customer?.email?.count != 0 {
-                        userName = (conversation.customer?.email!)!
-                    } else {
-                        userName = "Unnamed"
-                    }
-                } else {
-                    userName = "Unnamed"
-                }
-                cell?.avatar.image = #imageLiteral(resourceName: "ic_avatar")
-            } else if conversation.customer?.firstName?.count == 0 && conversation.customer?.lastName?.count == 0 {
-                if conversation.customer?.email != nil {
-                    if conversation.customer?.email?.count != 0 {
-                        userName = (conversation.customer?.email!)!
-                    } else {
-                        userName = "Unnamed"
-                    }
-                } else {
-                    userName = "Unnamed"
-                }
-                
-                cell?.avatar.image = #imageLiteral(resourceName: "ic_avatar")
-            } else if conversation.customer?.firstName != nil {
-                userName = (conversation.customer?.firstName!)!
-                if (conversation.customer?.isUser != nil) {
-                    if (conversation.customer?.isUser)! {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                    } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                    }
-                } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                }
-            } else if conversation.customer?.lastName != nil {
-                userName = (conversation.customer?.lastName!)!
-                if (conversation.customer?.isUser != nil) {
-                    if (conversation.customer?.isUser)! {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                    } else {
-                        cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                    }
-                } else {
-                    cell?.avatar.setImageWithString(text: userName, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                }
-            }
             
-            
-            cell?.fullName.text = userName
+            setConversationUsername(conversation, cell: cell!)
             
             var desc = ""
             
@@ -150,7 +77,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
                     cell?.setIcon(type: .feed)
                 }
             } else if conversation.integration?.kind != nil && conversation.integration?.kind == "messenger" {
-                if (conversation.customer?.isUser)! && conversation.customer?.isUser != nil  {
+                if conversation.customer?.isUser ?? false && conversation.customer?.isUser != nil  {
                     cell?.setIcon(type: .user)
                 } else {
                     cell?.setIcon(type: .notuser)
@@ -170,14 +97,55 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         return cell!
     }
     
+    func setConversationUsername(_ item:ObjectDetail,cell:ErxesInboxCell) {
+        
+        var username = ""
+        
+        guard let customer = item.customer else {
+            return
+        }
+        
+        if let firstname = customer.firstName,  firstname.count > 0 {
+            username = firstname + " "
+        }
+        
+        username = username + (customer.lastName ?? "")
+        
+        if username.count > 0 {
+            if customer.isUser ?? false {
+                cell.avatar.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+            } else {
+                cell.avatar.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+            }
+        } else {
+            cell.avatar.image = #imageLiteral(resourceName: "ic_avatar")
+            username = customer.email ?? customer.primaryEmail ?? ""
+            
+            if username.count == 0, let email = customer.visitorContactInfo?["email"]{
+                username = String(describing: email)
+            }
+        }
+        
+        if username.count == 0 {
+            username = "Unnamed"
+        }
+        
+        cell.fullName.text = username
+    }
+    
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if lastPage || loading {
+            return
+        }
+        
         //        self.timer.invalidate()
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
 
         if maximumOffset - currentOffset <= 0.0 {
-            conversationLimit = conversationLimit + 10
+            conversationLimit = conversationLimit + 20
             self.getInbox(limit: conversationLimit)
             //             self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(inboxTimer(sender:)), userInfo: self.conversationLimit, repeats: true)
         }
@@ -219,6 +187,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        popBack = true
         let conversation = conversations[indexPath.row]
         if let brand = conversation.integration?.brand {
             navigate(.chat(withId: conversation.id, title: brand.name!, customerId: (conversation.customer?.id)!))

@@ -10,13 +10,13 @@ import Foundation
 import UIKit
 
 struct MyData: Codable {
-    var customerId:String!
-    var type:String?
+    var _id:String!
+    var conversationId:String?
 
 }
 
 struct ConvSubsData: Codable{
-    var conversationsChanged:MyData?
+    var conversationClientMessageInserted:MyData?
 }
 
 struct ConvSubsPayload:Codable{

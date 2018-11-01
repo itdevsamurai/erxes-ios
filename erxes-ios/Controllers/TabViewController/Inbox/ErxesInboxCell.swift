@@ -152,8 +152,8 @@ class ErxesInboxCell: UITableViewCell {
         }
         
         circleView.snp.makeConstraints { (make) in
-            make.left.equalTo(avatar.snp.right).inset(15)
-            make.top.equalTo(avatar.snp.bottom).inset(15)
+            make.left.equalTo(avatar.snp.right).inset(20)
+            make.top.equalTo(avatar.snp.bottom).inset(20)
             make.width.height.equalTo(26)
         }
         

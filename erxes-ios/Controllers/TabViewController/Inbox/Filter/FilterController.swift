@@ -31,6 +31,10 @@ class FilterController: UIViewController {
     var statusValue = ""
     var channels = [ChannelDetail]()
     
+    var inited = false
+    
+    var changed = false
+    
     var brands = [BrandDetail]()
     
     var tags = [TagDetail]()
@@ -56,9 +60,12 @@ class FilterController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getTags()
-        getBrands()
-        getChannels()
+        if !inited {
+            getTags()
+            getBrands()
+            getChannels()
+            inited = true
+        }
         
         configureView()
         tableView.delegate = self
@@ -121,17 +128,19 @@ class FilterController: UIViewController {
     
     @objc func close(sender:UIButton){
         self.dismiss(animated: true) {
-            self.delegate?.passFilterOptions(options: self.filterOptions)
+            if self.changed {
+                self.changed = false
+                self.delegate?.passFilterOptions(options: self.filterOptions)
+            }
         }
     }
     
     @objc func clear(sender:UIButton){
-        tableView.reloadData()
         self.filterOptions.removeAll()
-        tableView.layoutSubviews()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        selectedSection = -1
+        statusValue = ""
+        self.tableView.reloadData()
+        change()
     }
     
     func configureView() {
@@ -159,8 +168,10 @@ extension FilterController: DateDelegate {
     func setDate(options: FilterOptions, isBeginDate: Bool) {
         if isBeginDate{
             self.filterOptions.startDate = options.startDate
+            change()
         }else{
             self.filterOptions.endDate = options.endDate
+            change()
         }
         tableView.reloadData()
         collapseSection(selectedSection)
