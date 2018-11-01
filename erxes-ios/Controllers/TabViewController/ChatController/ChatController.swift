@@ -76,6 +76,7 @@ class ChatController:ChatControllerUI {
         let menuRightNavigationController = UISideMenuNavigationController(rootViewController: menu)
         SideMenuManager.default.menuRightNavigationController = menuRightNavigationController
         SideMenuManager.default.menuPresentMode = .menuSlideIn
+        SideMenuManager.default.menuRightNavigationController?.sideMenuDelegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -141,4 +142,14 @@ class ChatController:ChatControllerUI {
         self.manager.queryMessages()
     }
 
+}
+
+extension ChatController:UISideMenuNavigationControllerDelegate {
+    
+    func sideMenuDidDisappear(menu: UISideMenuNavigationController, animated: Bool) {
+        if pushProfile {
+            pushProfile = false
+            self.navigate(.customerProfile(_id: self.customerId))
+        }
+    }
 }

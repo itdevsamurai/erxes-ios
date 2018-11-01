@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import Apollo
 
+var pushProfile = false
+
 class ChatMenu:ViewController {
     
     var sections = ["Actions","Assign"]
@@ -35,6 +37,9 @@ class ChatMenu:ViewController {
     }()
     
     override func prepareView() {
+        self.title = "Actions"
+        let textAttributes = [NSAttributedStringKey.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         self.view.backgroundColor = .white
         self.view.addSubview(tableView)
         tableView.dataSource = self
@@ -140,7 +145,8 @@ extension ChatMenu:UITableViewDataSource,UITableViewDelegate {
             }
             
             if row == 1 {
-                
+                pushProfile = true
+                dismiss(animated: true, completion: nil)
             }
     
         } else {
