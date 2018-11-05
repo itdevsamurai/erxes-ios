@@ -753,9 +753,9 @@
 		F5BEE31420772BF90042DFC2 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				B87867CC2188562600A78222 /* LoginControllerUI.swift */,
 				F5BEE31520772C0D0042DFC2 /* LoginController.swift */,
 				F58F2037207B313200D8564D /* LoginController.graphql */,
-				B87867CC2188562600A78222 /* LoginControllerUI.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1231,7 +1231,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1252,7 +1252,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

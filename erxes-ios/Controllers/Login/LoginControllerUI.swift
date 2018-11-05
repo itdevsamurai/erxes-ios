@@ -11,17 +11,17 @@ import UIKit
 
 class LoginControllerUI:ViewController {
     
-    var containerView: UIView = {
+    let containerView: UIView = {
         let view = UIView()
         return view
     }()
     
     var isLogin = Bool()
     
-    var innerCircle = CAShapeLayer()
-    var outerCircle = CAShapeLayer()
+    let innerCircle = CAShapeLayer()
+    let outerCircle = CAShapeLayer()
     
-    var checkBox: UIButton = {
+    let checkBox: UIButton = {
         let checkButton = UIButton()
         
         checkButton.setImage(UIImage.erxes(with: .check, textColor: .white), for: .selected)
@@ -52,7 +52,7 @@ class LoginControllerUI:ViewController {
         return imageView
     }()
     
-    var welcomeLabel: UILabel = {
+    let welcomeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .GRAY_COLOR
         label.font = Font.regular(28)
@@ -62,19 +62,19 @@ class LoginControllerUI:ViewController {
         return label
     }()
     
-    var blueOrb: UIImageView = {
+    let blueOrb: UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "blueOrb"))
         return imageView
     }()
     
-    var orangeOrb: UIImageView = {
+    let orangeOrb: UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "orangeOrb"))
         return imageView
     }()
     
     
     
-    var emailField: MyTextField = {
+    let emailField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Email"
         field.attributedPlaceholder = NSAttributedString(string: "Email",
@@ -85,7 +85,7 @@ class LoginControllerUI:ViewController {
         return field
     }()
     
-    var passwordField: MyTextField = {
+    let passwordField: MyTextField = {
         let field = MyTextField()
         field.placeholder = "Password"
         
@@ -96,7 +96,7 @@ class LoginControllerUI:ViewController {
         return field
     }()
     
-    var signInButton: MyButton = {
+    let signInButton: MyButton = {
         let button = MyButton()
         
         button.setTitle("Login", for: .normal)
@@ -105,8 +105,8 @@ class LoginControllerUI:ViewController {
         return button
     }()
     
-    var innerCircleCenter = UIView()
-    var outerCircleCenter = UIView()
+    let innerCircleCenter = UIView()
+    let outerCircleCenter = UIView()
     
     override func prepareView() {
         self.view.addSubview(containerView)
@@ -194,7 +194,6 @@ class LoginControllerUI:ViewController {
         
         mailImageView.insertSubview(centerView, at: 0)
         mailImageView.insertSubview(centerView2, at: 1)
-        innerCircle = CAShapeLayer()
         innerCircle.path = UIBezierPath.init(roundedRect: CGRect(x: frame.origin.x - 45, y: frame.origin.y - 45, width: frame.width + 90, height: frame.height + 90), cornerRadius: (frame.width + 90) / 2).cgPath
         innerCircle.fillColor = UIColor.clear.cgColor
         innerCircle.strokeColor = UIColor.init(hexString: "e9e9e9")?.cgColor
@@ -204,7 +203,6 @@ class LoginControllerUI:ViewController {
         centerView2.transform = CGAffineTransform(rotationAngle: 135 * CGFloat.pi / 180)
         centerView2.layer.addSublayer(innerCircle)
         
-        outerCircle = CAShapeLayer()
         let outerFrame = CGRect(x: frame.origin.x - 90, y: frame.origin.y - 90, width: frame.width + 180, height: frame.height + 180)
         let path = UIBezierPath.init(roundedRect: outerFrame, cornerRadius: (frame.width + 180) / 2)
         
