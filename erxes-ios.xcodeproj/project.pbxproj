@@ -116,6 +116,7 @@
 		B84C9B182175D51600346324 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84C9B172175D51600346324 /* Data.swift */; };
 		B84C9B1A2175D5AD00346324 /* Numeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84C9B192175D5AD00346324 /* Numeric.swift */; };
 		B84C9B1C2175D79D00346324 /* Inbox+LiveGQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84C9B1B2175D79D00346324 /* Inbox+LiveGQL.swift */; };
+		B8600B8321917C2100384821 /* Locations.json in Resources */ = {isa = PBXBuildFile; fileRef = B8600B8221917C2100384821 /* Locations.json */; };
 		B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE582213EDC3B00124BD3 /* BaseCell.swift */; };
 		B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE584213EDC8100124BD3 /* SentCell.swift */; };
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
@@ -275,6 +276,7 @@
 		B84C9B172175D51600346324 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		B84C9B192175D5AD00346324 /* Numeric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numeric.swift; sourceTree = "<group>"; };
 		B84C9B1B2175D79D00346324 /* Inbox+LiveGQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+LiveGQL.swift"; sourceTree = "<group>"; };
+		B8600B8221917C2100384821 /* Locations.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Locations.json; sourceTree = "<group>"; };
 		B8698335212BD4370068B1FA /* Appnet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appnet.swift; sourceTree = "<group>"; };
 		B86FE582213EDC3B00124BD3 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		B86FE584213EDC8100124BD3 /* SentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCell.swift; sourceTree = "<group>"; };
@@ -688,6 +690,7 @@
 				B842CC492123E3870052E5C9 /* LeadStatus.json */,
 				B842CC4B2123E3CC0052E5C9 /* LifecycleState.json */,
 				B842CC4D2123E3E80052E5C9 /* BusinessType.json */,
+				B8600B8221917C2100384821 /* Locations.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -848,6 +851,7 @@
 			files = (
 				9B4AB584216F409400BDD33D /* ActivityController.graphql in Resources */,
 				9B5E455C21393DCF00DDD687 /* SettingsController.graphql in Resources */,
+				B8600B8321917C2100384821 /* Locations.json in Resources */,
 				9BDF12B621709F2100B6EBED /* NoteController.graphql in Resources */,
 				B842CC4C2123E3CC0052E5C9 /* LifecycleState.json in Resources */,
 				9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */,

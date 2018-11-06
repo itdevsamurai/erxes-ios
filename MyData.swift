@@ -27,7 +27,7 @@ struct ConvSubs:Codable{
     var payload:ConvSubsPayload?
 }
 
-enum resultType {
+enum ResultType {
     case newMessage
     case open
     case closed

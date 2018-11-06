@@ -64,20 +64,20 @@ extension Array: JSONDecodable {
 private func forceBridgeFromObjectiveC(_ value: Any) -> Any {
     switch value {
     case is NSString:
-        return value as! String
+        return value as? String
         
     case is Bool:
-        return value as! Bool
+        return value as? Bool
     case is Int:
-        return value as! Int
+        return value as? Int
     case is Int64:
-        return value as! Int64
+        return value as? Int64
     case is Double:
-        return value as! Double
+        return value as? Double
     case is NSDictionary:
         return Dictionary(uniqueKeysWithValues: (value as! NSDictionary).map { ($0.key as! AnyHashable, forceBridgeFromObjectiveC($0.value)) })
     case is NSArray:
-        return (value as! NSArray).map { forceBridgeFromObjectiveC($0) }
+        return (value as? NSArray).map { forceBridgeFromObjectiveC($0) }
     default:
         return value
     }
