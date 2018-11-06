@@ -34,10 +34,11 @@ class Appnet: NSObject {
     
     var tokenChanged = true
     
-    public static func temporarySQLiteFileURL() -> URL {
+    public static func temporarySQLiteFileURL() throws -> URL{
         let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!
         let applicationSupportURL = URL(fileURLWithPath: applicationSupportPath)
-        let temporaryDirectoryURL = try! FileManager.default.url(
+        
+        let temporaryDirectoryURL = try FileManager.default.url(
             for: .cachesDirectory,
             in: .userDomainMask,
             appropriateFor: applicationSupportURL,
@@ -47,19 +48,22 @@ class Appnet: NSObject {
     
     class func newClient(token:String?) -> ApolloClient{
         
-        let fileURL = temporarySQLiteFileURL()
-        print(fileURL)
-        let cache = try! SQLiteNormalizedCache(fileURL: fileURL)
-        let store = ApolloStore(cache: cache)
-//        store.cacheKeyForObject = { $0["_id"] }
-        
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["x-token": token as Any]
-        let url = URL(string: Constants.API_ENDPOINT)!
-        let transport = HTTPNetworkTransport(url: url, configuration: configuration)
-        let client = ApolloClient(networkTransport: transport, store:store)
-    
-        return client
+        let url = URL(string: Constants.API_ENDPOINT)
+        let transport = HTTPNetworkTransport(url: url!, configuration: configuration)
+        do {
+            let fileURL = try temporarySQLiteFileURL()
+            print(fileURL)
+            let cache = try SQLiteNormalizedCache(fileURL: fileURL)
+            let store = ApolloStore(cache: cache)
+            let client = ApolloClient(networkTransport: transport, store:store)
+            return client
+            //        store.cacheKeyForObject = { $0["_id"] }
+        } catch {
+            let client = ApolloClient(networkTransport: transport)
+            return client
+        }
     }
     
     func fetch<Query:GraphQLQuery>(query: Query, cachePolicy: CachePolicy = .returnCacheDataElseFetch, queue: DispatchQueue = DispatchQueue.main, callback: @escaping OperationResultHandler<Query>) {
@@ -83,48 +87,45 @@ class Appnet: NSObject {
         let q = query
         client?.fetch(query: query, cachePolicy: cache, queue:queue) { result, error in
             
-            if let errors = result?.errors, errors.count > 0 {
-                let err = errors.first
-                if err?.description == "Login required" {
-                    print("login required")
-                    let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
-                    self.apollo.perform(mutation: loginMutation) { [weak self] result, error in
-                        if let error = error {
-                            topController?.hideLoader()
-                            self?.isAnimating = false
-                            return
-                        }
-                        if let err = result?.errors {
-                            let alert = FailureAlert(message:err[0].localizedDescription)
-                            alert.show(animated: true)
-                            topController?.hideLoader()
-                            self?.isAnimating = false
-                        }
-                        if result?.data != nil {
-                            self?.token = (result?.data?.login.token)!
-                            self?.tokenChanged = true
-                            
-                            topController?.hideLoader()
-                            self?.isAnimating = false
-                            let cl = Appnet.newClient(token: result?.data?.login.token)
-                            cl.fetch(query: q, cachePolicy:cache, queue:queue) { result, error in
-                                print("fetched again")
-                                callback(result, error)
-                            }
-                        } else {
-                            topController?.hideLoader()
-                            self?.isAnimating = false
-                        }
-                    }
-                } else {
-                    callback(result, error)
-                    topController?.hideLoader()
-                    self.isAnimating = false
-                }
-            } else {
+            guard let err = result?.errors?.first, err.description == "Login required" else {
                 callback(result, error)
                 topController?.hideLoader()
                 self.isAnimating = false
+                return
+            }
+            
+            let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
+            self.apollo.perform(mutation: loginMutation) { [weak self] result, error in
+                if error != nil {
+                    topController?.hideLoader()
+                    self?.isAnimating = false
+                    return
+                }
+                
+                if let err = result?.errors {
+                    let alert = FailureAlert(message:err[0].localizedDescription)
+                    alert.show(animated: true)
+                    topController?.hideLoader()
+                    self?.isAnimating = false
+                    return
+                }
+                
+                guard let resultData = result?.data else {
+                    topController?.hideLoader()
+                    self?.isAnimating = false
+                    return
+                }
+                
+                self?.token = (result?.data?.login.token)!
+                self?.tokenChanged = true
+                
+                topController?.hideLoader()
+                self?.isAnimating = false
+                let cl = Appnet.newClient(token: resultData.login.token)
+                cl.fetch(query: q, cachePolicy:cache, queue:queue) { result, error in
+                    print("fetched again")
+                    callback(result, error)
+                }
             }
         }
     }
@@ -139,47 +140,38 @@ class Appnet: NSObject {
                 return
             }
             
-            if let errors = result?.errors, errors.count > 0 {
-                let err = errors.first
-                if err?.description == "Login required" {
-                    let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
-                    self?.apollo.perform(mutation: loginMutation) { [weak self] result, error in
-                        if let error = error {
-                            topController?.hideLoader()
-                            self?.isAnimating = false
-                            return
-                        }
-                        if let err = result?.errors {
-                            let alert = FailureAlert(message:err[0].localizedDescription)
-                            alert.show(animated: true)
-                             topController?.hideLoader()
-                            self?.isAnimating = false
-                        }
-                        if result?.data != nil {
-                            self?.token = (result?.data?.login.token)!
-                            self?.tokenChanged = true
-                            
-                             topController?.hideLoader()
-                            self?.isAnimating = false
-                            let cl = Appnet.newClient(token: result?.data?.login.token)
-                            cl.perform(mutation:mut, queue:queue) { result, error in
-                                handler(result, error)
-                            }
-                        }
-                    }
-                } else {
-                    handler(result, error)
-                     topController?.hideLoader()
+            guard let err = result?.errors?.first, err.description == "Login required" else {
+                handler(result, error)
+                topController?.hideLoader()
+                self?.isAnimating = false
+                return
+            }
+            
+            let loginMutation = LoginMutation(email:ErxesUser.storedEmail() ,password:ErxesUser.storedPassword())
+            self?.apollo.perform(mutation: loginMutation) { [weak self] result, error in
+                if error != nil {
+                    topController?.hideLoader()
+                    self?.isAnimating = false
+                    return
+                }
+                if let err = result?.errors {
+                    let alert = FailureAlert(message:err[0].localizedDescription)
+                    alert.show(animated: true)
+                    topController?.hideLoader()
                     self?.isAnimating = false
                 }
-            } else {
-                handler(result, error)
-                 topController?.hideLoader()
-                self?.isAnimating = false
+                if result?.data != nil {
+                    self?.token = (result?.data?.login.token)!
+                    self?.tokenChanged = true
+                    
+                    topController?.hideLoader()
+                    self?.isAnimating = false
+                    let cl = Appnet.newClient(token: result?.data?.login.token)
+                    cl.perform(mutation:mut, queue:queue) { result, error in
+                        handler(result, error)
+                    }
+                }
             }
         }
     }
-    
-
-    
 }

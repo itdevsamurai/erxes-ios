@@ -32,7 +32,7 @@ extension Int64: JSONDecodable, JSONEncodable {
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {
         
-        if var array = value as? NSArray {
+        if let array = value as? NSArray {
             self.init()
             if var dict = self as? [String: JSONDecodable & JSONEncodable] {
                 dict["data"] = array as! [[String: Any]]
@@ -42,7 +42,6 @@ extension Dictionary: JSONDecodable {
         }
         
         guard let dictionary = forceBridgeFromObjectiveC(value) as? Dictionary else {
-            
             
             throw JSONDecodingError.couldNotConvert(value: value, to: Dictionary.self)
         }

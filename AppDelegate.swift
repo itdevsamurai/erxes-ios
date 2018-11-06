@@ -76,8 +76,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     @objc func reachabilityChanged(note: Notification) {
 
-        let reachability = note.object as! Reachability
-
+        guard let reachability = note.object as? Reachability else { return }
+        
         switch reachability.connection {
         case .wifi:
             print("Reachable via WiFi")
@@ -90,6 +90,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Network not reachable")
         }
     }
-
 }
 
