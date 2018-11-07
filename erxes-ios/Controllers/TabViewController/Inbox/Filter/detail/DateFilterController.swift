@@ -49,7 +49,7 @@ class DateFilterController: UIViewController {
         return button
     }()
     
-    @objc func toggleButton(sender:UIButton){
+    @objc func toggleButton(sender:UIButton) {
         if sender.alpha == 1.0 {
             return
         }
@@ -101,14 +101,14 @@ class DateFilterController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @objc func selectDate(sender: Any){
+    @objc func selectDate(sender: Any) {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let strDate = formatter.string(from: calendarView.selectedDate)
      
         if isBeginDate{
             self.filterOptions.startDate = strDate
-        }else{
+        } else {
             self.filterOptions.endDate = strDate
         }
         print(filterOptions)

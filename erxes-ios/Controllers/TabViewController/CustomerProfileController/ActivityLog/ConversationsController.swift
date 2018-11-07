@@ -10,7 +10,7 @@ import UIKit
 
 class ConversationsController: UIViewController {
 
-    var conversations = [LogData](){
+    var conversations = [LogData]() {
         didSet{
             for (index, conversation) in conversations.enumerated() {
             
@@ -36,7 +36,7 @@ class ConversationsController: UIViewController {
         return tableView
     }()
     
-    convenience init(id:String, name:String){
+    convenience init(id:String, name:String) {
         self.init()
         contactId = id
         contactName = name

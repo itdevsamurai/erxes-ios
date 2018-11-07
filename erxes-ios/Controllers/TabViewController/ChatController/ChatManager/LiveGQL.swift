@@ -11,7 +11,7 @@ import LiveGQL
 
 extension ChatManager: LiveGQLDelegate {
     
-    func subscribe(){
+    func subscribe() {
         gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){_id,content,userId,createdAt,customerId,internal,user{_id,details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
     }
     

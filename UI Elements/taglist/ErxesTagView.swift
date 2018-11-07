@@ -41,7 +41,7 @@ class ErxesTagView: UIView {
         arrangeTags()
     }
     
-    private func arrangeTags(){
+    private func arrangeTags() {
         let maxWidth = self.frame.size.width
         var totalWidth:CGFloat = 0
         var x:CGFloat = 0
@@ -49,13 +49,13 @@ class ErxesTagView: UIView {
             totalWidth = tagview.frame.size.width + totalWidth
             if index == 0 {
                 self.addSubview(tagview)
-            }else{
+            } else {
             
                   
                   let prevItemWidth = tagViews[index-1].frame.size.width
                   x = prevItemWidth + x + 5
                     tagview.frame.origin = CGPoint(x: x , y: 0)
-                if (x + tagview.frame.size.width) > maxWidth && maxWidth != 0{
+                if (x + tagview.frame.size.width) > maxWidth && maxWidth != 0 {
 
                     let remainingCount = self.tagViews.count - index
                     tagview.text = String(format: "+%i", remainingCount)
@@ -66,7 +66,7 @@ class ErxesTagView: UIView {
                     self.tagViews.removeAll()
                   
                     return
-                }else{
+                } else {
                     self.addSubview(tagview)
                 }
                 

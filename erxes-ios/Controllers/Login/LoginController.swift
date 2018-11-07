@@ -75,11 +75,11 @@ class LoginController: LoginControllerUI {
             self.view.endEditing(true)
 //            mutateLogin(email: emailField.text!, password: passwordField.text!)
 
-        } else if !passwordField.validate(type: .password){
+        } else if !passwordField.validate(type: .password) {
             passwordField.becomeFirstResponder()
-        }else if  !emailField.validate(type: .email) {
+        } else if  !emailField.validate(type: .email) {
             emailField.becomeFirstResponder()
-        }else {
+        } else {
             emailField.becomeFirstResponder()
         }
 
@@ -213,7 +213,7 @@ class LoginController: LoginControllerUI {
         })
     }
     
-    @objc func signIn(){
+    @objc func signIn() {
          self.mutateLogin(email: self.emailField.text!, password: self.passwordField.text!)
     }
 
@@ -221,9 +221,9 @@ class LoginController: LoginControllerUI {
 
 extension LoginController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == emailField && emailField.validate(type: .email){
+        if textField == emailField && emailField.validate(type: .email) {
             passwordField.becomeFirstResponder()
-        } else if textField == passwordField && passwordField.validate(type: .password){
+        } else if textField == passwordField && passwordField.validate(type: .password) {
             passwordField.resignFirstResponder()
         }
         return true

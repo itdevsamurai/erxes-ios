@@ -62,7 +62,7 @@ class ChatManager:NSObject {
         }
     }
     
-    func markAsRead(id:String){
+    func markAsRead(id:String) {
         let mutation = ConversationMarkAsReadMutation(id: id)
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
@@ -72,7 +72,7 @@ class ChatManager:NSObject {
         }
     }
     
-    func mutateAddMessage(msg:String, isInternal:Bool, mentions:[String]){
+    func mutateAddMessage(msg:String, isInternal:Bool, mentions:[String]) {
         let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!)
         
         if msg.count > 0 {

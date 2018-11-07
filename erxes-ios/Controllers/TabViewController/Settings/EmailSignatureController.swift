@@ -242,7 +242,7 @@ extension EmailSignatureController: UITextFieldDelegate {
             tmp = brands.filter{($0.name?.localizedCaseInsensitiveContains(value))!}
             self.filtered = tmp
             tableView.reloadData()
-        }else{
+        } else {
             self.isFiltering = false
             tableView.reloadData()
         }
@@ -275,7 +275,7 @@ extension EmailSignatureController: UITableViewDataSource {
         if isFiltering {
            let brand = filtered[indexPath.row]
             cell?.desc.text = brand.name
-        }else{
+        } else {
             let brand = brands[indexPath.row]
             cell?.desc.text = brand.name
         }

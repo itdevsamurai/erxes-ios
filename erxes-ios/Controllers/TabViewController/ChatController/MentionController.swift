@@ -177,7 +177,7 @@ extension ChatController {
         mentionController.visible = false
     }
     
-    @objc func InputViewTextChanged (_ sender:UITextField) {
+    @objc func inputViewTextChanged (_ sender:UITextField) {
         
         if !isInternal { return }
         

@@ -126,7 +126,7 @@ class FilterController: UIViewController {
         }
     }
     
-    @objc func close(sender:UIButton){
+    @objc func close(sender:UIButton) {
         self.dismiss(animated: true) {
             if self.changed {
                 self.changed = false
@@ -135,7 +135,7 @@ class FilterController: UIViewController {
         }
     }
     
-    @objc func clear(sender:UIButton){
+    @objc func clear(sender:UIButton) {
         self.filterOptions.removeAll()
         selectedSection = -1
         statusValue = ""
@@ -166,10 +166,10 @@ class FilterController: UIViewController {
 extension FilterController: DateDelegate {
     
     func setDate(options: FilterOptions, isBeginDate: Bool) {
-        if isBeginDate{
+        if isBeginDate {
             self.filterOptions.startDate = options.startDate
             change()
-        }else{
+        } else {
             self.filterOptions.endDate = options.endDate
             change()
         }

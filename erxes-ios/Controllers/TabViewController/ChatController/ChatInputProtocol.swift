@@ -13,8 +13,7 @@ import Photos
 extension ChatController:ChatInputProtocol {
     
     @objc func btnCameraClick() {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
-        {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
             let imagePicker:UIImagePickerController = UIImagePickerController()
             imagePicker.delegate = manager
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
@@ -24,10 +23,10 @@ extension ChatController:ChatInputProtocol {
                 NSAttributedStringKey.foregroundColor : UIColor.black
             ]
             self.present(imagePicker, animated: true, completion: nil)
-        }
-        else
-        {
-            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertControllerStyle.alert)
+        } else {
+            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable",
+                                                            message: "Unable to find a camera on this device",
+                                                            preferredStyle: UIAlertControllerStyle.alert)
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -76,7 +75,7 @@ extension ChatController:ChatInputProtocol {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = manager
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePicker.navigationBar.tintColor = .black // Cancel button ~ any UITabBarButton items
+        imagePicker.navigationBar.tintColor = .black
         imagePicker.navigationBar.titleTextAttributes = [
             NSAttributedStringKey.foregroundColor : UIColor.black
         ]
@@ -93,7 +92,6 @@ extension ChatController:ChatInputProtocol {
             PHPhotoLibrary.requestAuthorization({status in
                 if status == .authorized {
                     self.openImagePicker()
-                } else {
                 }
             })
         } else {

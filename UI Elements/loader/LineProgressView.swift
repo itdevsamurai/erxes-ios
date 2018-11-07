@@ -16,7 +16,7 @@ class LineProgressView: UIView {
     var progressColor: UIColor = .ERXES_COLOR
     
  
-    public init(){
+    public init() {
         super.init(frame:CGRect.zero)
         progressBar.backgroundColor = self.progressColor
         self.backgroundColor = self.bgColor
@@ -45,7 +45,7 @@ class LineProgressView: UIView {
         }
     }
     
-    private func show(){
+    private func show() {
         if self.superview != nil {
             return
         }
@@ -58,7 +58,7 @@ class LineProgressView: UIView {
         
     }
     
-    func startAnimation(){
+    func startAnimation() {
         self.show()
         if !isAnimating{
             self.isAnimating = true
@@ -76,7 +76,7 @@ class LineProgressView: UIView {
         }
     }
     
-    func stopAnimation(){
+    func stopAnimation() {
         self.isAnimating = false
         UIView.animate(withDuration: 0.5, animations: {
             self.snp.makeConstraints({ (make) in
@@ -85,7 +85,7 @@ class LineProgressView: UIView {
         })
     }
     
-    private func configureAnimation(){
+    private func configureAnimation() {
         guard let superview = self.superview else {
             stopAnimation()
             return
@@ -116,7 +116,7 @@ class LineProgressView: UIView {
             })
             
         }) { (completed) in
-            if (self.isAnimating){
+            if (self.isAnimating) {
                 self.configureAnimation()
             }
         }

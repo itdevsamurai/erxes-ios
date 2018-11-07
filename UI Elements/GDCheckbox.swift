@@ -100,7 +100,7 @@ class GDCheckbox: UIControl {
             eqLength = height
             x = (width - eqLength) / 2
             y = 0
-        }else{
+        } else {
             eqLength = width
             x = 0
             y = (height - eqLength) / 2
@@ -110,15 +110,15 @@ class GDCheckbox: UIControl {
         return CGRect(x: x + halfContainerWidth, y: y + halfContainerWidth, width: eqLength - halfContainerWidth, height: eqLength - halfContainerWidth)
     }
     
-    fileprivate var containerPath: UIBezierPath{
-        if isRadiobox || isCircular{
+    fileprivate var containerPath: UIBezierPath {
+        if isRadiobox || isCircular {
             return UIBezierPath(ovalIn: containerFrame)
-        }else{
+        } else {
             return UIBezierPath(rect: containerFrame)
         }
     }
     
-    fileprivate var checkPath: UIBezierPath{
+    fileprivate var checkPath: UIBezierPath {
         let containerFrame = self.containerFrame
         
         let inset = containerWidth / 2
@@ -129,7 +129,7 @@ class GDCheckbox: UIControl {
         let x = origin.x
         let y = origin.y
         
-        if isSquare{
+        if isSquare {
             let unit = checkFrame.width / 4
             
             path.move(to: CGPoint(x: x + unit, y: y + unit))
@@ -138,11 +138,11 @@ class GDCheckbox: UIControl {
             path.addLine(to: CGPoint(x: x + (3 * unit), y: y + unit))
             path.addLine(to: CGPoint(x: x +  unit, y: y + unit))
             path.close()
-        }else if isRadiobox{
+        } else if isRadiobox {
             let unit = checkFrame.width / 4
             
             path.addArc(withCenter: CGPoint(x: x + (2 * unit), y: y + (2 * unit)), radius: containerFrame.width / 3 - checkWidth, startAngle: 0.0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-        }else{
+        } else {
             let unit = checkFrame.width / 33
             
             path.move(to: CGPoint(x: x + (7 * unit), y: y + (18 * unit)))
@@ -158,7 +158,7 @@ class GDCheckbox: UIControl {
         drawLayers()
     }
     
-    fileprivate func drawLayers(){
+    fileprivate func drawLayers() {
         containerLayer.frame = bounds
         containerLayer.lineWidth = containerWidth
         containerLayer.path = containerPath.cgPath
@@ -169,7 +169,7 @@ class GDCheckbox: UIControl {
         checkLayer.lineJoin = "round"
     }
     
-    fileprivate func drawColors(){
+    fileprivate func drawColors() {
         containerLayer.strokeColor = containerColor.cgColor
         
         if isOn{
@@ -184,22 +184,22 @@ class GDCheckbox: UIControl {
                 anim.toValue = 1.0
                 
                 checkLayer.add(anim, forKey: "stroke")
-            }else{
+            } else {
                 if isSquare{
                     checkLayer.fillColor = checkColor.cgColor
-                }else if isRadiobox{
+                } else if isRadiobox {
                     checkLayer.fillColor = checkColor.cgColor
-                }else{
+                } else {
                     checkLayer.strokeColor = checkColor.cgColor
                 }
             }
-        }else{
+        } else {
             containerLayer.fillColor = UIColor.clear.cgColor
             if isSquare{
                 checkLayer.fillColor = UIColor.clear.cgColor
-            }else if isRadiobox{
+            } else if isRadiobox {
                 checkLayer.fillColor = UIColor.clear.cgColor
-            }else{
+            } else {
                 checkLayer.strokeColor = UIColor.clear.cgColor
             }
         }
@@ -207,7 +207,7 @@ class GDCheckbox: UIControl {
     }
     
     //MARK: - initialization
-    fileprivate func initializeCheckbox(){
+    fileprivate func initializeCheckbox() {
         checkLayer.fillColor = UIColor.clear.cgColor
         
         drawLayers()

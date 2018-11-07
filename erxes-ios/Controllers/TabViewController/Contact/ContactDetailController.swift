@@ -21,7 +21,7 @@ class ContactDetailController: DTPagerController {
     var contactId:String = String()
     var contactName = String()
     var email = String()
-    var logs = [LogData](){
+    var logs = [LogData]() {
         didSet{
             activityController.logs = self.logs
             noteController.notes = self.logs
@@ -43,7 +43,7 @@ class ContactDetailController: DTPagerController {
         getActivityLog()
     }
     
-    func configureViews(){
+    func configureViews() {
         self.font = Font.regular(14)
         self.selectedFont = Font.bold(14)
         self.selectedTextColor = .ERXES_COLOR
@@ -67,7 +67,7 @@ class ContactDetailController: DTPagerController {
         var controllers = [UIViewController]()
         if isCompany {
            controllers =  [companyController,activityController,noteController,conversationController]
-        }else{
+        } else {
             controllers =  [customerController,activityController,noteController,conversationController]
         }
         
@@ -128,7 +128,7 @@ class ContactDetailController: DTPagerController {
     @objc func editAction(sender:UIButton) {
         if isCompany {
             companyController.editAction(sender: sender)
-        }else{
+        } else {
            customerController.editAction(sender: sender)
         }
     }
@@ -220,7 +220,7 @@ extension ContactDetailController: DTPagerControllerDelegate {
             }()
             rightItem.tintColor = UIColor.white
             self.navigationItem.rightBarButtonItem = rightItem
-        }else {
+        } else {
             self.navigationItem.rightBarButtonItem = nil
         }
     }

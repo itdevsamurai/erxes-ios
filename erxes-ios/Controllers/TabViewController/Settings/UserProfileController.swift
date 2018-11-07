@@ -352,7 +352,7 @@ class UserProfileController: FormViewController {
         
     }
     
-    func getCurrentUser(){
+    func getCurrentUser() {
         let query = CurrentUserQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {

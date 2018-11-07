@@ -115,7 +115,7 @@ class CustomerProfileController: FormViewController {
                     
                     if ((self?.customerId) == nil) {
                         self?.buildForm(customer: nil)
-                    }else{
+                    } else {
                         self?.getCustomerData()
                     }
                 }
@@ -396,7 +396,7 @@ class CustomerProfileController: FormViewController {
                                             })
                                 }
                                 
-                            }else if field?.id == "avatar" {
+                            } else if field?.id == "avatar" {
                                 form.last!
                                     <<< ImageRow(field?.id) { row in
                                         row.title = field?.text

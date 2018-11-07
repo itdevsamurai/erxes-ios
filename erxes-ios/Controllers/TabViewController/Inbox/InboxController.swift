@@ -299,7 +299,7 @@ class InboxController: InboxControllerUI {
 
 extension InboxController {
     
-    func changeStatus(id:String, status:String){
+    func changeStatus(id:String, status:String) {
         let mutation = ConversationsChangeStatusMutation(_ids: [id], status: status)
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {

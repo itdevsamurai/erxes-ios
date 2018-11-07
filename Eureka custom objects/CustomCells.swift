@@ -102,17 +102,17 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         }
     }
 
-    private func dayTapped(_ button: UIButton, day: WeekDay){
+    private func dayTapped(_ button: UIButton, day: WeekDay) {
         button.isSelected = !button.isSelected
         if button.isSelected{
             row.value?.insert(day)
         }
-        else{
+        else {
             _ = row.value?.remove(day)
         }
     }
 
-    private func imageTopTitleBottom(_ button : UIButton){
+    private func imageTopTitleBottom(_ button : UIButton) {
 
         guard let imageSize = button.imageView?.image?.size else { return }
         let spacing : CGFloat = 3.0
@@ -198,7 +198,7 @@ public class _FloatLabelCell<T>: Cell<T>, UITextFieldDelegate, TextFieldCell whe
         return NSLayoutConstraint.constraints(withVisualFormat: "H:|-[floatLabeledTextField]-|", options: .alignAllLastBaseline, metrics: metrics, views: views) + NSLayoutConstraint.constraints(withVisualFormat: "V:|-(vMargin)-[floatLabeledTextField]-(vMargin)-|", options: .alignAllLastBaseline, metrics: metrics, views: views)
     }
 
-    @objc public func textFieldDidChange(_ textField : UITextField){
+    @objc public func textFieldDidChange(_ textField : UITextField) {
         guard let textValue = textField.text else {
             row.value = nil
             return
@@ -527,7 +527,7 @@ public final class LocationRow: OptionsRow<PushSelectorCell<CLLocation>>, Presen
     
     public required init(tag: String?) {
         super.init(tag: tag)
-        presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController(){ _ in } }, onDismiss: { vc in _ = vc.navigationController?.popViewController(animated: true) })
+        presentationMode = .show(controllerProvider: ControllerProvider.callback { return MapViewController() { _ in } }, onDismiss: { vc in _ = vc.navigationController?.popViewController(animated: true) })
 
         displayValueFor = {
             guard let location = $0 else { return "" }
@@ -626,7 +626,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
         super.init(nibName: nil, bundle: nil)
     }
 
-    convenience public init(_ callback: ((UIViewController) -> ())?){
+    convenience public init(_ callback: ((UIViewController) -> ())?) {
         self.init(nibName: nil, bundle: nil)
         onDismissCallback = callback
     }
@@ -647,7 +647,7 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
             let region = MKCoordinateRegionMakeWithDistance(value.coordinate, 400, 400)
             mapView.setRegion(region, animated: true)
         }
-        else{
+        else {
             mapView.showsUserLocation = true
         }
         updateTitle()
@@ -663,13 +663,13 @@ public class MapViewController : UIViewController, TypedRowControllerType, MKMap
     }
 
 
-    @objc func tappedDone(_ sender: UIBarButtonItem){
+    @objc func tappedDone(_ sender: UIBarButtonItem) {
         let target = mapView.convert(ellipsisLayer.position, toCoordinateFrom: mapView)
         row.value = CLLocation(latitude: target.latitude, longitude: target.longitude)
         onDismissCallback?(self)
     }
 
-    func updateTitle(){
+    func updateTitle() {
         let fmt = NumberFormatter()
         fmt.maximumFractionDigits = 4
         fmt.minimumFractionDigits = 4

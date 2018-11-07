@@ -12,12 +12,12 @@ class ActivityController: UIViewController {
 
     var contactId = String()
     var contactName = String()
-    var logs = [LogData](){
+    var logs = [LogData]() {
         didSet{
             tableView.reloadData()
         }
     }
-    convenience init(id:String, name:String){
+    convenience init(id:String, name:String) {
         self.init()
         contactId = id
         contactName = name

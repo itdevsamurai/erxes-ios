@@ -22,7 +22,7 @@ class TabController: UITabBarController {
         setupTabs()
     }
     
-    func setupTabs(){
+    func setupTabs() {
         
 //        
         let inboxVC = InboxController()

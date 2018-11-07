@@ -12,7 +12,7 @@ class NoteController: UIViewController {
 
     weak var delegate: ContactDelegate?
     var isCompany = Bool()
-    var notes = [LogData](){
+    var notes = [LogData]() {
         didSet{
             
             for (index, note) in notes.enumerated() {
@@ -40,7 +40,7 @@ class NoteController: UIViewController {
         return button
     }()
     
-    @objc func noteAction(){
+    @objc func noteAction() {
         alertController.view.addObserver(self, forKeyPath: "bounds", options: NSKeyValueObservingOptions.new, context: nil)
         textView.text = "   Start typing to leave a note"
         self.present(alertController, animated: true, completion: nil)
@@ -66,7 +66,7 @@ class NoteController: UIViewController {
         return button
     }()
     
-    @objc func emailAction(){
+    @objc func emailAction() {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.navigationController?.navigationBar.tintColor = .ERXES_COLOR
@@ -153,11 +153,11 @@ class NoteController: UIViewController {
     }
  
     
-    func saveMutation(content:String){
+    func saveMutation(content:String) {
         var contentType = String()
         if isCompany {
             contentType = "company"
-        }else{
+        } else {
             contentType = "customer"
         }
         let mutation = InternalNotesAddMutation(contentType: contentType)

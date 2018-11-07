@@ -88,7 +88,7 @@ class ContactFilterController: UIViewController {
         }
     }
     
-    func getTags(){
+    func getTags() {
         var type = "customer"
         if !isCustomer{
             type = "company"
@@ -116,7 +116,7 @@ class ContactFilterController: UIViewController {
         }
     }
     
-    func getBrands(){
+    func getBrands() {
         let query = BrandsQuery()
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
@@ -138,7 +138,7 @@ class ContactFilterController: UIViewController {
         }
     }
     
-    func getForms(){
+    func getForms() {
         let query = IntegrationsQuery()
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
@@ -371,7 +371,7 @@ extension ContactFilterController: UITableViewDataSource {
             if indexPath.row == 0 {
                 cell = InputCell(style: .default, reuseIdentifier: InputCell.ID)
                 (cell as! InputCell).input.addTarget(self, action: #selector(inputChanged), for: .editingChanged)
-            }else {
+            } else {
                 cell.textLabel?.text = list[indexPath.row - 1]
             }
         case integration:
@@ -380,14 +380,14 @@ extension ContactFilterController: UITableViewDataSource {
             if indexPath.row == 0 {
                 cell = InputCell(style: .default, reuseIdentifier: InputCell.ID)
                 (cell as! InputCell).input.addTarget(self, action: #selector(inputChanged), for: .editingChanged)
-            }else {
+            } else {
                 cell.textLabel?.text = list[indexPath.row - 1]
             }
         case form:
             if indexPath.row == 0 {
                 cell = InputCell(style: .default, reuseIdentifier: InputCell.ID)
                 (cell as! InputCell).input.addTarget(self, action: #selector(inputChanged), for: .editingChanged)
-            }else {
+            } else {
                 cell.textLabel?.text = list[indexPath.row - 1]
             }
         case lead:

@@ -26,7 +26,7 @@ class MyButton: UIButton {
         
     }
     
-    func setup(){
+    func setup() {
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
             shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 6).cgPath
