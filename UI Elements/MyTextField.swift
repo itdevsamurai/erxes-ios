@@ -70,7 +70,7 @@ class MyTextField: UITextField, UITextFieldDelegate {
             rightImage.image? = (rightImage.image?.withRenderingMode(.alwaysTemplate))!
             rightImage.tintColor = .ERXES_COLOR
             self.rightView = rightImage
-        }else{
+        } else {
             rightImage.image = #imageLiteral(resourceName: "ic_checkMark")
             self.rightView = rightImage
         }
@@ -81,7 +81,7 @@ class MyTextField: UITextField, UITextFieldDelegate {
         if let txt = self.text {
             if txt.isEmpty{
                 return false
-            }else{
+            } else {
                 switch type {
                 case .password:
                     if txt.count < 4 {

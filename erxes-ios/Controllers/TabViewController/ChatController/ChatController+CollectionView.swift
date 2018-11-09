@@ -25,39 +25,51 @@ extension ChatController:UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let item = messages[indexPath.row]
-        var cell:ChatBaseCell
+        var cellId:String
         
         if item.formWidgetData != nil {
-            cell = chatView.dequeueReusableCell(withReuseIdentifier: FormCell.ID, for: indexPath) as! FormCell
-        } else
-            if let files = item.attachments, files.count > 0 {
-                let imageCell = chatView.dequeueReusableCell(withReuseIdentifier: ImageCell.ID, for: indexPath) as! ImageCell
-                let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
-                imageCell.ivAttachment.tag = indexPath.row
-                imageCell.ivAttachment.addGestureRecognizer(tapGestureRecognizer)
-                cell = imageCell
-            } else
-                if item.customerId != nil {
-                    cell = chatView.dequeueReusableCell(withReuseIdentifier: IncomingCell.ID, for: indexPath) as! IncomingCell
-                } else {
-                    cell = chatView.dequeueReusableCell(withReuseIdentifier: SentCell.ID, for: indexPath) as! SentCell
+            cellId = FormCell.ID
+        } else if let files = item.attachments, files.count > 0 {
+            cellId = ImageCell.ID
+        } else if item.customerId != nil {
+            cellId = IncomingCell.ID
+        } else {
+            cellId = SentCell.ID
         }
-        cell.viewModel = messages[indexPath.row]
+
+        let cell = chatView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        
+        if let cell = cell as? ChatBaseCell {
+            cell.viewModel = messages[indexPath.row]
+        }
+        
+        if let cell = cell as? ImageCell {
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(sender:)))
+            cell.ivAttachment.tag = indexPath.row
+            cell.ivAttachment.addGestureRecognizer(tapGestureRecognizer)
+        }
+        
         return cell
     }
     
     @objc func imageTapped(sender:UITapGestureRecognizer) {
-        let imageView = sender.view as! UIImageView
+        
+        guard let imageView = sender.view as? UIImageView else {
+            return
+        }
         let message = messages[imageView.tag]
         
         var images = [SKPhoto]()
         if let attachments = message.attachments,attachments.count > 0 {
             
             for attachment in attachments {
-                let photo = SKPhoto.photoWithImageURL(attachment!["url"] as! String)
-                photo.shouldCachePhotoURLImage = false // you can use image cache by true(NSCache)
-                images.append(photo)
+                if let url = attachment?["url"] as? String {
+                    let photo = SKPhoto.photoWithImageURL(url)
+                    photo.shouldCachePhotoURLImage = false
+                    images.append(photo)
+                }
             }
         }
         
@@ -73,7 +85,7 @@ extension ChatController:UICollectionViewDelegateFlowLayout {
         
         var height:CGFloat = 0
         
-        if indexPath.row < calculatedHeights.count{
+        if indexPath.row < calculatedHeights.count {
             height = calculatedHeights[indexPath.row]
         } else {
             if item.formWidgetData != nil {

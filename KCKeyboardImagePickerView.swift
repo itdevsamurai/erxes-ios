@@ -95,7 +95,7 @@ class KCKeyboardImagePickerView: UIView, UICollectionViewDelegateFlowLayout, UIC
         renderOptionButtons()
     }
     
-    func reload(){
+    func reload() {
         renderImagesCollectionView()
         renderImagePickerViewControllerButton()
         renderOptionButtons()

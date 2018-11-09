@@ -55,12 +55,12 @@ class ContactController: UIViewController {
         return field
     }()
     
-    @objc func cancelAction(){
+    @objc func cancelAction() {
         searchField.endEditing(true)
         searchField.text = ""
         if isCustomer {
             self.getCustomers()
-        }else{
+        } else {
             self.getCompanies()
         }
     }
@@ -146,7 +146,7 @@ class ContactController: UIViewController {
         }
     }
     
-    func showActionSheet(indexPath:IndexPath){
+    func showActionSheet(indexPath:IndexPath) {
         let actionSheet = UIAlertController(title: "Connect to customer", message: "Please select connection method", preferredStyle: .actionSheet)
         if isCustomer{
             let customer = self.customers[indexPath.row]
@@ -606,7 +606,7 @@ extension ContactController: ContactFilterDelegate {
         self.options = options
         if isCustomer {
             self.getCustomers(limit: self.customersLimit)
-        }else {
+        } else {
             self.getCompanies(limit: self.companiesLimit)
         }
     }
@@ -616,9 +616,9 @@ extension ContactController: ContactFilterDelegate {
 extension ContactController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if isCustomer{
+        if isCustomer {
             self.getCustomers()
-        }else{
+        } else {
             self.getCompanies()
         }
         return true
@@ -626,8 +626,8 @@ extension ContactController: UITextFieldDelegate {
 }
 
 
-extension UISegmentedControl{
-    func removeBorder(){
+extension UISegmentedControl {
+    func removeBorder() {
         let backgroundImage = UIImage.getColoredRectImageWith(color: UIColor.ERXES_COLOR.cgColor, andSize: self.bounds.size)
         self.setBackgroundImage(backgroundImage, for: .normal, barMetrics: .default)
         self.setBackgroundImage(backgroundImage, for: .selected, barMetrics: .default)
@@ -639,7 +639,7 @@ extension UISegmentedControl{
 //        self.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(red: 67/255, green: 129/255, blue: 244/255, alpha: 1.0)], for: .selected)
     }
     
-    func addUnderlineForSelectedSegment(){
+    func addUnderlineForSelectedSegment() {
         removeBorder()
         let underlineWidth: CGFloat = self.bounds.size.width / CGFloat(self.numberOfSegments)
         let underlineHeight: CGFloat = 2.0
@@ -652,7 +652,7 @@ extension UISegmentedControl{
         self.addSubview(underline)
     }
     
-    func changeUnderlinePosition(){
+    func changeUnderlinePosition() {
         guard let underline = self.viewWithTag(1) else {return}
         let underlineFinalXPosition = (self.bounds.width / CGFloat(self.numberOfSegments)) * CGFloat(selectedSegmentIndex)
         UIView.animate(withDuration: 0.1, animations: {
@@ -661,9 +661,9 @@ extension UISegmentedControl{
     }
 }
 
-extension UIImage{
+extension UIImage {
     
-    class func getColoredRectImageWith(color: CGColor, andSize size: CGSize) -> UIImage{
+    class func getColoredRectImageWith(color: CGColor, andSize size: CGSize) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         let graphicsContext = UIGraphicsGetCurrentContext()
         graphicsContext?.setFillColor(color)

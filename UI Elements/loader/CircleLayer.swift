@@ -120,7 +120,7 @@ class CircleLayer: CALayer {
     }
     
     // This is what you call to draw a partial circle.
-    func animateCircleTo(duration: TimeInterval, fromValue: CGFloat, toValue: CGFloat){
+    func animateCircleTo(duration: TimeInterval, fromValue: CGFloat, toValue: CGFloat) {
         // We want to animate the strokeEnd property of the circleLayer
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.isRemovedOnCompletion = true

@@ -117,7 +117,7 @@ public extension UIViewController {
         }
     }
     
-    func presentTextFieldAlert(title: String?, msg:String, style:UIAlertControllerStyle = .alert, confirmKey:String? = "OK", confirmAction:@escaping (_ returnValue:String?)->Void){
+    func presentTextFieldAlert(title: String?, msg:String, style:UIAlertControllerStyle = .alert, confirmKey:String? = "OK", confirmAction:@escaping (_ returnValue:String?)->Void) {
         let alertController = UIAlertController(title: title, message: "", preferredStyle: style)
         let mutableTitle = NSMutableAttributedString(string: title!)
         

@@ -12,7 +12,7 @@ class NoteController: UIViewController {
 
     weak var delegate: ContactDelegate?
     var isCompany = Bool()
-    var notes = [LogData](){
+    var notes = [LogData]() {
         didSet{
             
             for (index, note) in notes.enumerated() {
@@ -40,7 +40,7 @@ class NoteController: UIViewController {
         return button
     }()
     
-    @objc func noteAction(){
+    @objc func noteAction() {
         alertController.view.addObserver(self, forKeyPath: "bounds", options: NSKeyValueObservingOptions.new, context: nil)
         textView.text = "   Start typing to leave a note"
         self.present(alertController, animated: true, completion: nil)
@@ -66,7 +66,7 @@ class NoteController: UIViewController {
         return button
     }()
     
-    @objc func emailAction(){
+    @objc func emailAction() {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.navigationController?.navigationBar.tintColor = .ERXES_COLOR
@@ -153,11 +153,11 @@ class NoteController: UIViewController {
     }
  
     
-    func saveMutation(content:String){
+    func saveMutation(content:String) {
         var contentType = String()
         if isCompany {
             contentType = "company"
-        }else{
+        } else {
             contentType = "customer"
         }
         let mutation = InternalNotesAddMutation(contentType: contentType)
@@ -225,7 +225,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         let data = notes[indexPath.section].list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
-        let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
+        let dateLblValue = Utils.getTimeComponentString(olderDate: date!, newerDate: now)
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
                 cell.descLabel.text = "left a note"
                 cell.avatarView.image = UIImage(named: "avatar.png")
@@ -246,52 +246,6 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         
         return UITableViewCell()
     }
-    
-    func getTimeComponentString(olderDate older: Date, newerDate newer: Date) -> (String?) {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        
-        let componentsLeftTime = Calendar.current.dateComponents([.minute, .hour, .day, .month, .weekOfMonth, .year], from: older, to: newer)
-        
-        let year = componentsLeftTime.year ?? 0
-        if year > 0 {
-            formatter.allowedUnits = [.year]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        
-        let month = componentsLeftTime.month ?? 0
-        if month > 0 {
-            formatter.allowedUnits = [.month]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let weekOfMonth = componentsLeftTime.weekOfMonth ?? 0
-        if weekOfMonth > 0 {
-            formatter.allowedUnits = [.weekOfMonth]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let day = componentsLeftTime.day ?? 0
-        if day > 0 {
-            formatter.allowedUnits = [.day]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let hour = componentsLeftTime.hour ?? 0
-        if hour > 0 {
-            formatter.allowedUnits = [.hour]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let minute = componentsLeftTime.minute ?? 0
-        if minute > 0 {
-            formatter.allowedUnits = [.minute]
-            return formatter.string(from: older, to: newer) ?? ""
-        }
-        
-        return nil
-}
 }
 
 extension NoteController: UITextViewDelegate {

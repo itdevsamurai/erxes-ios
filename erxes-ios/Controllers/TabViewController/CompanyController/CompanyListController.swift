@@ -52,7 +52,7 @@ class CompanyListController: UIViewController {
         return field
     }()
     
-    @objc func cancelAction(){
+    @objc func cancelAction() {
         searchField.endEditing(true)
         searchField.text = ""
         isSearching = false
@@ -113,7 +113,7 @@ class CompanyListController: UIViewController {
         }
         if searchField.text?.count == 0 {
             isSearching = false
-        }else{
+        } else {
             self.getCompanies()
         }
         tableView.reloadData()
@@ -170,11 +170,11 @@ extension CompanyListController: UITableViewDelegate {
             company = companies[indexPath.row]
     
         
-        if isModal(){
+        if isModal() {
             self.dismiss(animated: true) {
                 self.delegate?.didSelectCompany(company: company!)
             }
-        }else{
+        } else {
             self.delegate?.didSelectCompany(company: company!)
             self.navigationController?.popViewController(animated: true)
         }

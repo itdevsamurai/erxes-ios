@@ -59,7 +59,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             
             let now = Date()
             
-            let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
+            let dateLblValue = Utils.getTimeComponentString(olderDate: date!, newerDate: now)
             
             cell?.date.text = dateLblValue
             cell?.tagListView.removeAllTags()

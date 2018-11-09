@@ -50,7 +50,7 @@ class PasswordSettingsController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    func configureViews(){
+    func configureViews() {
         self.title = "Change Password"
         self.view.backgroundColor = .white
         let currentUser = ErxesUser.sharedUserInfo()
@@ -106,7 +106,7 @@ class PasswordSettingsController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @objc func saveAction(sender:UIButton){
+    @objc func saveAction(sender:UIButton) {
         
         if validate() {
             let current = self.currentField.textField.text
@@ -125,7 +125,7 @@ class PasswordSettingsController: UIViewController {
         if newField.textField.text != reField.textField.text || (reField.textField.text?.isEmpty)! {
             line3?.backgroundColor = .red
             results.append(false)
-        }else {
+        } else {
             line3?.backgroundColor = .TEXT_COLOR
             results.append(true)
         }
@@ -133,7 +133,7 @@ class PasswordSettingsController: UIViewController {
         if (currentField.textField.text?.isEmpty)! {
             line1?.backgroundColor = .red
             results.append(false)
-        }else {
+        } else {
             line1?.backgroundColor = .TEXT_COLOR
             results.append(true)
         }
@@ -141,21 +141,21 @@ class PasswordSettingsController: UIViewController {
         if (newField.textField.text?.isEmpty)!{
             line2?.backgroundColor = .red
             results.append(false)
-        }else{
+        } else {
             line2?.backgroundColor = .TEXT_COLOR
             results.append(true)
         }
         
         if results.contains(where: {$0 == false}) {
             isValid = false
-        }else{
+        } else {
             isValid = true
         }
         
         return isValid
     }
     
-    func changePassword(new:String,current:String){
+    func changePassword(new:String,current:String) {
        
         let mutation = UsersChangePasswordMutation(currentPassword: current, newPassword: new)
         

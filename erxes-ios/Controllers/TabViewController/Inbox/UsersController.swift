@@ -60,7 +60,7 @@ class UsersController: UIViewController {
         return field
     }()
     
-    @objc func cancelAction(){
+    @objc func cancelAction() {
         searchField.endEditing(true)
         searchField.text = ""
         isSearching = false
@@ -100,7 +100,7 @@ class UsersController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func getUsers(){
+    func getUsers() {
         
         let query = GetUsersQuery()
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
@@ -153,7 +153,7 @@ class UsersController: UIViewController {
         }
         if searchField.text?.count == 0 {
             isSearching = false
-        }else{
+        } else {
             filtered = users.filter{($0.details?.fullName?.localizedCaseInsensitiveContains(value))!}
             isSearching = true
         }
@@ -180,15 +180,15 @@ extension UsersController: UITableViewDelegate {
         var user:UserData?
         if isSearching{
           user = filtered[indexPath.row]
-        }else{
+        } else {
             user = users[indexPath.row]
         }
         
-        if isModal(){
+        if isModal() {
             self.dismiss(animated: true) {
                 self.delegate?.assignUser(user: user!,conversationId: self.conversationId)
             }
-        }else{
+        } else {
             self.delegate?.assignUser(user: user!, conversationId: "")
             self.navigationController?.popViewController(animated: true)
         }
@@ -210,7 +210,7 @@ extension UsersController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
             return filtered.count
-        }else{
+        } else {
             return users.count
         }
         
@@ -222,7 +222,7 @@ extension UsersController: UITableViewDataSource {
 //        let user = users[indexPath.row]
         if isSearching {
             user = filtered[indexPath.row]
-        }else{
+        } else {
             user = users[indexPath.row]
         }
         cell?.fullName.text = ""

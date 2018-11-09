@@ -30,7 +30,7 @@ class ErxesButton: UIButton {
             print("changing from \(isSelected) to \(newValue)")
             if isSelected{
                
-            }else{
+            } else {
              
             }
         }

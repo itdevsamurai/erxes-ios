@@ -32,7 +32,7 @@ extension Int64: JSONDecodable, JSONEncodable {
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {
         
-        if var array = value as? NSArray {
+        if let array = value as? NSArray {
             self.init()
             if var dict = self as? [String: JSONDecodable & JSONEncodable] {
                 dict["data"] = array as! [[String: Any]]
@@ -42,7 +42,6 @@ extension Dictionary: JSONDecodable {
         }
         
         guard let dictionary = forceBridgeFromObjectiveC(value) as? Dictionary else {
-            
             
             throw JSONDecodingError.couldNotConvert(value: value, to: Dictionary.self)
         }
@@ -64,20 +63,20 @@ extension Array: JSONDecodable {
 private func forceBridgeFromObjectiveC(_ value: Any) -> Any {
     switch value {
     case is NSString:
-        return value as! String
+        return value as? String
         
     case is Bool:
-        return value as! Bool
+        return value as? Bool
     case is Int:
-        return value as! Int
+        return value as? Int
     case is Int64:
-        return value as! Int64
+        return value as? Int64
     case is Double:
-        return value as! Double
+        return value as? Double
     case is NSDictionary:
         return Dictionary(uniqueKeysWithValues: (value as! NSDictionary).map { ($0.key as! AnyHashable, forceBridgeFromObjectiveC($0.value)) })
     case is NSArray:
-        return (value as! NSArray).map { forceBridgeFromObjectiveC($0) }
+        return (value as? NSArray).map { forceBridgeFromObjectiveC($0) }
     default:
         return value
     }
