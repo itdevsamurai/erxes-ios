@@ -116,12 +116,12 @@ class Appnet: NSObject {
                     return
                 }
                 
-                self?.token = (result?.data?.login.token)!
+                self?.token = (result?.data?.login)!
                 self?.tokenChanged = true
                 
                 topController?.hideLoader()
                 self?.isAnimating = false
-                let cl = Appnet.newClient(token: resultData.login.token)
+                let cl = Appnet.newClient(token: resultData.login)
                 cl.fetch(query: q, cachePolicy:cache, queue:queue) { result, error in
                     print("fetched again")
                     callback(result, error)
@@ -161,12 +161,12 @@ class Appnet: NSObject {
                     self?.isAnimating = false
                 }
                 if result?.data != nil {
-                    self?.token = (result?.data?.login.token)!
+                    self?.token = (result?.data?.login)!
                     self?.tokenChanged = true
                     
                     topController?.hideLoader()
                     self?.isAnimating = false
-                    let cl = Appnet.newClient(token: result?.data?.login.token)
+                    let cl = Appnet.newClient(token: result?.data?.login)
                     cl.perform(mutation:mut, queue:queue) { result, error in
                         handler(result, error)
                     }

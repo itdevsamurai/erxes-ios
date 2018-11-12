@@ -31,8 +31,8 @@ public struct EmailSignature: GraphQLMapConvertible {
 public struct UserDetails: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
 
-  public init(avatar: Optional<String?> = nil, fullName: Optional<String?> = nil, position: Optional<String?> = nil, location: Optional<String?> = nil, description: Optional<String?> = nil) {
-    graphQLMap = ["avatar": avatar, "fullName": fullName, "position": position, "location": location, "description": description]
+  public init(avatar: Optional<String?> = nil, fullName: Optional<String?> = nil, shortName: Optional<String?> = nil, position: Optional<String?> = nil, location: Optional<String?> = nil, description: Optional<String?> = nil) {
+    graphQLMap = ["avatar": avatar, "fullName": fullName, "shortName": shortName, "position": position, "location": location, "description": description]
   }
 
   public var avatar: Optional<String?> {
@@ -50,6 +50,15 @@ public struct UserDetails: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "fullName")
+    }
+  }
+
+  public var shortName: Optional<String?> {
+    get {
+      return graphQLMap["shortName"] as! Optional<String?>
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "shortName")
     }
   }
 
@@ -145,7 +154,7 @@ public struct UserLinks: GraphQLMapConvertible {
 
 public final class LoginMutation: GraphQLMutation {
   public static let operationString =
-    "mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password) {\n    __typename\n    token\n    refreshToken\n  }\n}"
+    "mutation Login($email: String!, $password: String!) {\n  login(email: $email, password: $password)\n}"
 
   public var email: String
   public var password: String
@@ -163,7 +172,7 @@ public final class LoginMutation: GraphQLMutation {
     public static let possibleTypes = ["Mutation"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("login", arguments: ["email": GraphQLVariable("email"), "password": GraphQLVariable("password")], type: .nonNull(.object(Login.selections))),
+      GraphQLField("login", arguments: ["email": GraphQLVariable("email"), "password": GraphQLVariable("password")], type: .scalar(String.self)),
     ]
 
     public var snapshot: Snapshot
@@ -172,63 +181,16 @@ public final class LoginMutation: GraphQLMutation {
       self.snapshot = snapshot
     }
 
-    public init(login: Login) {
-      self.init(snapshot: ["__typename": "Mutation", "login": login.snapshot])
+    public init(login: String? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "login": login])
     }
 
-    public var login: Login {
+    public var login: String? {
       get {
-        return Login(snapshot: snapshot["login"]! as! Snapshot)
+        return snapshot["login"] as? String
       }
       set {
-        snapshot.updateValue(newValue.snapshot, forKey: "login")
-      }
-    }
-
-    public struct Login: GraphQLSelectionSet {
-      public static let possibleTypes = ["AuthPayload"]
-
-      public static let selections: [GraphQLSelection] = [
-        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("token", type: .nonNull(.scalar(String.self))),
-        GraphQLField("refreshToken", type: .nonNull(.scalar(String.self))),
-      ]
-
-      public var snapshot: Snapshot
-
-      public init(snapshot: Snapshot) {
-        self.snapshot = snapshot
-      }
-
-      public init(token: String, refreshToken: String) {
-        self.init(snapshot: ["__typename": "AuthPayload", "token": token, "refreshToken": refreshToken])
-      }
-
-      public var __typename: String {
-        get {
-          return snapshot["__typename"]! as! String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "__typename")
-        }
-      }
-
-      public var token: String {
-        get {
-          return snapshot["token"]! as! String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "token")
-        }
-      }
-
-      public var refreshToken: String {
-        get {
-          return snapshot["refreshToken"]! as! String
-        }
-        set {
-          snapshot.updateValue(newValue, forKey: "refreshToken")
-        }
+        snapshot.updateValue(newValue, forKey: "login")
       }
     }
   }
@@ -3402,7 +3364,7 @@ public final class ActivityLogsCustomerQuery: GraphQLQuery {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .scalar(String.self)),
           GraphQLField("action", type: .nonNull(.scalar(String.self))),
           GraphQLField("content", type: .scalar(String.self)),
           GraphQLField("createdAt", type: .nonNull(.scalar(SDate.self))),
@@ -3415,7 +3377,7 @@ public final class ActivityLogsCustomerQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(id: String, action: String, content: String? = nil, createdAt: SDate, by: By? = nil) {
+        public init(id: String? = nil, action: String, content: String? = nil, createdAt: SDate, by: By? = nil) {
           self.init(snapshot: ["__typename": "ActivityLog", "id": id, "action": action, "content": content, "createdAt": createdAt, "by": by.flatMap { (value: By) -> Snapshot in value.snapshot }])
         }
 
@@ -3428,9 +3390,9 @@ public final class ActivityLogsCustomerQuery: GraphQLQuery {
           }
         }
 
-        public var id: String {
+        public var id: String? {
           get {
-            return snapshot["id"]! as! String
+            return snapshot["id"] as? String
           }
           set {
             snapshot.updateValue(newValue, forKey: "id")
@@ -3744,7 +3706,7 @@ public final class ActivityLogsCompanyQuery: GraphQLQuery {
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .scalar(String.self)),
           GraphQLField("action", type: .nonNull(.scalar(String.self))),
           GraphQLField("content", type: .scalar(String.self)),
           GraphQLField("createdAt", type: .nonNull(.scalar(SDate.self))),
@@ -3757,7 +3719,7 @@ public final class ActivityLogsCompanyQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(id: String, action: String, content: String? = nil, createdAt: SDate, by: By? = nil) {
+        public init(id: String? = nil, action: String, content: String? = nil, createdAt: SDate, by: By? = nil) {
           self.init(snapshot: ["__typename": "ActivityLog", "id": id, "action": action, "content": content, "createdAt": createdAt, "by": by.flatMap { (value: By) -> Snapshot in value.snapshot }])
         }
 
@@ -3770,9 +3732,9 @@ public final class ActivityLogsCompanyQuery: GraphQLQuery {
           }
         }
 
-        public var id: String {
+        public var id: String? {
           get {
-            return snapshot["id"]! as! String
+            return snapshot["id"] as? String
           }
           set {
             snapshot.updateValue(newValue, forKey: "id")
@@ -12005,7 +11967,7 @@ public struct LogData: GraphQLFragment {
 
     public static let selections: [GraphQLSelection] = [
       GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-      GraphQLField("id", type: .nonNull(.scalar(String.self))),
+      GraphQLField("id", type: .scalar(String.self)),
       GraphQLField("action", type: .nonNull(.scalar(String.self))),
       GraphQLField("content", type: .scalar(String.self)),
       GraphQLField("createdAt", type: .nonNull(.scalar(SDate.self))),
@@ -12018,7 +11980,7 @@ public struct LogData: GraphQLFragment {
       self.snapshot = snapshot
     }
 
-    public init(id: String, action: String, content: String? = nil, createdAt: SDate, by: By? = nil) {
+    public init(id: String? = nil, action: String, content: String? = nil, createdAt: SDate, by: By? = nil) {
       self.init(snapshot: ["__typename": "ActivityLog", "id": id, "action": action, "content": content, "createdAt": createdAt, "by": by.flatMap { (value: By) -> Snapshot in value.snapshot }])
     }
 
@@ -12031,9 +11993,9 @@ public struct LogData: GraphQLFragment {
       }
     }
 
-    public var id: String {
+    public var id: String? {
       get {
-        return snapshot["id"]! as! String
+        return snapshot["id"] as? String
       }
       set {
         snapshot.updateValue(newValue, forKey: "id")

@@ -117,8 +117,8 @@ class LoginController: LoginControllerUI {
                 }
 
                 let currentUser = ErxesUser.sharedUserInfo()
-                currentUser.token = (result?.data?.login.token)!
-                currentUser.refreshToken = (result?.data?.login.refreshToken)!
+                currentUser.token = (result?.data?.login)!
+                currentUser.refreshToken = (result?.data?.login)!
 
                 self?.mutateCurrrentUser()
             }
