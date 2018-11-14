@@ -20,6 +20,8 @@ class ChatBaseCell: UICollectionViewCell {
         var isIncoming = false
     }
     
+    var customer:EModel?
+    
     var viewModel:MessageDetail? {
         didSet {
             self.updateView()
@@ -57,9 +59,10 @@ class ChatBaseCell: UICollectionViewCell {
     }
     
     func updateView() {
-        
         if let avatar = viewModel?.user?.details?.avatar {
             ivAvatar.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
+        } else if viewModel?.customerId != nil, let customer = customer {
+            ivAvatar.setAvatarOfCustomer(customer: customer)
         } else {
             ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         }

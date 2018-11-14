@@ -100,7 +100,6 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
     func setConversationUsername(_ item:ObjectDetail,cell:ErxesInboxCell) {
         
         var username = ""
-        
         guard let customer = item.customer else {
             return
         }
@@ -190,9 +189,9 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         popBack = true
         let conversation = conversations[indexPath.row]
         if let brand = conversation.integration?.brand {
-            navigate(.chat(withId: conversation.id, title: brand.name!, customerId: (conversation.customer?.id)!))
+            navigate(.chat(withId: conversation.id, title: brand.name!, customer: (conversation.customer?.snapshot)!))
         } else {
-            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!, customerId: (conversation.customer?.id)!))
+            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!, customer: (conversation.customer?.snapshot)!))
         }
     }
 }

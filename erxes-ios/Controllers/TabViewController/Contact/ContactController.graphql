@@ -11,6 +11,8 @@ fragment CustomerList on Customer {
 _id
 firstName
 lastName
+avatar
+visitorContactInfo
 primaryEmail
 primaryPhone
     facebookData
@@ -26,6 +28,16 @@ conversations {
     _id
 
 }
+}
+
+fragment CustomerDesc on Customer {
+    _id
+    firstName
+    lastName
+    avatar
+    visitorContactInfo
+    primaryEmail
+    primaryPhone
 }
 
 

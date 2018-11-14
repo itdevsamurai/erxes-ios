@@ -169,7 +169,7 @@ class ContactController: UIViewController {
             if customer.conversations?.count != 0 {
                 actionSheet.addAction(UIAlertAction(title: "Go to conversation", style: .default, handler: { (action) in
                     self.dismiss(animated: true, completion: nil)
-                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: "", customerId: customer.id))
+                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: "", customer: customer.snapshot))
                 }))
             }
             

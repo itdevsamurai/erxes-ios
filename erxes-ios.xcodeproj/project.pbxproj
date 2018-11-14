@@ -139,6 +139,7 @@
 		B8D0F8EC217C760D00990C06 /* CompanyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D0F8EB217C760D00990C06 /* CompanyListController.swift */; };
 		B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */; };
 		B8E8CB142150BE7300AE492D /* Inbox+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */; };
+		B8F3539C219BF6EC001755E2 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F3539B219BF6EC001755E2 /* Customer.swift */; };
 		B8FDDE9B213E48FF00286DE0 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FDDE9A213E48FF00286DE0 /* ChatController.swift */; };
 		F5431E202148F09800DB1304 /* CompanyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5431E1F2148F09800DB1304 /* CompanyController.swift */; };
 		F55583A72077166E00413F6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583A62077166E00413F6A /* AppDelegate.swift */; };
@@ -302,6 +303,7 @@
 		B8D0F8EB217C760D00990C06 /* CompanyListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyListController.swift; sourceTree = "<group>"; };
 		B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+TableView.swift"; sourceTree = "<group>"; };
 		B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+Additions.swift"; sourceTree = "<group>"; };
+		B8F3539B219BF6EC001755E2 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
 		B8FDDE9A213E48FF00286DE0 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		F5431E1F2148F09800DB1304 /* CompanyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyController.swift; sourceTree = "<group>"; };
 		F55583A32077166E00413F6A /* erxes-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "erxes-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -445,6 +447,7 @@
 		9B35E9A120D7907300733FAD /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				B8F3539A219BF676001755E2 /* Util */,
 				B84C9AFE2175CA3A00346324 /* Extensions */,
 				B88C31E9216B46E800B7448E /* ViewController.swift */,
 				B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */,
@@ -454,7 +457,6 @@
 				9B5CE65320D8DC6E003EDBF9 /* MyData.swift */,
 				B8698335212BD4370068B1FA /* Appnet.swift */,
 				B88C31EF216B633900B7448E /* Box.swift */,
-				B8600B842192C87100384821 /* Utils.swift */,
 			);
 			name = Global;
 			path = ..;
@@ -642,6 +644,15 @@
 				B88C31F6216C9C7F00B7448E /* FileHandler.swift */,
 			);
 			path = ChatManager;
+			sourceTree = "<group>";
+		};
+		B8F3539A219BF676001755E2 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B8600B842192C87100384821 /* Utils.swift */,
+				B8F3539B219BF6EC001755E2 /* Customer.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		F555839A2077166E00413F6A = {
@@ -1028,6 +1039,7 @@
 				B84C9B022175CB2300346324 /* String.swift in Sources */,
 				B80D28B2218B0ABF003D52CE /* ChatMenu.swift in Sources */,
 				9B567096212A856E0023B5AF /* ErxesFont.swift in Sources */,
+				B8F3539C219BF6EC001755E2 /* Customer.swift in Sources */,
 				9B1E939B20C8D8F700AC4FED /* Route.swift in Sources */,
 				B88C31EE216B5ECB00B7448E /* ChatInputProtocol.swift in Sources */,
 				9B55DE1F215CD4FF0044F684 /* LineProgressView.swift in Sources */,

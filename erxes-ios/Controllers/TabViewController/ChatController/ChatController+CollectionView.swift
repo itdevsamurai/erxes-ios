@@ -43,6 +43,7 @@ extension ChatController:UICollectionViewDataSource {
         
         if let cell = cell as? ChatBaseCell {
             cell.viewModel = messages[indexPath.row]
+            cell.customer = customer
         }
         
         if let cell = cell as? ImageCell {

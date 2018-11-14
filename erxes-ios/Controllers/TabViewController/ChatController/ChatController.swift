@@ -17,6 +17,8 @@ class ChatController:ChatControllerUI {
     
     var conversationId:String?
     var customerId:String?
+    var customer:EModel!
+    var customerAvatar:UIImage?
     var inited = false
     var isInternal = false
     var messages:[MessageDetail]! {
@@ -45,10 +47,11 @@ class ChatController:ChatControllerUI {
         return vc
     }()
     
-    convenience init(chatId:String,title:String,customerId:String) {
+    convenience init(chatId:String,title:String,customer:EModel) {
         self.init()
         self.conversationId = chatId
-        self.customerId = customerId
+        self.customerId = customer["id"] as? String
+        self.customer = customer
         self.title = title
     }
     

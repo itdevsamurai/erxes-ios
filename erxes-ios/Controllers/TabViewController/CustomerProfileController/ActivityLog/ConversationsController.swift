@@ -64,7 +64,8 @@ class ConversationsController: UIViewController {
 extension ConversationsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = conversations[indexPath.section].list[indexPath.row]
-        self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
+        //todo:fix
+//        self.navigate(.chat(withId: (data?.id)!, title: "", customer: self.contactId))
         
         
     }
