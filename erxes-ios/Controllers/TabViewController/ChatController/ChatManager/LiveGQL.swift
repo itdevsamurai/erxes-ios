@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Purev-Yondon on 10/9/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
