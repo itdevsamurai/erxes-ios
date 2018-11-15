@@ -140,6 +140,8 @@
 		B8E8CB122150BE5100AE492D /* Inbox+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */; };
 		B8E8CB142150BE7300AE492D /* Inbox+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */; };
 		B8F3539C219BF6EC001755E2 /* Customer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F3539B219BF6EC001755E2 /* Customer.swift */; };
+		B8F3539E219D5923001755E2 /* Contact+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F3539D219D5923001755E2 /* Contact+Network.swift */; };
+		B8F353A0219D5C3A001755E2 /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F3539F219D5C3A001755E2 /* UISegmentedControl.swift */; };
 		B8FDDE9B213E48FF00286DE0 /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8FDDE9A213E48FF00286DE0 /* ChatController.swift */; };
 		F5431E202148F09800DB1304 /* CompanyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5431E1F2148F09800DB1304 /* CompanyController.swift */; };
 		F55583A72077166E00413F6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55583A62077166E00413F6A /* AppDelegate.swift */; };
@@ -304,6 +306,8 @@
 		B8E8CB112150BE5100AE492D /* Inbox+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+TableView.swift"; sourceTree = "<group>"; };
 		B8E8CB132150BE7300AE492D /* Inbox+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+Additions.swift"; sourceTree = "<group>"; };
 		B8F3539B219BF6EC001755E2 /* Customer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Customer.swift; sourceTree = "<group>"; };
+		B8F3539D219D5923001755E2 /* Contact+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Contact+Network.swift"; sourceTree = "<group>"; };
+		B8F3539F219D5C3A001755E2 /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
 		B8FDDE9A213E48FF00286DE0 /* ChatController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
 		F5431E1F2148F09800DB1304 /* CompanyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyController.swift; sourceTree = "<group>"; };
 		F55583A32077166E00413F6A /* erxes-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "erxes-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -608,6 +612,7 @@
 				B84C9B152175CCDE00346324 /* Optional.swift */,
 				B84C9B172175D51600346324 /* Data.swift */,
 				B84C9B192175D5AD00346324 /* Numeric.swift */,
+				B8F3539F219D5C3A001755E2 /* UISegmentedControl.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -732,6 +737,7 @@
 			children = (
 				9BDF35FF20D1150F004E3F44 /* ContactController.swift */,
 				9BDF360120D12EE9004E3F44 /* ContactController.graphql */,
+				B8F3539D219D5923001755E2 /* Contact+Network.swift */,
 				9BDF360320D130C3004E3F44 /* ContactCell.swift */,
 				9BF0C32C216358390030247F /* ContactFilterController.swift */,
 				9BF0C32E216358570030247F /* ContactFilterController.graphql */,
@@ -1057,6 +1063,7 @@
 				B8FDDE9B213E48FF00286DE0 /* ChatController.swift in Sources */,
 				B84C9B0A2175CBB600346324 /* UIImageView.swift in Sources */,
 				B84C9B182175D51600346324 /* Data.swift in Sources */,
+				B8F3539E219D5923001755E2 /* Contact+Network.swift in Sources */,
 				9B475C8F2137CBA70074346B /* ProfileView.swift in Sources */,
 				B83794D22147A87E00C5991D /* InComingCell.swift in Sources */,
 				F55583BF2077173C00413F6A /* NavigationController.swift in Sources */,
@@ -1095,6 +1102,7 @@
 				9B6202F720EC817A0094A87D /* String+SuggestionValue.swift in Sources */,
 				B84C9B162175CCDE00346324 /* Optional.swift in Sources */,
 				9B4AB589216F649E00BDD33D /* ActivityCellReg.swift in Sources */,
+				B8F353A0219D5C3A001755E2 /* UISegmentedControl.swift in Sources */,
 				9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */,
 				9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */,
 				9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */,
