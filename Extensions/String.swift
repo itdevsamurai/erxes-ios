@@ -53,6 +53,9 @@ extension String {
         }
         
         if let lastCharacter = words.last?.first {
+            if finalString.count > 0 {
+                finalString = finalString + "."
+            }
             finalString.append(String(lastCharacter))
         }
         

@@ -101,7 +101,7 @@ class ChatControllerUI:ViewController {
         self.view.backgroundColor = .white
         
         let rightItem: UIBarButtonItem = {
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             let barButtomItem = UIBarButtonItem()
             button.setBackgroundImage(UIImage.erxes(with: .target1, textColor: .white), for: .normal)
             button.tintColor = .white

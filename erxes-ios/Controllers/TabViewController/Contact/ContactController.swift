@@ -89,7 +89,7 @@ class ContactController: UIViewController {
 
 
     var customerAddButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         let image = UIImage.erxes(with: .adduser, textColor: .white)
         button.setBackgroundImage(image, for: .normal)
         button.tintColor = UIColor.white
@@ -98,7 +98,7 @@ class ContactController: UIViewController {
     }()
 
     var companyAddButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         let image = #imageLiteral(resourceName: "ic_addCompany")
         button.setBackgroundImage(image, for: .normal)
         button.tintColor = UIColor.white
@@ -209,7 +209,7 @@ class ContactController: UIViewController {
             isCustomer = true
             customerAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
             leftItem.customView = customerAddButton
-            if self.customers.count == 0{
+            if self.customers.count == 0 {
                 self.getCustomers()
             }
         } else {
@@ -231,7 +231,7 @@ class ContactController: UIViewController {
 
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.tintColor = UIColor.white
             button.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
@@ -506,8 +506,6 @@ extension ContactController: UITableViewDataSource {
             let height:CGFloat = 44
             searchBackGround.frame.size.height = height + offsetY
         }
-        
-        print("end 2")
     }
 }
 

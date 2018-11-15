@@ -42,8 +42,8 @@ extension ChatController:UICollectionViewDataSource {
         let cell = chatView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
         if let cell = cell as? ChatBaseCell {
-            cell.viewModel = messages[indexPath.row]
             cell.customer = customer
+            cell.viewModel = messages[indexPath.row]
         }
         
         if let cell = cell as? ImageCell {

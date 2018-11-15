@@ -26,11 +26,11 @@ class Cust {
     static func username(_ item:EModel) -> String {
         var username = ""
         
-        if let firstname = item["firstname"] as? String,  firstname.count > 0 {
+        if let firstname = item["firstName"] as? String,  firstname.count > 0 {
             username = firstname + " "
         }
         
-        username = username + (item["lastname"] as? String ?? "")
+        username = username + (item["lastName"] as? String ?? "")
         return username
     }
     

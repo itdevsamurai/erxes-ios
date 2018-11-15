@@ -16,7 +16,6 @@ class IncomingCell: ChatBaseCell {
         
         super.updateView()
         
-        ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         lblDate.textAlignment = .right
         
         guard let content = viewModel?.content else {

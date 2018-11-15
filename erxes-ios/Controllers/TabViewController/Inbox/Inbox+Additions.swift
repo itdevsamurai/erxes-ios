@@ -53,16 +53,6 @@ extension InboxController: FilterDelegate {
     }
 }
 
-extension InboxController: TagListViewDelegate {
-    func tagPressed(_ title: String, tagView: TagView, sender: TagListView) {
-        
-    }
-    
-    func tagRemoveButtonPressed(_ title: String, tagView: TagView, sender: TagListView) {
-        
-    }
-}
-
 extension InboxController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none

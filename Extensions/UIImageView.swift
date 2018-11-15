@@ -8,11 +8,10 @@
 
 import Foundation
 import UIKit
-import Apollo
 
 extension UIImageView {
     
-    func setAvatarOfCustomer(customer:Snapshot) {
+    func setAvatarOfCustomer(customer:EModel) {
         
         if let avatar = customer["avatar"] as? String {
             self.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
@@ -22,9 +21,13 @@ extension UIImageView {
         let username = Cust.username(customer)
         if username.count > 0 {
             if customer["isUser"] as? Bool ?? false {
-                self.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+                DispatchQueue.main.async {
+                    self.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+                }
             } else {
-                self.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+                DispatchQueue.main.async {
+                    self.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+                }
             }
         } else {
             self.image = #imageLiteral(resourceName: "ic_avatar")
@@ -48,6 +51,10 @@ extension UIImageView {
             size.height = CGFloat(floorf(Float(size.height) * scale) / scale)
         }
         
+//        if let context = UIGraphicsGetCurrentContext() {
+//            UIGraphicsEndImageContext()
+//        }
+        
         UIGraphicsBeginImageContextWithOptions(size, false, CGFloat(scale))
         guard let context = UIGraphicsGetCurrentContext() else {
             UIGraphicsEndImageContext()
@@ -68,8 +75,9 @@ extension UIImageView {
         
         displayString.draw(in: CGRect(x: bounds.size.width / 2 - textSize.width / 2, y: bounds.size.height / 2 - textSize.height / 2, width: textSize.width, height: textSize.height), withAttributes: attributes)
         
-        let image = UIGraphicsGetImageFromCurrentImageContext()
         
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
         self.image = image
     }
 }

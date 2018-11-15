@@ -37,7 +37,7 @@ class UserProfileController: FormViewController {
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
