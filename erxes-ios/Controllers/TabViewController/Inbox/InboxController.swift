@@ -146,7 +146,6 @@ class InboxController: InboxControllerUI {
     @objc func refresh() {
         lastPage = false
         getInbox(limit: 20)
-        self.getUnreadCount()
     }
     
     @objc func getInbox(limit: Int = 20) {
@@ -155,6 +154,7 @@ class InboxController: InboxControllerUI {
             return
         }
         loading = true
+        getUnreadCount()
         
         if self.timer != nil {
             self.timer.invalidate()
