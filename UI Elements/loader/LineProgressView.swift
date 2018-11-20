@@ -60,7 +60,7 @@ class LineProgressView: UIView {
     
     func startAnimation() {
         self.show()
-        if !isAnimating{
+        if !isAnimating {
             self.isAnimating = true
             let topController = self.getTopViewController()
             UIView.animate(withDuration: 0.5, delay:0, options: [], animations: {

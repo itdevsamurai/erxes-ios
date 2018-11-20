@@ -58,7 +58,7 @@ class SentCell: ChatBaseCell {
             str.addAttribute(NSAttributedStringKey.font, value: Font.bold(13), range: match.range)
         }
         
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             self.tvText.attributedText = str
             print(str.attributedSubstring(from: NSMakeRange(str.length-1, 1)).string)
         }

@@ -1,6 +1,6 @@
 
-query Channels{
-    channels{
+query Channels {
+    channels {
         ...ChannelDetail
         
     }

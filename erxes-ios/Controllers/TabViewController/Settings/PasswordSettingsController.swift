@@ -116,7 +116,7 @@ class PasswordSettingsController: UIViewController {
         
     }
 
-    func validate()->Bool{
+    func validate()->Bool {
         let line1 = currentField.viewWithTag(1)
         let line2 = newField.viewWithTag(1)
         let line3 = reField.viewWithTag(1)

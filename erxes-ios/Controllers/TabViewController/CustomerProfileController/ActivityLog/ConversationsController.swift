@@ -11,7 +11,7 @@ import UIKit
 class ConversationsController: UIViewController {
 
     var conversations = [LogData]() {
-        didSet{
+        didSet {
             for (index, conversation) in conversations.enumerated() {
             
                 let filtered = conversation.list.filter({$0?.action == "conversation-create"})

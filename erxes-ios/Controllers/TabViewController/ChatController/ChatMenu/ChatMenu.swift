@@ -16,14 +16,14 @@ class ChatMenu:ViewController {
     
     var sections = ["Actions","Assign"]
     var users = [UserData]() {
-        didSet{
+        didSet {
         }
     }
     
     var conversationId = ""
     
     var filteredUsers = [UserData]() {
-        didSet{
+        didSet {
             tableView.reloadData()
         }
     }
@@ -49,13 +49,13 @@ class ChatMenu:ViewController {
     }
     
     override func layoutView() {
-        tableView.snp.makeConstraints{ (make) in
+        tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
     }
     
     func filterUsers(_ value:String) {
-        filteredUsers = users.filter{$0.username?.lowercased().hasPrefix(value.lowercased()) ?? false}
+        filteredUsers = users.filter { $0.username?.lowercased().hasPrefix(value.lowercased()) ?? false }
     }
     
     @objc func inputChanged(_ sender:UITextField) {

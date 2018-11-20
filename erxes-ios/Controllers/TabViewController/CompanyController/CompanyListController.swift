@@ -16,7 +16,7 @@ class CompanyListController: UIViewController {
     weak var delegate: CompanyListControllerDelegate?
     var isSearching = Bool()
     var companies = [CompanyList]() {
-        didSet{
+        didSet {
             tableView.reloadData()
         }
     }

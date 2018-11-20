@@ -48,7 +48,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             
             cell?.desc.text = desc
             
-            if conversation.readUserIds?.count == 0 {
+            if !(conversation.readUserIds?.contains(ErxesUser.sharedUserInfo()._id) ?? false) {
                 cell?.message.textColor = .black
             } else {
                 cell?.message.textColor = UIColor(hexString: "#232323", alpha:0.5)

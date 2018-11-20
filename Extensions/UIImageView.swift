@@ -75,8 +75,6 @@ extension UIImageView {
         
         displayString.draw(in: CGRect(x: bounds.size.width / 2 - textSize.width / 2, y: bounds.size.height / 2 - textSize.height / 2, width: textSize.width, height: textSize.height), withAttributes: attributes)
         
-        
-        
         let image = UIGraphicsGetImageFromCurrentImageContext()
         self.image = image
     }

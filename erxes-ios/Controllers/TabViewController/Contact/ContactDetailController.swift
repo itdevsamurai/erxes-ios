@@ -22,7 +22,7 @@ class ContactDetailController: DTPagerController {
     var contactName = String()
     var email = String()
     var logs = [LogData]() {
-        didSet{
+        didSet {
             activityController.logs = self.logs
             noteController.notes = self.logs
             conversationController.conversations = self.logs

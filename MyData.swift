@@ -15,15 +15,15 @@ struct MyData: Codable {
 
 }
 
-struct ConvSubsData: Codable{
+struct ConvSubsData: Codable {
     var conversationClientMessageInserted:MyData?
 }
 
-struct ConvSubsPayload:Codable{
+struct ConvSubsPayload:Codable {
     var data:ConvSubsData?
 }
 
-struct ConvSubs:Codable{
+struct ConvSubs:Codable {
     var payload:ConvSubsPayload?
 }
 

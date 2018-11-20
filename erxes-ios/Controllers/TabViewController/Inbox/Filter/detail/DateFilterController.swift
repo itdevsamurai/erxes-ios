@@ -106,7 +106,7 @@ class DateFilterController: UIViewController {
         formatter.dateFormat = "YYYY-MM-dd"
         let strDate = formatter.string(from: calendarView.selectedDate)
      
-        if isBeginDate{
+        if isBeginDate {
             self.filterOptions.startDate = strDate
         } else {
             self.filterOptions.endDate = strDate

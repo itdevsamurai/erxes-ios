@@ -13,7 +13,7 @@ class NoteController: UIViewController {
     weak var delegate: ContactDelegate?
     var isCompany = Bool()
     var notes = [LogData]() {
-        didSet{
+        didSet {
             
             for (index, note) in notes.enumerated() {
                 
@@ -49,7 +49,7 @@ class NoteController: UIViewController {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "bounds"{
-            if let rect = (change?[NSKeyValueChangeKey.newKey] as? NSValue)?.cgRectValue{
+            if let rect = (change?[NSKeyValueChangeKey.newKey] as? NSValue)?.cgRectValue {
                 let margin:CGFloat = 8.0
                 textView.frame = CGRect(x:rect.origin.x + margin, y:rect.origin.y + margin, width:rect.width - 2*margin, height:rect.height / 2)
                 textView.bounds = CGRect(x:rect.origin.x + margin, y:rect.origin.y + margin, width:rect.width - 2*margin, height:rect.height / 2)

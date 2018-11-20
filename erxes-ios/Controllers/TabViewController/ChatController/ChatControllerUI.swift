@@ -187,7 +187,7 @@ class ChatControllerUI:ViewController {
             make.height.width.equalTo(40)
         }
         
-        btnCamera.snp.makeConstraints{ (make) in
+        btnCamera.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview()
             make.left.equalTo(btnAttachment.snp.right).offset(12)
             make.height.width.equalTo(40)

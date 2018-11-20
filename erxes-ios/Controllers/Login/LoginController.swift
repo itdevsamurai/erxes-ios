@@ -207,7 +207,7 @@ class LoginController: LoginControllerUI {
                 make.top.equalTo(self.view.snp.top).offset(98)
             }
             self.view.layoutIfNeeded()
-            if self.isLogin{
+            if self.isLogin {
                 self.perform(#selector(self.signIn), with: nil, afterDelay: duration)
             }
         })

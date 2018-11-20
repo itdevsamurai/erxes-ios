@@ -108,7 +108,7 @@ class FilterController: UIViewController {
         btnClose.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         root.addSubview(btnClose)
         
-        lbl.snp.makeConstraints{ (make) in
+        lbl.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.centerX.equalTo(root.snp.centerX)
             make.height.equalTo(60)
@@ -119,7 +119,7 @@ class FilterController: UIViewController {
             make.right.equalToSuperview().offset(-50)
         }
         
-        btnClose.snp.makeConstraints{ (make) in
+        btnClose.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(40)
             make.top.equalToSuperview().offset(12)
             make.width.height.equalTo(40)
@@ -156,7 +156,7 @@ class FilterController: UIViewController {
             make.bottom.equalToSuperview()
         }
         
-        tableView.snp.makeConstraints{ (make) in
+        tableView.snp.makeConstraints { (make) in
             make.right.left.bottom.equalToSuperview()
             make.top.equalToSuperview().offset(60)
         }

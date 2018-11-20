@@ -61,7 +61,7 @@ class KCKeyboardImagePickerStyle {
     }
 }
 
-class KCKeyboardImagePickerController: NSObject , KCKeyboardImagePickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate ,UIViewControllerPreviewingDelegate{
+class KCKeyboardImagePickerController: NSObject , KCKeyboardImagePickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate ,UIViewControllerPreviewingDelegate {
     func didTapImagePickerControllerButton(in keyboardImagePickerView: KCKeyboardImagePickerView?) {
         
     }

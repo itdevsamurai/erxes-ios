@@ -47,9 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //check network change
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
-        do{
+        do {
             try reachability.startNotifier()
-        }catch{
+        } catch {
             print("could not start reachability notifier")
         }
         

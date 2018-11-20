@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ErxesUser{
+class ErxesUser {
 
     private static var info: ErxesUser?
     

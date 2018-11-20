@@ -32,7 +32,7 @@ class MyFormViewController: UIViewController {
     }
     
     
-    deinit{
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     

@@ -18,7 +18,7 @@ query CompanyDetail($id: String!) {
     }
 }
 
-fragment CompanyObj on Company{
+fragment CompanyObj on Company {
     _id
     createdAt
     modifiedAt

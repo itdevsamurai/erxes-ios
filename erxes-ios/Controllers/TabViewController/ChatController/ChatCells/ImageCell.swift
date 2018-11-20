@@ -16,7 +16,7 @@ class ImageCell: ChatBaseCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        ivAttachment.snp.makeConstraints{ (make) in
+        ivAttachment.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
             make.right.left.equalToSuperview().inset(50)
         }

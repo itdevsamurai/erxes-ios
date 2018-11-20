@@ -77,9 +77,9 @@ class MyTextField: UITextField, UITextFieldDelegate {
         return valid
     }
     
-    private func isValid(type: TextFieldType) -> Bool{
+    private func isValid(type: TextFieldType) -> Bool {
         if let txt = self.text {
-            if txt.isEmpty{
+            if txt.isEmpty {
                 return false
             } else {
                 switch type {

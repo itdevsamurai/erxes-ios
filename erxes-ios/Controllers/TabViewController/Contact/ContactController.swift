@@ -148,9 +148,9 @@ class ContactController: UIViewController {
     
     func showActionSheet(indexPath:IndexPath) {
         let actionSheet = UIAlertController(title: "Connect to customer", message: "Please select connection method", preferredStyle: .actionSheet)
-        if isCustomer{
+        if isCustomer {
             let customer = self.customers[indexPath.row]
-            if !customer.primaryPhone.isNullOrEmpty{
+            if !customer.primaryPhone.isNullOrEmpty {
                 
                 actionSheet.addAction(UIAlertAction(title: "Make a phone call", style: .default, handler: { (action) in
                  

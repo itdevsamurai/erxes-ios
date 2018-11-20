@@ -28,7 +28,7 @@ class ErxesButton: UIButton {
     override var isSelected: Bool {
         willSet {
             print("changing from \(isSelected) to \(newValue)")
-            if isSelected{
+            if isSelected {
                
             } else {
              

@@ -34,7 +34,7 @@ class IncomingCell: ChatBaseCell {
         
         str.addAttributes(options, range: NSMakeRange(0, str.length))
         
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             self.tvText.attributedText = str
         }
     }

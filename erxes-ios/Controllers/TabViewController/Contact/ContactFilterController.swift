@@ -52,7 +52,7 @@ class ContactFilterController: UIViewController {
     func getSegments() {
         segments.removeAll()
         var type = "customer"
-        if !isCustomer{
+        if !isCustomer {
             type = "company"
         }
         let query = SegmentsQuery(contentType: type)
@@ -90,7 +90,7 @@ class ContactFilterController: UIViewController {
     
     func getTags() {
         var type = "customer"
-        if !isCustomer{
+        if !isCustomer {
             type = "company"
         }
         
@@ -166,7 +166,7 @@ class ContactFilterController: UIViewController {
     convenience init(isCustomer: Bool?) {
         self.init()
         self.isCustomer = isCustomer!
-        if !self.isCustomer{
+        if !self.isCustomer {
 //            ["Segments", "Tags", "Integrations", "Brand", "Form", "Lead status", "Lifecycle States"]
             self.sections = ["Segments","Tags","Lead Status","Lifecycle State","Brand"]
             self.segment = 0

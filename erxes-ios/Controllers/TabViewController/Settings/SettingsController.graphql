@@ -20,7 +20,7 @@ query notificationsGetConfigurations {
     }
 }
 
-fragment NotificationConf on NotificationConfiguration{
+fragment NotificationConf on NotificationConfiguration {
     _id
     notifType
     isAllowed

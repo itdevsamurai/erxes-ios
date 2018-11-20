@@ -73,7 +73,7 @@ extension UIViewController {
     
     func hideLoader() {
         if let subViews = navigationController?.navigationBar.subviews {
-            for subView in subViews{
+            for subView in subViews {
                 subView.layer.removeAllAnimations()
             }
         }
@@ -142,7 +142,7 @@ public extension UIViewController {
         }
         
         let action = UIAlertAction(title: confirmKey, style: .default) { (action) in
-            if let textField = alertController.textFields?.first{
+            if let textField = alertController.textFields?.first {
                 confirmAction(textField.text)
             }
             

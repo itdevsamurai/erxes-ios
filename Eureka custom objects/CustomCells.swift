@@ -83,8 +83,8 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
         dayTapped(sender, day: getDayFromButton(sender))
     }
 
-    private func getDayFromButton(_ button: UIButton) -> WeekDay{
-        switch button{
+    private func getDayFromButton(_ button: UIButton) -> WeekDay {
+        switch button {
         case sundayButton:
             return .sunday
         case mondayButton:
@@ -104,7 +104,7 @@ public class WeekDayCell : Cell<Set<WeekDay>>, CellType {
 
     private func dayTapped(_ button: UIButton, day: WeekDay) {
         button.isSelected = !button.isSelected
-        if button.isSelected{
+        if button.isSelected {
             row.value?.insert(day)
         }
         else {

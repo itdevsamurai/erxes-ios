@@ -11,7 +11,7 @@ import UIKit
 class SettingsCell: UITableViewCell {
 
     var iconType:ErxesFont! {
-        didSet{
+        didSet {
             self.imageView?.image = UIImage.erxes(with: iconType, textColor: .black,size: CGSize(width: 20, height: 20))
         }
     }

@@ -1,5 +1,5 @@
-query Conversations{
-    conversations{
+query Conversations {
+    conversations {
         ...ConversationDetail
     }
 }
@@ -35,7 +35,7 @@ conversations(limit: $limit, channelId: $channelId, status: $status, unassigned:
 }
 
 
-fragment ObjectDetail on Conversation{
+fragment ObjectDetail on Conversation {
     _id
     content
     updatedAt
@@ -99,12 +99,12 @@ query conversationCounts($limit: Int, $channelId: String, $status: String, $unas
     conversationCounts(limit: $limit, channelId: $channelId, status: $status, unassigned: $unassigned, brandId: $brandId, tag: $tag, integrationType: $integrationType, participating: $participating, starred: $starred, ids: $ids)
 }
 
-query unreadCount{
+query unreadCount {
     conversationsTotalUnreadCount
 }
 
-query getLast{
-    conversationsGetLast{
+query getLast {
+    conversationsGetLast {
         ...ObjectDetail
     }
 }

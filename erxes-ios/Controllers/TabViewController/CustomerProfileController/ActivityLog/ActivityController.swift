@@ -13,7 +13,7 @@ class ActivityController: UIViewController {
     var contactId = String()
     var contactName = String()
     var logs = [LogData]() {
-        didSet{
+        didSet {
             tableView.reloadData()
         }
     }

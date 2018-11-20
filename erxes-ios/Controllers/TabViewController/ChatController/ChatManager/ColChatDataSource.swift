@@ -38,7 +38,7 @@ class ChatManager:NSObject {
     }
     
     func queryMessages() {
-        if conversationId == nil{
+        if conversationId == nil {
             return
         }
         

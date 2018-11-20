@@ -21,8 +21,8 @@ class CustomerProfileController: FormViewController {
     var customerId: String?
     var messagesCount = 0
     
-    var customer:CustomerInfo?{
-        didSet{
+    var customer:CustomerInfo? {
+        didSet {
             self.buildForm(customer: customer)
         }
     }
@@ -825,7 +825,7 @@ class CustomerProfileController: FormViewController {
         
         let url = Constants.URL_UPLOAD
         
-        if let imgData = UIImage.resize(image) as? Data{
+        if let imgData = UIImage.resize(image) as? Data {
             size = imgData.count
             let bcf = ByteCountFormatter()
             bcf.allowedUnits = [.useKB]
@@ -856,7 +856,7 @@ class CustomerProfileController: FormViewController {
         
         upload.responseString { response in
             print(response)
-            if let remoteUrl = response.value{
+            if let remoteUrl = response.value {
                 self.avatarUrl = remoteUrl
             }
         }

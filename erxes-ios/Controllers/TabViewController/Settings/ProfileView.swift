@@ -11,9 +11,9 @@ import UIKit
 class ProfileView: UIView {
 
     var user = ErxesUser() {
-        didSet{
+        didSet {
        
-            for v in self.subviews{
+            for v in self.subviews {
                 v.removeFromSuperview()
             }
             self.initialize(user: user,style: .type1)
