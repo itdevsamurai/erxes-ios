@@ -11,6 +11,19 @@ query ConversationDetail($_id: String!) {
         messages {
             ...MessageDetail
         }
+        customer {
+            _id
+            firstName
+            lastName
+            avatar
+            isUser
+        }
+        integration {
+            brand{
+                _id
+                name
+            }
+        }
     }
 }
 

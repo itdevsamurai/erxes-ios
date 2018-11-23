@@ -56,8 +56,7 @@ class ChatManager:NSObject {
                 alert.show(animated: true)
             }
             if let allMessages = result?.data?.conversationDetail {
-                let messagesArray = (allMessages.messages?.map {($0?.fragments.messageDetail)!})!
-                self?.delegate?.onChatUpdate(messagesArray)
+                self?.delegate?.onChatUpdate(allMessages)
             }
         }
     }

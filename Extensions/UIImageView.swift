@@ -25,9 +25,7 @@ extension UIImageView {
                     self.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
                 }
             } else {
-                DispatchQueue.main.async {
-                    self.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
-                }
+                self.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
             }
         } else {
             self.image = #imageLiteral(resourceName: "ic_avatar")

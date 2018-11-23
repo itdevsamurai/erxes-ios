@@ -87,6 +87,9 @@
 		9BF0C32D216358390030247F /* ContactFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF0C32C216358390030247F /* ContactFilterController.swift */; };
 		9BF0C32F216358580030247F /* ContactFilterController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9BF0C32E216358570030247F /* ContactFilterController.graphql */; };
 		A1E8A29429196FEA7CCAA093 /* Pods_erxes_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA776603C60496B407816DA5 /* Pods_erxes_ios.framework */; };
+		B80002F421A7A02000D73770 /* Chat+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80002F321A7A02000D73770 /* Chat+Network.swift */; };
+		B80758E021A5175200016D2E /* ResponseTemplate.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B80758DF21A5175200016D2E /* ResponseTemplate.graphql */; };
+		B80758E421A51CC300016D2E /* TemplateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80758E321A51CC300016D2E /* TemplateController.swift */; };
 		B80D28B0218AA81F003D52CE /* InboxControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */; };
 		B80D28B2218B0ABF003D52CE /* ChatMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28B1218B0ABF003D52CE /* ChatMenu.swift */; };
 		B80D28B5218B53F8003D52CE /* ChatMenu+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80D28B4218B53F8003D52CE /* ChatMenu+Network.swift */; };
@@ -122,6 +125,9 @@
 		B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE584213EDC8100124BD3 /* SentCell.swift */; };
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
 		B87867CD2188562600A78222 /* LoginControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87867CC2188562600A78222 /* LoginControllerUI.swift */; };
+		B87CE5C921A5336500B385B8 /* Template+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CE5C821A5336500B385B8 /* Template+Network.swift */; };
+		B87CE5CB21A541F400B385B8 /* Template+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CE5CA21A541F400B385B8 /* Template+TableView.swift */; };
+		B87CE5CD21A56D0800B385B8 /* TemplateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B87CE5CC21A56D0700B385B8 /* TemplateCell.swift */; };
 		B88C31E6216B38A000B7448E /* ChatControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88C31E5216B38A000B7448E /* ChatControllerProtocol.swift */; };
 		B88C31E8216B443600B7448E /* ChatControllerUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88C31E7216B443600B7448E /* ChatControllerUI.swift */; };
 		B88C31EA216B46E800B7448E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88C31E9216B46E800B7448E /* ViewController.swift */; };
@@ -252,6 +258,9 @@
 		9BDF360320D130C3004E3F44 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		9BF0C32C216358390030247F /* ContactFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactFilterController.swift; sourceTree = "<group>"; };
 		9BF0C32E216358570030247F /* ContactFilterController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ContactFilterController.graphql; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.graphql; };
+		B80002F321A7A02000D73770 /* Chat+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Chat+Network.swift"; sourceTree = "<group>"; };
+		B80758DF21A5175200016D2E /* ResponseTemplate.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ResponseTemplate.graphql; sourceTree = "<group>"; };
+		B80758E321A51CC300016D2E /* TemplateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateController.swift; sourceTree = "<group>"; };
 		B80D28AF218AA81F003D52CE /* InboxControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxControllerUI.swift; sourceTree = "<group>"; };
 		B80D28B1218B0ABF003D52CE /* ChatMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMenu.swift; sourceTree = "<group>"; };
 		B80D28B4218B53F8003D52CE /* ChatMenu+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMenu+Network.swift"; sourceTree = "<group>"; };
@@ -288,6 +297,9 @@
 		B86FE584213EDC8100124BD3 /* SentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCell.swift; sourceTree = "<group>"; };
 		B86FE586213F837700124BD3 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		B87867CC2188562600A78222 /* LoginControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginControllerUI.swift; sourceTree = "<group>"; };
+		B87CE5C821A5336500B385B8 /* Template+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Template+Network.swift"; sourceTree = "<group>"; };
+		B87CE5CA21A541F400B385B8 /* Template+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Template+TableView.swift"; sourceTree = "<group>"; };
+		B87CE5CC21A56D0700B385B8 /* TemplateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCell.swift; sourceTree = "<group>"; };
 		B88B6EA92121625D00A9B7FF /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
 		B88C31E5216B38A000B7448E /* ChatControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControllerProtocol.swift; sourceTree = "<group>"; };
 		B88C31E7216B443600B7448E /* ChatControllerUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControllerUI.swift; sourceTree = "<group>"; };
@@ -378,6 +390,7 @@
 		9B1E939520C8D43C00AC4FED /* ChatController */ = {
 			isa = PBXGroup;
 			children = (
+				B80758DE21A5171B00016D2E /* ResponseTemplate */,
 				B80D28B3218B53A5003D52CE /* ChatMenu */,
 				B88C31F1216C9A6600B7448E /* ChatManager */,
 				B86FE581213EDB7800124BD3 /* ChatCells */,
@@ -389,6 +402,7 @@
 				9B1E939E20C8FD1D00AC4FED /* ChatController.graphql */,
 				B8C3FDE82161CCEE000EE9AF /* MentionController.swift */,
 				B88C31EB216B54D200B7448E /* ChatController+CollectionView.swift */,
+				B80002F321A7A02000D73770 /* Chat+Network.swift */,
 			);
 			path = ChatController;
 			sourceTree = "<group>";
@@ -586,6 +600,18 @@
 				9B9E34422158BC22006F9E2D /* ErxesTagView.swift */,
 			);
 			path = taglist;
+			sourceTree = "<group>";
+		};
+		B80758DE21A5171B00016D2E /* ResponseTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				B80758DF21A5175200016D2E /* ResponseTemplate.graphql */,
+				B80758E321A51CC300016D2E /* TemplateController.swift */,
+				B87CE5C821A5336500B385B8 /* Template+Network.swift */,
+				B87CE5CA21A541F400B385B8 /* Template+TableView.swift */,
+				B87CE5CC21A56D0700B385B8 /* TemplateCell.swift */,
+			);
+			path = ResponseTemplate;
 			sourceTree = "<group>";
 		};
 		B80D28B3218B53A5003D52CE /* ChatMenu */ = {
@@ -840,7 +866,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
-				ORGANIZATIONNAME = "soyombo bat-erdene";
+				ORGANIZATIONNAME = "Erxes Inc";
 				TargetAttributes = {
 					F55583A22077166E00413F6A = {
 						CreatedOnToolsVersion = 9.2;
@@ -876,6 +902,7 @@
 				9B5E455C21393DCF00DDD687 /* SettingsController.graphql in Resources */,
 				B8600B8321917C2100384821 /* Locations.json in Resources */,
 				9BDF12B621709F2100B6EBED /* NoteController.graphql in Resources */,
+				B80758E021A5175200016D2E /* ResponseTemplate.graphql in Resources */,
 				B842CC4C2123E3CC0052E5C9 /* LifecycleState.json in Resources */,
 				9BB7160A213A9C7800E2ACD0 /* UserProfileController.graphql in Resources */,
 				B842CC4E2123E3E80052E5C9 /* BusinessType.json in Resources */,
@@ -998,6 +1025,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8E8CB142150BE7300AE492D /* Inbox+Additions.swift in Sources */,
+				B80002F421A7A02000D73770 /* Chat+Network.swift in Sources */,
 				B84C9B102175CC7F00346324 /* UIImage.swift in Sources */,
 				9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */,
 				B88C31F5216C9B2300B7448E /* ChatManagerDelegate.swift in Sources */,
@@ -1009,6 +1037,7 @@
 				F5BEE31620772C0D0042DFC2 /* LoginController.swift in Sources */,
 				9B94F41820DB59FF00313543 /* KCKeyboardImagePickerPreviewViewController.swift in Sources */,
 				9B82254420B7DE0300B7C16D /* SwiftHEXColors.swift in Sources */,
+				B87CE5C921A5336500B385B8 /* Template+Network.swift in Sources */,
 				B84C9B062175CB3E00346324 /* UIView.swift in Sources */,
 				9B9E34432158BC22006F9E2D /* ErxesTagView.swift in Sources */,
 				B84C9B042175CB3300346324 /* Date.swift in Sources */,
@@ -1016,6 +1045,7 @@
 				B88C31E6216B38A000B7448E /* ChatControllerProtocol.swift in Sources */,
 				B80D28B5218B53F8003D52CE /* ChatMenu+Network.swift in Sources */,
 				F5BEE329207761730042DFC2 /* MyTextField.swift in Sources */,
+				B80758E421A51CC300016D2E /* TemplateController.swift in Sources */,
 				9B6202F520EC817A0094A87D /* SuggestionCollectionViewCell.swift in Sources */,
 				B86FE587213F837700124BD3 /* ImageCell.swift in Sources */,
 				9B475C8D2137BDB20074346B /* SettingsCell.swift in Sources */,
@@ -1036,7 +1066,9 @@
 				9B475C8B2137B9CB0074346B /* SettingsController.swift in Sources */,
 				B8C3FDEB2161DF06000EE9AF /* Filter+Keyboard.swift in Sources */,
 				9B6202F320EC817A0094A87D /* SuggestionCollectionCell.swift in Sources */,
+				B87CE5CD21A56D0800B385B8 /* TemplateCell.swift in Sources */,
 				B8BE67C6215C995700E8A0A6 /* Filter+Network.swift in Sources */,
+				B87CE5CB21A541F400B385B8 /* Template+TableView.swift in Sources */,
 				B84C9B142175CCD200346324 /* Array.swift in Sources */,
 				9B94F41A20DB5A7400313543 /* KCKeyboardImagePickerView.swift in Sources */,
 				9B5E455A21391BE300DDD687 /* MyButton.swift in Sources */,
