@@ -70,8 +70,7 @@ extension ActivityController: UITableViewDelegate {
         let data = logs[indexPath.section].list[indexPath.row]
        
         if data?.action == "conversation-create" {
-            //todo:fix
-//            self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
+            self.navigate(.chat(withId: (data?.id)!, title: ""))
         }
         
     }

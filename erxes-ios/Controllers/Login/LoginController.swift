@@ -73,7 +73,7 @@ class LoginController: LoginControllerUI {
         if emailField.validate(type: .email) && passwordField.validate(type: .password) {
             isLogin = true
             self.view.endEditing(true)
-//            mutateLogin(email: emailField.text!, password: passwordField.text!)
+            mutateLogin(email: emailField.text!, password: passwordField.text!)
 
         } else if !passwordField.validate(type: .password) {
             passwordField.becomeFirstResponder()

@@ -94,6 +94,7 @@ class ContactController: UIViewController {
         button.setBackgroundImage(image, for: .normal)
         button.tintColor = UIColor.white
         button.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+        button.contentMode = .scaleAspectFit
         return button
     }()
 
@@ -169,7 +170,7 @@ class ContactController: UIViewController {
             if customer.conversations?.count != 0 {
                 actionSheet.addAction(UIAlertAction(title: "Go to conversation", style: .default, handler: { (action) in
                     self.dismiss(animated: true, completion: nil)
-                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: "", customer: customer.snapshot))
+                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: ""))
                 }))
             }
             
@@ -231,7 +232,8 @@ class ContactController: UIViewController {
 
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+            button.contentMode = .scaleAspectFit
             button.setBackgroundImage(rightImage, for: .normal)
             button.tintColor = UIColor.white
             button.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
@@ -417,7 +419,11 @@ extension ContactController: UITableViewDelegate {
             }
 
             if fullName != "Unnamed" {
-                cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
+                if let avatar = customer.avatar {
+                    cell?.icon.sd_setImage(with: URL(string: avatar))
+                } else {
+                    cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
+                }
             }
 
             } else {
@@ -429,7 +435,12 @@ extension ContactController: UITableViewDelegate {
                 if company.plan != nil {
                     cell?.bottomLabel.text = company.plan
                 }
-                cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
+                if let avatar = company.avatar {
+                    cell?.icon.sd_setImage(with: URL(string: avatar))
+                } else {
+                    cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
+                }
+            
             }
         
 //        if last row run pagination

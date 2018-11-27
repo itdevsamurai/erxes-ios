@@ -51,11 +51,9 @@ class ChatController:ChatControllerUI {
         return vc
     }()
     
-    convenience init(chatId:String,title:String,customer:EModel) {
+    convenience init(chatId:String, title:String) {
         self.init()
         self.conversationId = chatId
-        self.customerId = customer["id"] as? String
-        self.customer = customer
         self.title = title
     }
     

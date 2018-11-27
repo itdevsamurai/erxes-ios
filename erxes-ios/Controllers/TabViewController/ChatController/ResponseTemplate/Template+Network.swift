@@ -17,6 +17,7 @@ extension TemplateController {
         appnet.fetch(query: query) { result,error in
             if let list = result?.data?.brands {
                 self.brands = list
+                self.tableView.reloadData()
             }
         }
     }
@@ -29,6 +30,7 @@ extension TemplateController {
                 
                 if let brandId = self.brand?["_id"] as? String {
                     self.filteredTemplates = self.templates.filter { $0?.brandId ==  brandId }
+                    self.tableView.reloadData()
                 }
             }
         }

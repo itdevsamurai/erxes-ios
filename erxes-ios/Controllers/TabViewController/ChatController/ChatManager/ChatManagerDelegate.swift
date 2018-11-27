@@ -20,6 +20,7 @@ extension ChatController:ChatManagerDelegate {
         messages = (data.messages?.map {($0?.fragments.messageDetail)!})!
         brand = data.integration?.brand?.snapshot
         customer = data.customer?.snapshot
+        customerId = data.customer?.id
         updateView()
         refresher.endRefreshing()
     }

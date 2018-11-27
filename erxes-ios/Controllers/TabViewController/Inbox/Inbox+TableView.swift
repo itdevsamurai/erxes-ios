@@ -111,7 +111,10 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         username = username + (customer.lastName ?? "")
         
         if username.count > 0 {
-            if customer.isUser ?? false {
+            
+            if let avatar = customer.avatar {
+                cell.avatar.sd_setImage(with: URL(string: avatar))
+            } else if customer.isUser ?? false {
                 cell.avatar.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
             } else {
                 cell.avatar.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
@@ -201,9 +204,9 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         popBack = true
         let conversation = conversations[indexPath.row]
         if let brand = conversation.integration?.brand {
-            navigate(.chat(withId: conversation.id, title: brand.name!, customer: (conversation.customer?.snapshot)!))
+            navigate(.chat(withId: conversation.id, title: brand.name!))
         } else {
-            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!, customer: (conversation.customer?.snapshot)!))
+            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!))
         }
     }
 }

@@ -64,6 +64,7 @@ class InboxControllerUI:ViewController {
     let filterButton:UIButton = {
         let leftImage = #imageLiteral(resourceName: "ic_filter")
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        btn.contentMode = .scaleAspectFit
         btn.setImage(leftImage, for: .normal)
         return btn
     }()

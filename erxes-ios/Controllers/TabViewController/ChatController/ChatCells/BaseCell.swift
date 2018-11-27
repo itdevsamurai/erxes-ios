@@ -33,6 +33,9 @@ class ChatBaseCell: UICollectionViewCell {
         iv.layer.cornerRadius = 15
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFit
+        iv.layer.borderWidth = 1
+        iv.layer.borderColor = UIColor(hexString: "#cccccc")?.cgColor
+        iv.backgroundColor = UIColor(hexString: "#cccccc")
         return iv
     }()
     

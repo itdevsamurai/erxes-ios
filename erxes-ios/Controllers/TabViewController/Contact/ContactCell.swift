@@ -40,10 +40,16 @@ class ContactCell: UITableViewCell {
     
         
         icon = UIImageView()
+        icon.layer.cornerRadius = 25
+        icon.clipsToBounds = true
+        icon.contentMode = .scaleAspectFit
         
 //        icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
         icon.tintColor = UIColor.ERXES_COLOR
         icon.image = #imageLiteral(resourceName: "ic_avatar")
+        icon.layer.borderWidth = 1
+        icon.layer.borderColor = UIColor(hexString: "#cccccc")?.cgColor
+        icon.backgroundColor = UIColor(hexString: "#cccccc")
         contentView.addSubview(icon)
         
         taglistView = ErxesTagView()
