@@ -2,8 +2,8 @@
 //  MentionController.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/1/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/1/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -17,7 +17,7 @@ class MentionCell:UITableViewCell {
         
         imageView?.clipsToBounds = true
         imageView?.contentMode = .scaleAspectFit
-        imageView?.snp.remakeConstraints{ (make) in
+        imageView?.snp.remakeConstraints { (make) in
             make.top.equalToSuperview().offset(5)
             make.bottom.equalToSuperview().inset(5)
             make.left.equalToSuperview().offset(30)
@@ -38,7 +38,7 @@ class MentionController:NSObject {
     var delegate:MentionControllerDelegate?
     
     var users = [UserData]() {
-        didSet{
+        didSet {
             delegate?.reload()
         }
     }
@@ -85,7 +85,7 @@ class MentionController:NSObject {
     
     func filter(_ value:String) {
         if value.count > 0 {
-            filteredUsers = users.filter{$0.username?.lowercased().hasPrefix(value.lowercased()) ?? false}
+            filteredUsers = users.filter { $0.username?.lowercased().hasPrefix(value.lowercased()) ?? false }
         } else {
             filteredUsers = users
         }
@@ -98,7 +98,7 @@ class MentionController:NSObject {
     
     func mentionedUserIds() -> [String] {
         if mentionedUsers.count > 0 {
-            return mentionedUsers.map{$0.id}
+            return mentionedUsers.map{ $0.id }
         }
         return [String]()
     }
@@ -177,7 +177,7 @@ extension ChatController {
         mentionController.visible = false
     }
     
-    @objc func InputViewTextChanged (_ sender:UITextField) {
+    @objc func inputViewTextChanged (_ sender:UITextField) {
         
         if !isInternal { return }
         

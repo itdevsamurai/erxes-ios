@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by soyombo bat-erdene on 4/6/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -32,12 +32,12 @@ class MyFormViewController: UIViewController {
     }
     
     
-    deinit{
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
     
-    @objc func dismissKeyboard(){
+    @objc func dismissKeyboard() {
         self.view.endEditing(true)
     }
     

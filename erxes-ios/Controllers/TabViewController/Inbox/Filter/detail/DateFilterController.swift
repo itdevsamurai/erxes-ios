@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 5/25/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -49,7 +49,7 @@ class DateFilterController: UIViewController {
         return button
     }()
     
-    @objc func toggleButton(sender:UIButton){
+    @objc func toggleButton(sender:UIButton) {
         if sender.alpha == 1.0 {
             return
         }
@@ -101,14 +101,14 @@ class DateFilterController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @objc func selectDate(sender: Any){
+    @objc func selectDate(sender: Any) {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd"
         let strDate = formatter.string(from: calendarView.selectedDate)
      
-        if isBeginDate{
+        if isBeginDate {
             self.filterOptions.startDate = strDate
-        }else{
+        } else {
             self.filterOptions.endDate = strDate
         }
         print(filterOptions)

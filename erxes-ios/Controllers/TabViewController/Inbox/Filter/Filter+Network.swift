@@ -2,8 +2,8 @@
 //  Filter+Network.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/27/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/27/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import Apollo
 
 extension FilterController {
     
-    func getChannels(){
+    func getChannels() {
         let query = ChannelsQuery()
         
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
@@ -35,7 +35,7 @@ extension FilterController {
         }
     }
     
-    func getBrands(){
+    func getBrands() {
         let query = BrandsQuery()
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
@@ -60,7 +60,7 @@ extension FilterController {
         }
     }
     
-    func getTags(){
+    func getTags() {
         let query = TagsQuery(type: "conversation")
         appnet.fetch(query: query, cachePolicy: CachePolicy.returnCacheDataElseFetch) { [weak self] result, error in
             if let error = error {

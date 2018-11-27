@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 10/10/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -12,8 +12,8 @@ class NoteController: UIViewController {
 
     weak var delegate: ContactDelegate?
     var isCompany = Bool()
-    var notes = [LogData](){
-        didSet{
+    var notes = [LogData]() {
+        didSet {
             
             for (index, note) in notes.enumerated() {
                 
@@ -40,7 +40,7 @@ class NoteController: UIViewController {
         return button
     }()
     
-    @objc func noteAction(){
+    @objc func noteAction() {
         alertController.view.addObserver(self, forKeyPath: "bounds", options: NSKeyValueObservingOptions.new, context: nil)
         textView.text = "   Start typing to leave a note"
         self.present(alertController, animated: true, completion: nil)
@@ -49,7 +49,7 @@ class NoteController: UIViewController {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "bounds"{
-            if let rect = (change?[NSKeyValueChangeKey.newKey] as? NSValue)?.cgRectValue{
+            if let rect = (change?[NSKeyValueChangeKey.newKey] as? NSValue)?.cgRectValue {
                 let margin:CGFloat = 8.0
                 textView.frame = CGRect(x:rect.origin.x + margin, y:rect.origin.y + margin, width:rect.width - 2*margin, height:rect.height / 2)
                 textView.bounds = CGRect(x:rect.origin.x + margin, y:rect.origin.y + margin, width:rect.width - 2*margin, height:rect.height / 2)
@@ -66,7 +66,7 @@ class NoteController: UIViewController {
         return button
     }()
     
-    @objc func emailAction(){
+    @objc func emailAction() {
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.navigationController?.navigationBar.tintColor = .ERXES_COLOR
@@ -153,11 +153,11 @@ class NoteController: UIViewController {
     }
  
     
-    func saveMutation(content:String){
+    func saveMutation(content:String) {
         var contentType = String()
         if isCompany {
             contentType = "company"
-        }else{
+        } else {
             contentType = "customer"
         }
         let mutation = InternalNotesAddMutation(contentType: contentType)
@@ -225,7 +225,7 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         let data = notes[indexPath.section].list[indexPath.row]
         let date = data?.createdAt.dateFromUnixTime()
         let now = Date()
-        let dateLblValue = self.getTimeComponentString(olderDate: date!, newerDate: now)
+        let dateLblValue = Utils.getTimeComponentString(olderDate: date!, newerDate: now)
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityCellCon", for: indexPath) as? ActivityCellCon {
                 cell.descLabel.text = "left a note"
                 cell.avatarView.image = UIImage(named: "avatar.png")
@@ -246,52 +246,6 @@ extension NoteController: UITableViewDataSource, UITableViewDelegate {
         
         return UITableViewCell()
     }
-    
-    func getTimeComponentString(olderDate older: Date, newerDate newer: Date) -> (String?) {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        
-        let componentsLeftTime = Calendar.current.dateComponents([.minute, .hour, .day, .month, .weekOfMonth, .year], from: older, to: newer)
-        
-        let year = componentsLeftTime.year ?? 0
-        if year > 0 {
-            formatter.allowedUnits = [.year]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        
-        let month = componentsLeftTime.month ?? 0
-        if month > 0 {
-            formatter.allowedUnits = [.month]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let weekOfMonth = componentsLeftTime.weekOfMonth ?? 0
-        if weekOfMonth > 0 {
-            formatter.allowedUnits = [.weekOfMonth]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let day = componentsLeftTime.day ?? 0
-        if day > 0 {
-            formatter.allowedUnits = [.day]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let hour = componentsLeftTime.hour ?? 0
-        if hour > 0 {
-            formatter.allowedUnits = [.hour]
-            return formatter.string(from: older, to: newer)
-        }
-        
-        let minute = componentsLeftTime.minute ?? 0
-        if minute > 0 {
-            formatter.allowedUnits = [.minute]
-            return formatter.string(from: older, to: newer) ?? ""
-        }
-        
-        return nil
-}
 }
 
 extension NoteController: UITextViewDelegate {

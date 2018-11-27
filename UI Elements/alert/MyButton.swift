@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/31/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -26,7 +26,7 @@ class MyButton: UIButton {
         
     }
     
-    func setup(){
+    func setup() {
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
             shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 6).cgPath

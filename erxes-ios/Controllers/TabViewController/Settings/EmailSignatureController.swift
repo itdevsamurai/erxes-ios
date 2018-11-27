@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 9/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -242,7 +242,7 @@ extension EmailSignatureController: UITextFieldDelegate {
             tmp = brands.filter{($0.name?.localizedCaseInsensitiveContains(value))!}
             self.filtered = tmp
             tableView.reloadData()
-        }else{
+        } else {
             self.isFiltering = false
             tableView.reloadData()
         }
@@ -275,7 +275,7 @@ extension EmailSignatureController: UITableViewDataSource {
         if isFiltering {
            let brand = filtered[indexPath.row]
             cell?.desc.text = brand.name
-        }else{
+        } else {
             let brand = brands[indexPath.row]
             cell?.desc.text = brand.name
         }

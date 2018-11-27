@@ -1,0 +1,8 @@
+query ResponseTemplates {
+    responseTemplates {
+        _id
+        name
+        brandId
+        content
+    }
+}

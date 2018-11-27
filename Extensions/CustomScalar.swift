@@ -2,8 +2,8 @@
 //  CustomScalar.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/16/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/16/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -32,7 +32,7 @@ extension Int64: JSONDecodable, JSONEncodable {
 extension Dictionary: JSONDecodable {
     public init(jsonValue value: JSONValue) throws {
         
-        if var array = value as? NSArray {
+        if let array = value as? NSArray {
             self.init()
             if var dict = self as? [String: JSONDecodable & JSONEncodable] {
                 dict["data"] = array as! [[String: Any]]
@@ -41,8 +41,7 @@ extension Dictionary: JSONDecodable {
             }
         }
         
-        guard let dictionary = forceBridgeFromObjectiveC(value) as? Dictionary else {
-            
+        guard let dictionary = value as? Dictionary else {
             
             throw JSONDecodingError.couldNotConvert(value: value, to: Dictionary.self)
         }
@@ -62,7 +61,13 @@ extension Array: JSONDecodable {
 
 
 private func forceBridgeFromObjectiveC(_ value: Any) -> Any {
+    
+    if value == nil {
+        return value
+    }
+    
     switch value {
+        
     case is NSString:
         return value as! String
         
@@ -77,7 +82,7 @@ private func forceBridgeFromObjectiveC(_ value: Any) -> Any {
     case is NSDictionary:
         return Dictionary(uniqueKeysWithValues: (value as! NSDictionary).map { ($0.key as! AnyHashable, forceBridgeFromObjectiveC($0.value)) })
     case is NSArray:
-        return (value as! NSArray).map { forceBridgeFromObjectiveC($0) }
+        return (value as? NSArray).map { forceBridgeFromObjectiveC($0) }
     default:
         return value
     }

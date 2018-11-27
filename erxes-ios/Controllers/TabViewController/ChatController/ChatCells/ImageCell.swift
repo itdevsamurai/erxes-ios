@@ -2,8 +2,8 @@
 //  ColCell.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/5/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/5/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -16,7 +16,7 @@ class ImageCell: ChatBaseCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        ivAttachment.snp.makeConstraints{ (make) in
+        ivAttachment.snp.makeConstraints { (make) in
             make.top.bottom.equalToSuperview()
             make.right.left.equalToSuperview().inset(50)
         }

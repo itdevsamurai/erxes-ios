@@ -2,8 +2,8 @@
 //  UIImage.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/16/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/16/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -80,6 +80,17 @@ public extension UIImage {
         let img = UIGraphicsGetImageFromCurrentImageContext()
         let imageData = UIImageJPEGRepresentation(img!, CGFloat(compressionQuality))
         return imageData!
+    }
+    
+    class func getColoredRectImageWith(color: CGColor, andSize size: CGSize) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        let graphicsContext = UIGraphicsGetCurrentContext()
+        graphicsContext?.setFillColor(color)
+        let rectangle = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        graphicsContext?.fill(rectangle)
+        let rectangleImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return rectangleImage!
     }
     
 }

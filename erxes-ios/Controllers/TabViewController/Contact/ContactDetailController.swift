@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 10/10/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -21,8 +21,8 @@ class ContactDetailController: DTPagerController {
     var contactId:String = String()
     var contactName = String()
     var email = String()
-    var logs = [LogData](){
-        didSet{
+    var logs = [LogData]() {
+        didSet {
             activityController.logs = self.logs
             noteController.notes = self.logs
             conversationController.conversations = self.logs
@@ -43,7 +43,7 @@ class ContactDetailController: DTPagerController {
         getActivityLog()
     }
     
-    func configureViews(){
+    func configureViews() {
         self.font = Font.regular(14)
         self.selectedFont = Font.bold(14)
         self.selectedTextColor = .ERXES_COLOR
@@ -67,7 +67,7 @@ class ContactDetailController: DTPagerController {
         var controllers = [UIViewController]()
         if isCompany {
            controllers =  [companyController,activityController,noteController,conversationController]
-        }else{
+        } else {
             controllers =  [customerController,activityController,noteController,conversationController]
         }
         
@@ -80,7 +80,7 @@ class ContactDetailController: DTPagerController {
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
@@ -128,15 +128,22 @@ class ContactDetailController: DTPagerController {
     @objc func editAction(sender:UIButton) {
         if isCompany {
             companyController.editAction(sender: sender)
-        }else{
+        } else {
            customerController.editAction(sender: sender)
         }
     }
     
-    func getActivityLog(){
+    func getActivityLog() {
         self.logs.removeAll()
-        if !self.isCompany {
-        let query = ActivityLogsCustomerQuery(_id: contactId)
+        if self.isCompany {
+           fetchCompanyLog()
+        } else {
+            fetchCustomerLog()
+        }
+    }
+    
+    func fetchCompanyLog() {
+        let query = ActivityLogsCompanyQuery(_id: contactId)
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -150,46 +157,47 @@ class ContactDetailController: DTPagerController {
                 alert.show(animated: true)
             }
             
-            if result?.data != nil {
-                if let logDatas = result?.data?.activityLogsCustomer {
-                    let logsTmp  = logDatas.map { ($0?.fragments.logData)! }
-                    for log in logsTmp {
-                        if log.list.count != 0 {
-                            self?.logs.append(log)
-                        }
-                    }
-                }
+            guard let logDatas = result?.data?.activityLogsCompany, logDatas.count > 0 else {
+                return
             }
-        }
-        }else{
-            let query = ActivityLogsCompanyQuery(_id: contactId)
-            appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                    let alert = FailureAlert(message: error.localizedDescription)
-                    alert.show(animated: true)
-                    return
-                }
-                
-                if let err = result?.errors {
-                    let alert = FailureAlert(message: err[0].localizedDescription)
-                    alert.show(animated: true)
-                }
-                
-                if result?.data != nil {
-                    if let logDatas = result?.data?.activityLogsCompany {
-                        let logsTmp  = logDatas.map { ($0?.fragments.logData)! }
-                        for log in logsTmp {
-                            if log.list.count != 0 {
-                                self?.logs.append(log)
-                            }
-                        }
-                    }
+            
+            let logsTmp  = logDatas.map { ($0?.fragments.logData)! }
+            for log in logsTmp {
+                if log.list.count != 0 {
+                    self?.logs.append(log)
                 }
             }
         }
     }
-
+    
+    func fetchCustomerLog() {
+        let query = ActivityLogsCustomerQuery(_id: contactId)
+        appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                let alert = FailureAlert(message: error.localizedDescription)
+                alert.show(animated: true)
+                return
+            }
+            
+            if let err = result?.errors {
+                let alert = FailureAlert(message: err[0].localizedDescription)
+                alert.show(animated: true)
+                return
+            }
+            
+            guard let logDatas = result?.data?.activityLogsCustomer, logDatas.count > 0 else {
+                return
+            }
+            
+            let logsTmp  = logDatas.map { ($0?.fragments.logData)! }
+            for log in logsTmp {
+                if log.list.count != 0 {
+                    self?.logs.append(log)
+                }
+            }
+        }
+    }
 
 }
 
@@ -203,7 +211,7 @@ extension ContactDetailController: DTPagerControllerDelegate {
                 rightImage = rightImage.withRenderingMode(.alwaysTemplate)
                 saveImage = saveImage.withRenderingMode(.alwaysTemplate)
                 let barButtomItem = UIBarButtonItem()
-                let button = UIButton()
+                let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
                 button.setBackgroundImage(rightImage, for: .normal)
                 button.setBackgroundImage(saveImage, for: .selected)
                 button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
@@ -212,15 +220,11 @@ extension ContactDetailController: DTPagerControllerDelegate {
             }()
             rightItem.tintColor = UIColor.white
             self.navigationItem.rightBarButtonItem = rightItem
-        }else {
+        } else {
             self.navigationItem.rightBarButtonItem = nil
         }
     }
-    
-   
 }
-
-
 
 extension HMSegmentedControl: DTSegmentedControlProtocol {
     
@@ -240,11 +244,9 @@ extension HMSegmentedControl: DTSegmentedControlProtocol {
             selectedTitleTextAttributes = attributes
         }
     }
-    
 }
 
 extension ContactDetailController: ContactDelegate {
-   
     
     func reloadData() {
         self.getActivityLog()

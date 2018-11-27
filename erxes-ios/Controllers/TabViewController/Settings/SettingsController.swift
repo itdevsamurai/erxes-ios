@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -35,7 +35,7 @@ class SettingsController: UIViewController {
         return tableview
     }()
     
-    func configureViews(){
+    func configureViews() {
         
         self.view.addSubview(tableView)
         tableView.delegate = self
@@ -59,12 +59,12 @@ class SettingsController: UIViewController {
         tableView.reloadData()
     }
     
-    @objc func handleTap(sender:UITapGestureRecognizer){
+    @objc func handleTap(sender:UITapGestureRecognizer) {
         let currentUser = ErxesUser.sharedUserInfo()
         self.navigate(.userProfile(id: currentUser._id!))
     }
     
-    @objc func imageTap(tapGesture:UITapGestureRecognizer){
+    @objc func imageTap(tapGesture:UITapGestureRecognizer) {
         self.checkPermission()
     }
     
@@ -99,7 +99,7 @@ class SettingsController: UIViewController {
 
         let url = Constants.URL_UPLOAD
         
-        if let imgData = UIImage.resize(image) as? Data{
+        if let imgData = UIImage.resize(image) as? Data {
             size = imgData.count
             let bcf = ByteCountFormatter()
             bcf.allowedUnits = [.useKB]
@@ -130,7 +130,7 @@ class SettingsController: UIViewController {
         
         upload.responseString { response in
             print(response)
-            if let remoteUrl = response.value{
+            if let remoteUrl = response.value {
                 self.presentTextFieldAlert(title: "Confirm", msg: "Enter your password to confirm") { (textValue) in
                     self.saveImage(imageUrl: remoteUrl, userPassword: textValue!)
                 }
@@ -237,7 +237,7 @@ class SettingsController: UIViewController {
  
     }
     
-    func getBrands(){
+    func getBrands() {
         
         let query = BrandsQuery()
         appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
@@ -273,11 +273,11 @@ extension SettingsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             self.navigate(.passwordSettings())
-        }else if indexPath.row == 1 {
+        } else if indexPath.row == 1 {
             self.navigate(.emailSignature(brands:self.brands))
-        }else if indexPath.row == 2{
+        } else if indexPath.row == 2 {
             self.navigate(.notificationSettings())
-        }else if indexPath.row == 3{
+        } else if indexPath.row == 3 {
 
             self.presentAlert(title: "Sign out", msg: "Are you sure you want to sign out ?") {
                 do {

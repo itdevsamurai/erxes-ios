@@ -2,8 +2,8 @@
 //  ColChatDataSource.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/8/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/8/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -38,7 +38,7 @@ class ChatManager:NSObject {
     }
     
     func queryMessages() {
-        if conversationId == nil{
+        if conversationId == nil {
             return
         }
         
@@ -56,13 +56,12 @@ class ChatManager:NSObject {
                 alert.show(animated: true)
             }
             if let allMessages = result?.data?.conversationDetail {
-                let messagesArray = (allMessages.messages?.map {($0?.fragments.messageDetail)!})!
-                self?.delegate?.onChatUpdate(messagesArray)
+                self?.delegate?.onChatUpdate(allMessages)
             }
         }
     }
     
-    func markAsRead(id:String){
+    func markAsRead(id:String) {
         let mutation = ConversationMarkAsReadMutation(id: id)
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
@@ -72,7 +71,7 @@ class ChatManager:NSObject {
         }
     }
     
-    func mutateAddMessage(msg:String, isInternal:Bool, mentions:[String]){
+    func mutateAddMessage(msg:String, isInternal:Bool, mentions:[String]) {
         let mutation = ConversationMessageAddMutation(conversationId: self.conversationId!)
         
         if msg.count > 0 {

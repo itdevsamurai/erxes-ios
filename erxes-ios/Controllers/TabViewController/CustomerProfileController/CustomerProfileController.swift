@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 6/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -21,8 +21,8 @@ class CustomerProfileController: FormViewController {
     var customerId: String?
     var messagesCount = 0
     
-    var customer:CustomerInfo?{
-        didSet{
+    var customer:CustomerInfo? {
+        didSet {
             self.buildForm(customer: customer)
         }
     }
@@ -115,7 +115,7 @@ class CustomerProfileController: FormViewController {
                     
                     if ((self?.customerId) == nil) {
                         self?.buildForm(customer: nil)
-                    }else{
+                    } else {
                         self?.getCustomerData()
                     }
                 }
@@ -396,7 +396,7 @@ class CustomerProfileController: FormViewController {
                                             })
                                 }
                                 
-                            }else if field?.id == "avatar" {
+                            } else if field?.id == "avatar" {
                                 form.last!
                                     <<< ImageRow(field?.id) { row in
                                         row.title = field?.text
@@ -592,42 +592,8 @@ class CustomerProfileController: FormViewController {
         }
         
         mutation.links = JSON()
-        var customFields = JSON()
         
-        for row in form.allRows {
-            if row.section?.index != 0 {
-                
-                if let textRow = row as? TextRow {
-                    customFields[row.tag!] = textRow.baseValue as Any
-                }
-                
-                if let dateRow = row as? DateRow {
-                    if let dateValue = dateRow.value {
-                        let dateString = dateValue.mainDateString()
-                        customFields[row.tag!] = dateString
-                    }
-                }
-                
-                if let switchRow = row as? SwitchRow {
-                    if let value = switchRow.value {
-                        if value {
-                            customFields[row.tag!] = "Yes"
-                        } else {
-                            customFields[row.tag!] = "No"
-                        }
-                    }
-                }
-                
-                if let multiSelectorRow = row as? MultipleSelectorRow<String> {
-                    if let value = multiSelectorRow.value {
-                        let arr = Array(value)
-                        customFields[row.tag!] = arr
-                    }
-                }
-            }
-        }
-        
-        mutation.customFieldsData = customFields
+        mutation.customFieldsData = self.form.parseToServerFormat()
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -677,42 +643,8 @@ class CustomerProfileController: FormViewController {
         }
         
         mutation.links = JSON()
-        var customFields = JSON()
         
-        for row in form.allRows {
-            if row.section?.index != 0 {
-                
-                if let textRow = row as? TextRow {
-                    customFields[row.tag!] = textRow.baseValue as Any
-                }
-                
-                if let dateRow = row as? DateRow {
-                    if let dateValue = dateRow.value {
-                        let dateString = dateValue.mainDateString()
-                        customFields[row.tag!] = dateString
-                    }
-                }
-                
-                if let switchRow = row as? SwitchRow {
-                    if let value = switchRow.value {
-                        if value {
-                            customFields[row.tag!] = "Yes"
-                        } else {
-                            customFields[row.tag!] = "No"
-                        }
-                    }
-                }
-                
-                if let multiSelectorRow = row as? MultipleSelectorRow<String> {
-                    if let value = multiSelectorRow.value {
-                        let arr = Array(value)
-                        customFields[row.tag!] = arr
-                    }
-                }
-            }
-        }
-        
-        mutation.customFieldsData = customFields
+        mutation.customFieldsData = self.form.parseToServerFormat()
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
@@ -744,7 +676,7 @@ class CustomerProfileController: FormViewController {
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
@@ -893,7 +825,7 @@ class CustomerProfileController: FormViewController {
         
         let url = Constants.URL_UPLOAD
         
-        if let imgData = UIImage.resize(image) as? Data{
+        if let imgData = UIImage.resize(image) as? Data {
             size = imgData.count
             let bcf = ByteCountFormatter()
             bcf.allowedUnits = [.useKB]
@@ -924,10 +856,52 @@ class CustomerProfileController: FormViewController {
         
         upload.responseString { response in
             print(response)
-            if let remoteUrl = response.value{
+            if let remoteUrl = response.value {
                 self.avatarUrl = remoteUrl
             }
         }
+    }
+    
+}
+
+extension Form {
+    
+    public func parseToServerFormat() -> JSON {
+        var customFields = JSON()
+        
+        for row in self.allRows {
+            if row.section?.index != 0 {
+                
+                if let textRow = row as? TextRow {
+                    customFields[row.tag!] = textRow.baseValue as Any
+                }
+                
+                if let dateRow = row as? DateRow {
+                    if let dateValue = dateRow.value {
+                        let dateString = dateValue.mainDateString()
+                        customFields[row.tag!] = dateString
+                    }
+                }
+                
+                if let switchRow = row as? SwitchRow {
+                    if let value = switchRow.value {
+                        if value {
+                            customFields[row.tag!] = "Yes"
+                        } else {
+                            customFields[row.tag!] = "No"
+                        }
+                    }
+                }
+                
+                if let multiSelectorRow = row as? MultipleSelectorRow<String> {
+                    if let value = multiSelectorRow.value {
+                        let arr = Array(value)
+                        customFields[row.tag!] = arr
+                    }
+                }
+            }
+        }
+        return customFields
     }
     
 }

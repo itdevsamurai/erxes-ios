@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/11/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -108,7 +108,7 @@ class FilterController: UIViewController {
         btnClose.addTarget(self, action: #selector(clear(sender:)), for: .touchUpInside)
         root.addSubview(btnClose)
         
-        lbl.snp.makeConstraints{ (make) in
+        lbl.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.centerX.equalTo(root.snp.centerX)
             make.height.equalTo(60)
@@ -119,14 +119,14 @@ class FilterController: UIViewController {
             make.right.equalToSuperview().offset(-50)
         }
         
-        btnClose.snp.makeConstraints{ (make) in
+        btnClose.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(40)
             make.top.equalToSuperview().offset(12)
             make.width.height.equalTo(40)
         }
     }
     
-    @objc func close(sender:UIButton){
+    @objc func close(sender:UIButton) {
         self.dismiss(animated: true) {
             if self.changed {
                 self.changed = false
@@ -135,7 +135,7 @@ class FilterController: UIViewController {
         }
     }
     
-    @objc func clear(sender:UIButton){
+    @objc func clear(sender:UIButton) {
         self.filterOptions.removeAll()
         selectedSection = -1
         statusValue = ""
@@ -156,7 +156,7 @@ class FilterController: UIViewController {
             make.bottom.equalToSuperview()
         }
         
-        tableView.snp.makeConstraints{ (make) in
+        tableView.snp.makeConstraints { (make) in
             make.right.left.bottom.equalToSuperview()
             make.top.equalToSuperview().offset(60)
         }
@@ -166,10 +166,10 @@ class FilterController: UIViewController {
 extension FilterController: DateDelegate {
     
     func setDate(options: FilterOptions, isBeginDate: Bool) {
-        if isBeginDate{
+        if isBeginDate {
             self.filterOptions.startDate = options.startDate
             change()
-        }else{
+        } else {
             self.filterOptions.endDate = options.endDate
             change()
         }

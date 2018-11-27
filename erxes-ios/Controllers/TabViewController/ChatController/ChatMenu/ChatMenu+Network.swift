@@ -2,8 +2,8 @@
 //  ChatMenu+Network.swift
 //  erxes-ios
 //
-//  Created by alternate on 11/1/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 11/1/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -59,7 +59,7 @@ extension ChatMenu {
         }
     }
     
-    func changeStatus(id:String, status:String){
+    func changeStatus(id:String, status:String) {
         let mutation = ConversationsChangeStatusMutation(_ids: [id], status: status)
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {

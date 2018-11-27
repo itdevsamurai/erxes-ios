@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 9/24/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import UIKit
 class ErxesTagLabel: UILabel {
     
     
-    convenience init (title:String, backgroundColor: UIColor){
+    convenience init (title:String, backgroundColor: UIColor) {
         self.init()
         self.commonInit(backgroundColor: backgroundColor)
         self.text = title
@@ -19,16 +19,16 @@ class ErxesTagLabel: UILabel {
         self.frame = CGRect(x: 0, y: 0, width: size.width+10, height: 18)
     }
     
-    func commonInit(backgroundColor:UIColor){
+    func commonInit(backgroundColor:UIColor) {
         self.layer.cornerRadius = 5.0
         self.clipsToBounds = true
         
         self.font = Font.regular(10)
         self.backgroundColor = backgroundColor
         self.textAlignment = .center
-        if backgroundColor.isLight(){
+        if backgroundColor.isLight() {
             self.textColor = .black
-        }else{
+        } else {
             self.textColor = .white
         }
         

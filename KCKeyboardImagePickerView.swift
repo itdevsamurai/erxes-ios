@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/21/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -12,7 +12,7 @@ import UIKit
 //    func getSelectedChannelData(options:FilterOptions)
 //}
 
-protocol KCKeyboardImagePickerViewDataSource: NSObjectProtocol{
+protocol KCKeyboardImagePickerViewDataSource: NSObjectProtocol {
     func isImagePickerControllerButtonVisible(in keyboardImagePickerView: KCKeyboardImagePickerView?) -> Bool
     func backgroundColorForImagePickerControllerButton(in keyboardImagePickerView: KCKeyboardImagePickerView?) -> UIColor?
     func backgroundImageForImagePickerControllerButton(in keyboardImagePickerView: KCKeyboardImagePickerView?) -> UIImage?
@@ -24,7 +24,7 @@ protocol KCKeyboardImagePickerViewDataSource: NSObjectProtocol{
     func keyboardImagePickerView(_ keyboardImagePickerView: KCKeyboardImagePickerView?, imageAt index: Int) -> UIImage?
 }
 
-protocol KCKeyboardImagePickerViewDelegate: NSObjectProtocol{
+protocol KCKeyboardImagePickerViewDelegate: NSObjectProtocol {
     
     func keyboardImagePickerView(_ keyboardImagePickerView: KCKeyboardImagePickerView?, didTapOptionButton optionButton: UIButton?, at index: Int)
     
@@ -38,7 +38,7 @@ protocol KCKeyboardImagePickerViewDelegate: NSObjectProtocol{
     
 }
 
-class KCKeyboardImagePickerView: UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate{
+class KCKeyboardImagePickerView: UIView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     let kKCKeyboardImagePickerViewCellOptionButtonRadius: CGFloat = 60.0
     let kKCKeyboardImagePickerViewCellOptionButtonBorderWidth: CGFloat = 2.0
@@ -95,7 +95,7 @@ class KCKeyboardImagePickerView: UIView, UICollectionViewDelegateFlowLayout, UIC
         renderOptionButtons()
     }
     
-    func reload(){
+    func reload() {
         renderImagesCollectionView()
         renderImagePickerViewControllerButton()
         renderOptionButtons()

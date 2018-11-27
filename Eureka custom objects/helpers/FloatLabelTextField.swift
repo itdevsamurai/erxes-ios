@@ -112,7 +112,7 @@ import UIKit
 	
 	override public func textRect(forBounds bounds:CGRect) -> CGRect {
 		var r = super.textRect(forBounds: bounds)
-		if !(text?.isEmpty ?? true){
+		if !(text?.isEmpty ?? true) {
 			var top = ceil(title.font.lineHeight + hintYPadding)
 			top = min(top, maxTopInset())
 			r = UIEdgeInsetsInsetRect(r, UIEdgeInsetsMake(top, 0.0, 0.0, 0.0))

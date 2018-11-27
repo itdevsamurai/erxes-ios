@@ -17,8 +17,8 @@ protocol Modal {
     var dialogView:UIView {get set}
 }
 
-extension Modal where Self:UIView{
-    func show(animated:Bool){
+extension Modal where Self:UIView {
+    func show(animated:Bool) {
         self.backgroundView.alpha = 0
         if var topController = UIApplication.shared.delegate?.window??.rootViewController {
             while let presentedViewController = topController.presentedViewController {
@@ -36,13 +36,13 @@ extension Modal where Self:UIView{
             }, completion: { (completed) in
                 
             })
-        }else{
+        } else {
             self.backgroundView.alpha = 0.66
             self.dialogView.center  = self.center
         }
     }
     
-    func dismiss(animated:Bool){
+    func dismiss(animated:Bool) {
         
         if var topController = UIApplication.shared.delegate?.window??.rootViewController {
             while let presentedViewController = topController.presentedViewController {
@@ -66,7 +66,7 @@ extension Modal where Self:UIView{
             }, completion: { (completed) in
                 self.removeFromSuperview()
             })
-        }else{
+        } else {
             self.removeFromSuperview()
         }
         

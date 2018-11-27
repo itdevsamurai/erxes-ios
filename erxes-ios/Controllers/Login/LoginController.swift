@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by soyombo bat-erdene on 4/6/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -73,13 +73,13 @@ class LoginController: LoginControllerUI {
         if emailField.validate(type: .email) && passwordField.validate(type: .password) {
             isLogin = true
             self.view.endEditing(true)
-//            mutateLogin(email: emailField.text!, password: passwordField.text!)
+            mutateLogin(email: emailField.text!, password: passwordField.text!)
 
-        } else if !passwordField.validate(type: .password){
+        } else if !passwordField.validate(type: .password) {
             passwordField.becomeFirstResponder()
-        }else if  !emailField.validate(type: .email) {
+        } else if  !emailField.validate(type: .email) {
             emailField.becomeFirstResponder()
-        }else {
+        } else {
             emailField.becomeFirstResponder()
         }
 
@@ -117,8 +117,8 @@ class LoginController: LoginControllerUI {
                 }
 
                 let currentUser = ErxesUser.sharedUserInfo()
-                currentUser.token = (result?.data?.login.token)!
-                currentUser.refreshToken = (result?.data?.login.refreshToken)!
+                currentUser.token = (result?.data?.login)!
+                currentUser.refreshToken = (result?.data?.login)!
 
                 self?.mutateCurrrentUser()
             }
@@ -207,13 +207,13 @@ class LoginController: LoginControllerUI {
                 make.top.equalTo(self.view.snp.top).offset(98)
             }
             self.view.layoutIfNeeded()
-            if self.isLogin{
+            if self.isLogin {
                 self.perform(#selector(self.signIn), with: nil, afterDelay: duration)
             }
         })
     }
     
-    @objc func signIn(){
+    @objc func signIn() {
          self.mutateLogin(email: self.emailField.text!, password: self.passwordField.text!)
     }
 
@@ -221,9 +221,9 @@ class LoginController: LoginControllerUI {
 
 extension LoginController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == emailField && emailField.validate(type: .email){
+        if textField == emailField && emailField.validate(type: .email) {
             passwordField.becomeFirstResponder()
-        } else if textField == passwordField && passwordField.validate(type: .password){
+        } else if textField == passwordField && passwordField.validate(type: .password) {
             passwordField.resignFirstResponder()
         }
         return true

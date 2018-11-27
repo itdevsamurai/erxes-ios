@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by soyombo bat-erdene on 4/6/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -70,18 +70,18 @@ class MyTextField: UITextField, UITextFieldDelegate {
             rightImage.image? = (rightImage.image?.withRenderingMode(.alwaysTemplate))!
             rightImage.tintColor = .ERXES_COLOR
             self.rightView = rightImage
-        }else{
+        } else {
             rightImage.image = #imageLiteral(resourceName: "ic_checkMark")
             self.rightView = rightImage
         }
         return valid
     }
     
-    private func isValid(type: TextFieldType) -> Bool{
+    private func isValid(type: TextFieldType) -> Bool {
         if let txt = self.text {
-            if txt.isEmpty{
+            if txt.isEmpty {
                 return false
-            }else{
+            } else {
                 switch type {
                 case .password:
                     if txt.count < 4 {

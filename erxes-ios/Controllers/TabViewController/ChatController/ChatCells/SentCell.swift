@@ -2,8 +2,8 @@
 //  TextCell.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/4/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/4/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -58,7 +58,7 @@ class SentCell: ChatBaseCell {
             str.addAttribute(NSAttributedStringKey.font, value: Font.bold(13), range: match.range)
         }
         
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             self.tvText.attributedText = str
             print(str.attributedSubstring(from: NSMakeRange(str.length-1, 1)).string)
         }

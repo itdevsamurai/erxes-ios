@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/15/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -120,7 +120,7 @@ class CircleLayer: CALayer {
     }
     
     // This is what you call to draw a partial circle.
-    func animateCircleTo(duration: TimeInterval, fromValue: CGFloat, toValue: CGFloat){
+    func animateCircleTo(duration: TimeInterval, fromValue: CGFloat, toValue: CGFloat) {
         // We want to animate the strokeEnd property of the circleLayer
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.isRemovedOnCompletion = true

@@ -2,8 +2,8 @@
 //  File.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/16/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/16/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -73,7 +73,7 @@ extension UIViewController {
     
     func hideLoader() {
         if let subViews = navigationController?.navigationBar.subviews {
-            for subView in subViews{
+            for subView in subViews {
                 subView.layer.removeAllAnimations()
             }
         }
@@ -117,7 +117,7 @@ public extension UIViewController {
         }
     }
     
-    func presentTextFieldAlert(title: String?, msg:String, style:UIAlertControllerStyle = .alert, confirmKey:String? = "OK", confirmAction:@escaping (_ returnValue:String?)->Void){
+    func presentTextFieldAlert(title: String?, msg:String, style:UIAlertControllerStyle = .alert, confirmKey:String? = "OK", confirmAction:@escaping (_ returnValue:String?)->Void) {
         let alertController = UIAlertController(title: title, message: "", preferredStyle: style)
         let mutableTitle = NSMutableAttributedString(string: title!)
         
@@ -142,7 +142,7 @@ public extension UIViewController {
         }
         
         let action = UIAlertAction(title: confirmKey, style: .default) { (action) in
-            if let textField = alertController.textFields?.first{
+            if let textField = alertController.textFields?.first {
                 confirmAction(textField.text)
             }
             

@@ -2,8 +2,8 @@
 //  CompanyController.swift
 //  erxes-ios
 //
-//  Created by alternate on 8/14/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 8/14/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -127,7 +127,7 @@ class CompanyController: FormViewController {
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
@@ -860,42 +860,8 @@ class CompanyController: FormViewController {
             "youtube": form.rowBy(tag: "youtube")?.baseValue as? String]
 
         mutation.links = links
-        var customFields = JSON()
+        mutation.customFieldsData = self.form.parseToServerFormat()
         
-        for row in form.allRows {
-            if row.section?.index != 0 {
-                
-                if let textRow = row as? TextRow {
-                    customFields[row.tag!] = textRow.baseValue as Any
-                }
-                
-                if let dateRow = row as? DateRow {
-                    if let dateValue = dateRow.value {
-                        let dateString = dateValue.mainDateString()
-                        customFields[row.tag!] = dateString
-                    }
-                }
-                
-                if let switchRow = row as? SwitchRow {
-                    if let value = switchRow.value {
-                        if value {
-                            customFields[row.tag!] = "Yes"
-                        } else {
-                            customFields[row.tag!] = "No"
-                        }
-                    }
-                }
-                
-                if let multiSelectorRow = row as? MultipleSelectorRow<String> {
-                    if let value = multiSelectorRow.value {
-                        let arr = Array(value)
-                        customFields[row.tag!] = arr
-                    }
-                }
-            }
-        }
-        
-        mutation.customFieldsData = customFields
         appnet.perform(mutation: mutation) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
