@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 10/10/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import UIKit
 class ConversationsController: UIViewController {
 
     var conversations = [LogData]() {
-        didSet{
+        didSet {
             for (index, conversation) in conversations.enumerated() {
             
                 let filtered = conversation.list.filter({$0?.action == "conversation-create"})
@@ -64,9 +64,7 @@ class ConversationsController: UIViewController {
 extension ConversationsController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = conversations[indexPath.section].list[indexPath.row]
-        self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
-        
-        
+        self.navigate(.chat(withId: (data?.id)!, title: ""))
     }
 }
 

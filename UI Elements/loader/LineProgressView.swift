@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 9/27/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -60,7 +60,7 @@ class LineProgressView: UIView {
     
     func startAnimation() {
         self.show()
-        if !isAnimating{
+        if !isAnimating {
             self.isAnimating = true
             let topController = self.getTopViewController()
             UIView.animate(withDuration: 0.5, delay:0, options: [], animations: {

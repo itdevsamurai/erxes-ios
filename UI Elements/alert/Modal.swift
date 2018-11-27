@@ -17,7 +17,7 @@ protocol Modal {
     var dialogView:UIView {get set}
 }
 
-extension Modal where Self:UIView{
+extension Modal where Self:UIView {
     func show(animated:Bool) {
         self.backgroundView.alpha = 0
         if var topController = UIApplication.shared.delegate?.window??.rootViewController {

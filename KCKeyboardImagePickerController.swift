@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/21/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import MobileCoreServices
@@ -61,7 +61,7 @@ class KCKeyboardImagePickerStyle {
     }
 }
 
-class KCKeyboardImagePickerController: NSObject , KCKeyboardImagePickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate ,UIViewControllerPreviewingDelegate{
+class KCKeyboardImagePickerController: NSObject , KCKeyboardImagePickerViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate ,UIViewControllerPreviewingDelegate {
     func didTapImagePickerControllerButton(in keyboardImagePickerView: KCKeyboardImagePickerView?) {
         
     }

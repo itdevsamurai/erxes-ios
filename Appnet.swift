@@ -2,8 +2,8 @@
 //  Appnet.swift
 //  erxes-ios
 //
-//  Created by alternate on 8/21/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 8/21/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -34,7 +34,7 @@ class Appnet: NSObject {
     
     var tokenChanged = true
     
-    public static func temporarySQLiteFileURL() throws -> URL{
+    public static func temporarySQLiteFileURL() throws -> URL {
         let applicationSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!
         let applicationSupportURL = URL(fileURLWithPath: applicationSupportPath)
         
@@ -46,7 +46,7 @@ class Appnet: NSObject {
         return temporaryDirectoryURL.appendingPathComponent("db.sqlite3")
     }
     
-    class func newClient(token:String?) -> ApolloClient{
+    class func newClient(token:String?) -> ApolloClient {
         
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["x-token": token as Any]

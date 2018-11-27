@@ -2,8 +2,8 @@
 //  ColChatController.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/4/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/4/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -17,6 +17,8 @@ class ChatController:ChatControllerUI {
     
     var conversationId:String?
     var customerId:String?
+    var customer:EModel!
+    var customerAvatar:UIImage?
     var inited = false
     var isInternal = false
     var messages:[MessageDetail]! {
@@ -30,6 +32,10 @@ class ChatController:ChatControllerUI {
             }
         }
     }
+    
+    var brand:EModel!
+    
+    let templateController = TemplateController()
     
     var mentionController = MentionController()
     
@@ -45,10 +51,9 @@ class ChatController:ChatControllerUI {
         return vc
     }()
     
-    convenience init(chatId:String,title:String,customerId:String) {
+    convenience init(chatId:String, title:String) {
         self.init()
         self.conversationId = chatId
-        self.customerId = customerId
         self.title = title
     }
     
@@ -74,6 +79,8 @@ class ChatController:ChatControllerUI {
         chatView.delegate = self
         chatView.dataSource = self
         
+        templateController.delegate = self
+        
         let menuRightNavigationController = UISideMenuNavigationController(rootViewController: menu)
         SideMenuManager.default.menuRightNavigationController = menuRightNavigationController
         SideMenuManager.default.menuPresentMode = .menuSlideIn
@@ -90,16 +97,30 @@ class ChatController:ChatControllerUI {
         btnAttachment.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
         btnCamera.addTarget(self, action: #selector(btnCameraClick), for: .touchUpInside)
         btnInternalNote.addTarget(self, action: #selector(btnInternalNoteClick), for: .touchUpInside)
+        btnTemplate.addTarget(self, action: #selector(showTemplates), for: .touchUpInside)
         if let btn = self.navigationItem.rightBarButtonItem?.customView as? UIButton {
             btn.addTarget(self, action: #selector(gotoUser(sender:)), for: .touchUpInside)
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        showTemplates()
+    }
+    
     @objc func gotoUser(sender:UIButton) {
-        
         menu.conversationId = conversationId!
         present(SideMenuManager.default.menuRightNavigationController!, animated: true, completion: nil)
-        
+    }
+    
+    @objc func showTemplates() {
+//        templateController.delegate = self
+//        if self.options != nil {
+//            filterController.filterOptions = self.options!
+//        }
+        templateController.modalPresentationStyle = .overFullScreen
+        templateController.brand = brand
+        self.present(templateController, animated: true) {}
     }
     
     func updateView() {

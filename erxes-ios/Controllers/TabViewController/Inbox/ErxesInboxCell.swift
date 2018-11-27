@@ -3,7 +3,7 @@
 //  Erxes.io
 //
 //  Created by soyombo bat-erdene on 2/16/18.
-//  Copyright © 1618 soyombo bat-erdene. All rights reserved.
+//  Copyright © 1618 Erxes Inc. All rights reserved.
 //
 
 import UIKit

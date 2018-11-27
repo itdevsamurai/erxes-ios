@@ -2,8 +2,8 @@
 //  ColChatController+KeyboardHandler.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/7/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/7/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation

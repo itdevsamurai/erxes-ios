@@ -8,8 +8,21 @@ conversationMessageAdd(conversationId:$conversationId,content:$content, attachme
 
 query ConversationDetail($_id: String!) {
     conversationDetail(_id: $_id) {
-        messages{
+        messages {
             ...MessageDetail
+        }
+        customer {
+            _id
+            firstName
+            lastName
+            avatar
+            isUser
+        }
+        integration {
+            brand{
+                _id
+                name
+            }
         }
     }
 }
@@ -31,7 +44,7 @@ fragment MessageDetail on ConversationMessage {
         email
         role
         getNotificationByEmail
-        details{
+        details {
             avatar
         }
     }

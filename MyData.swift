@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/19/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -15,15 +15,15 @@ struct MyData: Codable {
 
 }
 
-struct ConvSubsData: Codable{
+struct ConvSubsData: Codable {
     var conversationClientMessageInserted:MyData?
 }
 
-struct ConvSubsPayload:Codable{
+struct ConvSubsPayload:Codable {
     var data:ConvSubsData?
 }
 
-struct ConvSubs:Codable{
+struct ConvSubs:Codable {
     var payload:ConvSubsPayload?
 }
 

@@ -2,8 +2,8 @@
 //  AvatarCell.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/4/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/4/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -20,6 +20,8 @@ class ChatBaseCell: UICollectionViewCell {
         var isIncoming = false
     }
     
+    var customer:EModel?
+    
     var viewModel:MessageDetail? {
         didSet {
             self.updateView()
@@ -31,6 +33,9 @@ class ChatBaseCell: UICollectionViewCell {
         iv.layer.cornerRadius = 15
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFit
+        iv.layer.borderWidth = 1
+        iv.layer.borderColor = UIColor(hexString: "#cccccc")?.cgColor
+        iv.backgroundColor = UIColor(hexString: "#cccccc")
         return iv
     }()
     
@@ -57,9 +62,10 @@ class ChatBaseCell: UICollectionViewCell {
     }
     
     func updateView() {
-        
         if let avatar = viewModel?.user?.details?.avatar {
             ivAvatar.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
+        } else if viewModel?.customerId != nil, let customer = customer {
+            ivAvatar.setAvatarOfCustomer(customer: customer)
         } else {
             ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         }

@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by soyombo bat-erdene on 4/6/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -47,9 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //check network change
         NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
-        do{
+        do {
             try reachability.startNotifier()
-        }catch{
+        } catch {
             print("could not start reachability notifier")
         }
         

@@ -2,8 +2,8 @@
 //  InComingCell.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/11/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/11/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -16,7 +16,6 @@ class IncomingCell: ChatBaseCell {
         
         super.updateView()
         
-        ivAvatar.image = #imageLiteral(resourceName: "ic_avatar")
         lblDate.textAlignment = .right
         
         guard let content = viewModel?.content else {
@@ -35,7 +34,7 @@ class IncomingCell: ChatBaseCell {
         
         str.addAttributes(options, range: NSMakeRange(0, str.length))
         
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             self.tvText.attributedText = str
         }
     }

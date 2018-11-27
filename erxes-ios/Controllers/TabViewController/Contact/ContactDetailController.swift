@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 10/10/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -22,7 +22,7 @@ class ContactDetailController: DTPagerController {
     var contactName = String()
     var email = String()
     var logs = [LogData]() {
-        didSet{
+        didSet {
             activityController.logs = self.logs
             noteController.notes = self.logs
             conversationController.conversations = self.logs
@@ -80,7 +80,7 @@ class ContactDetailController: DTPagerController {
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
@@ -211,7 +211,7 @@ extension ContactDetailController: DTPagerControllerDelegate {
                 rightImage = rightImage.withRenderingMode(.alwaysTemplate)
                 saveImage = saveImage.withRenderingMode(.alwaysTemplate)
                 let barButtomItem = UIBarButtonItem()
-                let button = UIButton()
+                let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
                 button.setBackgroundImage(rightImage, for: .normal)
                 button.setBackgroundImage(saveImage, for: .selected)
                 button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)

@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -99,7 +99,7 @@ class SettingsController: UIViewController {
 
         let url = Constants.URL_UPLOAD
         
-        if let imgData = UIImage.resize(image) as? Data{
+        if let imgData = UIImage.resize(image) as? Data {
             size = imgData.count
             let bcf = ByteCountFormatter()
             bcf.allowedUnits = [.useKB]
@@ -130,7 +130,7 @@ class SettingsController: UIViewController {
         
         upload.responseString { response in
             print(response)
-            if let remoteUrl = response.value{
+            if let remoteUrl = response.value {
                 self.presentTextFieldAlert(title: "Confirm", msg: "Enter your password to confirm") { (textValue) in
                     self.saveImage(imageUrl: remoteUrl, userPassword: textValue!)
                 }

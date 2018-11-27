@@ -11,6 +11,8 @@ fragment CustomerList on Customer {
 _id
 firstName
 lastName
+avatar
+visitorContactInfo
 primaryEmail
 primaryPhone
     facebookData
@@ -26,6 +28,16 @@ conversations {
     _id
 
 }
+}
+
+fragment CustomerDesc on Customer {
+    _id
+    firstName
+    lastName
+    avatar
+    visitorContactInfo
+    primaryEmail
+    primaryPhone
 }
 
 
@@ -90,7 +102,7 @@ query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids:
     }
 }
 
-fragment CompanyList on Company{
+fragment CompanyList on Company {
 _id
 avatar
 primaryName
@@ -109,7 +121,7 @@ colorCode
 }
 
 
-fragment CompanyDetail on Company{
+fragment CompanyDetail on Company {
     _id
     createdAt
     modifiedAt

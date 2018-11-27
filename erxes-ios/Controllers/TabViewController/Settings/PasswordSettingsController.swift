@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 9/28/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -116,7 +116,7 @@ class PasswordSettingsController: UIViewController {
         
     }
 
-    func validate()->Bool{
+    func validate()->Bool {
         let line1 = currentField.viewWithTag(1)
         let line2 = newField.viewWithTag(1)
         let line3 = reField.viewWithTag(1)

@@ -15,69 +15,69 @@ class GDCheckbox: UIControl {
     
     @IBInspectable
     open var containerWidth: CGFloat = 2.0{
-        didSet{
+        didSet {
             drawLayers()
         }
     }
     
     @IBInspectable
-    open var containerColor: UIColor = UIColor.black{
-        didSet{
+    open var containerColor: UIColor = UIColor.black {
+        didSet {
             drawColors()
         }
     }
     
     @IBInspectable
-    open var checkWidth: CGFloat = 3.0{
-        didSet{
+    open var checkWidth: CGFloat = 3.0 {
+        didSet {
             drawLayers()
         }
     }
     
     @IBInspectable
-    open var checkColor: UIColor = UIColor.black{
-        didSet{
+    open var checkColor: UIColor = UIColor.black {
+        didSet {
             drawColors()
         }
     }
     
     @IBInspectable
-    open var shouldFillContainer: Bool = false{
-        didSet{
+    open var shouldFillContainer: Bool = false {
+        didSet {
             drawColors()
         }
     }
     
     @IBInspectable
-    open var shouldAnimate: Bool = false{
-        didSet{
+    open var shouldAnimate: Bool = false {
+        didSet {
         }
     }
     
     @IBInspectable
-    open var isOn: Bool = false{
-        didSet{
+    open var isOn: Bool = false {
+        didSet {
             drawColors()
         }
     }
     
     @IBInspectable
-    open var isSquare: Bool = false{
-        didSet{
+    open var isSquare: Bool = false {
+        didSet {
             drawLayers()
         }
     }
     
     @IBInspectable
-    open var isRadiobox: Bool = false{
-        didSet{
+    open var isRadiobox: Bool = false {
+        didSet {
             drawLayers()
         }
     }
     
     @IBInspectable
-    open var isCircular: Bool = false{
-        didSet{
+    open var isCircular: Bool = false {
+        didSet {
             drawLayers()
         }
     }
@@ -87,7 +87,7 @@ class GDCheckbox: UIControl {
     fileprivate var containerLayer = CAShapeLayer()
     fileprivate var checkLayer = CAShapeLayer()
     
-    fileprivate var containerFrame: CGRect{
+    fileprivate var containerFrame: CGRect {
         let width = bounds.width
         let height = bounds.height
         
@@ -96,7 +96,7 @@ class GDCheckbox: UIControl {
         
         let eqLength: CGFloat
         
-        if width > height{
+        if width > height {
             eqLength = height
             x = (width - eqLength) / 2
             y = 0
@@ -172,10 +172,10 @@ class GDCheckbox: UIControl {
     fileprivate func drawColors() {
         containerLayer.strokeColor = containerColor.cgColor
         
-        if isOn{
+        if isOn {
             containerLayer.fillColor = shouldFillContainer ? containerColor.cgColor : UIColor.clear.cgColor
             
-            if shouldAnimate && !isRadiobox && !isSquare{
+            if shouldAnimate && !isRadiobox && !isSquare {
                 checkLayer.strokeColor = checkColor.cgColor
                 
                 let anim = CABasicAnimation(keyPath: "strokeEnd")
@@ -185,7 +185,7 @@ class GDCheckbox: UIControl {
                 
                 checkLayer.add(anim, forKey: "stroke")
             } else {
-                if isSquare{
+                if isSquare{ 
                     checkLayer.fillColor = checkColor.cgColor
                 } else if isRadiobox {
                     checkLayer.fillColor = checkColor.cgColor
@@ -195,7 +195,7 @@ class GDCheckbox: UIControl {
             }
         } else {
             containerLayer.fillColor = UIColor.clear.cgColor
-            if isSquare{
+            if isSquare {
                 checkLayer.fillColor = UIColor.clear.cgColor
             } else if isRadiobox {
                 checkLayer.fillColor = UIColor.clear.cgColor

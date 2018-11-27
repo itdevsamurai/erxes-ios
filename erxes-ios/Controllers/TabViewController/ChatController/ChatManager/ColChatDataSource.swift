@@ -2,8 +2,8 @@
 //  ColChatDataSource.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/8/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/8/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -38,7 +38,7 @@ class ChatManager:NSObject {
     }
     
     func queryMessages() {
-        if conversationId == nil{
+        if conversationId == nil {
             return
         }
         
@@ -56,8 +56,7 @@ class ChatManager:NSObject {
                 alert.show(animated: true)
             }
             if let allMessages = result?.data?.conversationDetail {
-                let messagesArray = (allMessages.messages?.map {($0?.fragments.messageDetail)!})!
-                self?.delegate?.onChatUpdate(messagesArray)
+                self?.delegate?.onChatUpdate(allMessages)
             }
         }
     }

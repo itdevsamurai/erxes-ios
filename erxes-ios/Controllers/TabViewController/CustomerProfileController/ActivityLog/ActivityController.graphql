@@ -15,7 +15,7 @@ query activityLogsCompany($_id: String!) {
 
 
 
-fragment LogData on ActivityLogForMonth{
+fragment LogData on ActivityLogForMonth {
     date {
         year
         month

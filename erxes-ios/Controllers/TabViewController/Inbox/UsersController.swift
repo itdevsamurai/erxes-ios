@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/19/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -22,13 +22,13 @@ class UsersController: UIViewController {
     weak var delegate: UserControllerDelegate?
     var isSearching = Bool()
     var users = [UserData]() {
-        didSet{
+        didSet {
             tableView.reloadData()
         }
     }
     
     var filtered = [UserData]() {
-        didSet{
+        didSet {
             tableView.reloadData()
         }
     }
@@ -178,7 +178,7 @@ extension UsersController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         var user:UserData?
-        if isSearching{
+        if isSearching {
           user = filtered[indexPath.row]
         } else {
             user = users[indexPath.row]

@@ -2,8 +2,8 @@
 //  ChatControllerUI.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/8/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/8/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -13,19 +13,20 @@ class ChatControllerUI:ViewController {
     
     let MARGIN_RIGHT:CGFloat = 16
     let MARGIN_LEFT:CGFloat = 16
-    var btnAttachment = UIButton()
-    var btnCamera = UIButton()
-    var label = UILabel()
-    var btnInternalNote = UIButton()
+    let btnAttachment = UIButton(type: .custom)
+    let btnCamera = UIButton(type: .custom)
+    let label = UILabel()
+    let btnInternalNote = UIButton(type: .custom)
+    let btnTemplate = UIButton(type: .custom)
     
-    var container:UIView = {
+    let container:UIView = {
         let view = UIView()
         view.clipsToBounds = true
         view.backgroundColor = .white
         return view
     }()
     
-    var userView:UITableView = {
+    let userView:UITableView = {
         let tv = UITableView()
         tv.isHidden = true
         tv.separatorColor = .lightGray
@@ -33,7 +34,7 @@ class ChatControllerUI:ViewController {
         return tv
     }()
     
-    var chatView: UICollectionView = {
+    let chatView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         //        layout.sectionInset = UIEdgeInsets(top:0,left:0,bottom:0,right:0)
         layout.scrollDirection = .vertical
@@ -48,7 +49,7 @@ class ChatControllerUI:ViewController {
         return view
     }()
     
-    var btnSend:UIButton = {
+    let btnSend:UIButton = {
         let btn = UIButton(type: .custom)
         btn.frame = CGRect(x: 0, y: 0, width: 36, height: 26)
         btn.setImage(#imageLiteral(resourceName: "btn_send"), for: .normal)
@@ -56,7 +57,7 @@ class ChatControllerUI:ViewController {
         return btn
     }()
     
-    var chatInputView: UITextField = {
+    let chatInputView: UITextField = {
         let textfield = UITextField()
         textfield.backgroundColor = UIColor(hexString: "#f4f4f4")
         textfield.layer.cornerRadius = 18.0
@@ -76,7 +77,7 @@ class ChatControllerUI:ViewController {
         return textfield
     }()
     
-    var inputContainer:UIView = {
+    let inputContainer:UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
@@ -101,7 +102,7 @@ class ChatControllerUI:ViewController {
         self.view.backgroundColor = .white
         
         let rightItem: UIBarButtonItem = {
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             let barButtomItem = UIBarButtonItem()
             button.setBackgroundImage(UIImage.erxes(with: .target1, textColor: .white), for: .normal)
             button.tintColor = .white
@@ -143,19 +144,16 @@ class ChatControllerUI:ViewController {
     }
     
     func prepareChatInput() {
-        btnAttachment = UIButton(type: .custom)
         btnAttachment.setImage(UIImage.erxes(with: .attach, textColor: UIColor(hexString: "#999999")!), for: .normal)
         btnAttachment.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         btnAttachment.imageView?.contentMode = .scaleAspectFit
         //        btnAttachment.addTarget(self, action: #selector(openImagePicker), for: .touchUpInside)
-        
-        btnCamera = UIButton(type: .custom)
+
         btnCamera.setImage(UIImage.erxes(with: .photocamera, textColor: UIColor(hexString: "#999999")!), for: .normal)
         btnCamera.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
         btnCamera.imageView?.contentMode = .scaleAspectFit
         //        btnCamera.addTarget(self, action: #selector(launchCamera), for: .touchUpInside)
-        
-        btnInternalNote = UIButton(type: .custom)
+
         btnInternalNote.setImage(#imageLiteral(resourceName: "tick"), for: .normal)
         btnInternalNote.setImage(#imageLiteral(resourceName: "ticked"), for: .selected)
         btnAttachment.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
@@ -166,11 +164,17 @@ class ChatControllerUI:ViewController {
         label.textColor = UIColor(hexString: "#a9a9a9", alpha: 0.57)
         label.font = Font.regular(12)
         
+        
+        btnTemplate.setImage(UIImage.erxes(with: .upload2, textColor: UIColor(hexString: "#999999")!), for: .normal)
+        btnTemplate.frame = CGRect(x: 40, y: 0, width: 40, height: 40)
+        btnTemplate.imageView?.contentMode = .scaleAspectFit
+        
         inputContainer.addSubview(chatInputView)
         inputContainer.addSubview(btnAttachment)
         inputContainer.addSubview(btnCamera)
         inputContainer.addSubview(label)
         inputContainer.addSubview(btnInternalNote)
+        inputContainer.addSubview(btnTemplate)
     }
     
     func layoutChatInput() {
@@ -187,15 +191,21 @@ class ChatControllerUI:ViewController {
             make.height.width.equalTo(40)
         }
         
-        btnCamera.snp.makeConstraints{ (make) in
+        btnCamera.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview()
             make.left.equalTo(btnAttachment.snp.right).offset(12)
             make.height.width.equalTo(40)
         }
         
-        btnInternalNote.snp.makeConstraints { (make) in
+        btnTemplate.snp.makeConstraints { (make) in
             make.bottom.equalToSuperview()
             make.left.equalTo(btnCamera.snp.right).offset(12)
+            make.height.width.equalTo(40)
+        }
+        
+        btnInternalNote.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.left.equalTo(btnTemplate.snp.right).offset(12)
             make.height.width.equalTo(40)
         }
         

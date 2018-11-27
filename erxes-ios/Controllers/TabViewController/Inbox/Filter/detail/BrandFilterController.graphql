@@ -5,7 +5,7 @@ query Brands {
     }
 }
 
-fragment BrandDetail on Brand{
+fragment BrandDetail on Brand {
     _id
     name
     

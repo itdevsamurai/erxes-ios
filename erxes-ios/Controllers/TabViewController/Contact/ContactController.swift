@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/13/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -27,7 +27,6 @@ public struct ContactFilterOptions {
 
 class ContactController: UIViewController {
 
-    
     var searchField:UITextField = {
        let field = UITextField(frame: CGRect(x: 16, y: 5, width: Constants.SCREEN_WIDTH-32, height: 30))
         field.layer.cornerRadius = 6
@@ -72,6 +71,10 @@ class ContactController: UIViewController {
     var isCustomer: Bool = true
     var customersLimit = 20
     var companiesLimit = 20
+    
+    var loading = false
+    var hasNextPage = false
+    
     var customers = [CustomerList]() {
         didSet {
             tableView.reloadData()
@@ -86,24 +89,23 @@ class ContactController: UIViewController {
 
 
     var customerAddButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         let image = UIImage.erxes(with: .adduser, textColor: .white)
         button.setBackgroundImage(image, for: .normal)
         button.tintColor = UIColor.white
         button.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+        button.contentMode = .scaleAspectFit
         return button
     }()
 
     var companyAddButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         let image = #imageLiteral(resourceName: "ic_addCompany")
         button.setBackgroundImage(image, for: .normal)
         button.tintColor = UIColor.white
         button.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
         return button
     }()
-
-
 
     var segmentedControl: UISegmentedControl = {
         let items = ["Customer", "Company"]
@@ -120,7 +122,6 @@ class ContactController: UIViewController {
         control.setTitleTextAttributes(attributes, for: .normal)
         control.setTitleTextAttributes(attributes, for: .selected)
         control.selectedSegmentIndex = 0
-
 
         return control
     }()
@@ -148,9 +149,9 @@ class ContactController: UIViewController {
     
     func showActionSheet(indexPath:IndexPath) {
         let actionSheet = UIAlertController(title: "Connect to customer", message: "Please select connection method", preferredStyle: .actionSheet)
-        if isCustomer{
+        if isCustomer {
             let customer = self.customers[indexPath.row]
-            if !customer.primaryPhone.isNullOrEmpty{
+            if !customer.primaryPhone.isNullOrEmpty {
                 
                 actionSheet.addAction(UIAlertAction(title: "Make a phone call", style: .default, handler: { (action) in
                  
@@ -169,7 +170,7 @@ class ContactController: UIViewController {
             if customer.conversations?.count != 0 {
                 actionSheet.addAction(UIAlertAction(title: "Go to conversation", style: .default, handler: { (action) in
                     self.dismiss(animated: true, completion: nil)
-                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: "", customerId: customer.id))
+                    self.navigate(.chat(withId: (customer.conversations![0]?.id)!, title: ""))
                 }))
             }
             
@@ -209,7 +210,7 @@ class ContactController: UIViewController {
             isCustomer = true
             customerAddButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
             leftItem.customView = customerAddButton
-            if self.customers.count == 0{
+            if self.customers.count == 0 {
                 self.getCustomers()
             }
         } else {
@@ -224,7 +225,6 @@ class ContactController: UIViewController {
         self.tableView.reloadData()
     }
 
-
     func configureViews() {
 
         let rightItem: UIBarButtonItem = {
@@ -232,7 +232,8 @@ class ContactController: UIViewController {
 
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+            button.contentMode = .scaleAspectFit
             button.setBackgroundImage(rightImage, for: .normal)
             button.tintColor = UIColor.white
             button.addTarget(self, action: #selector(navigateFilter), for: .touchUpInside)
@@ -245,7 +246,6 @@ class ContactController: UIViewController {
             barButtonItem.customView = self.customerAddButton
             return barButtonItem
         }()
-
 
         self.navigationItem.leftBarButtonItem = leftItem
         self.navigationItem.rightBarButtonItem = rightItem
@@ -271,8 +271,6 @@ class ContactController: UIViewController {
     func isEditing() {
 
     }
-
-
 
     @objc func changeEditMode(sender: UIButton) {
         sender.isSelected = !sender.isSelected
@@ -325,12 +323,10 @@ class ContactController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
 
         tableView.snp.makeConstraints { (make) in
 //            make.left.equalTo(self.view.snp.left).offset(16)
@@ -340,86 +336,6 @@ class ContactController: UIViewController {
             make.bottom.equalTo(self.bottomLayoutGuide.snp.top)
         }
 
-
-
-    }
-
-    func getCompanies(limit: Int = 20) {
-
-            let query = CompaniesQuery()
-        
-        if options != nil {
-            query.segment = options?.segment?.id
-            query.tag = options?.tag?.id
-            query.brand = options?.brand?.id
-            query.leadStatus = options?.lead
-            query.lifecycleState = options?.lifeCycle
-        }
-            query.searchValue = searchField.text
-            query.perPage = limit
-            appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                    let alert = FailureAlert(message: error.localizedDescription)
-                    alert.show(animated: true)
-                    return
-                }
-
-                if let err = result?.errors {
-                    let alert = FailureAlert(message: err[0].localizedDescription)
-                    alert.show(animated: true)
-                }
-
-                if result?.data != nil {
-                    if let allCompanies = result?.data?.companies {
-                        self?.companies = allCompanies.map { ($0?.fragments.companyList)! }
-                    }
-                }
-            }
-        
-    }
-
-    func getCustomers(limit: Int = 20) {
-        
-            let query = CustomersQuery()
-        if options != nil {
-            query.segment = options?.segment?.id
-            query.tag = options?.tag?.id
-            query.brand = options?.brand?.id
-            query.form = options?.form?.id
-            query.leadStatus = options?.lead
-            query.lifecycleState = options?.lifeCycle
-            query.integration = options?.integrationType
-        }
-            query.searchValue = searchField.text
-            query.perPage = limit
-            appnet.fetch(query: query, cachePolicy: .fetchIgnoringCacheData) { [weak self] result, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                    let alert = FailureAlert(message: error.localizedDescription)
-                    alert.show(animated: true)
-//                self?.hideLoader()
-
-                    return
-                }
-
-                if let err = result?.errors {
-                    let alert = FailureAlert(message: err[0].localizedDescription)
-                    alert.show(animated: true)
-//                self?.hideLoader()
-
-                }
-
-                if result?.data != nil {
-                    if let allCustomers = result?.data?.customers {
-                        self?.customers = allCustomers.map { ($0!.fragments.customerList) }
-                        print(self?.customers.count)
-
-
-                    }
-                }
-            }
-        
     }
 
     func deleteCustomer(index: Int) {
@@ -450,6 +366,7 @@ class ContactController: UIViewController {
 }
 
 extension ContactController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "ContactCell", for: indexPath) as? ContactCell
         if cell == nil {
@@ -475,8 +392,6 @@ extension ContactController: UITableViewDelegate {
                 fullName = "Unnamed"
             }
 
-
-
             if !customer.primaryEmail.isNullOrEmpty && !customer.primaryPhone.isNullOrEmpty {
                 contactInfo = customer.primaryEmail!
             } else if !customer.primaryPhone.isNullOrEmpty && customer.primaryEmail.isNullOrEmpty {
@@ -491,7 +406,6 @@ extension ContactController: UITableViewDelegate {
                 }
             }
 
-
             cell?.topLabel.text = fullName
             cell?.bottomLabel.text = contactInfo
             if customerTags.count != 0 {
@@ -505,7 +419,11 @@ extension ContactController: UITableViewDelegate {
             }
 
             if fullName != "Unnamed" {
-                cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
+                if let avatar = customer.avatar {
+                    cell?.icon.sd_setImage(with: URL(string: avatar))
+                } else {
+                    cell?.icon.setImageWithString(text: fullName.uppercased(), backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
+                }
             }
 
             } else {
@@ -517,89 +435,90 @@ extension ContactController: UITableViewDelegate {
                 if company.plan != nil {
                     cell?.bottomLabel.text = company.plan
                 }
-                cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
-            }
-
-            return cell!
-        }
-
-        func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//            if editingStyle == .delete {
-//                if isCustomer {
-//                    deleteCustomer(index: indexPath.row)
-//                } else {
-//                    deleteCompany(index: indexPath.row)
-//                }
-//            }
-        }
-
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            if isCustomer {
-                let customer = customers[indexPath.row]
-//                navigate(.customerProfile(_id: customer.id))
-                var name = "N/A"
-                if !customer.firstName.isNullOrEmpty && !customer.lastName.isNullOrEmpty {
-                    name = customer.firstName!
-                } else if customer.firstName.isNullOrEmpty && !customer.lastName.isNullOrEmpty {
-                    name = customer.lastName!
-                } else if !customer.firstName.isNullOrEmpty && customer.lastName.isNullOrEmpty {
-                    name = customer.firstName!
-                }
-                var email = ""
-                if !customer.primaryEmail.isNullOrEmpty {
-                    email = customer.primaryEmail!
-                }
-
-                navigate(.contactDetail(id: customer.id, name: name, isCompany: false))
-            } else {
-                let company = companies[indexPath.row]
-               
-                navigate(.contactDetail(id: company.id, name: company.primaryName!, isCompany: true))
-            }
-
-        }
-    }
-
-    extension ContactController: UITableViewDataSource {
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            if isCustomer {
-                return customers.count
-            } else {
-                return companies.count
-            }
-        }
-
-        func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-            //        self.timer.invalidate()
-            let currentOffset = scrollView.contentOffset.y
-            let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-            print(maximumOffset - currentOffset)
-            if maximumOffset - currentOffset < 0.0 {
-                print("FETCHING")
-                if isCustomer {
-                    customersLimit = customersLimit + 20
-                    self.getCustomers(limit: customersLimit)
+                if let avatar = company.avatar {
+                    cell?.icon.sd_setImage(with: URL(string: avatar))
                 } else {
-                    companiesLimit = companiesLimit + 20
-                    self.getCompanies(limit: companiesLimit)
+                    cell?.icon.setImageWithString(text: (company.primaryName?.uppercased())!, backGroundColor: .ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light(14)])
                 }
+            
+            }
+        
+//        if last row run pagination
+        var count = 0
+        if isCustomer {
+            count = customers.count
+        } else {
+            count = companies.count
+        }
+        
+        if hasNextPage, count == (indexPath.row + 1) {
+            if isCustomer {
+                customersLimit = customersLimit + 20
+                self.getCustomers(limit: customersLimit)
+            } else {
+                companiesLimit = companiesLimit + 20
+                self.getCompanies(limit: companiesLimit)
             }
         }
         
-
-        
-        func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            self.view.endEditing(true)
-            let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
-            if offsetY > 0 {
-                let height:CGFloat = 44
-                searchBackGround.frame.size.height = height + offsetY
-            }
-        }
-   
+        return cell!
     }
 
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        //            if editingStyle == .delete {
+        //                if isCustomer {
+        //                    deleteCustomer(index: indexPath.row)
+        //                } else {
+        //                    deleteCompany(index: indexPath.row)
+        //                }
+        //            }
+    }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isCustomer {
+            let customer = customers[indexPath.row]
+            //                navigate(.customerProfile(_id: customer.id))
+            var name = "N/A"
+            if !customer.firstName.isNullOrEmpty && !customer.lastName.isNullOrEmpty {
+                name = customer.firstName!
+            } else if customer.firstName.isNullOrEmpty && !customer.lastName.isNullOrEmpty {
+                name = customer.lastName!
+            } else if !customer.firstName.isNullOrEmpty && customer.lastName.isNullOrEmpty {
+                name = customer.firstName!
+            }
+            var email = ""
+            if !customer.primaryEmail.isNullOrEmpty {
+                email = customer.primaryEmail!
+            }
+            
+            navigate(.contactDetail(id: customer.id, name: name, isCompany: false))
+        } else {
+            let company = companies[indexPath.row]
+            
+            navigate(.contactDetail(id: company.id, name: company.primaryName!, isCompany: true))
+        }
+    }
+}
+
+extension ContactController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isCustomer {
+            return customers.count
+        } else {
+            return companies.count
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+        let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top)
+        if offsetY > 0 {
+            let height:CGFloat = 44
+            searchBackGround.frame.size.height = height + offsetY
+        }
+    }
+}
 
 extension ContactController: ContactFilterDelegate {
     func passFilterOptions(options: ContactFilterOptions) {
@@ -622,55 +541,5 @@ extension ContactController: UITextFieldDelegate {
             self.getCompanies()
         }
         return true
-    }
-}
-
-
-extension UISegmentedControl {
-    func removeBorder() {
-        let backgroundImage = UIImage.getColoredRectImageWith(color: UIColor.ERXES_COLOR.cgColor, andSize: self.bounds.size)
-        self.setBackgroundImage(backgroundImage, for: .normal, barMetrics: .default)
-        self.setBackgroundImage(backgroundImage, for: .selected, barMetrics: .default)
-        self.setBackgroundImage(backgroundImage, for: .highlighted, barMetrics: .default)
-        
-        let deviderImage = UIImage.getColoredRectImageWith(color: UIColor.ERXES_COLOR.cgColor, andSize: CGSize(width: 1.0, height: self.bounds.size.height))
-        self.setDividerImage(deviderImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
-//        self.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.gray], for: .normal)
-//        self.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(red: 67/255, green: 129/255, blue: 244/255, alpha: 1.0)], for: .selected)
-    }
-    
-    func addUnderlineForSelectedSegment() {
-        removeBorder()
-        let underlineWidth: CGFloat = self.bounds.size.width / CGFloat(self.numberOfSegments)
-        let underlineHeight: CGFloat = 2.0
-        let underlineXPosition = CGFloat(selectedSegmentIndex * Int(underlineWidth))
-        let underLineYPosition = self.bounds.size.height - 1.0
-        let underlineFrame = CGRect(x: underlineXPosition, y: underLineYPosition, width: underlineWidth, height: underlineHeight)
-        let underline = UIView(frame: underlineFrame)
-        underline.backgroundColor = .white
-        underline.tag = 1
-        self.addSubview(underline)
-    }
-    
-    func changeUnderlinePosition() {
-        guard let underline = self.viewWithTag(1) else {return}
-        let underlineFinalXPosition = (self.bounds.width / CGFloat(self.numberOfSegments)) * CGFloat(selectedSegmentIndex)
-        UIView.animate(withDuration: 0.1, animations: {
-            underline.frame.origin.x = underlineFinalXPosition
-        })
-    }
-}
-
-extension UIImage {
-    
-    class func getColoredRectImageWith(color: CGColor, andSize size: CGSize) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-        let graphicsContext = UIGraphicsGetCurrentContext()
-        graphicsContext?.setFillColor(color)
-        let rectangle = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
-        graphicsContext?.fill(rectangle)
-        let rectangleImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return rectangleImage!
     }
 }

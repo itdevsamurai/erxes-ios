@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Purev-Yondon on 10/9/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -16,7 +16,7 @@ extension ChatManager: LiveGQLDelegate {
     }
     
     public func receivedRawMessage(text: String) {
-        do{
+        do {
             print(text)
             if let dataFromString = text.data(using: .utf8, allowLossyConversion: false) {
                 
@@ -48,7 +48,7 @@ extension ChatManager: LiveGQLDelegate {
                 delegate?.onMessageRecieve(message: message)
             }
         }
-        catch{
+        catch {
             print(error)
         }
     }

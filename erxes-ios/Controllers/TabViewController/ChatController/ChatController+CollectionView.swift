@@ -2,8 +2,8 @@
 //  ChatController+TableView.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/8/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/8/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -42,6 +42,7 @@ extension ChatController:UICollectionViewDataSource {
         let cell = chatView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         
         if let cell = cell as? ChatBaseCell {
+            cell.customer = customer
             cell.viewModel = messages[indexPath.row]
         }
         

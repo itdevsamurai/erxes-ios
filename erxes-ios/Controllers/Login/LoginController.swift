@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by soyombo bat-erdene on 4/6/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -73,7 +73,7 @@ class LoginController: LoginControllerUI {
         if emailField.validate(type: .email) && passwordField.validate(type: .password) {
             isLogin = true
             self.view.endEditing(true)
-//            mutateLogin(email: emailField.text!, password: passwordField.text!)
+            mutateLogin(email: emailField.text!, password: passwordField.text!)
 
         } else if !passwordField.validate(type: .password) {
             passwordField.becomeFirstResponder()
@@ -207,7 +207,7 @@ class LoginController: LoginControllerUI {
                 make.top.equalTo(self.view.snp.top).offset(98)
             }
             self.view.layoutIfNeeded()
-            if self.isLogin{
+            if self.isLogin {
                 self.perform(#selector(self.signIn), with: nil, afterDelay: duration)
             }
         })

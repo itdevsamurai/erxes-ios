@@ -2,8 +2,8 @@
 //  String.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/16/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/16/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -53,6 +53,9 @@ extension String {
         }
         
         if let lastCharacter = words.last?.first {
+            if finalString.count > 0 {
+                finalString = finalString + "."
+            }
             finalString.append(String(lastCharacter))
         }
         

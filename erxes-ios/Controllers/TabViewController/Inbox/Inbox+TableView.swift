@@ -2,8 +2,8 @@
 //  Inbox+TableView.swift
 //  erxes-ios
 //
-//  Created by alternate on 9/18/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 9/18/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
@@ -48,7 +48,7 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
             
             cell?.desc.text = desc
             
-            if conversation.readUserIds?.count == 0 {
+            if !(conversation.readUserIds?.contains(ErxesUser.sharedUserInfo()._id) ?? false) {
                 cell?.message.textColor = .black
             } else {
                 cell?.message.textColor = UIColor(hexString: "#232323", alpha:0.5)
@@ -100,7 +100,6 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
     func setConversationUsername(_ item:ObjectDetail,cell:ErxesInboxCell) {
         
         var username = ""
-        
         guard let customer = item.customer else {
             return
         }
@@ -112,7 +111,10 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         username = username + (customer.lastName ?? "")
         
         if username.count > 0 {
-            if customer.isUser ?? false {
+            
+            if let avatar = customer.avatar {
+                cell.avatar.sd_setImage(with: URL(string: avatar))
+            } else if customer.isUser ?? false {
                 cell.avatar.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
             } else {
                 cell.avatar.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
@@ -136,18 +138,30 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
+//        if lastPage || loading {
+//            return
+//        }
+//
+//        let currentOffset = scrollView.contentOffset.y
+//        let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+//
+//        if maximumOffset - currentOffset <= 0.0 {
+//            conversationLimit = conversationLimit + 20
+//            self.getInbox(limit: conversationLimit)
+//        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if lastPage || loading {
             return
         }
         
-        //        self.timer.invalidate()
         let currentOffset = scrollView.contentOffset.y
         let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-
+        
         if maximumOffset - currentOffset <= 0.0 {
             conversationLimit = conversationLimit + 20
             self.getInbox(limit: conversationLimit)
-            //             self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(inboxTimer(sender:)), userInfo: self.conversationLimit, repeats: true)
         }
     }
     
@@ -190,9 +204,9 @@ extension InboxController: UITableViewDelegate, UITableViewDataSource {
         popBack = true
         let conversation = conversations[indexPath.row]
         if let brand = conversation.integration?.brand {
-            navigate(.chat(withId: conversation.id, title: brand.name!, customerId: (conversation.customer?.id)!))
+            navigate(.chat(withId: conversation.id, title: brand.name!))
         } else {
-            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!, customerId: (conversation.customer?.id)!))
+            navigate(.chat(withId: conversation.id, title: (conversation.integration?.kind)!))
         }
     }
 }

@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -11,9 +11,9 @@ import UIKit
 class ProfileView: UIView {
 
     var user = ErxesUser() {
-        didSet{
+        didSet {
        
-            for v in self.subviews{
+            for v in self.subviews {
                 v.removeFromSuperview()
             }
             self.initialize(user: user,style: .type1)

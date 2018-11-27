@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 6/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -21,8 +21,8 @@ class CustomerProfileController: FormViewController {
     var customerId: String?
     var messagesCount = 0
     
-    var customer:CustomerInfo?{
-        didSet{
+    var customer:CustomerInfo? {
+        didSet {
             self.buildForm(customer: customer)
         }
     }
@@ -676,7 +676,7 @@ class CustomerProfileController: FormViewController {
             rightImage = rightImage.withRenderingMode(.alwaysTemplate)
             saveImage = saveImage.withRenderingMode(.alwaysTemplate)
             let barButtomItem = UIBarButtonItem()
-            let button = UIButton()
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             button.setBackgroundImage(rightImage, for: .normal)
             button.setBackgroundImage(saveImage, for: .selected)
             button.addTarget(self, action: #selector(editAction(sender:)), for: .touchUpInside)
@@ -825,7 +825,7 @@ class CustomerProfileController: FormViewController {
         
         let url = Constants.URL_UPLOAD
         
-        if let imgData = UIImage.resize(image) as? Data{
+        if let imgData = UIImage.resize(image) as? Data {
             size = imgData.count
             let bcf = ByteCountFormatter()
             bcf.allowedUnits = [.useKB]
@@ -856,7 +856,7 @@ class CustomerProfileController: FormViewController {
         
         upload.responseString { response in
             print(response)
-            if let remoteUrl = response.value{
+            if let remoteUrl = response.value {
                 self.avatarUrl = remoteUrl
             }
         }

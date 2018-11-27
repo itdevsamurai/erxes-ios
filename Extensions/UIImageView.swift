@@ -2,20 +2,40 @@
 //  UIImageView.swift
 //  erxes-ios
 //
-//  Created by alternate on 10/16/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Created by Purev-Yondon on 10/16/18.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
 extension UIImageView {
+    
+    func setAvatarOfCustomer(customer:EModel) {
+        
+        if let avatar = customer["avatar"] as? String {
+            self.sd_setImage(with: URL(string: avatar), placeholderImage:#imageLiteral(resourceName: "ic_avatar"))
+            return
+        }
+        
+        let username = Cust.username(customer)
+        if username.count > 0 {
+            if customer["isUser"] as? Bool ?? false {
+                DispatchQueue.main.async {
+                    self.setImageWithString(text: username, backGroundColor: UIColor(red: 96 / 255, green: 210 / 255, blue: 214 / 255, alpha: 1.0), attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+                }
+            } else {
+                self.setImageWithString(text: username, backGroundColor: UIColor.ERXES_COLOR, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: Font.light()])
+            }
+        } else {
+            self.image = #imageLiteral(resourceName: "ic_avatar")
+        }
+    }
+    
     func setImageWithString(text: String, backGroundColor: UIColor, attributes: [NSAttributedStringKey: Any]) {
         
         let displayString: NSMutableString = NSMutableString(string: "")
         displayString.append(text.initials)
-        
-        
         
         let scale: Float = Float(UIScreen.main.scale)
         var size: CGSize = self.bounds.size
@@ -29,6 +49,9 @@ extension UIImageView {
             size.height = CGFloat(floorf(Float(size.height) * scale) / scale)
         }
         
+//        if let context = UIGraphicsGetCurrentContext() {
+//            UIGraphicsEndImageContext()
+//        }
         
         UIGraphicsBeginImageContextWithOptions(size, false, CGFloat(scale))
         guard let context = UIGraphicsGetCurrentContext() else {
@@ -41,7 +64,6 @@ extension UIImageView {
         
         context.addPath(path)
         
-        
         context.clip()
         context.setFillColor(backGroundColor.cgColor)
         context.fill(CGRect(x: 0, y: 0, width: size.width, height: size.height));
@@ -51,9 +73,7 @@ extension UIImageView {
         
         displayString.draw(in: CGRect(x: bounds.size.width / 2 - textSize.width / 2, y: bounds.size.height / 2 - textSize.height / 2, width: textSize.width, height: textSize.height), withAttributes: attributes)
         
-        
         let image = UIGraphicsGetImageFromCurrentImageContext()
-        
         self.image = image
     }
 }

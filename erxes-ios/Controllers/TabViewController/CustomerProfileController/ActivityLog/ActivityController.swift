@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 10/10/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -13,7 +13,7 @@ class ActivityController: UIViewController {
     var contactId = String()
     var contactName = String()
     var logs = [LogData]() {
-        didSet{
+        didSet {
             tableView.reloadData()
         }
     }
@@ -70,7 +70,7 @@ extension ActivityController: UITableViewDelegate {
         let data = logs[indexPath.section].list[indexPath.row]
        
         if data?.action == "conversation-create" {
-            self.navigate(.chat(withId: (data?.id)!, title: "", customerId: self.contactId))
+            self.navigate(.chat(withId: (data?.id)!, title: ""))
         }
         
     }
