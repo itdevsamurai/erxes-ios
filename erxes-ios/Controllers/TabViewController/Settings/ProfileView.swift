@@ -37,7 +37,7 @@ class ProfileView: UIView {
         case .type2:
             self.backgroundColor = .white
         }
-        
+        self.user = user
         self.initialize(user: user,style: style)
     }
     
