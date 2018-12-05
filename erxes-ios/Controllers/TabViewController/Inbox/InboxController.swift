@@ -36,7 +36,6 @@ class InboxController: InboxControllerUI {
     var timer: Timer!
     var topOffset: CGFloat = 0.0
     var conversationLimit = 20
-    var loading = false
     var lastPage = false
     var popBack = false
     

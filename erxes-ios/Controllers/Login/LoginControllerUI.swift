@@ -217,9 +217,12 @@ class LoginControllerUI:ViewController {
         
         centerView.layer.addSublayer(outerCircle)
         
-        
-        animateAlongCircle(repeatCount: 1)
-        animateCircle()
+        if ErxesUser.isSignedIn {
+            animateAlongCircle(repeatCount: Float.infinity)
+        } else {
+            animateAlongCircle(repeatCount: 1)
+            animateCircle()
+        }
     }
     
     func animateCircle() {
@@ -329,8 +332,10 @@ class LoginControllerUI:ViewController {
 extension LoginControllerUI: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
         if anim.value(forKey: "id") as! String == "anim1" {
-            revealSubViews()
+            
+            if !ErxesUser.isSignedIn {
+                revealSubViews()
+            }
         }
-        
     }
 }
