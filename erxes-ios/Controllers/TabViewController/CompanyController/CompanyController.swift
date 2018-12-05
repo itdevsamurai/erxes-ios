@@ -62,6 +62,7 @@ class CompanyController: FormViewController {
         self.configureViews()
         self.getFields()
 
+        startLoader(root: tableView, offset: 60)
     }
 
 
@@ -649,6 +650,8 @@ class CompanyController: FormViewController {
             row.baseCell.isUserInteractionEnabled = false
 
         }
+        
+        stopLoader()
     }
 
 

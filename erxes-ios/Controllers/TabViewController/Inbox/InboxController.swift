@@ -56,22 +56,6 @@ class InboxController: InboxControllerUI {
         }
     }
 
-    var lastItem = [ObjectDetail]() {
-        didSet {
-            let index = lastItem[0].findIndex(from: self.conversations)
-      
-            self.conversations.remove(at: index)
-            self.conversations.insert(lastItem[0], at: 0)
-
-            let updateIndexPath1 = IndexPath(row: index, section: 0)
-            let updateIndexPath2 = IndexPath(row: 0, section: 0)
-
-            self.tableView.beginUpdates()
-            self.tableView.reloadRows(at: [updateIndexPath1, updateIndexPath2], with: UITableViewRowAnimation.fade)
-            self.tableView.endUpdates()
-        }
-    }
-
     var filterView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear

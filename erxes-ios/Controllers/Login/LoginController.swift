@@ -107,6 +107,7 @@ class LoginController: LoginControllerUI {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
                 self?.stopAnimation()
+                return
             }
             if result?.data != nil {
 

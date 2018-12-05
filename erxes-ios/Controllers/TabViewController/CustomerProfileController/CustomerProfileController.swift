@@ -11,6 +11,8 @@ import Apollo
 import Eureka
 import ImageRow
 import Alamofire
+import NVActivityIndicatorView
+
 class CustomerProfileController: FormViewController {
     
     var size = 0
@@ -32,11 +34,7 @@ class CustomerProfileController: FormViewController {
         }
     }
     
-    
-    
     var fieldGroups = [FieldGroup]()
-    
-    
     
     func isEdit() -> Bool {
         return self.customerId != nil
@@ -44,6 +42,9 @@ class CustomerProfileController: FormViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.register(CustomerProfileCell.self, forCellReuseIdentifier: "profile")
+        
         self.view.backgroundColor = .white
         self.form.removeAll()
         
@@ -52,10 +53,8 @@ class CustomerProfileController: FormViewController {
         self.configureViews()
         self.getFields()
         
+        startLoader(root: tableView, offset: 60)
     }
-    
-    
-    
     
     func getFields() {
         
@@ -531,6 +530,8 @@ class CustomerProfileController: FormViewController {
             
         }
         
+        stopLoader()
+        
     }
     
     
@@ -702,6 +703,9 @@ class CustomerProfileController: FormViewController {
             cell.textField.font = Font.light(14)
             cell.textLabel?.textColor = UIColor.TEXT_COLOR
             cell.textField.textColor = UIColor.TEXT_COLOR
+            cell.isSkeletonable = true
+            cell.textLabel?.isSkeletonable = true
+            cell.textField.isSkeletonable = true
         }
         
         LabelRow.defaultCellUpdate = { cell, row in
@@ -770,8 +774,6 @@ class CustomerProfileController: FormViewController {
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(self.topLayoutGuide.snp.bottom)
         }
-        
-        
     }
     
     convenience init(_id: String?) {
