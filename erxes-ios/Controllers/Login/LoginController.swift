@@ -15,10 +15,6 @@ import Apollo
 
 class LoginController: LoginControllerUI {
 
-    func configureViews() {
-        
-    }
-
     @objc func onCheckBoxPress(_ sender: UIButton) {
 
         if sender.isSelected {
@@ -30,6 +26,8 @@ class LoginController: LoginControllerUI {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        
     }
 
     override func viewDidLoad() {
@@ -39,14 +37,15 @@ class LoginController: LoginControllerUI {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleKeyboardDidHide(notification:)), name: .UIKeyboardDidHide, object: nil)
         self.view.backgroundColor = UIColor.white
         self.navigationController?.isNavigationBarHidden = true
-        configureViews()
         self.perform(#selector(drawCircleOfDots), with: nil, afterDelay: 1)
         
         signInButton.addTarget(self, action: #selector(loginAction(sender:)), for: .touchUpInside)
         emailField.delegate = self
         passwordField.delegate = self
         
-        checkAuthentication()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.checkAuthentication()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -62,6 +61,12 @@ class LoginController: LoginControllerUI {
     // MARK: Functions
 
     func checkAuthentication() {
+        
+        if loading {
+            return
+        }
+        loading = true
+        
         if ErxesUser.isSignedIn {
             isLogin = false
             mutateLogin(email: ErxesUser.storedEmail(), password: ErxesUser.storedPassword())
@@ -82,12 +87,14 @@ class LoginController: LoginControllerUI {
         } else {
             emailField.becomeFirstResponder()
         }
-
-
     }
 
     func mutateLogin(email: String, password: String) {
-        animateAlongCircle(repeatCount: Float.infinity)
+        
+        if !ErxesUser.isSignedIn {
+            animateAlongCircle(repeatCount: Float.infinity)
+        }
+        
         let apollo: ApolloClient = {
             let configuration = URLSessionConfiguration.default
             let url = URL(string: Constants.API_ENDPOINT)!
@@ -107,6 +114,7 @@ class LoginController: LoginControllerUI {
                 let alert = FailureAlert(message: err[0].localizedDescription)
                 alert.show(animated: true)
                 self?.stopAnimation()
+                return
             }
             if result?.data != nil {
 

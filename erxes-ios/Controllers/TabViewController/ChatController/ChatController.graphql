@@ -1,5 +1,5 @@
 
-mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[JSON], $internal:Boolean, $mentionedUserIds:[String]) {
+mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[AttachmentInput], $internal:Boolean, $mentionedUserIds:[String]) {
 conversationMessageAdd(conversationId:$conversationId,content:$content, attachments:$attachments, internal:$internal, mentionedUserIds:$mentionedUserIds) {
         _id
     }
@@ -31,7 +31,12 @@ fragment MessageDetail on ConversationMessage {
     
     _id
     content
-    attachments
+    attachments{
+        url
+        name
+        size
+        type
+    }
     formWidgetData
     conversationId
     customerId

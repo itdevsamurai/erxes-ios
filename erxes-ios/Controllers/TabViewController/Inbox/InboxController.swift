@@ -36,7 +36,6 @@ class InboxController: InboxControllerUI {
     var timer: Timer!
     var topOffset: CGFloat = 0.0
     var conversationLimit = 20
-    var loading = false
     var lastPage = false
     var popBack = false
     
@@ -53,22 +52,6 @@ class InboxController: InboxControllerUI {
     var conversations = [ObjectDetail]() {
         didSet {
 
-        }
-    }
-
-    var lastItem = [ObjectDetail]() {
-        didSet {
-            let index = lastItem[0].findIndex(from: self.conversations)
-      
-            self.conversations.remove(at: index)
-            self.conversations.insert(lastItem[0], at: 0)
-
-            let updateIndexPath1 = IndexPath(row: index, section: 0)
-            let updateIndexPath2 = IndexPath(row: 0, section: 0)
-
-            self.tableView.beginUpdates()
-            self.tableView.reloadRows(at: [updateIndexPath1, updateIndexPath2], with: UITableViewRowAnimation.fade)
-            self.tableView.endUpdates()
         }
     }
 
