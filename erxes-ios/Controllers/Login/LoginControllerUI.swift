@@ -219,6 +219,7 @@ class LoginControllerUI:ViewController {
         
         if ErxesUser.isSignedIn {
             animateAlongCircle(repeatCount: Float.infinity)
+            animateCircle()
         } else {
             animateAlongCircle(repeatCount: 1)
             animateCircle()

@@ -27,10 +27,11 @@ class ChatManager:NSObject {
     
     //attach properties
     var remoteUrl = ""
-    var uploaded = JSON()
-    var attachments = [JSON]()
+    var uploaded = AttachmentInput(url: "", name: "", type: "")
+    var attachments = [AttachmentInput]()
     var size = 0
     var isInternal = false
+    var lastId = ""
     
     override init() {
         super.init()
@@ -93,8 +94,14 @@ class ChatManager:NSObject {
                 print(error.localizedDescription)
                 return
             }
-            print(result)
-            self?.attachments = [JSON]()
+            
+            if let errors = result?.errors, errors.count > 0 {
+                print(errors)
+                return
+            }
+            
+            print("mutation " + (result?.data?.conversationMessageAdd?.id)!)
+            self?.attachments = [AttachmentInput]()
         }
     }
 }

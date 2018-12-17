@@ -49,10 +49,11 @@ extension ChatManager:FileUploader {
         upload.responseString { response in
             print(response)
             self.remoteUrl = response.value!
-            self.uploaded = ["url" : self.remoteUrl, "size" : self.size, "type" : "image/jpeg"]
+            self.uploaded = AttachmentInput(url: self.remoteUrl, name: "attachment.jpg", type: "image/jpeg", size: Double(exactly: self.size))
+//            self.uploaded = ["url" : self.remoteUrl, "size" : self.size, "type" : "image/jpeg"]
             //            self.uploadLoader.stopAnimating()
             //            self.uploadView.isHidden = false
-            self.attachments = [JSON]()
+            self.attachments = [AttachmentInput]()
             self.attachments.append(self.uploaded)
             self.mutateAddMessage(msg: "image", isInternal: false, mentions: [])
         }

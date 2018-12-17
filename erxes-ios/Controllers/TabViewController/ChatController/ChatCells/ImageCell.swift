@@ -44,7 +44,7 @@ class ImageCell: ChatBaseCell {
                 return
             }
             
-            if let url = attachment!["url"] as? String {
+            if let url = attachment?.url {
                 ivAttachment.sd_setImage(with: URL(string: url), placeholderImage:#imageLiteral(resourceName: "PlaceHolderImage"))
             }
         }
