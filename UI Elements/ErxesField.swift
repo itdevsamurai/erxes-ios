@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import IQKeyboardManagerSwift
 
 class ErxesField: UIView {
 
@@ -16,12 +16,15 @@ class ErxesField: UIView {
     var textField = UITextField()
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-
+        
+        print("inited")
+        
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = true
         let titlebg = UIView()
         titlebg.backgroundColor = UIColor.init(hexString: "ebebeb")
         self.addSubview(titlebg)
@@ -42,7 +45,7 @@ class ErxesField: UIView {
         textField.font = Font.regular(15)
         textField.borderStyle = .none
         textField.textColor = .black
-
+        
         self.addSubview(textField)
         
         titlebg.snp.makeConstraints { (make) in

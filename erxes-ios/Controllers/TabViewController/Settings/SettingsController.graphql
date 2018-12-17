@@ -43,3 +43,10 @@ mutation notificationsSaveConfig($notifType: String!, $isAllowed: Boolean) {
         
     }
 }
+
+
+query userEmailSignatures {
+    currentUser {
+        emailSignatures
+    }
+}

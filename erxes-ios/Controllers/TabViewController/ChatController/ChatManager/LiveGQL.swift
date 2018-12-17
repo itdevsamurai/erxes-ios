@@ -12,12 +12,12 @@ import LiveGQL
 extension ChatManager: LiveGQLDelegate {
     
     func subscribe() {
-        gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){_id,content,userId,createdAt,customerId,internal,user{_id,details{avatar}},attachments}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
+        gql.subscribe(graphql: "subscription{conversationMessageInserted(_id:\"\(self.conversationId!)\"){_id,content,userId,createdAt,customerId,internal,user{_id,details{avatar}},attachments{url,type,name,size}}}", variables: nil, operationName: nil, identifier: "conversationMessageInserted")
     }
     
     public func receivedRawMessage(text: String) {
         do {
-            print(text)
+//            print(text)
             if let dataFromString = text.data(using: .utf8, allowLossyConversion: false) {
                 
                 let result = try JSONDecoder().decode(MessageSubs.self, from: dataFromString)
@@ -25,6 +25,14 @@ extension ChatManager: LiveGQLDelegate {
                 guard let item = result.payload?.data?.conversationMessageInserted else {
                     return
                 }
+                
+                print("subs: " + item._id)
+                
+                
+                if lastId == item._id {
+                    return
+                }
+                lastId = item._id
                 
                 var message = MessageDetail(id:(item._id)!, content:item.content, userId:item.userId, createdAt: item.createdAt)
                 
@@ -34,13 +42,13 @@ extension ChatManager: LiveGQLDelegate {
                 }
                 
                 if item.attachments.count > 0, let attachment = item.attachments.first {
-                    var attachments = [JSON]()
-                    var file = JSON()
-                    file["url"] = attachment?.url
-                    file["type"] = attachment?.type
-                    file["size"] = attachment?.size
-                    attachments.append(file)
-                    message.attachments = attachments
+                    
+                    if let url = attachment?.url, let type = attachment?.type {
+                        var attachments = [MessageDetail.Attachment]()
+                        let file = MessageDetail.Attachment.init(url: url, name: "", size: 0, type: type)
+                        attachments.append(file)
+                        message.attachments = attachments
+                    }
                 }
                 
                 message.internal = item.internal

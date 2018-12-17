@@ -46,7 +46,6 @@
 		9B6202F720EC817A0094A87D /* String+SuggestionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */; };
 		9B6202F820EC817A0094A87D /* SuggestionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6202F120EC817A0094A87D /* SuggestionRow.swift */; };
 		9B80E79720E75A10008BA4BF /* CustomerProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */; };
-		9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */; };
 		9B82254420B7DE0300B7C16D /* SwiftHEXColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82254320B7DE0300B7C16D /* SwiftHEXColors.swift */; };
 		9B82254820B7EBAE00B7C16D /* DateFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82254720B7EBAE00B7C16D /* DateFilterController.swift */; };
 		9B94F41220DB309200313543 /* KCKeyboardImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B94F41120DB309200313543 /* KCKeyboardImagePickerController.swift */; };
@@ -121,6 +120,7 @@
 		B84C9B1C2175D79D00346324 /* Inbox+LiveGQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84C9B1B2175D79D00346324 /* Inbox+LiveGQL.swift */; };
 		B8600B8321917C2100384821 /* Locations.json in Resources */ = {isa = PBXBuildFile; fileRef = B8600B8221917C2100384821 /* Locations.json */; };
 		B8600B852192C87100384821 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8600B842192C87100384821 /* Utils.swift */; };
+		B866E97E21B7BF1B0038DDA0 /* UIViewController+Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B866E97D21B7BF1B0038DDA0 /* UIViewController+Loader.swift */; };
 		B86FE583213EDC3B00124BD3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE582213EDC3B00124BD3 /* BaseCell.swift */; };
 		B86FE585213EDC8100124BD3 /* SentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE584213EDC8100124BD3 /* SentCell.swift */; };
 		B86FE587213F837700124BD3 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86FE586213F837700124BD3 /* ImageCell.swift */; };
@@ -218,7 +218,6 @@
 		9B6202F020EC817A0094A87D /* String+SuggestionValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SuggestionValue.swift"; sourceTree = "<group>"; };
 		9B6202F120EC817A0094A87D /* SuggestionRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionRow.swift; sourceTree = "<group>"; };
 		9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerProfileController.swift; sourceTree = "<group>"; };
-		9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerProfileCell.swift; sourceTree = "<group>"; };
 		9B82254320B7DE0300B7C16D /* SwiftHEXColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftHEXColors.swift; sourceTree = "<group>"; };
 		9B82254720B7EBAE00B7C16D /* DateFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilterController.swift; sourceTree = "<group>"; };
 		9B94F41120DB309200313543 /* KCKeyboardImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCKeyboardImagePickerController.swift; sourceTree = "<group>"; };
@@ -292,6 +291,7 @@
 		B84C9B1B2175D79D00346324 /* Inbox+LiveGQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Inbox+LiveGQL.swift"; sourceTree = "<group>"; };
 		B8600B8221917C2100384821 /* Locations.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Locations.json; sourceTree = "<group>"; };
 		B8600B842192C87100384821 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		B866E97D21B7BF1B0038DDA0 /* UIViewController+Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Loader.swift"; sourceTree = "<group>"; };
 		B8698335212BD4370068B1FA /* Appnet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appnet.swift; sourceTree = "<group>"; };
 		B86FE582213EDC3B00124BD3 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		B86FE584213EDC8100124BD3 /* SentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentCell.swift; sourceTree = "<group>"; };
@@ -537,7 +537,6 @@
 				9B80E79620E75A10008BA4BF /* CustomerProfileController.swift */,
 				9B9F554C212EB4E60081EC89 /* Profile.json */,
 				9B008BAA20EA26B20054997E /* CustomerProfileController.graphql */,
-				9B80E79820E76CB5008BA4BF /* CustomerProfileCell.swift */,
 				9B6202E820EC60820094A87D /* CustomRow.swift */,
 				9B4AB585216F490800BDD33D /* ActivityLog */,
 			);
@@ -627,6 +626,7 @@
 			isa = PBXGroup;
 			children = (
 				B84C9AFF2175CA8700346324 /* UIViewController.swift */,
+				B866E97D21B7BF1B0038DDA0 /* UIViewController+Loader.swift */,
 				B84C9B012175CB2300346324 /* String.swift */,
 				B84C9B032175CB3300346324 /* Date.swift */,
 				B84C9B052175CB3E00346324 /* UIView.swift */,
@@ -951,12 +951,13 @@
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
 				"${BUILT_PRODUCTS_DIR}/LiveGQL/LiveGQL.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SKPhotoBrowser/SKPhotoBrowser.framework",
 				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
-				"${BUILT_PRODUCTS_DIR}/Shimmer/Shimmer.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/SkeletonView/SkeletonView.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
 			);
@@ -971,12 +972,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LiveGQL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SKPhotoBrowser.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Shimmer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SkeletonView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 			);
@@ -1029,6 +1031,7 @@
 				B84C9B102175CC7F00346324 /* UIImage.swift in Sources */,
 				9BDF360420D130C3004E3F44 /* ContactCell.swift in Sources */,
 				B88C31F5216C9B2300B7448E /* ChatManagerDelegate.swift in Sources */,
+				B866E97E21B7BF1B0038DDA0 /* UIViewController+Loader.swift in Sources */,
 				9B80E79720E75A10008BA4BF /* CustomerProfileController.swift in Sources */,
 				B84C9B082175CBA000346324 /* CustomScalar.swift in Sources */,
 				F5BEE327207760E10042DFC2 /* MyFormViewController.swift in Sources */,
@@ -1141,7 +1144,6 @@
 				B8F353A0219D5C3A001755E2 /* UISegmentedControl.swift in Sources */,
 				9B5CE65820D9088E003EDBF9 /* UserCell.swift in Sources */,
 				9B576F5120D3A62000E70269 /* ErxesLoader.swift in Sources */,
-				9B80E79920E76CB5008BA4BF /* CustomerProfileCell.swift in Sources */,
 				9BBADE35216E080F00B6F2D8 /* ConversationsController.swift in Sources */,
 				9B82254820B7EBAE00B7C16D /* DateFilterController.swift in Sources */,
 				9B6202F420EC817A0094A87D /* SuggestionTableCell.swift in Sources */,

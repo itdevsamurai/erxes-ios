@@ -23,7 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
+        IQKeyboardManager.shared.enableAutoToolbar = true
+        IQKeyboardManager.shared.toolbarTintColor = UIColor.ERXES_COLOR
+        
         let loginContoller = LoginController()
         let navigationController = NavigationController(rootViewController: loginContoller)
 //        let backImage = UIImage.erxes(with: .leftarrow, textColor: UIColor.white)

@@ -11,6 +11,8 @@ import UIKit
 
 class ViewController:UIViewController {
     
+    var loading = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareView()

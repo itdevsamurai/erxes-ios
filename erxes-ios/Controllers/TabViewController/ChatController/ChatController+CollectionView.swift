@@ -66,7 +66,7 @@ extension ChatController:UICollectionViewDataSource {
         if let attachments = message.attachments,attachments.count > 0 {
             
             for attachment in attachments {
-                if let url = attachment?["url"] as? String {
+                if let url = attachment?.url {
                     let photo = SKPhoto.photoWithImageURL(url)
                     photo.shouldCachePhotoURLImage = false
                     images.append(photo)
