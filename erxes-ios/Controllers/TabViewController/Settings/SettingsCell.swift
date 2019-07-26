@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import UIKit
 class SettingsCell: UITableViewCell {
 
     var iconType:ErxesFont! {
-        didSet{
+        didSet {
             self.imageView?.image = UIImage.erxes(with: iconType, textColor: .black,size: CGSize(width: 20, height: 20))
         }
     }
@@ -32,7 +32,7 @@ class SettingsCell: UITableViewCell {
         desc = UILabel()
         desc.textAlignment = .left
         desc.textColor = UIColor.black
-        desc.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        desc.font = Font.regular(15)
         contentView.addSubview(desc)
 
     }

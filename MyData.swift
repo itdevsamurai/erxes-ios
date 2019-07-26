@@ -3,31 +3,31 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/19/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
 struct MyData: Codable {
-    var customerId:String!
-    var type:String?
+    var _id:String!
+    var conversationId:String?
 
 }
 
-struct ConvSubsData: Codable{
-    var conversationsChanged:MyData?
+struct ConvSubsData: Codable {
+    var conversationClientMessageInserted:MyData?
 }
 
-struct ConvSubsPayload:Codable{
+struct ConvSubsPayload:Codable {
     var data:ConvSubsData?
 }
 
-struct ConvSubs:Codable{
+struct ConvSubs:Codable {
     var payload:ConvSubsPayload?
 }
 
-enum resultType {
+enum ResultType {
     case newMessage
     case open
     case closed

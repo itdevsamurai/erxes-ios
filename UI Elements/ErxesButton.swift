@@ -3,7 +3,7 @@
 //  Erxes.io
 //
 //  Created by soyombo bat-erdene on 2/20/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -19,7 +19,7 @@ class ErxesButton: UIButton {
     }
     required override init(frame: CGRect) {
         super.init(frame: frame)
-        self.titleLabel?.font = UIFont.fontWith(type: .light, size: 14)
+        self.titleLabel?.font = Font.light(14)
         self.layer.cornerRadius = 6
         self.addBorder(with: UIColor.ERXES_COLOR)
 
@@ -28,9 +28,9 @@ class ErxesButton: UIButton {
     override var isSelected: Bool {
         willSet {
             print("changing from \(isSelected) to \(newValue)")
-            if isSelected{
+            if isSelected {
                
-            }else{
+            } else {
              
             }
         }

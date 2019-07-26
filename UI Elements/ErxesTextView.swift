@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/31/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -26,14 +26,14 @@ class ErxesTextView: UIView {
         self.addSubview(titlebg)
         
         titleLabel = UILabel ()
-        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 12    )
+        titleLabel.font = Font.regular(12)
         titleLabel.textColor = .black
         titleLabel.text = titleLabel.text?.capitalized
         titlebg.addSubview(titleLabel)
         
         textView = UITextView()
         textView.delegate = self
-        textView.font = UIFont.fontWith(type: .comfortaa, size: 15    )
+        textView.font = Font.regular(15)
         textView.backgroundColor = .clear
         textView.textColor = .black
         let lineView = UIView()
@@ -75,6 +75,12 @@ class ErxesTextView: UIView {
 extension ErxesTextView: UITextViewDelegate {
     
 
-
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 
 }

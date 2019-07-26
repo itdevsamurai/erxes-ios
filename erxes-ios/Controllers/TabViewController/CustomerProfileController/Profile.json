@@ -1,12 +1,12 @@
-[{"id":"firstName","text":"First Name","type":"firstName","validation":"firstName","options":[]},
+[{"id":"avatar","text":"Photo","type":"","validation":"","options":[]},
+{"id":"firstName","text":"First Name","type":"firstName","validation":"firstName","options":[]},
   {"id":"lastName","text":"Last Name","type":"lastName","validation":"lastName","options":[]},
-  {"id":"primaryEmail","text":"Primary E-mail","type":"input","validation":"email","options":[]},
-  {"id":"primaryPhone","text":"Primary phone","type":"input","validation":"number","options":[]},
-  {"id":"ownerId","text":"Owner","type":"","validation":"","options":[]},
+  {"id":"primaryEmail","text":"Primary E-mail","type":"","validation":"","options":[]},
+  {"id":"primaryPhone","text":"Primary phone","type":"","validation":"","options":[]},
   {"id":"position","text":"Position","type":"input","validation":"","options":[]},
+  {"id":"ownerId","text":"Owner","type":"","validation":"","options":[]},
   {"id":"department","text":"Department","type":"input","validation":"","options":[]},
   {"id":"leadStatus","text":"Lead Status","type":"select","validation":"","options":["New", "Open", "In progress", "Open deal", "Unqualified", "Attempted to Contact", "Connected", "Bad timing"]},
   {"id":"lifecycleState","text":"Lifecycle state","type":"select","validation":"","options":["Subscriber", "Lead", "Marketing Qualified Lead", "Sales Qualified Lead", "Opportunity", "Customer", "Evangelist", "Other"]},
   {"id":"hasAuthority","text":"Has Authority","type":"check","validation":"number","options":["on","off"]},
-  {"id":"description","text":"Description","type":"input","validation":"","options":[]},
-  {"id":"doNotDisturb","text":"Do not disturb","type":"check","validation":"","options":["on","off"]}]
+  {"id":"doNotDisturb","text":"Do not disturb","type":"check","validation":"","options":["on","off"]},{"id":"description","text":"Description","type":"input","validation":"","options":[]}]

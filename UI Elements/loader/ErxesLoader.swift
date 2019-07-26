@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/15/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -41,7 +41,7 @@ class ErxesLoader: UIView {
         self.layer.add(rotateAnimation, forKey: nil)
     }
 
-    func startAnimating(){
+    func startAnimating() {
         self.isHidden = false
         let circle1 = CircleLayer.init(bounds: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width), position: CGPoint(x: self.frame.size.width/2, y: self.frame.size.width/2), fromColor: UIColor.ERXES_COLOR, toColor: .white, linewidth: lineWidth, toValue: 0.32)
         let circle2 = CircleLayer.init(bounds: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width), position: CGPoint(x: self.frame.size.width/2, y: self.frame.size.width/2), fromColor: UIColor.init(hexString: "e6d2ac")!, toColor: .white, linewidth: lineWidth, toValue: 0.65)
@@ -68,7 +68,7 @@ class ErxesLoader: UIView {
             topController.view.addSubview(bgview)
         }
     }
-    func stopAnimating(){
+    func stopAnimating() {
         self.layer.removeAllAnimations()
         self.isHidden = true
         if var topController = UIApplication.shared.delegate?.window??.rootViewController {

@@ -3,12 +3,12 @@
 //  erxes
 //
 //  Created by soyombo bat-erdene on 2/24/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
 
-class ErxesUser{
+class ErxesUser {
 
     private static var info: ErxesUser?
     

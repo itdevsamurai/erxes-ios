@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 9/30/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -217,7 +217,7 @@ extension NotificationSettingsController: UITableViewDataSource {
         titleLabel.frame = headerView.frame
         titleLabel.frame.origin.y = titleLabel.frame.origin.y + 5
         titleLabel.textColor = UIColor.black
-        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        titleLabel.font = Font.regular(15)
         headerView.addSubview(titleLabel)
         let text = self.modules[section]["description"] as? String
         titleLabel.text = text?.uppercased()

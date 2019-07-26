@@ -3,7 +3,7 @@
 //  Erxes.io
 //
 //  Created by soyombo bat-erdene on 2/16/18.
-//  Copyright © 1618 soyombo bat-erdene. All rights reserved.
+//  Copyright © 1618 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -36,7 +36,7 @@ class ErxesInboxCell: UITableViewCell {
 
         fullName = ErxesLabel()
         fullName.textAlignment = .left
-        fullName.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        fullName.font = Font.regular(13)
         fullName.textColor = UIColor(hexString: "#232323")
         fullName.backgroundColor = .SHIMMER_COLOR
         contentView.addSubview(fullName)
@@ -44,7 +44,7 @@ class ErxesInboxCell: UITableViewCell {
 
         desc = ErxesLabel()
 //        desc.textAlignment = .right
-        desc.font = UIFont.fontWith(type: .comfortaa, size: 10)
+        desc.font = Font.regular(10)
         desc.textColor = UIColor(hexString: "#232323", alpha:0.5)
         desc.minimumScaleFactor = 0.5
         desc.adjustsFontSizeToFitWidth = true
@@ -53,7 +53,7 @@ class ErxesInboxCell: UITableViewCell {
 
 
         date = ErxesLabel()
-        date.font = UIFont.fontWith(type: .comfortaa, size: 8)
+        date.font = Font.regular(8)
         date.textAlignment = .right
         date.textColor = .gray
         date.numberOfLines = 0
@@ -67,18 +67,18 @@ class ErxesInboxCell: UITableViewCell {
         message = ErxesLabel()
         message.textAlignment = .left
         message.textColor = UIColor(hexString: "#232323", alpha:0.5)
-        message.font = UIFont.fontWith(type: .comfortaa, size: 13)
+        message.font = Font.regular(13)
         message.numberOfLines = 1
         message.minimumScaleFactor = 0.5
         message.backgroundColor = UIColor.LIGHT_GRAY_COLOR
-        message.lineBreakMode = .byWordWrapping
+        message.lineBreakMode = .byTruncatingTail
         contentView.addSubview(message)
 
 
         tagListView = TagListView()
         tagListView.tagBackgroundColor = UIColor.ERXES_COLOR
         tagListView.cornerRadius = 5.0
-        tagListView.textFont = UIFont(name: "Montserrat-Light", size: 8)!
+        tagListView.textFont = Font.light(8)
         tagListView.textColor = .white
         tagListView.clipsToBounds = false
 
@@ -133,13 +133,13 @@ class ErxesInboxCell: UITableViewCell {
         }
         message.snp.makeConstraints { (make) in
             make.left.equalTo(avatar.snp.right).offset(15)
-            make.right.equalTo(contentView.snp.right).inset(35)
+            make.right.equalTo(contentView.snp.right).inset(100)
             make.top.equalTo(desc.snp.bottom).offset(7)
             make.height.equalTo(13)
         }
         date.snp.makeConstraints { (make) in
             make.right.equalTo(contentView.snp.right).inset(10)
-            make.top.equalTo(contentView.snp.top).inset(32)
+            make.top.equalTo(contentView.snp.top).inset(20)
             make.height.equalTo(16)
             make.left.equalTo(fullName.snp.left).offset(10)
         }
@@ -152,8 +152,8 @@ class ErxesInboxCell: UITableViewCell {
         }
         
         circleView.snp.makeConstraints { (make) in
-            make.left.equalTo(avatar.snp.right).inset(15)
-            make.top.equalTo(avatar.snp.bottom).inset(15)
+            make.left.equalTo(avatar.snp.right).inset(20)
+            make.top.equalTo(avatar.snp.bottom).inset(20)
             make.width.height.equalTo(26)
         }
         

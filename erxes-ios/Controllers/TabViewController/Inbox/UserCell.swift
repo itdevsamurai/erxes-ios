@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/19/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -29,20 +29,12 @@ class UserCell: UITableViewCell {
         contentView.addSubview(avatar)
         
         fullName = UILabel()
-        fullName.textAlignment = .right
+        fullName.textAlignment = .left
         fullName.textColor = UIColor.TEXT_COLOR
-        fullName.font = UIFont.fontWith(type: .light, size: 14)
+        fullName.font = Font.light(14)
         contentView.addSubview(fullName)
-        
 
-        
-        
-        
-        
-        
         self.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        
-        
     }
     
     override func layoutSubviews() {
@@ -61,7 +53,6 @@ class UserCell: UITableViewCell {
             make.height.equalTo(20)
         }
 
-        
     }
     
     

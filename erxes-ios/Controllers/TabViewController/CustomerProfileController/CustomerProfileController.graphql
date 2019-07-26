@@ -36,7 +36,6 @@ fragment CustomerInfo on Customer {
         ...UserData
     }
     integrationId
-    createdAt
     remoteAddress
     location
     customFieldsData
@@ -62,45 +61,7 @@ fragment CustomerInfo on Customer {
         website
         
     }
-    conversations {
-        _id
-        content
-        createdAt
-        assignedUser {
-            _id
-            details {
-                avatar
-                
-            }
-            
-        }
-        integration {
-            _id
-            kind
-            brandId
-            brand {
-                _id
-                name
-                
-            }
-            channels {
-                _id
-                name
-                
-            }
-            
-        }
-        
-        tags {
-            _id
-            name
-            colorCode
-            
-        }
-        readUserIds
-        
-    }
-    
+
 }
     
 mutation customersAdd($avatar: String, $firstName: String, $lastName: String, $primaryEmail: String, $primaryPhone: String, $phones: [String], $emails: [String], $ownerId: String, $position: String, $department: String, $leadStatus: String, $lifecycleState: String, $hasAuthority: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
@@ -110,8 +71,8 @@ _id
 }
 }
 
-mutation customersEdit($_id: String!, $firstName: String, $lastName: String,$primaryEmail:String, $email: [String], $primaryPhone:String,$phone: [String], $ownerId: String, $position: String, $department: String, $leadStatus: String, $lifecycleState: String, $hasAuthority: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
-    customersEdit(_id: $_id, firstName: $firstName, lastName: $lastName,primaryEmail:$primaryEmail,emails: $email, primaryPhone:$primaryPhone,phones: $phone, ownerId: $ownerId, position: $position, department: $department, leadStatus: $leadStatus, lifecycleState: $lifecycleState, hasAuthority: $hasAuthority, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {
+mutation customersEdit($_id: String!, $avatar:String ,$firstName: String, $lastName: String,$primaryEmail:String, $email: [String], $primaryPhone:String,$phone: [String], $ownerId: String, $position: String, $department: String, $leadStatus: String, $lifecycleState: String, $hasAuthority: String, $description: String, $doNotDisturb: String, $links: JSON, $customFieldsData: JSON) {
+    customersEdit(_id: $_id, avatar: $avatar ,firstName: $firstName, lastName: $lastName,primaryEmail:$primaryEmail,emails: $email, primaryPhone:$primaryPhone,phones: $phone, ownerId: $ownerId, position: $position, department: $department, leadStatus: $leadStatus, lifecycleState: $lifecycleState, hasAuthority: $hasAuthority, description: $description, doNotDisturb: $doNotDisturb, links: $links, customFieldsData: $customFieldsData) {
         _id
 }
 }

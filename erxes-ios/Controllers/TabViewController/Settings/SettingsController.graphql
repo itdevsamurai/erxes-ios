@@ -20,7 +20,7 @@ query notificationsGetConfigurations {
     }
 }
 
-fragment NotificationConf on NotificationConfiguration{
+fragment NotificationConf on NotificationConfiguration {
     _id
     notifType
     isAllowed
@@ -41,5 +41,12 @@ mutation notificationsSaveConfig($notifType: String!, $isAllowed: Boolean) {
     notificationsSaveConfig(notifType: $notifType, isAllowed: $isAllowed) {
         _id
         
+    }
+}
+
+
+query userEmailSignatures {
+    currentUser {
+        emailSignatures
     }
 }

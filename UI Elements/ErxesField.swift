@@ -3,11 +3,11 @@
 //  Erxes.io
 //
 //  Created by soyombo bat-erdene on 2/20/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
-
+import IQKeyboardManagerSwift
 
 class ErxesField: UIView {
 
@@ -16,12 +16,15 @@ class ErxesField: UIView {
     var textField = UITextField()
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-
+        
+        print("inited")
+        
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = true
         let titlebg = UIView()
         titlebg.backgroundColor = UIColor.init(hexString: "ebebeb")
         self.addSubview(titlebg)
@@ -31,7 +34,7 @@ class ErxesField: UIView {
         self.addSubview(line)
         line.tag = 1
         titleLabel = UILabel ()
-        titleLabel.font = UIFont.fontWith(type: .comfortaa, size: 12    )
+        titleLabel.font = Font.regular(12)
         titleLabel.textColor = .black
         
         
@@ -39,10 +42,10 @@ class ErxesField: UIView {
         
         textField = UITextField ()
         textField.delegate = self
-        textField.font = UIFont.fontWith(type: .comfortaa, size: 15   )
+        textField.font = Font.regular(15)
         textField.borderStyle = .none
         textField.textColor = .black
-
+        
         self.addSubview(textField)
         
         titlebg.snp.makeConstraints { (make) in

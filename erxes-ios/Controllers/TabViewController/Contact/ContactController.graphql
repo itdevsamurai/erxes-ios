@@ -1,14 +1,18 @@
-query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String) {
-    customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue) {
+query Customers($page: Int, $perPage: Int, $segment: String, $tag: String, $ids: [String], $searchValue: String,$brand: String, $integration: String, $form: String, $startDate: String, $endDate: String, $leadStatus: String, $lifecycleState: String) {
+    customers(page: $page, perPage: $perPage, segment: $segment, tag: $tag, ids: $ids, searchValue: $searchValue,brand: $brand, integration: $integration, form: $form, startDate: $startDate, endDate: $endDate, leadStatus: $leadStatus, lifecycleState: $lifecycleState) {
         ...CustomerList
     }
 }
+
+
 
 fragment CustomerList on Customer {
 
 _id
 firstName
 lastName
+avatar
+visitorContactInfo
 primaryEmail
 primaryPhone
     facebookData
@@ -24,6 +28,16 @@ conversations {
     _id
 
 }
+}
+
+fragment CustomerDesc on Customer {
+    _id
+    firstName
+    lastName
+    avatar
+    visitorContactInfo
+    primaryEmail
+    primaryPhone
 }
 
 
@@ -88,13 +102,13 @@ query Companies($page: Int, $perPage: Int, $segment: String, $tag: String, $ids:
     }
 }
 
-fragment CompanyList on Company{
+fragment CompanyList on Company {
 _id
 avatar
 primaryName
 plan
-email
-phone
+emails
+phones
 getTags {
 _id
 name
@@ -107,7 +121,7 @@ colorCode
 }
 
 
-fragment CompanyDetail on Company{
+fragment CompanyDetail on Company {
     _id
     createdAt
     modifiedAt
@@ -118,9 +132,9 @@ fragment CompanyDetail on Company{
     industry
     plan
     parentCompanyId
-    email
+    emails
     ownerId
-    phone
+    phones
     leadStatus
     lifecycleState
     businessType
@@ -136,12 +150,7 @@ fragment CompanyDetail on Company{
         
     }
     owner {
-        _id
-        details {
-            fullName
-            
-        }
-        
+        ...UserData
     }
     parentCompany {
         _id

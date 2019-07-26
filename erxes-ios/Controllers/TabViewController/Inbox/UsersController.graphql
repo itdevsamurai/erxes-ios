@@ -1,5 +1,5 @@
 
-query getUsers{
+query getUsers {
     users {
       ...UserData
     }
@@ -9,7 +9,8 @@ query getUsers{
 
 fragment UserData on User {
     _id
-    details{
+    username
+    details {
         fullName
         avatar
     }

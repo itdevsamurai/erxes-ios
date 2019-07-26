@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 8/31/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -19,14 +19,14 @@ class MyButton: UIButton {
     required override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.titleLabel?.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        self.titleLabel?.font = Font.regular(15)
       
         self.setTitleColor(.white, for: .normal)
         print("BUTTON INIT")
         
     }
     
-    func setup(){
+    func setup() {
         if shadowLayer == nil {
             shadowLayer = CAShapeLayer()
             shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: 6).cgPath

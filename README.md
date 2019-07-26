@@ -1,23 +1,22 @@
 # erxes Inc - erxes for IOS
 
-erxes is an AI meets open source messaging platform for sales and marketing
+erxes is an open source growth marketing platform. Marketing, sales, and customer service platform designed to help your business attract more engaged customers. Replace Hubspot with the mission and community-driven ecosystem.
 
-<a href="https://demohome.erxes.io/">View demo</a> <b>| </b> <a href="https://github.com/erxes/erxes-ios/archive/master.zip">Download ZIP </a> <b> | </b> <a href="https://gitter.im/erxes/Lobby">Join us on Gitter</a>
+<a href="https://demohome.erxes.io/">View demo</a> <b>| </b> <a href="https://github.com/erxes/erxes-ios/archive/master.zip">Download ZIP </a> <b> | </b> <a href="https://slack.erxes.io">Join us on Slack</a>
 
 ## Status <br>
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/de9ec5c49481466c9d9031ae1ce6c4ba)](https://www.codacy.com/app/puujeedevdev/erxes-ios?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=erxes/erxes-ios&amp;utm_campaign=Badge_Grade)
 [![Swift Version][swift-image]][swift-url]
 [![Build Status][travis-image]][travis-url]
 [![License][license-image]][license-url]
 
-![](https://raw.githubusercontent.com/erxes/erxes-ois/master/erxes-ios/Resources/screenshot.png)
+<a href="https://erxes.io" target="_blank"><img src="https://i.imgur.com/j1dxE7Y.jpg" alt="erxes is an AI meets open source messaging platform for sales, marketing and support "></a>
 
 ## Features
 
-- [x] Team Inbox
-- [x] Assign to users
-- [x] Resolve conversation
-- [x] Filter by Tag, Brand, Integration, Status, Date and Channel
-- [x] Contacts
+* **Team Inbox:** Combine real-time client and team communication with in-app messaging, live chat, email and form, so your customers can reach you however and whenever they want. 
+* **Contact:** Access our all-in-one CRM system in one go so that it’s easier to coordinate and manage your interactions with your customers. 
+
 
 ## Requirements
 
@@ -25,21 +24,9 @@ erxes is an AI meets open source messaging platform for sales and marketing
 - Xcode 9.3
 
 ## Installation
-
-#### Manually
-1. Download erxes-ois-master.zip and unzip it.
-2. Open erxes-ios.xcworkspace
+ * <a href="https://github.com/erxes/erxes-ios/wiki/Installation">Installation instructions</a> <br>
 
 
-## Usage example
-
-1. Open Constants.swift
-2. Edit following lines
-
-```swift
-    static let API_ENDPOINT = "ENTER APP-API-URL HERE!!!"
-    static let SUBSCRITION_ENDPOINT = "ENTER SUBSCRIPTION URL HERE!!!"
-```
 
 ## Contributors
 
@@ -83,8 +70,8 @@ Copyright (c) 2018 erxes Inc - Released under the [MIT license.](https://github.
 
 [swift-image]:https://img.shields.io/badge/swift-4.0-orange.svg
 [swift-url]: https://swift.org/
-[license-image]: https://img.shields.io/badge/License-MIT-blue.svg
-[license-url]: LICENSE
+[license-image]: https://img.shields.io/badge/License-GPL%20v3-blue.svg
+[license-url]: LICENSE.md
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad

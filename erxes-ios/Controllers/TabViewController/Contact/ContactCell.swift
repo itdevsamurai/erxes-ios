@@ -3,7 +3,7 @@
 //  NMG.CRM
 //
 //  Created by Soyombo bat-erdene on 6/13/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -19,8 +19,8 @@ class ContactCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .clear
-        self.contentView.backgroundColor = .clear
+        self.backgroundColor = .white
+        self.contentView.backgroundColor = .white
         
         
         self.selectionStyle = .none
@@ -28,22 +28,28 @@ class ContactCell: UITableViewCell {
         topLabel = UILabel()
         topLabel.textAlignment = .right
         topLabel.textColor = UIColor.black
-        topLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        topLabel.font = Font.regular(14)
         contentView.addSubview(topLabel)
         
         bottomLabel = UILabel()
         bottomLabel.textAlignment = .right
         bottomLabel.textColor = UIColor.LIGHT_GRAY_COLOR
-        bottomLabel.font = UIFont.fontWith(type: .comfortaa, size: 14)
+        bottomLabel.font = Font.regular(14)
         contentView.addSubview(bottomLabel)
         
     
         
         icon = UIImageView()
+        icon.layer.cornerRadius = 25
+        icon.clipsToBounds = true
+        icon.contentMode = .scaleAspectFit
         
 //        icon.image = icon.image!.withRenderingMode(.alwaysTemplate)
         icon.tintColor = UIColor.ERXES_COLOR
         icon.image = #imageLiteral(resourceName: "ic_avatar")
+        icon.layer.borderWidth = 1
+        icon.layer.borderColor = UIColor(hexString: "#cccccc")?.cgColor
+        icon.backgroundColor = UIColor(hexString: "#cccccc")
         contentView.addSubview(icon)
         
         taglistView = ErxesTagView()

@@ -3,7 +3,7 @@
 //  erxes-ios
 //
 //  Created by Soyombo bat-erdene on 9/1/18.
-//  Copyright © 2018 soyombo bat-erdene. All rights reserved.
+//  Copyright © 2018 Erxes Inc. All rights reserved.
 //
 
 import UIKit
@@ -30,7 +30,7 @@ class NotificationSettingsCell: UITableViewCell {
         desc = UILabel()
         desc.textAlignment = .left
         desc.textColor = UIColor.black
-        desc.font = UIFont.fontWith(type: .comfortaa, size: 15)
+        desc.font = Font.regular(15)
         contentView.addSubview(desc)
        
     }

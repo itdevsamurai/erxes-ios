@@ -28,7 +28,7 @@ open class SuggestionTableViewCell<T: SuggestionValue>: UITableViewCell, EurekaS
     }
     
     func initialize() {
-        textLabel?.font = UIFont.fontWith(type: .light, size: 14)
+        textLabel?.font = Font.light(14)
         textLabel?.minimumScaleFactor = 0.8
         textLabel?.adjustsFontSizeToFitWidth = true
         textLabel?.textColor = UIColor.ERXES_COLOR

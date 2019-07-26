@@ -1,16 +1,28 @@
 
-mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[JSON], $internal:Boolean){
-conversationMessageAdd(conversationId:$conversationId,content:$content, attachments:$attachments, internal:$internal){
+mutation ConversationMessageAdd($conversationId:String!, $content:String, $attachments:[AttachmentInput], $internal:Boolean, $mentionedUserIds:[String]) {
+conversationMessageAdd(conversationId:$conversationId,content:$content, attachments:$attachments, internal:$internal, mentionedUserIds:$mentionedUserIds) {
         _id
-        
     }
 }
 
 
 query ConversationDetail($_id: String!) {
     conversationDetail(_id: $_id) {
-        messages{
+        messages {
             ...MessageDetail
+        }
+        customer {
+            _id
+            firstName
+            lastName
+            avatar
+            isUser
+        }
+        integration {
+            brand{
+                _id
+                name
+            }
         }
     }
 }
@@ -19,7 +31,12 @@ fragment MessageDetail on ConversationMessage {
     
     _id
     content
-    attachments
+    attachments{
+        url
+        name
+        size
+        type
+    }
     formWidgetData
     conversationId
     customerId
@@ -32,7 +49,7 @@ fragment MessageDetail on ConversationMessage {
         email
         role
         getNotificationByEmail
-        details{
+        details {
             avatar
         }
     }
